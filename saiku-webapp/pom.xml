@@ -17,6 +17,7 @@
         <foodmartschema>/home/mpostelnicu/programs/data/FoodMart4.xml</foodmartschema>
         <foodmarturl>jdbc:h2:/home/mpostelnicu/programs/data/foodmart_h2.sql;MODE=MySQL</foodmarturl>
         <pluginpath>/Users/ionut/work/ccrs/ccrs-saiku/saiku-ui/js/saiku/plugins/</pluginpath>
+        <derby.version>10.11.1.1</derby.version>
     </properties>
     <build>
         <plugins>
@@ -195,6 +196,11 @@
             	<scope>provided</scope>
     	</dependency>
     
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyclient</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
 
     
         <dependency>
