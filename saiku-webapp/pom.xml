@@ -195,6 +195,8 @@
             	<scope>provided</scope>
     	</dependency>
     
+
+    
         <dependency>
             <groupId>org.jasig.cas.client</groupId>
             <artifactId>cas-client-integration-tomcat-common</artifactId>
@@ -226,6 +228,10 @@
             	<exclusion>
             		<artifactId>slf4j-log4j12</artifactId>
             		<groupId>org.slf4j</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>javax.el-api</artifactId>
+            		<groupId>javax.el</groupId>
             	</exclusion>
             </exclusions>
         </dependency>
