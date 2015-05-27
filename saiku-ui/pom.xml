@@ -337,7 +337,9 @@
 											<include name="js/saiku/Saiku.js" />
 										</fileset>
 									</copy>
-									<patch patchfile="minify.patch" failonerror="true" originalfile="target/saiku-ui/index.html" />
+
+									<!-- uncomment the following line if you want to use the minify version of saiku plugin -->
+									<!--<patch patchfile="minify.patch" failonerror="true" originalfile="target/saiku-ui/index.html" />-->
 
 									<copy todir="target/saiku-ui2">
 										<fileset dir="${basedir}/">
