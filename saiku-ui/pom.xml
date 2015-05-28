@@ -59,7 +59,6 @@
 								<jsSourceInclude>models/Dimension.js</jsSourceInclude>
 								<jsSourceInclude>views/DimensionList.js</jsSourceInclude>
 								<jsSourceInclude>views/Toolbar.js</jsSourceInclude>
-								<jsSourceInclude>views/Upgrade.js</jsSourceInclude>
 								<jsSourceInclude>views/Modal.js</jsSourceInclude>
 								<jsSourceInclude>views/MDXModal.js</jsSourceInclude>
 								<jsSourceInclude>views/SelectionsModal.js</jsSourceInclude>
@@ -93,11 +92,9 @@
 								<jsSourceInclude>models/Query.js</jsSourceInclude>
 								<jsSourceInclude>models/Session.js</jsSourceInclude>
 								<jsSourceInclude>views/SessionErrorModal.js</jsSourceInclude>
-								<jsSourceInclude>views/SplashScreen.js</jsSourceInclude>
 								<jsSourceInclude>models/SessionWorkspace.js</jsSourceInclude>
 								<jsSourceInclude>models/Member.js</jsSourceInclude>
 								<jsSourceInclude>models/Plugin.js</jsSourceInclude>
-								<jsSourceInclude>models/License.js</jsSourceInclude>
 								<jsSourceInclude>Saiku.js</jsSourceInclude>
 								<jsSourceInclude>views/DateFilterModal.js</jsSourceInclude>
 								<jsSourceInclude>adapters/SaikuServer.js</jsSourceInclude>

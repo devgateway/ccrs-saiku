@@ -64,7 +64,7 @@ var Settings = {
     DEMO: false,
     TELEMETRY_SERVER: 'http://telemetry.analytical-labs.com:7000',
     LOCALSTORAGE_EXPIRATION: 10 * 60 * 60 * 1000 /* 10 hours, in ms */,
-    UPGRADE: true,
+    UPGRADE: false,
     EVALUATION_PANEL_LOGIN: true
 };
 
