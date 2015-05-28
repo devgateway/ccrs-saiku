@@ -6,19 +6,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>saiku-webapp</artifactId>
-    <version>3.1.9</version>
     <name>saiku - webapp</name>
     <packaging>war</packaging>
 
-    <properties>
-        <repoconfig>/home/mpostelnicu/programs/repository/configuration.xml</repoconfig>
-        <repodata>/home/mpostelnicu/programs/repository/data</repodata>
-        <foodmartrepo>/home/mpostelnicu/programs/data/</foodmartrepo>
-        <foodmartschema>/home/mpostelnicu/programs/data/FoodMart4.xml</foodmartschema>
-        <foodmarturl>jdbc:h2:/home/mpostelnicu/programs/data/foodmart_h2.sql;MODE=MySQL</foodmarturl>
-        <!-- 
-        <pluginpath>/home/mpostelnicu/git/ccrs-saiku/saiku-ui/js/saiku/plugins/</pluginpath>
-	 	-->        
+    <properties>     
         <derby.version>10.11.1.1</derby.version>
     </properties>
     <build>
