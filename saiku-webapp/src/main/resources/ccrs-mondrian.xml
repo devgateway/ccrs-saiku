@@ -1,0 +1,33 @@
+<Schema name="CCRS">
+    <Annotations>
+        <Annotation name="desc">Cube Schema for CCRS</Annotation>
+    </Annotations>
+    <Cube name="CCRS Analysis">
+        <Table name="WORKPLAN">
+
+        </Table>
+
+        <!--<Dimension name="Name" foreignKey="key_id">-->
+            <!--<Hierarchy name="Name" hasAll="true" allMemberName="All Name" primaryKey="key_id">-->
+                <!--<Table name="NAME"/>-->
+                <!--<Level name="Name" column="NAME" type="String" uniqueMembers="true" levelType="Regular" approxRowCount="1000"/>-->
+            <!--</Hierarchy>-->
+        <!--</Dimension>-->
+
+        <Dimension name="Workplan year" type="TimeDimension">
+            <Hierarchy hasAll="true" allMemberName="All years">
+                <!--No table element here. Fact table is assumed.-->
+                <Level name="Year" column="ENTITY_YEAR" type="Numeric" uniqueMembers="false" levelType="TimeYears"/>
+            </Hierarchy>
+        </Dimension>
+
+        <Dimension name="Workplan workflow">
+            <Hierarchy hasAll="true" allMemberName="All workflows">
+                <!--No table element here. Fact table is assumed.-->
+                <Level name="Workflow" column="WORKFLOW" type="String" uniqueMembers="false" levelType="Regular"/>
+            </Hierarchy>
+        </Dimension>
+
+        <Measure name="Count" column="ID" datatype="Integer" aggregator="count" formatString="#,###"/>
+    </Cube>
+</Schema>

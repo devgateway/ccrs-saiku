@@ -7,12 +7,10 @@
 	<bean id="classpathDsManager" class="org.saiku.service.datasource.ClassPathResourceDatasourceManager">
 		<property name="path" value="res:saiku-org.saiku.datasources"/>
 	</bean>
-	 <!--  <property name="path" value="file:///var/saiku/saiku-org.saiku.datasources/"/> -->
-	
+
 	<bean id="sessionService" class="org.saiku.web.service.SessionService">
 	</bean>
-	
-	
+
 	<bean id="connectionManager" class="org.saiku.web.core.SecurityAwareConnectionManager">
 		<property name="dataSourceManager" ref="classpathDsManager" />
 		<property name="sessionService" ref="sessionService" />

@@ -10,8 +10,6 @@
     <name>saiku - web</name>
     <packaging>jar</packaging>
 
-
-
     <build>
         <resources>
             <resource>
@@ -73,6 +71,7 @@
 
         </plugins>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>org.saiku</groupId>
@@ -268,7 +267,18 @@
             <artifactId>spring-security-core</artifactId>
             <version>3.2.1.RELEASE</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
     </dependencies>
     <reporting>
         <plugins>

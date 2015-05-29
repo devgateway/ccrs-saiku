@@ -11,8 +11,8 @@
         <developerConnection>
             scm:git:git@github.com:OSBI/saiku.git
         </developerConnection>
-      <tag>saiku-3.1-SNAPSHOT</tag>
-  </scm>
+        <tag>saiku-3.1-SNAPSHOT</tag>
+    </scm>
     <modules>
         <module>saiku-core</module>
         <module>saiku-ui</module>
@@ -22,8 +22,8 @@
         <!--<module>saiku-bi-platform-plugin-p5</module>-->
         <!--<module>saiku-web-tests</module>-->
         <!--<module>saiku-bi-platform-plugin</module>-->
-    <!--<module>saiku-service-osgi</module>-->
-  </modules>
+        <!--<module>saiku-service-osgi</module>-->
+    </modules>
     <distributionManagement>
         <repository>
             <id>utility</id>
@@ -53,6 +53,7 @@
         <pentaho.platform.version>5.0.0</pentaho.platform.version>
         <thucydides.version>0.9.268</thucydides.version>
         <jbehave.version>3.9.3</jbehave.version>
+        <derby.version>10.11.1.1</derby.version>
     </properties>
     <pluginRepositories>
         <pluginRepository>
@@ -153,12 +154,12 @@
                 <version>1.0-m4.3</version>
                 <configuration>
                     <flowInitContext>
-                    <masterBranchName>master</masterBranchName>
-                    <developBranchName>development</developBranchName>
-                    <featureBranchPrefix>feature-</featureBranchPrefix>
-                    <releaseBranchPrefix>release-</releaseBranchPrefix>
-                    <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
-                    <versionTagPrefix>saiku-</versionTagPrefix>
+                        <masterBranchName>master</masterBranchName>
+                        <developBranchName>development</developBranchName>
+                        <featureBranchPrefix>feature-</featureBranchPrefix>
+                        <releaseBranchPrefix>release-</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+                        <versionTagPrefix>saiku-</versionTagPrefix>
                     </flowInitContext>
                     <allowSnapshots>true</allowSnapshots>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
@@ -740,6 +741,11 @@
                 <groupId>hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
                 <version>1.8.0.10</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.derby</groupId>
+                <artifactId>derbyclient</artifactId>
+                <version>${derby.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
