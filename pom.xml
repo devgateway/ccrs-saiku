@@ -54,6 +54,7 @@
         <thucydides.version>0.9.268</thucydides.version>
         <jbehave.version>3.9.3</jbehave.version>
         <derby.version>10.11.1.1</derby.version>
+        <mondrian.version>4.0.0-20150120.193813-15</mondrian.version>
     </properties>
     <pluginRepositories>
         <pluginRepository>
@@ -609,7 +610,7 @@
             <dependency>
                 <groupId>pentaho</groupId>
                 <artifactId>mondrian</artifactId>
-                <version>4.0.0-20150120.193813-15</version>
+                <version>${mondrian.version}</version>
             </dependency>
             <!-- Spring modules -->
             <dependency>

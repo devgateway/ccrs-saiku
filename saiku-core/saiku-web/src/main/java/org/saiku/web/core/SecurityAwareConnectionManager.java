@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -292,8 +291,6 @@ public class SecurityAwareConnectionManager extends AbstractConnectionManager im
 
 	private ISaikuConnection connect(String name, SaikuDatasource datasource) {
 		try {
-            // TODO - the driver should register itself...
-            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
 			ISaikuConnection con = SaikuConnectionFactory.getConnection(datasource);
 			if (con.initialized()) {
 				return con;
