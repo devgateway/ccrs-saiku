@@ -185,6 +185,18 @@
             <groupId>javax.servlet</groupId>
             <scope>provided</scope>
         </dependency>
+        
+       <dependency>
+            <groupId>org.devgateway.ccrs</groupId>
+            <artifactId>persistence</artifactId>
+            <version>0.7.7-SNAPSHOT</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>log4j-over-slf4j</artifactId>
+            		<groupId>org.slf4j</groupId>
+            	</exclusion>
+            </exclusions>
+       </dependency>
 
         <dependency>
             <groupId>org.jasig.cas.client</groupId>

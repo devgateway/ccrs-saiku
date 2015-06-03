@@ -39,15 +39,17 @@
     <security:http auto-config='true' access-denied-page="/login.jsp">
 
 
-	<security:remember-me key="uniqueAndSecret" user-service-ref="remoteUserDetailsService"/>
+	<!-- This key is secret and unique, same key between the two applications, IMS and Saiku, it is probably used as a salt to cookie hashing -->
+	<security:remember-me key="ImsCCRSSaikuUniqueSecretKeyDG" user-service-ref="remoteUserDetailsService"/>
  
-	<security:intercept-url pattern="/serverdocs/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-  	<security:intercept-url pattern="/rest/saiku/session*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-      	<security:intercept-url pattern="/rest/saiku/session/" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+ 	<!-- Notice we use ROLE_EDITOR, same as in IMS, the roles will be fetched remotely with the authenticated token -->
+	<security:intercept-url pattern="/serverdocs/**" access="ROLE_EDITOR" />
+  	<security:intercept-url pattern="/rest/saiku/session*" access="ROLE_EDITOR" />
+      	<security:intercept-url pattern="/rest/saiku/session/" access="ROLE_EDITOR" />
 
-        <security:intercept-url pattern="/rest/**" access="IS_AUTHENTICATED_FULLY" />
-	<security:intercept-url pattern="/json/**" access="IS_AUTHENTICATED_FULLY" />
-    <security:intercept-url pattern="/WEB-INF/classes/legacy-schema" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:intercept-url pattern="/rest/**" access="ROLE_EDITOR" />
+	<security:intercept-url pattern="/json/**" access="ROLE_EDITOR" />
+    <security:intercept-url pattern="/WEB-INF/classes/legacy-schema" access="ROLE_EDITOR" />
     <security:logout logout-url="/logout"/>
  	<security:http-basic/>
   
