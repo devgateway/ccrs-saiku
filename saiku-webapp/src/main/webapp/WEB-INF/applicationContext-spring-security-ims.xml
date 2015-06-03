@@ -14,6 +14,19 @@
 
  	<context:property-placeholder location="/WEB-INF/applicationContext-spring-security-ims.properties" />
 
+ <bean id="httpInvokerRequestExecutor"
+	class="org.springframework.security.remoting.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor" />
+
+
+	<bean id="remoteUserDetailsService"
+		class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<property name="serviceUrl"
+			value="http://localhost:8080/RemoteUserDetails" />
+		<property name="serviceInterface"
+			value="org.springframework.security.core.userdetails.UserDetailsService" />
+		<property name="httpInvokerRequestExecutor" ref="httpInvokerRequestExecutor" />
+	</bean>
+
 
 	<bean id="authenticationProvider"
 		class="org.springframework.security.authentication.rcp.RemoteAuthenticationProvider">

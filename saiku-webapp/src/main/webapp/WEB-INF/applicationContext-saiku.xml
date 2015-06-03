@@ -25,12 +25,22 @@
   If you modify these files in anyway it would be very useful if you sent us patches for any useful changes you make.
    -->
   
+  <import resource="applicationContext-spring-security.xml"/>
+
+  
+  
   <!-- BASIC AUTHENTICATION -->
     <security:http pattern="/rest/saiku/info" security="none">
     </security:http>
     <security:http pattern="/repository" security="none">
     </security:http>
+    
+    
     <security:http auto-config='true' access-denied-page="/login.jsp">
+
+
+	<security:remember-me key="uniqueAndSecret" user-service-ref="remoteUserDetailsService"/>
+ 
 	<security:intercept-url pattern="/serverdocs/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
   	<security:intercept-url pattern="/rest/saiku/session*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
       	<security:intercept-url pattern="/rest/saiku/session/" access="IS_AUTHENTICATED_ANONYMOUSLY" />
@@ -43,9 +53,7 @@
   
 	</security:http>
 
-   <import resource="applicationContext-spring-security.xml"/>
-
-  	
+     	
 
 	
 </beans>
