@@ -14,7 +14,24 @@
 
  	<context:property-placeholder location="/WEB-INF/applicationContext-spring-security-ims.properties" />
 
+<!-- This is a simple http invoker, it is needed by the remote user details service -->
+ <bean id="httpInvokerRequestExecutor"
+	class="org.springframework.security.remoting.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor" />
 
+
+<!-- this gets remote user details remotely from the IMS server, it is required by the rememeber-me to verify the cookie -->
+	<bean id="remoteUserDetailsService"
+		class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<property name="serviceUrl"
+			value="${ims.RemoteUserDetailsUrl}" />
+		<property name="serviceInterface"
+			value="org.springframework.security.core.userdetails.UserDetailsService" />
+		<property name="httpInvokerRequestExecutor" ref="httpInvokerRequestExecutor" />
+	</bean>
+
+
+<!-- this is the authentication provider, it is by default a remote provider, it always asks for
+ yes or no the remote IMS authentication provider which responds the network -->
 	<bean id="authenticationProvider"
 		class="org.springframework.security.authentication.rcp.RemoteAuthenticationProvider">
 		<property name="remoteAuthenticationManager">
