@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE Schema SYSTEM "mondrian.dtd" >
-<Schema name="CCRS" metamodelVersion="4.0">
+<Schema name="CCRS" metamodelVersion="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
         <Annotation name="desc">Cube Schema for CCRS</Annotation>
     </Annotations>
@@ -12,6 +11,21 @@
                 <Column name="ID"/>
             </Key>
         </Table>
+        
+        <Table name="WORKSTREAM">
+            <Key>
+                <Column name="ID"/>
+            </Key>
+        </Table>
+        
+        <Link source="WORKPLAN" target="WORKSTREAM">
+       	 <ForeignKey>
+			<Column name="WORKPLAN_ID"/>
+		</ForeignKey>
+        </Link>
+        
+
+        
     </PhysicalSchema>
 
     <Cube name="CCRS Analysis" visible="true" cache="true" enabled="true">
@@ -33,7 +47,7 @@
                                hierarchyCaption="Workflow hierarchy caption"
                                datatype="String"
                                hierarchyAllMemberName="All workflows"/>
-                </Attributes>
+               		 </Attributes>
 
 
                 <!--
