@@ -45,7 +45,8 @@ var LoginForm = Modal.extend({
     events: {
         'click a': 'call',
         'keyup #login_form input': 'check',
-        'click #eval-login': 'show_panel_user'
+        'click #eval-login': 'show_panel_user',
+	'click .clearlink': 'clear_login'
     },
 
     initialize: function(args) {
@@ -75,14 +76,17 @@ var LoginForm = Modal.extend({
 
         return true;
     },
-
+    clear_login: function(event) {
+	window.open("/clear.html", "_blank");
+    },
     setMessage: function(message) {
         this.$el.find('.dialog_body').html(this.message);
     },
 
 	setError: function(message){
 		$(this.el).find(".dialog_response").html(message);
-	},
+        $(this.el).find('.clearlink').unbind();
+    },
 
     show_panel_user: function(event) {
         event.preventDefault();

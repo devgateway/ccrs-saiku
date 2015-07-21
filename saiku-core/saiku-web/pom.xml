@@ -2,11 +2,11 @@
     <parent>
         <artifactId>saiku-core</artifactId>
         <groupId>org.saiku</groupId>
-        <version>3.1.9</version>
+        <version>3.3.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>saiku-web</artifactId>
-    <version>3.1.9</version>
+    <version>3.3.1</version>
     <name>saiku - web</name>
     <packaging>jar</packaging>
 
@@ -164,7 +164,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>3.2.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -255,7 +254,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-cas</artifactId>
-            <version>3.2.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.jasig.cas.client</groupId>
@@ -265,7 +263,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>3.2.1.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

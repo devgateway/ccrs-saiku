@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="classpathDsManager"
@@ -9,16 +9,6 @@
         <property name="path" value="res:saiku-datasources" />
     </bean>
 
-    <!--
-        <bean id="repositoryDsManager" class="org.saiku.service.datasource.RepositoryDatasourceManager" init-method="load" destroy-method="unload">
-            <property name="userService" ref="userServiceBean"/>
-            <property name="configurationpath" value="${repoconfig}"/>
-            <property name="datadir" value="${repodata}"/>
-            <property name="foodmartdir" value="${foodmartrepo}"/>
-            <property name="foodmartschema" value="${foodmartschema}"/>
-            <property name="foodmarturl" value="${foodmarturl}"/>
-        </bean>
-     -->
 
     <!-- <property name="path" value="file:///var/saiku/saiku-datasources/"/> -->
     <!-- 
@@ -80,9 +70,9 @@
     </bean>
 
 
-    <bean id="datasourceResourceBean" class="org.saiku.web.rest.resources.DataSourceResource">
+    <!--<bean id="datasourceResourceBean" class="org.saiku.web.rest.resources.DataSourceResource">
         <property name="datasourceService" ref="datasourceServiceBean" />
-    </bean>
+    </bean>-->
 
     <bean id="olapDiscoverBean" scope="session"
           class="org.saiku.web.rest.resources.OlapDiscoverResource">
