@@ -28,10 +28,7 @@ import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.VFS;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.util.*;
@@ -208,7 +205,11 @@ public class ClassPathResourceDatasourceManager implements IDatasourceManager {
         return null;
     }
 
-    public RepositoryFile getFile2(String file) {
+  public String saveFile(String path, Object content, String user, List<String> roles) {
+    return null;
+  }
+
+  public RepositoryFile getFile2(String file) {
         return null;
     }
 
@@ -228,11 +229,15 @@ public class ClassPathResourceDatasourceManager implements IDatasourceManager {
         return null;
     }
 
-    public String saveInternalFile(String path, String content, String type) {
+    public String saveInternalFile(String path, Object content, String type) {
         return null;
     }
 
-    public String saveInternalFile(String path, String content) {
+  public String saveBinaryInternalFile(String path, InputStream content, String type) {
+    return null;
+  }
+
+  public String saveInternalFile(String path, String content) {
         return null;
     }
     
@@ -244,7 +249,11 @@ public class ClassPathResourceDatasourceManager implements IDatasourceManager {
         return null;
     }
 
-    public javax.jcr.Node getFiles() {
+  public List<IRepositoryObject> getFiles(String type, String username, List<String> roles, String path) {
+    return null;
+  }
+
+  public javax.jcr.Node getFiles() {
         return null;
     }
 

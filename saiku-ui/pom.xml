@@ -3,11 +3,11 @@
 	<parent>
 		<artifactId>saiku</artifactId>
 		<groupId>org.saiku</groupId>
-		<version>3.1.9</version>
+		<version>3.3.1</version>
 	</parent>
 	<artifactId>saiku-ui</artifactId>
 	<packaging>pom</packaging>
-	<version>3.1.9</version>
+	<version>3.3.1</version>
 	<properties>
 		<checkstyle.skip>true</checkstyle.skip>
 		<build.prod>false</build.prod>
@@ -37,20 +37,15 @@
 								<closureExtern>../externs/underscore_externs.js</closureExtern>
 							</closureExterns>
 							<closureUseDefaultExterns>true</closureUseDefaultExterns>
-							<!--<closureCompilationLevel>WHITESPACE_ONLY</closureCompilationLevel>-->
 							<closureSortDependencies>false</closureSortDependencies>
 							<jsEngine>CLOSURE</jsEngine>
 							<closureLanguage>ECMASCRIPT5</closureLanguage>
 							<jsFinalFile>saiku.js</jsFinalFile>
-							<!--<yuiDisableOptimizations>false</yuiDisableOptimizations>
-                            <yuiNoMunge>true</yuiNoMunge>
-                            <yuiPreserveSemicolons>false</yuiPreserveSemicolons>-->
 							<webappSourceDir>${basedir}/js/saiku/</webappSourceDir>
 							<jsSourceDir>.</jsSourceDir>
 							<!--<cssSourceFiles>-->
 							<!--</cssSourceFiles>-->
 							<jsSourceIncludes>
-								<!--<jsSourceInclude>**/*.js</jsSourceInclude>-->
 								<jsSourceInclude>models/SaikuOlapQuery.js</jsSourceInclude>
 								<jsSourceInclude>models/DateFilter.js</jsSourceInclude>
 								<jsSourceInclude>render/SaikuRenderer.js</jsSourceInclude>
@@ -95,18 +90,16 @@
 								<jsSourceInclude>models/SessionWorkspace.js</jsSourceInclude>
 								<jsSourceInclude>models/Member.js</jsSourceInclude>
 								<jsSourceInclude>models/Plugin.js</jsSourceInclude>
+						<jsSourceInclude>models/Settings.js</jsSourceInclude>
 								<jsSourceInclude>Saiku.js</jsSourceInclude>
 								<jsSourceInclude>views/DateFilterModal.js</jsSourceInclude>
+						<jsSourceInclude>views/WarningModal.js</jsSourceInclude>
+						<jsSourceInclude>views/TitlesModal.js</jsSourceInclude>
 								<jsSourceInclude>adapters/SaikuServer.js</jsSourceInclude>
 								<jsSourceInclude>routers/QueryRouter.js</jsSourceInclude>
-								<!--<jsSourceInclude>plugins/Statistics/plugin_disabled.js</jsSourceInclude>
-                                <jsSourceInclude>plugins/I18n/plugin_disabled.js</jsSourceInclude>
-                                <jsSourceInclude>plugins/BIServer/plugin_disabled.js</jsSourceInclude>
-                                <jsSourceInclude>plugins/Buckets/plugin_disabled.js</jsSourceInclude>
-                                <jsSourceInclude>plugins/CCC_Chart/plugin_disabled.js</jsSourceInclude>-->
 							</jsSourceIncludes>
 							<jsSourceExcludes>
-								<jsSourceExclude>**/Settings.js</jsSourceExclude>
+						<jsSourceExclude>Settings.js</jsSourceExclude>
 								<jsSourceExclude>**/plugins/**/*.js</jsSourceExclude>
 							</jsSourceExcludes>
 						</configuration>
@@ -212,6 +205,8 @@
 										<include name="js/saiku/plugins/" />
 										<include name="js/saiku/Settings.js" />
 										<include name="js/saiku/Saiku.js" />
+											<include name="js/saiku/embed/" />
+											<include name="js/saiku/render/" />
 									</fileset>
 								</copy>
 

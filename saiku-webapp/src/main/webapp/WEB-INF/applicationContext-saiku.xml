@@ -30,15 +30,15 @@
   
   
   <!-- BASIC AUTHENTICATION -->
-    <security:http pattern="/rest/saiku/info" security="none">
+	<security:http pattern="/rest/saiku/info" security="none">
     </security:http>
-    <security:http pattern="/repository" security="none">
+    <security:http pattern="/rest/saiku/info/ui-settings" security="none">
+    </security:http>
+    <security:http pattern="/repository/**" security="none">
     </security:http>
     
+    <security:http auto-config="true" use-expressions="false">
     
-    <security:http auto-config='true' access-denied-page="/login.jsp">
-
-
 	<!-- This key is secret and unique, same key between the two applications, IMS and Saiku, it is probably used as a salt to cookie hashing -->
 	<security:remember-me key="ImsCCRSSaikuUniqueSecretKeyDG" user-service-ref="remoteUserDetailsService"/>
  
@@ -46,7 +46,6 @@
 	<security:intercept-url pattern="/serverdocs/**" access="ROLE_EDITOR" />
   	<security:intercept-url pattern="/rest/saiku/session*" access="ROLE_EDITOR" />
       	<security:intercept-url pattern="/rest/saiku/session/" access="ROLE_EDITOR" />
-
         <security:intercept-url pattern="/rest/**" access="ROLE_EDITOR" />
 	<security:intercept-url pattern="/json/**" access="ROLE_EDITOR" />
     <security:intercept-url pattern="/WEB-INF/classes/legacy-schema" access="ROLE_EDITOR" />

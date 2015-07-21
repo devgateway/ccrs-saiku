@@ -112,10 +112,10 @@ var SessionWorkspace = Backbone.Model.extend({
                 paramsURI.splash = true;
             }
 
-            if (!Settings.INITIAL_QUERY) {
-                Saiku.tabs.add(new Workspace());
-            }
-        } else {
+            // Saiku.splash.render();
+            if (!Settings.INITIAL_QUERY && paramsURI.splash) {
+                Saiku.tabs.add(new SplashScreen())
+	        } else {
             if (!Settings.INITIAL_QUERY) {
                 Saiku.tabs.add(new Workspace());
             }

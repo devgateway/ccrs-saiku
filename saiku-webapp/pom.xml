@@ -2,7 +2,7 @@
     <parent>
         <artifactId>saiku</artifactId>
         <groupId>org.saiku</groupId>
-        <version>3.1.9</version>
+        <version>3.3.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>saiku-webapp</artifactId>
@@ -180,16 +180,15 @@
     </build>
     <dependencies>
 
-        <dependency>
-            <artifactId>servlet-api</artifactId>
-            <groupId>javax.servlet</groupId>
-            <scope>provided</scope>
-        </dependency>
-        
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+
        <dependency>
             <groupId>org.devgateway.ccrs</groupId>
             <artifactId>persistence</artifactId>
-            <version>0.7.11-SNAPSHOT</version>
+            <version>0.8.3-SNAPSHOT</version>
             <exclusions>
             	<exclusion>
             		<artifactId>log4j-over-slf4j</artifactId>
@@ -316,6 +315,11 @@
             <groupId>org.jvnet.mimepull</groupId>
             <artifactId>mimepull</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
