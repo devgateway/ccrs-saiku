@@ -28,7 +28,7 @@
         <repository>
             <id>utility</id>
             <name>utility-releases</name>
-            <url>http://repo.meteorite.bi/content/repositories/alabs-release-local/</url>
+            <url>http://repo.analytical-labs.com/artifactory/alabs-release-local</url>
         </repository>
         <snapshotRepository>
             <id>utility</id>
@@ -60,7 +60,7 @@
         <pluginRepository>
             <id>Analytical Labs Plugin Repo</id>
             <name>Analytical Labs Repo-releases</name>
-            <url>http://repo.meteorite.bi/content/repositories/alabs-release-local/</url>
+            <url>http://repo.analytical-labs.com/artifactory/alabs-release-local</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -88,7 +88,7 @@
         <repository>
             <id>Analytical Labs Repo</id>
             <name>Analytical Labs Repo-releases</name>
-            <url>http://repo.meteorite.bi/content/repositories/alabs-release-local/</url>
+            <url>http://repo.analytical-labs.com/artifactory/alabs-release-local</url>
         </repository>
         <repository>
             <id>Analytical Labs snapshots</id>
