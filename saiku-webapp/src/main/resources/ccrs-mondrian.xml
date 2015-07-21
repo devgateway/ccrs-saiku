@@ -1,69 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Schema name="CCRS" metamodelVersion="4.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
+<Schema name="CCRS" metamodelVersion="4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
         <Annotation name="desc">Cube Schema for CCRS</Annotation>
     </Annotations>
 
     <PhysicalSchema>
+        <!-- schema="REPORTS" ?!-->
         <Table name="WORKPLAN">
             <Key>
                 <Column name="ID"/>
             </Key>
         </Table>
-
+        
         <Table name="WORKSTREAM">
             <Key>
                 <Column name="ID"/>
             </Key>
         </Table>
-
+        
         <Link source="WORKPLAN" target="WORKSTREAM">
-            <ForeignKey>
-                <Column name="WORKPLAN_ID"/>
-            </ForeignKey>
+       	 <ForeignKey>
+			<Column name="WORKPLAN_ID"/>
+		</ForeignKey>
         </Link>
+        
 
+        
     </PhysicalSchema>
 
-    <Cube name="CCRS Analysis" caption="CCRS Analysis" visible="true" cache="true" enabled="true">
+    <Cube name="CCRS Analysis" visible="true" cache="true" enabled="true">
         <!-- Define dimensions and attributes -->
         <Dimensions>
-            <Dimension name="Workflow" caption="Workflow dimension" table='WORKPLAN' key="Dimension Id" visible="true">
+            <Dimension name="Workflow" table='WORKPLAN' key="Dimension Id">
                 <Attributes>
                     <!-- by default we also have visible="false" when hasHierarchy="false" -->
                     <Attribute name="Dimension Id"
-                               keyColumn="ID"
-                               hasHierarchy="false"
                                levelType="Regular"
-                               datatype="Integer"/>
+                               keyColumn="ID"
+                               datatype="Integer"
+                               hasHierarchy="false"/>
 
                     <Attribute name="Workflow"
-                               caption="Workflow caption"
-                               keyColumn="WORKFLOW"
-                               hierarchyAllMemberName="All workflows"
-                               hierarchyCaption="All Workflow hierarchy caption"
                                levelType="Regular"
-                               datatype="String"/>
-                </Attributes>
+                               keyColumn="WORKFLOW"
+                               caption="Workflow caption"
+                               hierarchyCaption="Workflow hierarchy caption"
+                               datatype="String"
+                               hierarchyAllMemberName="All workflows"/>
+               		 </Attributes>
+
+
+                <!--
+                    Hierarchies can be used in time dimension for example where we can have multiple levels but now Mondrian will
+                    by default create a hierarchy for every attribute you create unless you specify <Attribute hasHierarchy=”false”>
+                -->
+                <!--<Hierarchies>-->
+                    <!--<Hierarchy name='Media Type' allMemberName='All Media'>-->
+                        <!--<Level attribute='Media Type'/>-->
+                    <!--</Hierarchy>-->
+                    <!--<Hierarchy name='Promotions' allMemberName='All Promotions'>-->
+                        <!--<Level attribute='Promotion Name'/>-->
+                    <!--</Hierarchy>-->
+                <!--</Hierarchies>-->
             </Dimension>
 
-            <Dimension name="Time" table='WORKPLAN' key="Year Id" type="TIME">
+            <Dimension name="Year" table='WORKPLAN' key="Year Id">
                 <Attributes>
                     <!-- by default we also have visible="false" when hasHierarchy="false" -->
                     <Attribute name="Year Id"
-                               keyColumn="ID"
-                               hasHierarchy="false"
                                levelType="Regular"
-                               datatype="Integer"/>
+                               keyColumn="ID"
+                               datatype="Integer"
+                               hasHierarchy="false"/>
 
                     <Attribute name="Year"
-                               caption="Year caption"
+                               levelType="Regular"
                                keyColumn="ENTITY_YEAR"
-                               hierarchyAllMemberName="All Years"
+                               caption="Year caption"
                                hierarchyCaption="Year hierarchy caption"
-                               levelType="TimeYears"
-                               datatype="Integer"/>
+                               datatype="Numeric"
+                               hierarchyAllMemberName="All Years"/>
                 </Attributes>
             </Dimension>
         </Dimensions>
@@ -72,11 +88,11 @@
         <MeasureGroups>
             <MeasureGroup name="WORKPLAN Measures" table="WORKPLAN">
                 <Measures>
-                    <Measure name="Count" caption="Number of countries" column="ID" datatype="Integer" aggregator="count" visible="true" formatString="#,###"/>
+                    <Measure name="Count" column="ID" datatype="Integer" aggregator="count" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <FactLink dimension="Workflow" />
-                    <FactLink dimension="Time" />
+                    <FactLink dimension="Year" />
                     <!--<ForeignKeyLink dimension="Workplan" foreignKeyColumn="ID"/>-->
                 </DimensionLinks>
             </MeasureGroup>
@@ -85,3 +101,38 @@
     </Cube>
 </Schema>
 
+
+<!-- OLD SCHEMA -->
+<!--<Schema name="CCRS">-->
+    <!--<Annotations>-->
+        <!--<Annotation name="desc">Cube Schema for CCRS</Annotation>-->
+    <!--</Annotations>-->
+    <!--<Cube name="CCRS Analysis">-->
+        <!--<Table name="WORKPLAN">-->
+
+        <!--</Table>-->
+
+        <!--&lt;!&ndash;<Dimension name="Name" foreignKey="key_id">&ndash;&gt;-->
+            <!--&lt;!&ndash;<Hierarchy name="Name" hasAll="true" allMemberName="All Name" primaryKey="key_id">&ndash;&gt;-->
+                <!--&lt;!&ndash;<Table name="NAME"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<Level name="Name" column="NAME" type="String" uniqueMembers="true" levelType="Regular" approxRowCount="1000"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;</Hierarchy>&ndash;&gt;-->
+        <!--&lt;!&ndash;</Dimension>&ndash;&gt;-->
+
+        <!--<Dimension name="Workplan year" type="TimeDimension">-->
+            <!--<Hierarchy hasAll="true" allMemberName="All years">-->
+                <!--&lt;!&ndash;No table element here. Fact table is assumed.&ndash;&gt;-->
+                <!--<Level name="Year" column="ENTITY_YEAR" type="Numeric" uniqueMembers="false" levelType="TimeYears"/>-->
+            <!--</Hierarchy>-->
+        <!--</Dimension>-->
+
+        <!--<Dimension name="Workplan workflow">-->
+            <!--<Hierarchy hasAll="true" allMemberName="All workflows">-->
+                <!--&lt;!&ndash;No table element here. Fact table is assumed.&ndash;&gt;-->
+                <!--<Level name="Workflow" column="WORKFLOW" type="String" uniqueMembers="false" levelType="Regular"/>-->
+            <!--</Hierarchy>-->
+        <!--</Dimension>-->
+
+        <!--<Measure name="Count" column="ID" datatype="Integer" aggregator="count" formatString="#,###"/>-->
+    <!--</Cube>-->
+<!--</Schema>-->
