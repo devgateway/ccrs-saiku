@@ -6,78 +6,229 @@
     </Annotations>
 
     <PhysicalSchema>
-        <Table name="WORKPLAN">
+        <Table name="CATEGORY">
             <Key>
                 <Column name="ID"/>
             </Key>
         </Table>
 
-        <Table name="WORKSTREAM">
-            <Key>
-                <Column name="ID"/>
-            </Key>
-        </Table>
-
-        <Link source="WORKPLAN" target="WORKSTREAM">
-            <ForeignKey>
-                <Column name="WORKPLAN_ID"/>
-            </ForeignKey>
-        </Link>
-
+        <Query alias="FACT_TABLE">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                    SELECT
+                        WORKPLAN.ID as WORKPLAN_ID,
+                        WORKPLAN.DESIGNATION as WORKPLAN_DESIGNATION,
+                        WORKPLAN.ENTITY_YEAR as WORKPLAN_ENTITY_YEAR,
+                        WORKPLAN.WORKFLOW as WORKPLAN_WORKFLOW,
+                        WORKSTREAM.ID as WORKSTREAM_ID,
+                        OUTPUTS.ID as OUTPUTS_ID,
+                        OUTPUTS.ACTUAL_OUTPUT as OUTPUTS_ACTUAL_OUTPUT,
+                        OUTPUTS.EXPECTED_OUTPUT as OUTPUTS_EXPECTED_OUTPUT,
+                        OUTPUTS.END_DATE as OUTPUTS_END_DATE,
+                        OUTPUTS.START_DATE as OUTPUTS_START_DATE,
+                        OUTPUTS.LEAD_UNIT_ID as OUTPUTS_LEAD_UNIT_ID,
+                        AGENCY_ROLES.LEAD_AGENCY_ID as AGENCY_ROLES_LEAD_AGENCY_ID,
+                        AGENCY_ROLES.ROLE_OF_PARTNERS as AGENCY_ROLES_ROLE_OF_PARTNERS,
+                        AGENCY_ROLES_PARTNERS.PARTNERS_ID as AGENCY_ROLES_PARTNERS_PARTNERS_ID,
+                        ACTIVITY.ID as ACTIVITY_ID,
+                        ACTIVITY.ACTUAL_ACTIVITY_PERFORMANCE as ACTIVITY_ACTUAL_ACTIVITY_PERFORMANCE,
+                        ACTIVITY.EXPECTED_ACTIVITY as ACTIVITY_EXPECTED_ACTIVITY,
+                        ACTIVITY.END_DATE as ACTIVITY_END_DATE,
+                        ACTIVITY.START_DATE as ACTIVITY_START_DATE,
+                        ACTIVITY.LEAD_UNIT_ID as ACTIVITY_LEAD_UNIT_ID,
+                        ACTIVITY.SELECT_AS_GOOD_PRACTICE as ACTIVITY_SELECT_AS_GOOD_PRACTICE,
+                        ACTIVITY.GOOD_PRACTICE_ID as ACTIVITY_GOOD_PRACTICE_ID,
+                        BUDGET.ID as BUDGET_ID,
+                        BUDGET.TYPE_ID as BUDGET_TYPE_ID,
+                        BUDGET.REQUIRED_AMOUNT as BUDGET_EXPECTED,
+                        BUDGET.SPENT_AMOUNT as BUDGET_ACTUAL
+                    FROM WORKPLAN workplan
+                        LEFT OUTER JOIN WORKSTREAM workstream ON workstream.WORKPLAN_ID = workplan.ID
+                        LEFT OUTER JOIN OUTPUTS outputs ON outputs.WORKSTREAM_ID = workstream.ID
+                        LEFT OUTER JOIN AGENCY_ROLES agency_roles ON agency_roles.OUTPUT_ID = outputs.ID
+                        LEFT OUTER JOIN AGENCY_ROLES_PARTNERS agency_roles_partners ON agency_roles_partners.AGENCY_ROLES_ID = agency_roles.ID
+                        LEFT OUTER JOIN ACTIVITY activity ON activity.OUTPUT_ID = outputs.ID
+                        LEFT OUTER JOIN BUDGET budget ON budget.ACTIVITY_ID = activity.ID
+                    WHERE
+                        workplan.DESIGNATION != 'AQ'
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
     </PhysicalSchema>
 
     <Cube name="CCRS Analysis" caption="CCRS Analysis" visible="true" cache="true" enabled="true">
         <!-- Define dimensions and attributes -->
         <Dimensions>
-            <Dimension name="Workflow" caption="Workflow dimension" table='WORKPLAN' key="Dimension Id" visible="true">
+            <Dimension name="Workflow" caption="Workflow" table='FACT_TABLE' key="Dimension Id" visible="true">
                 <Attributes>
                     <!-- by default we also have visible="false" when hasHierarchy="false" -->
-                    <Attribute name="Dimension Id"
-                               keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="WORKPLAN_ID"
                                hasHierarchy="false"
-                               levelType="Regular"
-                               datatype="Integer"/>
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Workflow"
-                               caption="Workflow caption"
-                               keyColumn="WORKFLOW"
-                               hierarchyAllMemberName="All workflows"
-                               hierarchyCaption="All Workflow hierarchy caption"
-                               levelType="Regular"
-                               datatype="String"/>
+                    <Attribute name="Workflow" caption="Workflow" keyColumn="WORKPLAN_WORKFLOW"
+                               hierarchyAllMemberName="All workflows" hierarchyCaption="All workflows"
+                               levelType="Regular" datatype="String"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Time" table='WORKPLAN' key="Year Id" type="TIME">
+            <Dimension name="Country" caption="Country" table='FACT_TABLE' key="Country Id" visible="true">
                 <Attributes>
-                    <!-- by default we also have visible="false" when hasHierarchy="false" -->
-                    <Attribute name="Year Id"
-                               keyColumn="ID"
+                    <Attribute name="Country Id" keyColumn="WORKPLAN_ID"
                                hasHierarchy="false"
-                               levelType="Regular"
-                               datatype="Integer"/>
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Year"
-                               caption="Year caption"
-                               keyColumn="ENTITY_YEAR"
-                               hierarchyAllMemberName="All Years"
-                               hierarchyCaption="Year hierarchy caption"
-                               levelType="TimeYears"
-                               datatype="Integer"/>
+                    <Attribute name="Country" caption="Country" keyColumn="WORKPLAN_DESIGNATION"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Time" table='FACT_TABLE' key="Year Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Year Id" keyColumn="WORKPLAN_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Year" caption="Year" keyColumn="WORKPLAN_ENTITY_YEAR"
+                               hierarchyAllMemberName="All Years" hierarchyCaption="All Years"
+                               levelType="TimeYears" datatype="Integer"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Actual Output" table='FACT_TABLE' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="OUTPUTS_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Actual Output" caption="Actual Output" keyColumn="OUTPUTS_ACTUAL_OUTPUT"
+                               hierarchyAllMemberName="All Actual Outputs" hierarchyCaption="All Actual Outputs"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Expected Output" table='FACT_TABLE' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="OUTPUTS_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Expected Output" caption="Expected Output" keyColumn="OUTPUTS_EXPECTED_OUTPUT"
+                               hierarchyAllMemberName="All Expected Outputs" hierarchyCaption="All Expected Outputs"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Lead Agency" caption="Lead Agency" table='CATEGORY' key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Lead Agency" caption="Lead Agency" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Lead Agencies" hierarchyCaption="All Lead Agencies"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Partners" caption="Partners" table='CATEGORY' key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Partners" caption="Partners" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Partners" hierarchyCaption="All Partners"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Role of partners" table='FACT_TABLE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Role of partners" caption="Role of partners" keyColumn="AGENCY_ROLES_ROLE_OF_PARTNERS"
+                               hierarchyAllMemberName="All roles" hierarchyCaption="All roles"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Expected activity performance" table='FACT_TABLE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Expected activity performance" caption="Expected activity performance" keyColumn="ACTIVITY_EXPECTED_ACTIVITY"
+                               hierarchyAllMemberName="All performance" hierarchyCaption="All performance"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Actual activity performance" table='FACT_TABLE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Actual activity performance" caption="Actual activity performance" keyColumn="ACTIVITY_ACTUAL_ACTIVITY_PERFORMANCE"
+                               hierarchyAllMemberName="All performance" hierarchyCaption="All performance"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is good practice?" table='FACT_TABLE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is good practice?" caption="Is good practice?" keyColumn="ACTIVITY_SELECT_AS_GOOD_PRACTICE"
+                               hierarchyAllMemberName="All good practice" hierarchyCaption="All good practice"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Budget Type" caption="Budget Type" table='CATEGORY' key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Budget Type" caption="Budget Type" keyColumn="LABEL"
+                               hierarchyAllMemberName="All budget types" hierarchyCaption="All budget types"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
         </Dimensions>
 
         <!-- Define Measures -->
         <MeasureGroups>
-            <MeasureGroup name="WORKPLAN Measures" table="WORKPLAN">
+            <MeasureGroup name="Workplan Measures" table="FACT_TABLE">
                 <Measures>
-                    <Measure name="Count" caption="Number of countries" column="ID" datatype="Integer" aggregator="count" visible="true" formatString="#,###"/>
+                    <Measure name="Count" caption="Number of forms" column="WORKPLAN_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Expected Budget" caption="Expected Budget" column="BUDGET_EXPECTED" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
+                    <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <FactLink dimension="Workflow" />
                     <FactLink dimension="Time" />
-                    <!--<ForeignKeyLink dimension="Workplan" foreignKeyColumn="ID"/>-->
+                    <FactLink dimension="Country" />
+                    <FactLink dimension="Actual Output" />
+                    <FactLink dimension="Expected Output" />
+                    <FactLink dimension="Role of partners" />
+                    <FactLink dimension="Expected activity performance" />
+                    <FactLink dimension="Actual activity performance" />
+                    <FactLink dimension="Is good practice?" />
+                    <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
+                    <ForeignKeyLink dimension="Partners" foreignKeyColumn="AGENCY_ROLES_PARTNERS_PARTNERS_ID"/>
+                    <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
