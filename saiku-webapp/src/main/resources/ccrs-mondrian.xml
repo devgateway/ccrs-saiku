@@ -31,7 +31,17 @@
                     <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='OfficeType']]>
                 </SQL>
             </ExpressionView>
-        </Query>       
+        </Query>     
+        
+        
+        
+         <Query alias="ManagementModality">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='ManagementModality']]>
+                </SQL>
+            </ExpressionView>
+        </Query>     
 
 
          <Query alias="Level">
@@ -41,6 +51,16 @@
                 </SQL>
             </ExpressionView>
         </Query>       
+        
+        
+        <Query alias="BusinessOperationArea">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='BusinessOperationArea']]>
+                </SQL>
+            </ExpressionView>
+        </Query>       
+        
 
 
          <Query alias="ContractModality">
@@ -67,6 +87,17 @@
                 </SQL>
             </ExpressionView>
         </Query>    
+         
+         
+       <Query alias="CP4BusinessOperationAreasDetails">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select BOS.*, CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.LTA_EVALUATED, LTA.MONETARY_VOLUME, LTA.DISCOUNT_RATE_APPLIED, LTA.ANNUAL_VALUE_OF_TOTAL_PROCUREMENT, LTA.MANAGEMENT_MODALITY_ID  from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA  WHERE LTA.PARENT_ID=BOS.ID AND BOS.PARENT_ID=CP4.ID and CP4.WORKFLOW='VALIDATED' AND CP4.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>    
+         
+        
          
         
        <Query alias="CP2RcoStaffMemberDetail">
@@ -124,7 +155,7 @@
         </Query>
     </PhysicalSchema>
     
-    <Cube name="CP2 RCOStaffMemberDetails" caption="RCO Staff Member Details" visible="true" cache="true" enabled="true">
+    <Cube name="CP2RCOStaffMemberDetails" caption="CP2 RCO Staff Member Details" visible="true" cache="true" enabled="true">
 		<Dimensions>
 			<Dimension name="Country" caption="Country" table="CP2RcoStaffMemberDetail" visible="true">
 				<Attributes>
@@ -201,6 +232,70 @@
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>        
+	</Cube>
+
+
+
+	<Cube name="CP4BOSAreas" caption="CP4 Business Operation Areas" visible="true" cache="true" enabled="true">
+		<Dimensions>
+			<Dimension name="Country" caption="Country" table="CP4BusinessOperationAreasDetails"
+				visible="true">
+				<Attributes>
+					<Attribute name="Country" keyColumn="DESIGNATION"
+						datatype="String" />
+				</Attributes>
+			</Dimension>
+
+			<Dimension name="Year" caption="Year" table="CP4BusinessOperationAreasDetails"
+				visible="true">
+				<Attributes>
+					<Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+				</Attributes>
+			</Dimension>
+
+			<Dimension name="BusinessOperationArea" caption="Business Operation Area" table="BusinessOperationArea"
+				key="Dimension Id" visible="true">
+				<Attributes>
+					<Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+						levelType="Regular" datatype="Integer" />
+		
+					<Attribute name="BusinessOperationArea" caption="Business Operation Area" keyColumn="LABEL"
+						hierarchyAllMemberName="All Business Operation Area" hierarchyCaption="Business Operation Areas"
+						levelType="Regular" datatype="String" />
+				</Attributes>
+			</Dimension>	
+			
+			
+			<Dimension name="ManagementModality" caption="Management Modality" table="ManagementModality"
+				key="Dimension Id" visible="true">
+				<Attributes>
+					<Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+						levelType="Regular" datatype="Integer" />
+		
+					<Attribute name="ManagementModality" caption="Management Modality" keyColumn="LABEL"
+						hierarchyAllMemberName="All Management Modalities" hierarchyCaption="Management Modalities"
+						levelType="Regular" datatype="String" />
+				</Attributes>
+			</Dimension>	
+			
+
+		</Dimensions>
+		
+		<MeasureGroups>
+			<MeasureGroup name="CP4BOSAreas Measures" table="CP4BusinessOperationAreasDetails">
+				<Measures>
+					<Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU"
+						datatype="Integer" aggregator="count" visible="true" />
+				</Measures>
+				<DimensionLinks>
+					<ForeignKeyLink dimension="BusinessOperationArea" foreignKeyColumn="BUSINESS_OPERATION_AREA_ID" />
+					<ForeignKeyLink dimension="ManagementModality" foreignKeyColumn="MANAGEMENT_MODALITY_ID" />
+					<FactLink dimension="Country" />
+					<FactLink dimension="Year" />
+				</DimensionLinks>
+			</MeasureGroup>
+		</MeasureGroups>
+		
 	</Cube>
 
 
