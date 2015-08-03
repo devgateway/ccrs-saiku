@@ -67,6 +67,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="Sector">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Sector']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP1UnctMember">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -83,11 +91,18 @@
             </ExpressionView>
         </Query>
 
-
         <Query alias="CP2RcoStaffMemberDetail">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[select D.*, CP2.DESIGNATION, CP2.ENTITY_YEAR FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2 WHERE CP2.ID=D.PARENT_ID AND CP2.WORKFLOW='VALIDATED' AND CP2.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP11BudgetSupport">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select D.*, CP11.DESIGNATION, CP11.ENTITY_YEAR from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE CP11, CP11DIRECT_BUDGET_SUPPORT D WHERE CP11.ID = D.PARENT_ID AND CP11.WORKFLOW='VALIDATED' AND CP11.DESIGNATION != 'AQ']]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -352,6 +367,59 @@
                     <ForeignKeyLink dimension="Agency" foreignKeyColumn="AGENCY_ID" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP11 Budget Support
+    *************************************************************************-->
+    <Cube name="CP11 Budget Support" caption="CP11 Budget Support" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP11BudgetSupport"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Sector" caption="Sector" table="Sector"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Sector" caption="Sector" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Sectors" hierarchyCaption="All Sectors"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Budget Support Measures" table="CP11BudgetSupport">
+                <Measures>
+                    <Measure name="Budget Support" caption="Budget Support" column="BUDGETED_AMOUNT"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Sector" foreignKeyColumn="SECTOR_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
