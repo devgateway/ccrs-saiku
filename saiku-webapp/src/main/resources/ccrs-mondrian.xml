@@ -5,110 +5,93 @@
         <Annotation name="desc">Cube Schema for CCRS</Annotation>
     </Annotations>
 
- 
-  	  <PhysicalSchema>
- 
- 		<!-- Used by Agency which has 90% of all categories-->
+    <PhysicalSchema>
+        <!-- Used by Agency which has 90% of all categories-->
         <Table name="CATEGORY">
             <Key>
                 <Column name="ID"/>
             </Key>
         </Table>
-        
 
-         <Query alias="RepresentativePostLevelCategory">
+        <Table name="BASE_COUNTRY">
+            <Key>
+                <Column name="ISO2"/>
+            </Key>
+        </Table>
+
+        <Query alias="RepresentativePostLevelCategory">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='RepresentativePostLevel']]>
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='RepresentativePostLevel']]>
                 </SQL>
             </ExpressionView>
-        </Query>       
+        </Query>
 
-
-         <Query alias="OfficeType">
+        <Query alias="OfficeType">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='OfficeType']]>
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='OfficeType']]>
                 </SQL>
             </ExpressionView>
-        </Query>     
-        
-        
-        
-         <Query alias="ManagementModality">
+        </Query>
+
+        <Query alias="ManagementModality">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='ManagementModality']]>
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='ManagementModality']]>
                 </SQL>
             </ExpressionView>
-        </Query>     
+        </Query>
 
-
-         <Query alias="Level">
+        <Query alias="Level">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='Level']]>
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Level']]>
                 </SQL>
             </ExpressionView>
-        </Query>       
-        
-        
+        </Query>
+
         <Query alias="BusinessOperationArea">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='BusinessOperationArea']]>
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='BusinessOperationArea']]>
                 </SQL>
             </ExpressionView>
-        </Query>       
-        
+        </Query>
 
-
-         <Query alias="ContractModality">
+        <Query alias="ContractModality">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[SELECT ID,LABEL FROM CATEGORY WHERE DTYPE='ContractModality']]>
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='ContractModality']]>
                 </SQL>
             </ExpressionView>
-        </Query>    
+        </Query>
 
-        <Table name="CP1UNCTMEMBER">
-            <Key>
-                <Column name="ID"/>
-            </Key>
-        </Table>
-        
-        
-        
-               
-       <Query alias="CP1UnctMember">
+        <Query alias="CP1UnctMember">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[select M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR  from CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1 WHERE M.PARENT_ID=CP1.ID and CP1.WORKFLOW='VALIDATED' AND CP1.DESIGNATION!='AQ']]>
                 </SQL>
             </ExpressionView>
-        </Query>    
-         
-         
-       <Query alias="CP4BusinessOperationAreasDetails">
+        </Query>
+
+        <Query alias="CP4BusinessOperationAreasDetails">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[select BOS.*, CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.LTA_EVALUATED, LTA.MONETARY_VOLUME, LTA.DISCOUNT_RATE_APPLIED, LTA.ANNUAL_VALUE_OF_TOTAL_PROCUREMENT, LTA.MANAGEMENT_MODALITY_ID  from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA  WHERE LTA.PARENT_ID=BOS.ID AND BOS.PARENT_ID=CP4.ID and CP4.WORKFLOW='VALIDATED' AND CP4.DESIGNATION!='AQ']]>
                 </SQL>
             </ExpressionView>
-        </Query>    
-         
-        
-         
-        
-       <Query alias="CP2RcoStaffMemberDetail">
+        </Query>
+
+
+        <Query alias="CP2RcoStaffMemberDetail">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[select D.*, CP2.DESIGNATION, CP2.ENTITY_YEAR FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2 WHERE CP2.ID=D.PARENT_ID AND CP2.WORKFLOW='VALIDATED' AND CP2.DESIGNATION!='AQ']]>
                 </SQL>
             </ExpressionView>
-        </Query>    
-        
- 
+        </Query>
+
         <Query alias="FACT_TABLE">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -135,7 +118,7 @@
                         ACTIVITY.START_DATE as ACTIVITY_START_DATE,
                         ACTIVITY.LEAD_UNIT_ID as ACTIVITY_LEAD_UNIT_ID,
                         ACTIVITY.SELECT_AS_GOOD_PRACTICE as ACTIVITY_SELECT_AS_GOOD_PRACTICE,
-                        ACTIVITY.GOOD_PRACTICE_ID as ACTIVITY_GOOD_PRACTICE_ID,
+                        ACTIVITY.SELECT_AS_GOOD_PRACTICE as ACTIVITY_GOOD_PRACTICE_ID,
                         BUDGET.ID as BUDGET_ID,
                         BUDGET.TYPE_ID as BUDGET_TYPE_ID,
                         BUDGET.REQUIRED_AMOUNT as BUDGET_EXPECTED,
@@ -154,215 +137,231 @@
             </ExpressionView>
         </Query>
     </PhysicalSchema>
-    
+
+    <!--*************************************************************************
+    ***** CP2 RCO Staff Member Details
+    *************************************************************************-->
     <Cube name="CP2RCOStaffMemberDetails" caption="CP2 RCO Staff Member Details" visible="true" cache="true" enabled="true">
-		<Dimensions>
-			<Dimension name="Country" caption="Country" table="CP2RcoStaffMemberDetail" visible="true">
-				<Attributes>
-					<Attribute name="Country" keyColumn="DESIGNATION" datatype="String" />
-				</Attributes>
-			</Dimension>	
-			
-			<Dimension name="Year" caption="Year" table="CP2RcoStaffMemberDetail" visible="true">
-				<Attributes>
-					<Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
-				</Attributes>
-			</Dimension>	
-			
-			
-			
-			<Dimension name="OfficeType" caption="Office Type"  table="OfficeType"
-				key="Dimension Id" visible="true">
-				<Attributes>
-					<Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
-						levelType="Regular" datatype="Integer" />
-		
-					<Attribute name="OfficeType" caption="Office Type" keyColumn="LABEL"
-						hierarchyAllMemberName="All Office Types" hierarchyCaption="All Office Types"
-						levelType="Regular" datatype="String" />
-				</Attributes>
-			</Dimension>			
-			
-			<Dimension name="ContractModality" caption="Contract Modality" table="ContractModality"
-				key="Dimension Id" visible="true">
-				<Attributes>
-					<Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
-						levelType="Regular" datatype="Integer" />
-		
-					<Attribute name="ContractModality" caption="Contract Modality" keyColumn="LABEL"
-						hierarchyAllMemberName="All Contract Modality" hierarchyCaption="All Contract Modality"
-						levelType="Regular" datatype="String" />
-				</Attributes>
-			</Dimension>	
-			
-			
-			<Dimension name="Level" caption="Level" table="Level"
-				key="Dimension Id" visible="true">
-				<Attributes>
-					<Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
-						levelType="Regular" datatype="Integer" />
-		
-					<Attribute name="Level" caption="Level" keyColumn="LABEL"
-						hierarchyAllMemberName="All Levels" hierarchyCaption="All Levels"
-						levelType="Regular" datatype="String" />
-				</Attributes>
-			</Dimension>		
-	
-		</Dimensions>
-				
-		  <MeasureGroups>
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP2RcoStaffMemberDetail" visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="OfficeType" caption="Office Type"  table="OfficeType"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="OfficeType" caption="Office Type" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Office Types" hierarchyCaption="All Office Types"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="ContractModality" caption="Contract Modality" table="ContractModality"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="ContractModality" caption="Contract Modality" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Contract Modality" hierarchyCaption="All Contract Modality"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Level" caption="Level" table="Level" key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Level" caption="Level" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Levels" hierarchyCaption="All Levels"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+        </Dimensions>
+
+        <MeasureGroups>
             <MeasureGroup name="CP2 RCOStaffMemberDetails Measures" table="CP2RcoStaffMemberDetail">
                 <Measures>
-                    <Measure name="AverageAnnualNetSalaryAmount" caption="Average Annual Net Salary Amount" 
-                    column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="avg" visible="true" />
+                    <Measure name="AverageAnnualNetSalaryAmount" caption="Average Annual Net Salary Amount"
+                             column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="avg" visible="true" />
 
-                    <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount" 
-                    column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" />
-                    
-                    <Measure name="AverageContractDurationYears" caption="Average Contract Duration Years" 
-                    column="CONTRACT_DURATION_YEARS" datatype="Numeric" aggregator="avg" visible="true" />   
-                                     
+                    <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
+                             column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" />
+
+                    <Measure name="AverageContractDurationYears" caption="Average Contract Duration Years"
+                             column="CONTRACT_DURATION_YEARS" datatype="Numeric" aggregator="avg" visible="true" />
                 </Measures>
+
                 <DimensionLinks>
                     <ForeignKeyLink dimension="OfficeType" foreignKeyColumn="OFFICE_TYPE_ID"/>
-      				<ForeignKeyLink dimension="ContractModality" foreignKeyColumn="CONTRACT_MODALITY_ID"/>
-					<ForeignKeyLink dimension="Level" foreignKeyColumn="LEVEL_ID"/>    
-					<FactLink dimension="Country" />
-					<FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="ContractModality" foreignKeyColumn="CONTRACT_MODALITY_ID"/>
+                    <ForeignKeyLink dimension="Level" foreignKeyColumn="LEVEL_ID"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
-        </MeasureGroups>        
-	</Cube>
+        </MeasureGroups>
+    </Cube>
 
 
+    <!--*************************************************************************
+    ***** CP4 Business Operation Areas
+    *************************************************************************-->
+    <Cube name="CP4BOSAreas" caption="CP4 Business Operation Areas" visible="true" cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-	<Cube name="CP4BOSAreas" caption="CP4 Business Operation Areas" visible="true" cache="true" enabled="true">
-		<Dimensions>
-			<Dimension name="Country" caption="Country" table="CP4BusinessOperationAreasDetails"
-				visible="true">
-				<Attributes>
-					<Attribute name="Country" keyColumn="DESIGNATION"
-						datatype="String" />
-				</Attributes>
-			</Dimension>
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
 
-			<Dimension name="Year" caption="Year" table="CP4BusinessOperationAreasDetails"
-				visible="true">
-				<Attributes>
-					<Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
-				</Attributes>
-			</Dimension>
+            <Dimension name="Year" caption="Year" table="CP4BusinessOperationAreasDetails"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
 
-			<Dimension name="BusinessOperationArea" caption="Business Operation Area" table="BusinessOperationArea"
-				key="Dimension Id" visible="true">
-				<Attributes>
-					<Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
-						levelType="Regular" datatype="Integer" />
-		
-					<Attribute name="BusinessOperationArea" caption="Business Operation Area" keyColumn="LABEL"
-						hierarchyAllMemberName="All Business Operation Area" hierarchyCaption="Business Operation Areas"
-						levelType="Regular" datatype="String" />
-				</Attributes>
-			</Dimension>	
-			
-			
-			<Dimension name="ManagementModality" caption="Management Modality" table="ManagementModality"
-				key="Dimension Id" visible="true">
-				<Attributes>
-					<Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
-						levelType="Regular" datatype="Integer" />
-		
-					<Attribute name="ManagementModality" caption="Management Modality" keyColumn="LABEL"
-						hierarchyAllMemberName="All Management Modalities" hierarchyCaption="Management Modalities"
-						levelType="Regular" datatype="String" />
-				</Attributes>
-			</Dimension>	
-			
+            <Dimension name="BusinessOperationArea" caption="Business Operation Area" table="BusinessOperationArea"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
 
-		</Dimensions>
-		
-		<MeasureGroups>
-			<MeasureGroup name="CP4BOSAreas Measures" table="CP4BusinessOperationAreasDetails">
-				<Measures>
-					<Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU"
-						datatype="Integer" aggregator="count" visible="true" />
-				</Measures>
-				<DimensionLinks>
-					<ForeignKeyLink dimension="BusinessOperationArea" foreignKeyColumn="BUSINESS_OPERATION_AREA_ID" />
-					<ForeignKeyLink dimension="ManagementModality" foreignKeyColumn="MANAGEMENT_MODALITY_ID" />
-					<FactLink dimension="Country" />
-					<FactLink dimension="Year" />
-				</DimensionLinks>
-			</MeasureGroup>
-		</MeasureGroups>
-		
-	</Cube>
+                    <Attribute name="BusinessOperationArea" caption="Business Operation Area" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Business Operation Area" hierarchyCaption="Business Operation Areas"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
 
 
-	<Cube name="CP1 UNCT Members" caption="CP1 UNCT Members" visible="true"
-		cache="true" enabled="true">
-		<Dimensions>
+            <Dimension name="ManagementModality" caption="Management Modality" table="ManagementModality"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
 
-			<Dimension name="Country" caption="Country" table="CP1UnctMember"
-				visible="true">
-				<Attributes>
-					<Attribute name="Country" keyColumn="DESIGNATION"
-						datatype="String" />
-				</Attributes>
-			</Dimension>
+                    <Attribute name="ManagementModality" caption="Management Modality" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Management Modalities" hierarchyCaption="Management Modalities"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
 
-			<Dimension name="Year" caption="Year" table="CP1UnctMember"
-				visible="true">
-				<Attributes>
-					<Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
-				</Attributes>
-			</Dimension>
+        <MeasureGroups>
+            <MeasureGroup name="CP4BOSAreas Measures" table="CP4BusinessOperationAreasDetails">
+                <Measures>
+                    <Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU"
+                             datatype="Integer" aggregator="count" visible="true" />
+                </Measures>
 
-			<Dimension name="Agency" caption="Agency" table="CATEGORY"
-				key="Dimension Id" visible="true">
-				<Attributes>
-					<Attribute name="Dimension Id" keyColumn="ID"
-						hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-					<Attribute name="Agency" caption="Agency" keyColumn="LABEL"
-						hierarchyAllMemberName="All Agencies" hierarchyCaption="All Agencies"
-						levelType="Regular" datatype="String" />
-				</Attributes>
-			</Dimension>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="BusinessOperationArea" foreignKeyColumn="BUSINESS_OPERATION_AREA_ID" />
+                    <ForeignKeyLink dimension="ManagementModality" foreignKeyColumn="MANAGEMENT_MODALITY_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
 
 
-			<Dimension name="RepresentativePostLevel" caption="Representative Post Level"
-				table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
-				<Attributes>
-					<Attribute name="Dimension Id" keyColumn="ID"
-						hasHierarchy="false" levelType="Regular" datatype="Integer" />
+    <!--*************************************************************************
+    ***** CP1 UNCT Members
+    *************************************************************************-->
+    <Cube name="CP1 UNCT Members" caption="CP1 UNCT Members" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-					<Attribute name="RepresentativePostLevel" caption="Representative Post Level"
-						keyColumn="LABEL" hierarchyAllMemberName="All Representative Post Levels"
-						hierarchyCaption="All Representative Post Levels" levelType="Regular"
-						datatype="String" />
-				</Attributes>
-			</Dimension>
-		</Dimensions>
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
 
-		<MeasureGroups>
-			<MeasureGroup name="CP UNCT Measures" table="CP1UnctMember">
-				<Measures>
-					<Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY"
-						datatype="Integer" aggregator="count" visible="true" />
-				</Measures>
-				<DimensionLinks>
-					<ForeignKeyLink dimension="Agency" foreignKeyColumn="AGENCY_ID" />
-					<ForeignKeyLink dimension="RepresentativePostLevel"
-						foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
-					<FactLink dimension="Country" />
-					<FactLink dimension="Year" />
-				</DimensionLinks>
-			</MeasureGroup>
-		</MeasureGroups>
-	</Cube>
-    
+            <Dimension name="Year" caption="Year" table="CP1UnctMember"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
 
+            <Dimension name="Agency" caption="Agency" table="CATEGORY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Agency" caption="Agency" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Agencies" hierarchyCaption="All Agencies"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
+                       table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="RepresentativePostLevel" caption="Representative Post Level"
+                               keyColumn="LABEL" hierarchyAllMemberName="All Representative Post Levels"
+                               hierarchyCaption="All Representative Post Levels" levelType="Regular"
+                               datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP UNCT Measures" table="CP1UnctMember">
+                <Measures>
+                    <Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY"
+                             datatype="Integer" aggregator="count" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Agency" foreignKeyColumn="AGENCY_ID" />
+                    <ForeignKeyLink dimension="RepresentativePostLevel"
+                                    foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** Test Cube
+    *************************************************************************-->
     <Cube name="CCRS Analysis" caption="CCRS Analysis" visible="true" cache="true" enabled="true">
         <!-- Define dimensions and attributes -->
         <Dimensions>
@@ -379,15 +378,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Country" caption="Country" table='FACT_TABLE' key="Country Id" visible="true">
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
                 <Attributes>
-                    <Attribute name="Country Id" keyColumn="WORKPLAN_ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Country" caption="Country" keyColumn="WORKPLAN_DESIGNATION"
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
                                hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String"/>
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -524,7 +523,7 @@
                 <DimensionLinks>
                     <FactLink dimension="Workflow" />
                     <FactLink dimension="Time" />
-                    <FactLink dimension="Country" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <FactLink dimension="Actual Output" />
                     <FactLink dimension="Expected Output" />
                     <FactLink dimension="Role of partners" />
