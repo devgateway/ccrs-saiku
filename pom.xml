@@ -235,15 +235,15 @@
         </pluginManagement>
     </build>
     <profiles>
-            <profile>
-                <id>ci</id>
-                <modules>
+        <profile>
+            <id>ci</id>
+            <modules>
                 <module>saiku-core</module>
                 <module>saiku-ui</module>
                 <module>saiku-webapp</module>
                 <module>saiku-server</module>
-                <module>saiku-bi-platform-plugin-p5</module>
-                <module>saiku-web-tests</module>
+                <!--<module>saiku-bi-platform-plugin-p5</module>-->
+                <!--<module>saiku-web-tests</module>-->
             </modules>
         </profile>
     </profiles>
