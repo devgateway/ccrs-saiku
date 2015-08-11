@@ -40,8 +40,8 @@
         <!-- This key is secret and unique, same key between the two applications, IMS and Saiku, it is probably used as a salt to cookie hashing -->
         <security:remember-me key="ImsCCRSSaikuUniqueSecretKeyDG" user-service-ref="remoteUserDetailsService"/>
 
-        <!--<security:form-login login-processing-url="/login" default-target-url="/" />-->
-        <!--<security:form-login login-page="/login" default-target-url="/" />-->
+        <security:form-login login-page="/login" default-target-url="/" />
+        <security:access-denied-handler error-page="/login" />
 
         <!-- Notice we use ROLE_EDITOR, same as in IMS, the roles will be fetched remotely with the authenticated token -->
         <security:intercept-url pattern="/serverdocs/**" access="ROLE_EDITOR" />

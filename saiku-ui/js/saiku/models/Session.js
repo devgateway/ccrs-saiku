@@ -80,6 +80,11 @@ var Session = Backbone.Model.extend({
     },
 
     process_session: function(model, response) {
+        // check if the user is logged in the IMS application
+        if (!_.isUndefined(response.session) && _.isNull(response.session)) {
+            window.location.replace("/login");
+        }
+        
         if ((response === null || response.sessionid == null)) {
             // Open form and retrieve credentials
             Saiku.ui.unblock();
