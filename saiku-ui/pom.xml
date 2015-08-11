@@ -267,7 +267,7 @@
 									<file>target/saiku-ui-nomunge-${project.version}.war</file>
 									<classifier>nomin</classifier>
 									<type>war</type>
-									RemoteAuthenticationManagerImpl.java:54								</artifact>
+								</artifact>
 								<artifact>
 									<file>target/saiku-ui-${project.version}.zip</file>
 									<type>zip</type>

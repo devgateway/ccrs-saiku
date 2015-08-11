@@ -16,9 +16,8 @@
 
 package org.saiku.web.service;
 
-import org.saiku.service.ISessionService;
-
 import org.apache.commons.lang.StringUtils;
+import org.saiku.service.ISessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -32,10 +31,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import java.util.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class SessionService implements ISessionService {
