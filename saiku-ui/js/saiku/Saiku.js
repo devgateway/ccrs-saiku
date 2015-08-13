@@ -226,11 +226,11 @@ Backbone.emulateHTTP = false;
 if (! Settings.BIPLUGIN) {
 	$(document).ready(function () {
 		pluginsJSON = [
-			{
-				"name":"AdminConsole",
-				"description":"",
-				"path":"js/saiku/plugins/AdminConsole/plugin.js"
-			},
+			//{
+			//	"name":"AdminConsole",
+			//	"description":"",
+			//	"path":"js/saiku/plugins/AdminConsole/plugin.js"
+			//},
 			{
 				"name":"CCC_Chart",
 				"description":"",

@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:security="http://www.springframework.org/schema/security"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
        		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
        		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 
-<!--+
-	| Remote Authentication using IMS database
-	+-->
+    <!--+
+        | Remote Authentication using IMS database
+        +-->
 
- 	<context:property-placeholder location="/WEB-INF/applicationContext-spring-security-ims.properties" />
+    <context:property-placeholder location="/WEB-INF/applicationContext-spring-security-ims.properties" />
 
-<!-- This is a simple http invoker, it is needed by the remote user details service -->
- <bean id="httpInvokerRequestExecutor"
-	class="org.springframework.security.remoting.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor" />
-
-
-<!-- this gets remote user details remotely from the IMS server, it is required by the rememeber-me to verify the cookie -->
-	<bean id="remoteUserDetailsService"
-		class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-		<property name="serviceUrl"
-			value="${ims.RemoteUserDetailsUrl}" />
-		<property name="serviceInterface"
-			value="org.springframework.security.core.userdetails.UserDetailsService" />
-		<property name="httpInvokerRequestExecutor" ref="httpInvokerRequestExecutor" />
-	</bean>
+    <!-- This is a simple http invoker, it is needed by the remote user details service -->
+    <bean id="httpInvokerRequestExecutor"
+          class="org.springframework.security.remoting.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor" />
 
 
-<!-- this is the authentication provider, it is by default a remote provider, it always asks for
- yes or no the remote IMS authentication provider which responds the network -->
-	<bean id="authenticationProvider"
-		class="org.springframework.security.authentication.rcp.RemoteAuthenticationProvider">
-		<property name="remoteAuthenticationManager">
-			<bean
-				class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-				<property name="serviceUrl" value="${ims.RemoteAuthenticationManagerUrl}" />
-				<property name="serviceInterface"
-					value="org.springframework.security.authentication.rcp.RemoteAuthenticationManager" />
-			</bean>
-		</property>
-	</bean>
+    <!-- this gets remote user details remotely from the IMS server, it is required by the rememeber-me to verify the cookie -->
+    <bean id="remoteUserDetailsService"
+          class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+        <property name="serviceUrl"
+                  value="${ims.RemoteUserDetailsUrl}" />
+        <property name="serviceInterface"
+                  value="org.springframework.security.core.userdetails.UserDetailsService" />
+        <property name="httpInvokerRequestExecutor" ref="httpInvokerRequestExecutor" />
+    </bean>
 
-  	<security:authentication-manager alias="authenticationManager">
-  			<security:authentication-provider ref="authenticationProvider">
-		</security:authentication-provider>
-	</security:authentication-manager>
+
+    <!-- this is the authentication provider, it is by default a remote provider, it always asks for
+     yes or no the remote IMS authentication provider which responds the network -->
+    <bean id="authenticationProvider"
+          class="org.springframework.security.authentication.rcp.RemoteAuthenticationProvider">
+        <property name="remoteAuthenticationManager">
+            <bean
+                    class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+                <property name="serviceUrl" value="${ims.RemoteAuthenticationManagerUrl}" />
+                <property name="serviceInterface"
+                          value="org.springframework.security.authentication.rcp.RemoteAuthenticationManager" />
+            </bean>
+        </property>
+    </bean>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="authenticationProvider">
+        </security:authentication-provider>
+    </security:authentication-manager>
 
 </beans>
