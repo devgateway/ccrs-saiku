@@ -27,7 +27,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -47,7 +46,7 @@ public class SessionService implements ISessionService {
 
     private AuthenticationManager authenticationManager;
 
-    Map<Object,Map<String,Object>> sessionHolder = new HashMap<Object,Map<String,Object>>();
+    Map<Object, Map<String, Object>> sessionHolder = new HashMap<Object, Map<String, Object>>();
 
     private Boolean anonymous = false;
 
@@ -80,8 +79,7 @@ public class SessionService implements ISessionService {
     }
 
     private void createSession(Authentication auth, String username, String password) {
-
-        if (auth ==  null || !auth.isAuthenticated()) {
+        if (auth == null || !auth.isAuthenticated()) {
             return;
         }
 
@@ -103,9 +101,11 @@ public class SessionService implements ISessionService {
             } else {
                 session.put("username", authUser);
             }
+
             if (StringUtils.isNotBlank(password)) {
                 session.put("password", password);
             }
+
             session.put("sessionid", UUID.randomUUID().toString());
             session.put("authid", RequestContextHolder.currentRequestAttributes().getSessionId());
             List<String> roles = new ArrayList<String>();
@@ -116,11 +116,9 @@ public class SessionService implements ISessionService {
 
             sessionHolder.put(p, session);
         }
-
     }
 
     private String getUsername(Object p) {
-
         if (p instanceof UserDetails) {
             return ((UserDetails)p).getUsername();
         }
@@ -170,20 +168,27 @@ public class SessionService implements ISessionService {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Object p = auth.getPrincipal();
 
-            // user is logged in from IMS App
-            if (p != null && p instanceof User) {
-                createSession(auth, ((User) p).getUsername(), ((User) p).getPassword());
-            }
+            // user is logged in from IMS App so we don't need to check the 'sessionHolder' object anymore
+            if (p != null && p instanceof UserDetails) {
+                if (!sessionHolder.containsKey(p)) {
+                    createSession(auth, ((UserDetails) p).getUsername(), ((UserDetails) p).getPassword());
+                }
 
-            if (sessionHolder.containsKey(p)) {
                 Map<String, Object> r = new HashMap<String, Object>();
                 r.putAll(sessionHolder.get(p));
                 r.remove("password");
                 return r;
             }
 
+            //if (sessionHolder.containsKey(p)) {
+            //    Map<String, Object> r = new HashMap<String, Object>();
+            //    r.putAll(sessionHolder.get(p));
+            //    r.remove("password");
+            //    return r;
+            //}
+
         }
-        return new HashMap<String,Object>();
+        return new HashMap<String, Object>();
     }
 
     public Map<String,Object> getAllSessionObjects() {
@@ -196,8 +201,8 @@ public class SessionService implements ISessionService {
                 r.putAll(sessionHolder.get(p));
                 return r;
             }
-
         }
+
         return new HashMap<String,Object>();
     }
 
@@ -212,9 +217,5 @@ public class SessionService implements ISessionService {
                 sessionHolder.remove(p);
             }
         }
-
-
     }
-
-
 }

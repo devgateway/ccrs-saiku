@@ -50,11 +50,11 @@
         <property name="datasourceService" ref="datasourceServiceBean" />
     </bean>
 
-    <bean id="olapQueryBean" scope="session" class="org.saiku.service.olap.OlapQueryService" destroy-method="destroy">
+    <bean id="olapQueryBean" scope="request" class="org.saiku.service.olap.OlapQueryService" destroy-method="destroy">
         <property name="olapDiscoverService" ref="olapDiscoverServiceBean" />
     </bean>
 
-    <bean id="olapDiscoverBean" scope="session"
+    <bean id="olapDiscoverBean" scope="request"
           class="org.saiku.web.rest.resources.OlapDiscoverResource">
         <property name="olapDiscoverService" ref="olapDiscoverServiceBean" />
     </bean>
@@ -67,7 +67,7 @@
         <property name="repository" ref="repository2bean"/>
     </bean>
 
-    <bean id="thinQueryBean" scope="session"
+    <bean id="thinQueryBean" scope="request"
           class="org.saiku.service.olap.ThinQueryService">
         <property name="olapDiscoverService" ref="olapDiscoverServiceBean" />
     </bean>
@@ -108,7 +108,7 @@
         <property name="path" value="res:saiku-repository" />
     </bean>
 
-    <bean id="filterRepositoryBean" scope="session"
+    <bean id="filterRepositoryBean" scope="request"
           class="org.saiku.web.rest.resources.FilterRepositoryResource">
         <property name="olapQueryService" ref="olapQueryBean" />
         <property name="path" value="res:saiku-repository" />

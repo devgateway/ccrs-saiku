@@ -45,7 +45,6 @@ import java.util.Map;
 @Path("/saiku/session")
 public class SessionResource  {
 
-
     private static final Logger log = LoggerFactory.getLogger(SessionResource.class);
 
     private ISessionService sessionService;
@@ -73,11 +72,11 @@ public class SessionResource  {
      */
     @POST
     @Consumes("application/x-www-form-urlencoded")
+    // This method shouldn't be called if we login the user from the IMS application
     public Response login(
             @Context HttpServletRequest req,
             @FormParam("username") String username,
-            @FormParam("password") String password)
-    {
+            @FormParam("password") String password) {
         try {
             sessionService.login(req, username, password);
             return Response.ok().build();
@@ -164,14 +163,10 @@ public class SessionResource  {
      * @return A 200 response.
      */
     @DELETE
-    public Response logout(@Context HttpServletRequest req)
-    {
+    public Response logout(@Context HttpServletRequest req) {
         sessionService.logout(req);
-        //		NewCookie terminate = new NewCookie(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY, null);
+        //NewCookie terminate = new NewCookie(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY, null);
 
         return Response.ok().build();
-
     }
-
-
 }

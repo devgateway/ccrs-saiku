@@ -48,7 +48,7 @@ var Session = Backbone.Model.extend({
 
     check_session: function() {
         if (this.sessionid === null || this.username === null || this.password === null) {
-			var that = this;
+            var that = this;
             this.clear();
             this.fetch({ success: this.process_session, error: this.brute_force });
         } else {
@@ -57,23 +57,23 @@ var Session = Backbone.Model.extend({
         }
     },
 
-	/**
-	 * This is a complete hack to get the BI platform plugin working.
-	 * @param obj
-	 */
-	brute_force: function(model, response){
-		this.clear();
-		this.fetch({ success: this.process_session, error: this.show_error });
-	},
-	show_error: function(model, response){
+    /**
+     * This is a complete hack to get the BI platform plugin working.
+     * @param obj
+     */
+    brute_force: function(model, response){
+        this.clear();
+        this.fetch({ success: this.process_session, error: this.show_error });
+    },
+    show_error: function(model, response){
 
-		// Open form and retrieve credentials
-		Saiku.ui.unblock();
-		this.form = new SessionErrorModal({ issue: response.responseText });
-		this.form.render().open();
+        // Open form and retrieve credentials
+        Saiku.ui.unblock();
+        this.form = new SessionErrorModal({ issue: response.responseText });
+        this.form.render().open();
 
 
-	},
+    },
 
     load_session: function() {
         this.sessionworkspace = new SessionWorkspace();
@@ -84,7 +84,7 @@ var Session = Backbone.Model.extend({
         if (!_.isUndefined(response.session) && _.isNull(response.session)) {
             window.location.replace("/login");
         }
-        
+
         if ((response === null || response.sessionid == null)) {
             // Open form and retrieve credentials
             Saiku.ui.unblock();
@@ -128,6 +128,7 @@ var Session = Backbone.Model.extend({
     },
     logout: function() {
         // FIXME - This is a hack (inherited from old UI)
+
         Saiku.ui.unblock();
         $('#header').empty().hide();
         $('#tab_panel').remove();
@@ -139,24 +140,23 @@ var Session = Backbone.Model.extend({
             localStorage.clear();
         }
 
+        // Backbone is not sending a DELETE request without an 'id'
         this.set('id', _.uniqueId('queryaction_'));
-        this.destroy({async: false });
+        this.destroy({async: false});
 
         this.clear();
         this.sessionid = null;
         this.username = null;
         this.password = null;
-		this.roles = null;
+        this.roles = null;
         this.isAdmin = false;
-        this.destroy({async: false });
-        //console.log("REFRESH!");
-        document.location.reload(false);
-        delete this.id;
 
+        document.location.reload(false);
+
+        delete this.id;
     },
 
     url: function() {
-
         return "session";
     }
 });
