@@ -99,6 +99,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CP3JointProgrammes">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select D.*, CP3.DESIGNATION, CP3.ENTITY_YEAR FROM CP3JOINT_PROGRAMMES D,  CP3COMMON_COUNTRY_PROGRAMMING CP3 WHERE CP3.ID=D.PARENT_ID AND CP3.WORKFLOW='VALIDATED' AND CP3.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP4BusinessOperationAreasDetails">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -318,6 +326,58 @@
         </MeasureGroups>
     </Cube>
 
+    <!--*************************************************************************
+    ***** CP3 Joint Programmes
+    *************************************************************************-->
+    <Cube name="CP3 Joint Programmes" caption="CP3 Joint Programmes" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP3JointProgrammes"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Title" caption="Title of Joint Programme" table="CP3JointProgrammes"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Title" caption="Title" keyColumn="TITLE"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Joint Programmes Measures" table="CP3JointProgrammes">
+                <Measures>
+                    <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Total Budget" caption="Total Budget (Currency USD)" column="TOTAL_BUDGET"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <FactLink dimension="Title"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
 
     <!--*************************************************************************
     ***** CP4 Business Operation Areas
@@ -355,7 +415,6 @@
                 </Attributes>
             </Dimension>
 
-
             <Dimension name="ManagementModality" caption="Management Modality" table="ManagementModality"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -370,13 +429,25 @@
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="CP4BOSAreas Measures" table="CP4BusinessOperationAreasDetails">
+            <MeasureGroup name="CP4 BOS Areas Measures" table="CP4BusinessOperationAreasDetails">
                 <Measures>
                     <Measure name="Count" caption="Number of Business Operation Areas" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU"
                              datatype="Integer" aggregator="count" visible="true" />
+
+                    <Measure name="hasLTA" caption="Count of LTA" column="HASLTA"
+                             datatype="Integer" aggregator="count" visible="true" />
+
+                    <Measure name="ltaEvaluated" caption="Count of LTA evaluated" column="LTA_EVALUATED"
+                             datatype="Integer" aggregator="count" visible="true" />
+
+                    <Measure name="monetaryVolume" caption="Monetary Volume of LTAs" column="MONETARY_VOLUME"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+
+                    <Measure name="annualValueOfTotalProcurement" caption="Annual Value of Total Procuremen" column="ANNUAL_VALUE_OF_TOTAL_PROCUREMENT"
+                             datatype="Numeric" aggregator="sum" visible="true" />
                 </Measures>
 
                 <DimensionLinks>
