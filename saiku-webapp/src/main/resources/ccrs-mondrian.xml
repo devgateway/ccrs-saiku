@@ -19,6 +19,14 @@
             </Key>
         </Table>
 
+        <Query alias="UNAgency">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNAgency']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="RepresentativePostLevelCategory">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -75,18 +83,34 @@
             </ExpressionView>
         </Query>
 
-        <Query alias="CP1UnctMember">
+        <Query alias="UNHRTreatyBody">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR  from CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1 WHERE M.PARENT_ID=CP1.ID and CP1.WORKFLOW='VALIDATED' AND CP1.DESIGNATION!='AQ']]>
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNHRTreatyBody']]>
                 </SQL>
             </ExpressionView>
         </Query>
 
-        <Query alias="CP4BusinessOperationAreasDetails">
+        <Query alias="Scorecard">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select BOS.*, CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.LTA_EVALUATED, LTA.MONETARY_VOLUME, LTA.DISCOUNT_RATE_APPLIED, LTA.ANNUAL_VALUE_OF_TOTAL_PROCUREMENT, LTA.MANAGEMENT_MODALITY_ID  from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA  WHERE LTA.PARENT_ID=BOS.ID AND BOS.PARENT_ID=CP4.ID and CP4.WORKFLOW='VALIDATED' AND CP4.DESIGNATION!='AQ']]>
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Scorecard']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="GenderEqualityRating">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='GenderEqualityRating']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP1UnctMember">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR  from CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1 WHERE M.PARENT_ID=CP1.ID and CP1.WORKFLOW='VALIDATED' AND CP1.DESIGNATION!='AQ']]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -99,10 +123,58 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CP3JointProgrammes">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select D.*, CP3.DESIGNATION, CP3.ENTITY_YEAR FROM CP3JOINT_PROGRAMMES D,  CP3COMMON_COUNTRY_PROGRAMMING CP3 WHERE CP3.ID=D.PARENT_ID AND CP3.WORKFLOW='VALIDATED' AND CP3.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP4BusinessOperationAreasDetails">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select BOS.*, CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.LTA_EVALUATED, LTA.MONETARY_VOLUME, LTA.DISCOUNT_RATE_APPLIED, LTA.ANNUAL_VALUE_OF_TOTAL_PROCUREMENT, LTA.MANAGEMENT_MODALITY_ID  from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA  WHERE LTA.PARENT_ID=BOS.ID AND BOS.PARENT_ID=CP4.ID and CP4.WORKFLOW='VALIDATED' AND CP4.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP7MDTF">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select D.*, CP7.DESIGNATION, CP7.ENTITY_YEAR FROM CP7MTDF D, CP7JOINT_FUNDING_PROFILE CP7 WHERE CP7.ID=D.PARENT_ID AND CP7.WORKFLOW='VALIDATED' AND CP7.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP11BudgetSupport">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[select D.*, CP11.DESIGNATION, CP11.ENTITY_YEAR from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE CP11, CP11DIRECT_BUDGET_SUPPORT D WHERE CP11.ID = D.PARENT_ID AND CP11.WORKFLOW='VALIDATED' AND CP11.DESIGNATION != 'AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP12HumanRigthsTreatyBodies">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12 WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP12SpecialProcedureHumanRightsCouncil">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D, CP12HUMAN_RIGHTS_PROFILE CP12 WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP13GenderEqualityScorecard">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13 WHERE CP13.ID=D.PARENT_ID AND CP13.WORKFLOW='VALIDATED' AND CP13.DESIGNATION!='AQ']]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -152,6 +224,76 @@
             </ExpressionView>
         </Query>
     </PhysicalSchema>
+
+    <!--*************************************************************************
+    ***** CP1 UNCT Members
+    *************************************************************************-->
+    <Cube name="CP1 UNCT Members" caption="CP1 UNCT Members" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP1UnctMember"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNAgency" caption="UNAgency" table="UNAgency"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Agency" caption="Agency" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Agencies" hierarchyCaption="All Agencies"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
+                       table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="RepresentativePostLevel" caption="Representative Post Level"
+                               keyColumn="LABEL" hierarchyAllMemberName="All Representative Post Levels"
+                               hierarchyCaption="All Representative Post Levels" levelType="Regular"
+                               datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP UNCT Measures" table="CP1UnctMember">
+                <Measures>
+                    <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY"
+                             datatype="Integer" aggregator="count" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
+                    <ForeignKeyLink dimension="RepresentativePostLevel"
+                                    foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
 
     <!--*************************************************************************
     ***** CP2 RCO Staff Member Details
@@ -216,6 +358,9 @@
         <MeasureGroups>
             <MeasureGroup name="CP2 RCOStaffMemberDetails Measures" table="CP2RcoStaffMemberDetail">
                 <Measures>
+                    <Measure name="Count" caption="Number of RCO Staff Members" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
                     <Measure name="AverageAnnualNetSalaryAmount" caption="Average Annual Net Salary Amount"
                              column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="avg" visible="true" />
 
@@ -237,6 +382,57 @@
         </MeasureGroups>
     </Cube>
 
+    <!--*************************************************************************
+    ***** CP3 Joint Programmes
+    *************************************************************************-->
+    <Cube name="CP3 Joint Programmes" caption="CP3 Joint Programmes" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP3JointProgrammes"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Title" caption="Title of Joint Programme" table="CP3JointProgrammes"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Title" caption="Title" keyColumn="TITLE"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Joint Programmes Measures" table="CP3JointProgrammes">
+                <Measures>
+                    <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Total Budget" caption="Total Budget (Currency USD)" column="TOTAL_BUDGET"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <FactLink dimension="Title"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
 
     <!--*************************************************************************
     ***** CP4 Business Operation Areas
@@ -274,7 +470,6 @@
                 </Attributes>
             </Dimension>
 
-
             <Dimension name="ManagementModality" caption="Management Modality" table="ManagementModality"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -289,10 +484,25 @@
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="CP4BOSAreas Measures" table="CP4BusinessOperationAreasDetails">
+            <MeasureGroup name="CP4 BOS Areas Measures" table="CP4BusinessOperationAreasDetails">
                 <Measures>
+                    <Measure name="Count" caption="Number of Business Operation Areas" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
                     <Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU"
                              datatype="Integer" aggregator="count" visible="true" />
+
+                    <Measure name="hasLTA" caption="Count of LTA" column="HASLTA"
+                             datatype="Integer" aggregator="count" visible="true" />
+
+                    <Measure name="ltaEvaluated" caption="Count of LTA evaluated" column="LTA_EVALUATED"
+                             datatype="Integer" aggregator="count" visible="true" />
+
+                    <Measure name="monetaryVolume" caption="Monetary Volume of LTAs" column="MONETARY_VOLUME"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+
+                    <Measure name="annualValueOfTotalProcurement" caption="Annual Value of Total Procuremen" column="ANNUAL_VALUE_OF_TOTAL_PROCUREMENT"
+                             datatype="Numeric" aggregator="sum" visible="true" />
                 </Measures>
 
                 <DimensionLinks>
@@ -305,11 +515,10 @@
         </MeasureGroups>
     </Cube>
 
-
     <!--*************************************************************************
-    ***** CP1 UNCT Members
+    ***** CP7 MDTF
     *************************************************************************-->
-    <Cube name="CP1 UNCT Members" caption="CP1 UNCT Members" visible="true"
+    <Cube name="CP7MDTF" caption="CP7 MDTF" visible="true"
           cache="true" enabled="true">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
@@ -324,49 +533,24 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Year" caption="Year" table="CP1UnctMember"
+            <Dimension name="Year" caption="Year" table="CP7MDTF"
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Agency" caption="Agency" table="CATEGORY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Agency" caption="Agency" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Agencies" hierarchyCaption="All Agencies"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
-                       table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="RepresentativePostLevel" caption="Representative Post Level"
-                               keyColumn="LABEL" hierarchyAllMemberName="All Representative Post Levels"
-                               hierarchyCaption="All Representative Post Levels" levelType="Regular"
-                               datatype="String" />
-                </Attributes>
-            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="CP UNCT Measures" table="CP1UnctMember">
+            <MeasureGroup name="CP MDTF Measures" table="CP7MDTF">
                 <Measures>
-                    <Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY"
-                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="Count" caption="Number of MDTFs" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Total Budget" caption="Total Budget (Currency USD)" column="TOTAL_BUDGET"
+                             datatype="Numeric" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Agency" foreignKeyColumn="AGENCY_ID" />
-                    <ForeignKeyLink dimension="RepresentativePostLevel"
-                                    foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
@@ -415,6 +599,9 @@
         <MeasureGroups>
             <MeasureGroup name="CP Budget Support Measures" table="CP11BudgetSupport">
                 <Measures>
+                    <Measure name="Count" caption="Number of Budget Supports" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
                     <Measure name="Budget Support" caption="Budget Support" column="BUDGETED_AMOUNT"
                              datatype="Numeric" aggregator="sum" visible="true" />
                 </Measures>
@@ -428,9 +615,187 @@
     </Cube>
 
     <!--*************************************************************************
+    ***** CP12 Human Rigths Treaty Bodies
+    *************************************************************************-->
+    <Cube name="CP12 Human Rigths Treaty Bodies" caption="CP12 Human Rigths Treaty Bodies" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP12HumanRigthsTreatyBodies"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNHRTreatyBody" caption="UN HR Treaty Body" table="UNHRTreatyBody"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="UN HR Treaty Body" caption="UN HR Treaty Body" keyColumn="LABEL"
+                               hierarchyAllMemberName="All UNHRTreatyBody" hierarchyCaption="All UNHRTreatyBody"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Human Rigths Treaty Bodies Measures" table="CP12HumanRigthsTreatyBodies">
+                <Measures>
+                    <Measure name="Count" caption="Number of Human Rigths Measures" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="hasEngagedDevelopNatlCapacityToReport" caption="Count of UNCT engaged in developing national capacity to develop a report to the treaty body" column="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT"
+                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitated follow up of the recommendations by the Government" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS"
+                             datatype="Integer" aggregator="count" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="UNHRTreatyBody" foreignKeyColumn="UNHR_TREATY_BODY_TYPE_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP12 Special Procedure of Human Rights Council
+    *************************************************************************-->
+    <Cube name="CP12 Special Procedure of Human Rights Council" caption="CP12 Special Procedure of Human Rights Council" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP12SpecialProcedureHumanRightsCouncil"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Name" caption="Name of special procedure" table="CP12SpecialProcedureHumanRightsCouncil"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Name" caption="Name" keyColumn="NAME"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Special Procedure of Human Rights Council" table="CP12SpecialProcedureHumanRightsCouncil">
+                <Measures>
+                    <Measure name="Count" caption="Number of Special Procedure of HRC" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="unctSupported" caption="Count of UNCT support this visit" column="UNCT_SUPPORTED"
+                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitate follow up of the recommendations by the Government" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS"
+                             datatype="Integer" aggregator="count" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <FactLink dimension="Name" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP13 Gender Equality Scorecard
+    *************************************************************************-->
+    <Cube name="CP13 Gender Equality Scorecard" caption="CP13 Gender Equality Scorecard" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP13GenderEqualityScorecard"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Scorecard" caption="Scorecard" table="Scorecard"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Scorecard" caption="Scorecard" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Scorecards" hierarchyCaption="All Scorecards"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="GenderEqualityRating" caption="GenderEqualityRating" table="GenderEqualityRating"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="GenderEqualityRating" caption="GenderEqualityRating" keyColumn="LABEL"
+                               hierarchyAllMemberName="All GenderEqualityRatings" hierarchyCaption="All GenderEqualityRatings"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Gender Equality Scorecard" table="CP13GenderEqualityScorecard">
+                <Measures>
+                    <Measure name="Count" caption="Number of Gender Equality Scorecard" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of UNCT address the recommendations for the scorecard" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN"
+                             datatype="Integer" aggregator="count" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Scorecard" foreignKeyColumn="SCORECARD_ID" />
+                    <ForeignKeyLink dimension="GenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
     ***** Test Cube
     *************************************************************************-->
-    <Cube name="CCRS Analysis" caption="CCRS Analysis" visible="true" cache="true" enabled="true">
+    <Cube name="CCRS Analysis" caption="CCRS Analysis (TEST)" visible="true" cache="true" enabled="true">
         <!-- Define dimensions and attributes -->
         <Dimensions>
             <Dimension name="Workflow" caption="Workflow" table='FACT_TABLE' key="Dimension Id" visible="true">
@@ -482,17 +847,17 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Expected Output" table='FACT_TABLE' key="Dimension Id" type="TIME">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="OUTPUTS_ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+            <!--<Dimension name="Expected Output" table='FACT_TABLE' key="Dimension Id" type="TIME">-->
+                <!--<Attributes>-->
+                    <!--<Attribute name="Dimension Id" keyColumn="OUTPUTS_ID"-->
+                               <!--hasHierarchy="false"-->
+                               <!--levelType="Regular" datatype="Integer"/>-->
 
-                    <Attribute name="Expected Output" caption="Expected Output" keyColumn="OUTPUTS_EXPECTED_OUTPUT"
-                               hierarchyAllMemberName="All Expected Outputs" hierarchyCaption="All Expected Outputs"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
+                    <!--<Attribute name="Expected Output" caption="Expected Output" keyColumn="OUTPUTS_EXPECTED_OUTPUT"-->
+                               <!--hierarchyAllMemberName="All Expected Outputs" hierarchyCaption="All Expected Outputs"-->
+                               <!--levelType="Regular" datatype="String"/>-->
+                <!--</Attributes>-->
+            <!--</Dimension>-->
 
             <Dimension name="Lead Agency" caption="Lead Agency" table='CATEGORY' key="Dimension Id" visible="true">
                 <Attributes>
@@ -530,29 +895,29 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Expected activity performance" table='FACT_TABLE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+            <!--<Dimension name="Expected activity performance" table='FACT_TABLE' key="Dimension Id">-->
+                <!--<Attributes>-->
+                    <!--<Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"-->
+                               <!--hasHierarchy="false"-->
+                               <!--levelType="Regular" datatype="Integer"/>-->
 
-                    <Attribute name="Expected activity performance" caption="Expected activity performance" keyColumn="ACTIVITY_EXPECTED_ACTIVITY"
-                               hierarchyAllMemberName="All performance" hierarchyCaption="All performance"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
+                    <!--<Attribute name="Expected activity performance" caption="Expected activity performance" keyColumn="ACTIVITY_EXPECTED_ACTIVITY"-->
+                               <!--hierarchyAllMemberName="All performance" hierarchyCaption="All performance"-->
+                               <!--levelType="Regular" datatype="String"/>-->
+                <!--</Attributes>-->
+            <!--</Dimension>-->
 
-            <Dimension name="Actual activity performance" table='FACT_TABLE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+            <!--<Dimension name="Actual activity performance" table='FACT_TABLE' key="Dimension Id">-->
+                <!--<Attributes>-->
+                    <!--<Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"-->
+                               <!--hasHierarchy="false"-->
+                               <!--levelType="Regular" datatype="Integer"/>-->
 
-                    <Attribute name="Actual activity performance" caption="Actual activity performance" keyColumn="ACTIVITY_ACTUAL_ACTIVITY_PERFORMANCE"
-                               hierarchyAllMemberName="All performance" hierarchyCaption="All performance"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
+                    <!--<Attribute name="Actual activity performance" caption="Actual activity performance" keyColumn="ACTIVITY_ACTUAL_ACTIVITY_PERFORMANCE"-->
+                               <!--hierarchyAllMemberName="All performance" hierarchyCaption="All performance"-->
+                               <!--levelType="Regular" datatype="String"/>-->
+                <!--</Attributes>-->
+            <!--</Dimension>-->
 
             <Dimension name="Is good practice?" table='FACT_TABLE' key="Dimension Id">
                 <Attributes>
@@ -593,10 +958,10 @@
                     <FactLink dimension="Time" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <FactLink dimension="Actual Output" />
-                    <FactLink dimension="Expected Output" />
+                    <!--<FactLink dimension="Expected Output" />-->
                     <FactLink dimension="Role of partners" />
-                    <FactLink dimension="Expected activity performance" />
-                    <FactLink dimension="Actual activity performance" />
+                    <!--<FactLink dimension="Expected activity performance" />-->
+                    <!--<FactLink dimension="Actual activity performance" />-->
                     <FactLink dimension="Is good practice?" />
                     <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
                     <ForeignKeyLink dimension="Partners" foreignKeyColumn="AGENCY_ROLES_PARTNERS_PARTNERS_ID"/>
