@@ -107,6 +107,126 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="SOP1q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP2q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP3q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP4q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP5q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP6q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP7q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP8q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP9q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP10q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP11q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP12q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP13q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP14q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="SOP15q">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP1UnctMember">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -155,7 +275,7 @@
             </ExpressionView>
         </Query>
 
-        <Query alias="CP12HumanRigthsTreatyBodies">
+        <Query alias="CP12HumanRightsTreatyBodies">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[select D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12 WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ']]>
@@ -175,6 +295,52 @@
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[select D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13 WHERE CP13.ID=D.PARENT_ID AND CP13.WORKFLOW='VALIDATED' AND CP13.DESIGNATION!='AQ']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <!--
+        GLOBAL_CUBE is a view for this query:
+
+        create view GLOBAL_CUBE as
+            select cp1.ID as GLOBAL_ID, cp1.DESIGNATION as GLOBAL_DESIGNATION, cp1.ENTITY_YEAR as GLOBAL_ENTITY_YEAR, cp1.*
+            from
+                CP1GENERAL_PROFILE cp1,
+                CP2COORDINATION_CAPACITY cp2,
+                CP3COMMON_COUNTRY_PROGRAMMING cp3,
+                CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4,
+                CP5COMMON_PREMISES_PROFILE cp5,
+                CP6JOINT_COMMUNICATION_ADVOCACY cp6,
+                CP7JOINT_FUNDING_PROFILE cp7,
+                CP8JOINT_LEADERSHIP_MANAGEMENT cp8,
+                CP9POST_CRISIS_PROFILE cp9,
+                CP10DELIVERING_AS_ONE_PROFILE cp10,
+                CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11,
+                CP12HUMAN_RIGHTS_PROFILE cp12,
+                CP13GENDER_PROFILE cp13,
+                CP14EMERGING_ISSUES cp14
+            WHERE
+                cp1.DESIGNATION = cp2.DESIGNATION AND
+                cp2.DESIGNATION = cp3.DESIGNATION AND
+                cp3.DESIGNATION = cp4.DESIGNATION AND
+                cp4.DESIGNATION = cp5.DESIGNATION AND
+                cp5.DESIGNATION = cp6.DESIGNATION AND
+                cp6.DESIGNATION = cp7.DESIGNATION AND
+                cp7.DESIGNATION = cp8.DESIGNATION AND
+                cp8.DESIGNATION = cp9.DESIGNATION AND
+                cp9.DESIGNATION = cp10.DESIGNATION AND
+                cp10.DESIGNATION = cp11.DESIGNATION AND
+                cp11.DESIGNATION = cp12.DESIGNATION AND
+                cp12.DESIGNATION = cp13.DESIGNATION AND
+                cp13.DESIGNATION = cp14.DESIGNATION;
+        -->
+
+        <Query alias="GlobalCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select * from GLOBAL_CUBE
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -615,9 +781,9 @@
     </Cube>
 
     <!--*************************************************************************
-    ***** CP12 Human Rigths Treaty Bodies
+    ***** CP12 Human Rights Treaty Bodies
     *************************************************************************-->
-    <Cube name="CP12 Human Rigths Treaty Bodies" caption="CP12 Human Rigths Treaty Bodies" visible="true"
+    <Cube name="CP12 Human Rights Treaty Bodies" caption="CP12 Human Rights Treaty Bodies" visible="true"
           cache="true" enabled="true">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
@@ -632,7 +798,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Year" caption="Year" table="CP12HumanRigthsTreatyBodies"
+            <Dimension name="Year" caption="Year" table="CP12HumanRightsTreatyBodies"
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -653,9 +819,9 @@
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="CP Human Rigths Treaty Bodies Measures" table="CP12HumanRigthsTreatyBodies">
+            <MeasureGroup name="CP Human Rights Treaty Bodies Measures" table="CP12HumanRightsTreatyBodies">
                 <Measures>
-                    <Measure name="Count" caption="Number of Human Rigths Measures" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Human Rights Measures" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="hasEngagedDevelopNatlCapacityToReport" caption="Count of UNCT engaged in developing national capacity to develop a report to the treaty body" column="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT"
                              datatype="Integer" aggregator="count" visible="true" />
@@ -786,6 +952,212 @@
                     <ForeignKeyLink dimension="Scorecard" foreignKeyColumn="SCORECARD_ID" />
                     <ForeignKeyLink dimension="GenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** Global Cube
+    *************************************************************************-->
+    <Cube name="Global Cube" caption="Global Cube" visible="true"
+          cache="true" enabled="true">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="GlobalCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="GLOBAL_ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SoP1question" caption="SoP1 Question" table="SOP1q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP1question" caption="SoP1 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP2question" caption="SoP2 Question" table="SOP2q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP2question" caption="SoP2 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP3question" caption="SoP3 Question" table="SOP3q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP3question" caption="SoP3 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP4question" caption="SoP4 Question" table="SOP4q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP4question" caption="SoP4 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP5question" caption="SoP5 Question" table="SOP5q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP5question" caption="SoP5 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP6question" caption="SoP6 Question" table="SOP6q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP6question" caption="SoP6 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP7question" caption="SoP7 Question" table="SOP7q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP7question" caption="SoP7 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP8question" caption="SoP8 Question" table="SOP8q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP8question" caption="SoP8 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP9question" caption="SoP9 Question" table="SOP9q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP9question" caption="SoP9 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP10question" caption="SoP10 Question" table="SOP10q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP10question" caption="SoP10 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP11question" caption="SoP11 Question" table="SOP11q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP11question" caption="SoP11 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP12question" caption="SoP12 Question" table="SOP12q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP12question" caption="SoP12 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP13question" caption="SoP13 Question" table="SOP13q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP13question" caption="SoP13 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP14question" caption="SoP14 Question" table="SOP14q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP14question" caption="SoP14 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <Dimension name="SoP15question" caption="SoP15 Question" table="SOP15q"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SoP15question" caption="SoP15 Question" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="Global Measures" table="GlobalCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of Countries" column="GLOBAL_ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
+                    <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
+                    <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SoP4question" foreignKeyColumn="HAS_JOINT_ANNUAL_WORK_PLANS_ID"/>
+                    <ForeignKeyLink dimension="SoP5question" foreignKeyColumn="HAS_RESULTS_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="SoP6question" foreignKeyColumn="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SoP7question" foreignKeyColumn="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SoP8question" foreignKeyColumn="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP9question" foreignKeyColumn="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID"/>
+                    <ForeignKeyLink dimension="SoP10question" foreignKeyColumn="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID"/>
+                    <ForeignKeyLink dimension="SoP11question" foreignKeyColumn="HASBOSSTRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP12question" foreignKeyColumn="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID"/>
+                    <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
+                    <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
