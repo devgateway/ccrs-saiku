@@ -13,11 +13,13 @@
             </Key>
         </Table>
 
-        <Table name="BASE_COUNTRY">
-            <Key>
-                <Column name="ISO2"/>
-            </Key>
-        </Table>
+        <Query alias="BASE_COUNTRY">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="WorkstreamSection">
             <ExpressionView>
@@ -395,16 +397,25 @@
     <Cube name="CP1 UNCT Members" caption="CP1 UNCT Members" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP1UnctMember"
@@ -452,7 +463,7 @@
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -464,16 +475,25 @@
     *************************************************************************-->
     <Cube name="CP2RCOStaffMemberDetails" caption="CP2 RCO Staff Member Details" visible="true" cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP2RcoStaffMemberDetail" visible="true">
@@ -539,7 +559,7 @@
                     <ForeignKeyLink dimension="OfficeType" foreignKeyColumn="OFFICE_TYPE_ID"/>
                     <ForeignKeyLink dimension="ContractModality" foreignKeyColumn="CONTRACT_MODALITY_ID"/>
                     <ForeignKeyLink dimension="Level" foreignKeyColumn="LEVEL_ID"/>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -552,16 +572,25 @@
     <Cube name="CP3 Joint Programmes" caption="CP3 Joint Programmes" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP3JointProgrammes"
@@ -591,7 +620,7 @@
                 </Measures>
                 <DimensionLinks>
                     <FactLink dimension="Title"/>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -603,16 +632,25 @@
     *************************************************************************-->
     <Cube name="CP4BOSAreas" caption="CP4 Business Operation Areas" visible="true" cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP4BusinessOperationAreasDetails"
@@ -672,7 +710,7 @@
                 <DimensionLinks>
                     <ForeignKeyLink dimension="BusinessOperationArea" foreignKeyColumn="BUSINESS_OPERATION_AREA_ID" />
                     <ForeignKeyLink dimension="ManagementModality" foreignKeyColumn="MANAGEMENT_MODALITY_ID" />
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -685,16 +723,25 @@
     <Cube name="CP7MDTF" caption="CP7 MDTF" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP7MDTF"
@@ -715,7 +762,7 @@
                              datatype="Numeric" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -728,16 +775,25 @@
     <Cube name="CP11 Budget Support" caption="CP11 Budget Support" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP11BudgetSupport"
@@ -771,7 +827,7 @@
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Sector" foreignKeyColumn="SECTOR_ID" />
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -784,16 +840,25 @@
     <Cube name="CP12 Human Rights Treaty Bodies" caption="CP12 Human Rights Treaty Bodies" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP12HumanRightsTreatyBodies"
@@ -828,7 +893,7 @@
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="UNHRTreatyBody" foreignKeyColumn="UNHR_TREATY_BODY_TYPE_ID" />
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -841,16 +906,25 @@
     <Cube name="CP12 Special Procedure of Human Rights Council" caption="CP12 Special Procedure of Human Rights Council" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP12SpecialProcedureHumanRightsCouncil"
@@ -880,7 +954,7 @@
                              datatype="Integer" aggregator="count" visible="true" />
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <FactLink dimension="Name" />
                 </DimensionLinks>
@@ -894,16 +968,25 @@
     <Cube name="CP13 Gender Equality Scorecard" caption="CP13 Gender Equality Scorecard" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="CP13GenderEqualityScorecard"
@@ -949,7 +1032,7 @@
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Scorecard" foreignKeyColumn="SCORECARD_ID" />
                     <ForeignKeyLink dimension="GenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -1181,16 +1264,25 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="WorkplanCube"
@@ -1274,7 +1366,7 @@
                     <FactLink dimension="Year" />
                     <FactLink dimension="Role of partners" />
                     <FactLink dimension="Is good practice?" />
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                     <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
                     <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
