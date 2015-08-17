@@ -264,7 +264,18 @@
         <Query alias="CP4BusinessOperationAreasDetails">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select BOS.*, CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.LTA_EVALUATED, LTA.MONETARY_VOLUME, LTA.DISCOUNT_RATE_APPLIED, LTA.ANNUAL_VALUE_OF_TOTAL_PROCUREMENT, LTA.MANAGEMENT_MODALITY_ID  from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA  WHERE LTA.PARENT_ID=BOS.ID AND BOS.PARENT_ID=CP4.ID and CP4.WORKFLOW='VALIDATED' AND CP4.DESIGNATION!='AQ']]>
+                    <![CDATA[
+                        select BOS.*,
+                            CASE WHEN BOS.HASMOU = TRUE THEN CAST(1 AS INT) ELSE CAST (0 AS INT) END as HASMOU_COUNT,
+                            CASE WHEN BOS.HASLTA = TRUE THEN CAST(1 AS INT) ELSE CAST (0 AS INT) END as HASLTA_COUNT,
+                            CASE WHEN LTA.LTA_EVALUATED = TRUE THEN CAST(1 AS INT) ELSE CAST (0 AS INT) END as LTA_EVALUATED_COUNT,
+                            CASE WHEN BOS.HASMOU IS NULL THEN 'No' ELSE CASE WHEN BOS.HASMOU = FALSE THEN 'No' ELSE 'Yes' END END as HASMOU_YES_NO,
+                            CASE WHEN BOS.HASLTA IS NULL THEN 'No' ELSE CASE WHEN BOS.HASLTA = FALSE THEN 'No' ELSE 'Yes' END END as HASLTA_YES_NO,
+                            CASE WHEN LTA.LTA_EVALUATED IS NULL THEN 'No' ELSE CASE WHEN LTA.LTA_EVALUATED = FALSE THEN 'No' ELSE 'Yes' END END as LTA_EVALUATED_YES_NO,
+                            CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.LTA_EVALUATED, LTA.MONETARY_VOLUME, LTA.DISCOUNT_RATE_APPLIED, LTA.ANNUAL_VALUE_OF_TOTAL_PROCUREMENT, LTA.MANAGEMENT_MODALITY_ID
+                        from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA
+                        WHERE LTA.PARENT_ID=BOS.ID AND BOS.PARENT_ID=CP4.ID and CP4.WORKFLOW='VALIDATED' AND CP4.DESIGNATION!='AQ'
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -683,6 +694,40 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Has MOUs" caption="Has MOUs in Place?" table='CP4BusinessOperationAreasDetails' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has MOUs" caption="Has MOUs in Place?" keyColumn="HASMOU_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has LTA" caption="Has LTA?" table='CP4BusinessOperationAreasDetails' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has LTA" caption="Has LTA?" keyColumn="HASLTA_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has LTA evaluated" caption="Has LTA evaluated?" table='CP4BusinessOperationAreasDetails' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has LTA evaluated" caption="Has LTA evaluated?" keyColumn="LTA_EVALUATED_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
         </Dimensions>
 
         <MeasureGroups>
@@ -691,14 +736,14 @@
                     <Measure name="Count" caption="Number of Business Operation Areas" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU"
-                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
 
-                    <Measure name="hasLTA" caption="Count of LTA" column="HASLTA"
-                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="hasLTA" caption="Count of LTA" column="HASLTA_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
 
-                    <Measure name="ltaEvaluated" caption="Count of LTA evaluated" column="LTA_EVALUATED"
-                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="ltaEvaluated" caption="Count of LTA evaluated" column="LTA_EVALUATED_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
 
                     <Measure name="monetaryVolume" caption="Monetary Volume of LTAs" column="MONETARY_VOLUME"
                              datatype="Numeric" aggregator="sum" visible="true" />
@@ -711,6 +756,9 @@
                     <ForeignKeyLink dimension="BusinessOperationArea" foreignKeyColumn="BUSINESS_OPERATION_AREA_ID" />
                     <ForeignKeyLink dimension="ManagementModality" foreignKeyColumn="MANAGEMENT_MODALITY_ID" />
                     <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Has MOUs" />
+                    <FactLink dimension="Has LTA" />
+                    <FactLink dimension="Has LTA evaluated" />
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
