@@ -240,7 +240,14 @@
         <Query alias="CP1UnctMember">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR  from CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1 WHERE M.PARENT_ID=CP1.ID and CP1.WORKFLOW='VALIDATED' AND CP1.DESIGNATION!='AQ']]>
+                    <![CDATA[
+                        select
+                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
+                            CASE WHEN M.NON_RESIDENT_AGENCY IS NULL THEN 'No' ELSE CASE WHEN M.NON_RESIDENT_AGENCY = FALSE THEN 'No' ELSE 'Yes' END END as NON_RESIDENT_AGENCY_YES_NO
+                        from CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1
+                        WHERE M.PARENT_ID=CP1.ID and CP1.WORKFLOW='VALIDATED' AND CP1.DESIGNATION!='AQ'
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -266,9 +273,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select BOS.*,
-                            CASE WHEN BOS.HASMOU = TRUE THEN CAST(1 AS INT) ELSE CAST (0 AS INT) END as HASMOU_COUNT,
-                            CASE WHEN BOS.HASLTA = TRUE THEN CAST(1 AS INT) ELSE CAST (0 AS INT) END as HASLTA_COUNT,
-                            CASE WHEN LTA.LTA_EVALUATED = TRUE THEN CAST(1 AS INT) ELSE CAST (0 AS INT) END as LTA_EVALUATED_COUNT,
+                            CASE WHEN BOS.HASMOU = TRUE THEN 1 ELSE 0 END as HASMOU_COUNT,
+                            CASE WHEN BOS.HASLTA = TRUE THEN 1 ELSE 0 END as HASLTA_COUNT,
+                            CASE WHEN LTA.LTA_EVALUATED = TRUE THEN 1 ELSE 0 END as LTA_EVALUATED_COUNT,
                             CASE WHEN BOS.HASMOU IS NULL THEN 'No' ELSE CASE WHEN BOS.HASMOU = FALSE THEN 'No' ELSE 'Yes' END END as HASMOU_YES_NO,
                             CASE WHEN BOS.HASLTA IS NULL THEN 'No' ELSE CASE WHEN BOS.HASLTA = FALSE THEN 'No' ELSE 'Yes' END END as HASLTA_YES_NO,
                             CASE WHEN LTA.LTA_EVALUATED IS NULL THEN 'No' ELSE CASE WHEN LTA.LTA_EVALUATED = FALSE THEN 'No' ELSE 'Yes' END END as LTA_EVALUATED_YES_NO,
@@ -299,7 +306,16 @@
         <Query alias="CP12HumanRightsTreatyBodies">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12 WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ']]>
+                    <![CDATA[
+                        select
+                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR,
+                            CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = TRUE THEN 1 ELSE 0 END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT,
+                            CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT IS NULL THEN 'No' ELSE CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = FALSE THEN 'No' ELSE 'Yes' END END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS IS NULL THEN 'No' ELSE CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = FALSE THEN 'No' ELSE 'Yes' END END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO
+                        FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12
+                        WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ'
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -307,7 +323,16 @@
         <Query alias="CP12SpecialProcedureHumanRightsCouncil">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D, CP12HUMAN_RIGHTS_PROFILE CP12 WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ']]>
+                    <![CDATA[
+                        select
+                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR,
+                            CASE WHEN D.UNCT_SUPPORTED = TRUE THEN 1 ELSE 0 END as UNCT_SUPPORTED_COUNT,
+                            CASE WHEN D.UNCT_SUPPORTED IS NULL THEN 'No' ELSE CASE WHEN D.UNCT_SUPPORTED = FALSE THEN 'No' ELSE 'Yes' END END as UNCT_SUPPORTED_YES_NO,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS IS NULL THEN 'No' ELSE CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = FALSE THEN 'No' ELSE 'Yes' END END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO
+                        FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D, CP12HUMAN_RIGHTS_PROFILE CP12
+                        WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ'
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -315,7 +340,14 @@
         <Query alias="CP13GenderEqualityScorecard">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13 WHERE CP13.ID=D.PARENT_ID AND CP13.WORKFLOW='VALIDATED' AND CP13.DESIGNATION!='AQ']]>
+                    <![CDATA[
+                        select
+                            D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR,
+                            CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
+                            CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN IS NULL THEN 'No' ELSE CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = FALSE THEN 'No' ELSE 'Yes' END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO
+                        FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13
+                        WHERE CP13.ID=D.PARENT_ID AND CP13.WORKFLOW='VALIDATED' AND CP13.DESIGNATION!='AQ'
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -460,6 +492,17 @@
                                datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" table='CP1UnctMember' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" keyColumn="NON_RESIDENT_AGENCY_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -467,8 +510,8 @@
                 <Measures>
                     <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
-                    <Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY"
-                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
@@ -476,6 +519,7 @@
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <FactLink dimension="Has Non-Resident Agency" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -927,6 +971,28 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" table='CP12HumanRightsTreatyBodies' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" keyColumn="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" table='CP12HumanRightsTreatyBodies' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" keyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -934,15 +1000,17 @@
                 <Measures>
                     <Measure name="Count" caption="Number of Human Rights Measures" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
-                    <Measure name="hasEngagedDevelopNatlCapacityToReport" caption="Count of UNCT engaged in developing national capacity to develop a report to the treaty body" column="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT"
-                             datatype="Integer" aggregator="count" visible="true" />
-                    <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitated follow up of the recommendations by the Government" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS"
-                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="hasEngagedDevelopNatlCapacityToReport" caption="Count of UNCT engaged in developing national capacity" column="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                    <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitated recommendations by the Gov" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="UNHRTreatyBody" foreignKeyColumn="UNHR_TREATY_BODY_TYPE_ID" />
                     <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <FactLink dimension="Has UNCT engaged in developing national capacity" />
+                    <FactLink dimension="Has UNCT facilitated recommendations by the Gov" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -989,6 +1057,28 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Has UNCT support this visit" caption="Has UNCT support this visit?" table='CP12SpecialProcedureHumanRightsCouncil' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT support this visit" caption="Has UNCT support this visit?" keyColumn="UNCT_SUPPORTED_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" table='CP12SpecialProcedureHumanRightsCouncil' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" keyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -996,15 +1086,17 @@
                 <Measures>
                     <Measure name="Count" caption="Number of Special Procedure of HRC" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
-                    <Measure name="unctSupported" caption="Count of UNCT support this visit" column="UNCT_SUPPORTED"
-                             datatype="Integer" aggregator="count" visible="true" />
-                    <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitate follow up of the recommendations by the Government" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS"
-                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="unctSupported" caption="Count of UNCT support this visit" column="UNCT_SUPPORTED_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                    <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitate recommendations by the Gov" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <FactLink dimension="Name" />
+                    <FactLink dimension="Has UNCT support this visit" />
+                    <FactLink dimension="Has UNCT facilitate recommendations by the Gov" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -1067,6 +1159,17 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" table='CP13GenderEqualityScorecard' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" keyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -1074,14 +1177,15 @@
                 <Measures>
                     <Measure name="Count" caption="Number of Gender Equality Scorecard" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
-                    <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of UNCT address the recommendations for the scorecard" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN"
-                             datatype="Integer" aggregator="count" visible="true" />
+                    <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of UNCT that addressed the recommendations" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Scorecard" foreignKeyColumn="SCORECARD_ID" />
                     <ForeignKeyLink dimension="GenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
                     <ForeignKeyLink dimension="Regions" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <FactLink dimension="Has UNCT addressed the recommendations" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -1093,16 +1197,25 @@
     <Cube name="Global Cube" caption="Global Cube" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
+
                     <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
+                               hasHierarchy="false" levelType="Regular" datatype="String" />
                 </Attributes>
+
+                <Hierarchies>
+                    <Hierarchy name="Regions" hasAll="true">
+                        <Level attribute="Region"/>
+                        <Level attribute="Country"/>
+                    </Hierarchy>
+                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="GlobalCube"
@@ -1286,7 +1399,7 @@
                     <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="GLOBAL_DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>
