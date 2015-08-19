@@ -35,12 +35,7 @@ var Session = Backbone.Model.extend({
         if (options && options.username && options.password) {
             this.username = options.username;
             this.password = options.password;
-            if (!Settings.DEMO) {
-                this.save({username:this.username, password:this.password},{success: this.check_session, error: this.check_session});
-            } else {
-                this.check_session();
-            }
-
+            this.save({username:this.username, password:this.password},{success: this.check_session, error: this.check_session});
         } else {
             this.check_session();
         }
@@ -66,13 +61,10 @@ var Session = Backbone.Model.extend({
         this.fetch({ success: this.process_session, error: this.show_error });
     },
     show_error: function(model, response){
-
         // Open form and retrieve credentials
         Saiku.ui.unblock();
         this.form = new SessionErrorModal({ issue: response.responseText });
         this.form.render().open();
-
-
     },
 
     load_session: function() {
@@ -86,14 +78,7 @@ var Session = Backbone.Model.extend({
         }
 
         if ((response === null || response.sessionid == null)) {
-            // Open form and retrieve credentials
-            Saiku.ui.unblock();
-            if (Settings.DEMO) {
-                this.form = new DemoLoginForm({ session: this });
-            } else {
-                this.form = new LoginForm({ session: this });
-            }
-            this.form.render().open();
+            window.location.replace("/login");
         } else {
             this.sessionid = response.sessionid;
             this.roles = response.roles;
@@ -121,10 +106,11 @@ var Session = Backbone.Model.extend({
         }});
 
     },
-    login_failed: function(response){
-        this.form = new LoginForm({ session: this });
-        this.form.render().open();
-        this.form.setError(response);
+    login_failed: function(response) {
+        //this.form = new LoginForm({ session: this });
+        //this.form.render().open();
+        //this.form.setError(response);
+        window.location.replace("/login");
     },
     logout: function() {
         // FIXME - This is a hack (inherited from old UI)

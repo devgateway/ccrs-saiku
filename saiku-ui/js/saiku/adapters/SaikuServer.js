@@ -89,6 +89,7 @@ Backbone.sync = function(method, model, options) {
         Settings.ERRORS++;
         if (Settings.ERRORS < Settings.ERROR_TOLERANCE) {
           Saiku.session.logout();
+          window.location.replace("/login");
         } else {
           Saiku.ui.block("Communication problem with the server. Please reload the application...");
         }
@@ -163,7 +164,7 @@ Backbone.sync = function(method, model, options) {
     }
     // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
     // And an `X-HTTP-Method-Override` header.
-    if ((Settings.BIPLUGIN && !Settings.BIPLUGIN5) || Backbone.emulateHTTP) {
+    if (Backbone.emulateHTTP) {
       if (type === 'PUT' || type === 'DELETE') {
         if (Backbone.emulateHTTP) params.data._method = type;
         params.type = 'POST';

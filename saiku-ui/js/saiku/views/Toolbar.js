@@ -30,18 +30,10 @@ var Toolbar = Backbone.View.extend({
 
     initialize: function() {
         var self = this;
-        if(Settings.LOGO){
-            self.logo = "<h1 id='logo_override'>"+
-                "<img src='"+Settings.LOGO+"'/>"+
-                "</h1>";
-            self.render();
-        }
-        else{
-            self.logo = "<h1 id='logo'>"+
-                "<a href='http://www.meteorite.bi/' title='Saiku - Next Generation Open Source Analytics' target='_blank' class='sprite'>Saiku</a>"+
-                "</h1>";
-            self.render();
-        }
+        self.logo = "<h1 id='logo_override'>"+
+            "<a href='/' title='United Nations Development Group' target='_blank'><img src='undg-logo.png' alt='United Nations Development Group'/></a>"+
+            "</h1>";
+        self.render();
     },
 
     render: function() {
@@ -62,6 +54,7 @@ var Toolbar = Backbone.View.extend({
         }
         e.preventDefault();
     },
+
     /**
      * Add a new tab to the interface
      */
@@ -96,28 +89,4 @@ var Toolbar = Backbone.View.extend({
     logout: function() {
         Saiku.session.logout();
     },
-
-    /**
-     * Show the credits dialog
-     */
-    about: function() {
-        (new AboutModal()).render().open();
-        return false;
-    },
-
-    /**
-     * Go to the issue tracker
-     */
-    issue_tracker: function() {
-        window.open('http://jira.meteorite.bi/');
-        return false;
-    },
-
-	/**
-	 * Go to the help
-	 */
-	help: function() {
-		window.open('http://wiki.meteorite.bi/display/SAIK/Saiku+Documentation');
-		return false;
-	}
 });

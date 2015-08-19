@@ -42,7 +42,6 @@ var SessionWorkspace = Backbone.Model.extend({
         }
         Saiku.ui.block("Loading datasources....");
         this.fetch({success:this.process_datasources},{});
-
     },
 
     refresh: function() {
@@ -104,12 +103,9 @@ var SessionWorkspace = Backbone.Model.extend({
 
             var paramsURI = Saiku.URLParams.paramsURI();
 
-            if (!Settings.INITIAL_QUERY && paramsURI.splash) {
+            if (!Settings.INITIAL_QUERY) {
                 Saiku.tabs.add(new Workspace())
-            } else if (!Settings.INITIAL_QUERY) {
-                Saiku.tabs.add(new Workspace());
             }
-
         }
     },
 

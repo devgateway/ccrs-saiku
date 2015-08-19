@@ -24,18 +24,6 @@ var LoginForm = Modal.extend({
         "<input type='text' id='username' name='username' value='' />" +
         "<label for='password' class='i18n'>Password</label>" +
         "<input type='password' id='password' name='password' value='' />" +
-        "<% if (Settings.EVALUATION_PANEL_LOGIN) { %>" +
-        "<div class='eval-panel'>" +
-        "<a href='#eval_login' class='i18n' id='eval-login'>Evaluation Login</a>" +
-        "<div class='eval-panel-user clearfix' hidden>" +
-        "<ul>" +
-        "<li class='i18n'>Administrator</li>" +
-        "<li class='i18n'>Username: admin</li>" +
-        "<li class='i18n'>Password: admin</li>" +
-        "</ul>" +
-        "</div>" +
-        "</div>" +
-        "<% } %>" +
         "</form>")(),
 
     buttons: [

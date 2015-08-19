@@ -256,12 +256,6 @@ var Workspace = Backbone.View.extend({
         // Adjust the height of the separator
         var $separator = $(this.el).find('.sidebar_separator');
         var heightReduction = 87;
-        if (Settings.PLUGIN === true || Settings.BIPLUGIN === true) {
-            heightReduction = 2;
-            if (Settings.MODE == 'table') {
-                heightReduction = -5;
-            }
-        }
         if ($('#header').length === 0 || $('#header').is('hidden')) {
             heightReduction = 2;
         }
@@ -274,13 +268,12 @@ var Workspace = Backbone.View.extend({
         // Adjust the dimensions of the results window
         var editorHeight = $(this.el).find('.workspace_editor').is(':hidden') ? 0 : $(this.el).find('.workspace_editor').height();
         var processingHeight = $(this.el).find('.query_processing').is(':hidden') ? 0 : $(this.el).find('.query_processing').height() + 62;
-        var upgradeHeight = $(this.el).find('.upgradeheader').is(':hidden') ? 0 : $(this.el).find('.upgrade').height();
 
         $(this.el).find('.workspace_results').css({
             height: $("body").height() - heightReduction -
                 $(this.el).find('.workspace_toolbar').height() -
                 $(this.el).find('.workspace_results_info').height() -
-                editorHeight - processingHeight - upgradeHeight - 20
+                editorHeight - processingHeight - 20
         });
 
         if (this.querytoolbar) { $(this.querytoolbar.el).find('a').tipsy({ delayIn: 700, fade: true}); }

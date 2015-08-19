@@ -58,6 +58,4 @@ var DrillAcrossModal = DrillthroughModal.extend({
 		return false;
 	}
 
-
-
 });
