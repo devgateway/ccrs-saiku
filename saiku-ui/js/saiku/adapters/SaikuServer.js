@@ -89,6 +89,7 @@ Backbone.sync = function(method, model, options) {
         Settings.ERRORS++;
         if (Settings.ERRORS < Settings.ERROR_TOLERANCE) {
           Saiku.session.logout();
+          window.location.replace("/login");
         } else {
           Saiku.ui.block("Communication problem with the server. Please reload the application...");
         }
