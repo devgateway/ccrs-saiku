@@ -32,14 +32,9 @@ var logger = function(config) {
 };
 
 if (Settings.ERROR_LOGGING) {
-    window.Log = new logger({
-        url: Settings.TELEMETRY_SERVER + '/input/errors'
-    });
-
     /**
      * Log errors
      */
-
     window.defaultHandler = window.onerror;
     window.onerror = function(errorMsg, url, lineNumber) {
         if (lineNumber !== 0) {
@@ -66,9 +61,5 @@ if (Settings.ERROR_LOGGING) {
             }
 
         }
-
-
-
     };
-
 }
