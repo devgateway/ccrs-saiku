@@ -62,6 +62,7 @@ var Toolbar = Backbone.View.extend({
         }
         e.preventDefault();
     },
+
     /**
      * Add a new tab to the interface
      */
@@ -96,28 +97,4 @@ var Toolbar = Backbone.View.extend({
     logout: function() {
         Saiku.session.logout();
     },
-
-    /**
-     * Show the credits dialog
-     */
-    about: function() {
-        (new AboutModal()).render().open();
-        return false;
-    },
-
-    /**
-     * Go to the issue tracker
-     */
-    issue_tracker: function() {
-        window.open('http://jira.meteorite.bi/');
-        return false;
-    },
-
-	/**
-	 * Go to the help
-	 */
-	help: function() {
-		window.open('http://wiki.meteorite.bi/display/SAIK/Saiku+Documentation');
-		return false;
-	}
 });

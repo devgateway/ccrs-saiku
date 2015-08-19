@@ -61,13 +61,10 @@ var Session = Backbone.Model.extend({
         this.fetch({ success: this.process_session, error: this.show_error });
     },
     show_error: function(model, response){
-
         // Open form and retrieve credentials
         Saiku.ui.unblock();
         this.form = new SessionErrorModal({ issue: response.responseText });
         this.form.render().open();
-
-
     },
 
     load_session: function() {
