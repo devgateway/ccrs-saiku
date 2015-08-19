@@ -223,85 +223,83 @@ Backbone.emulateHTTP = false;
 /**
  * Up up and away!
  */
-if (! Settings.BIPLUGIN) {
-	$(document).ready(function () {
-		pluginsJSON = [
-			//{
-			//	"name":"AdminConsole",
-			//	"description":"",
-			//	"path":"js/saiku/plugins/AdminConsole/plugin.js"
-			//},
-			{
-				"name":"CCC_Chart",
-				"description":"",
-				"path":"js/saiku/plugins/CCC_Chart/plugin.js"
-			},
-			{
-				"name":"ChangeLocale",
-				"description":"",
-				"path":"js/saiku/plugins/ChangeLocale/plugin.js"
-			},
-			{
-				"name":"Fullscreen",
-				"description":"",
-				"path":"js/saiku/plugins/Fullscreen/plugin.js"
-			},
-			{
-				"name":"I18n",
-				"description":"",
-				"path":"js/saiku/plugins/I18n/plugin.js"
-			},
-			{
-				"name":"Statistics",
-				"description":"",
-				"path":"js/saiku/plugins/Statistics/plugin.js"
-			}
-		];
+$(document).ready(function () {
+	pluginsJSON = [
+		//{
+		//	"name":"AdminConsole",
+		//	"description":"",
+		//	"path":"js/saiku/plugins/AdminConsole/plugin.js"
+		//},
+		{
+			"name":"CCC_Chart",
+			"description":"",
+			"path":"js/saiku/plugins/CCC_Chart/plugin.js"
+		},
+		{
+			"name":"ChangeLocale",
+			"description":"",
+			"path":"js/saiku/plugins/ChangeLocale/plugin.js"
+		},
+		{
+			"name":"Fullscreen",
+			"description":"",
+			"path":"js/saiku/plugins/Fullscreen/plugin.js"
+		},
+		{
+			"name":"I18n",
+			"description":"",
+			"path":"js/saiku/plugins/I18n/plugin.js"
+		},
+		{
+			"name":"Statistics",
+			"description":"",
+			"path":"js/saiku/plugins/Statistics/plugin.js"
+		}
+	];
 
-		var plugins = new PluginCollection(pluginsJSON);
+	var plugins = new PluginCollection(pluginsJSON);
 
-		var i = plugins.size();
-		var j = 0;
-		plugins.each(function (log) {
-			j = j + 1;
-			if (log.attributes.path != "js/saiku/plugins/I18n/plugin.js") {
-				jQuery.ajax({
-					async:false,
-					type:'GET',
-					url:log.attributes.path,
-					data:null,
-					success: function(){
-						if (j == i) {
-							if(Settings.CSS != undefined){
-								Saiku.loadCSS(Settings.CSS, null)
-							}
-							Saiku.session = new Session({}, {
-								username: Settings.USERNAME,
-								password: Settings.PASSWORD
-							});
-
-							Saiku.toolbar = new Toolbar();
+	var i = plugins.size();
+	var j = 0;
+	plugins.each(function (log) {
+		j = j + 1;
+		if (log.attributes.path != "js/saiku/plugins/I18n/plugin.js") {
+			jQuery.ajax({
+				async:false,
+				type:'GET',
+				url:log.attributes.path,
+				data:null,
+				success: function(){
+					if (j == i) {
+						if(Settings.CSS != undefined){
+							Saiku.loadCSS(Settings.CSS, null)
 						}
-					},
-					dataType:'script'
-				});
-			} else {
-				if (j == i) {
+						Saiku.session = new Session({}, {
+							username: Settings.USERNAME,
+							password: Settings.PASSWORD
+						});
 
-					if(Settings.CSS != undefined){
-						Saiku.loadCSS(Settings.CSS, null)
+						Saiku.toolbar = new Toolbar();
 					}
-					Saiku.session = new Session({}, {
-						username: Settings.USERNAME,
-						password: Settings.PASSWORD
-					});
+				},
+				dataType:'script'
+			});
+		} else {
+			if (j == i) {
 
-					Saiku.toolbar = new Toolbar();
+				if(Settings.CSS != undefined){
+					Saiku.loadCSS(Settings.CSS, null)
 				}
+				Saiku.session = new Session({}, {
+					username: Settings.USERNAME,
+					password: Settings.PASSWORD
+				});
+
+				Saiku.toolbar = new Toolbar();
 			}
-		});
+		}
 	});
-}
+});
 
 var SaikuTimeLogger = function(element) {
 	this._element = $(element);

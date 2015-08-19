@@ -1,4 +1,4 @@
-/*  
+/*
  *   Copyright 2012 OSBI Ltd
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,11 +13,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
- 
+
 /**
  * Initialize logger
  */
-var logger = function(config) { 
+var logger = function(config) {
     this.url = config.url;
     this.log = function(data) {
         janky({
@@ -35,11 +35,11 @@ if (Settings.ERROR_LOGGING) {
     window.Log = new logger({
         url: Settings.TELEMETRY_SERVER + '/input/errors'
     });
-    
+
     /**
      * Log errors
      */
-     
+
     window.defaultHandler = window.onerror;
     window.onerror = function(errorMsg, url, lineNumber) {
         if (lineNumber !== 0) {
@@ -52,7 +52,6 @@ if (Settings.ERROR_LOGGING) {
             	    lineNumber: lineNumber,
             	    timestamp: new Date(),
                     version: Settings.VERSION,
-                    biplugin: Settings.BIPLUGIN
             });
 
             console.error({
@@ -60,16 +59,16 @@ if (Settings.ERROR_LOGGING) {
                     file: url,
                     lineNumber: lineNumber,
                     timestamp: new Date()
-            }); 
-            
+            });
+
             if (defaultHandler) {
                 return defaultHandler(errorMsg, url, lineNumber);
             }
 
         }
-        
-        
-        
+
+
+
     };
-    
+
 }

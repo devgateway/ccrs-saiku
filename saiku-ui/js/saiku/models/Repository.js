@@ -19,13 +19,6 @@
  */
 var RepositoryUrl = "api/repository";
 var repoPathUrl = function() {
-    /*
-    return (Settings.BIPLUGIN5 ? "/repository"
-                    : (Settings.BIPLUGIN ? "/pentahorepository2" : "/repository2"));
-    */
-    if (Settings.BIPLUGIN)
-        return "pentaho/repository";
-
     return  RepositoryUrl;
 };
 
