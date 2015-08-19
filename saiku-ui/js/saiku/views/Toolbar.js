@@ -30,18 +30,10 @@ var Toolbar = Backbone.View.extend({
 
     initialize: function() {
         var self = this;
-        if(Settings.LOGO){
-            self.logo = "<h1 id='logo_override'>"+
-                "<img src='"+Settings.LOGO+"'/>"+
-                "</h1>";
-            self.render();
-        }
-        else{
-            self.logo = "<h1 id='logo'>"+
-                "<a href='http://www.meteorite.bi/' title='Saiku - Next Generation Open Source Analytics' target='_blank' class='sprite'>Saiku</a>"+
-                "</h1>";
-            self.render();
-        }
+        self.logo = "<h1 id='logo_override'>"+
+            "<a href='/' title='United Nations Development Group' target='_blank'><img src='undg-logo.png' alt='United Nations Development Group'/></a>"+
+            "</h1>";
+        self.render();
     },
 
     render: function() {
