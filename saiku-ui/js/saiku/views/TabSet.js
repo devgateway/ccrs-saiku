@@ -90,8 +90,7 @@ var TabSet = Backbone.View.extend({
 	remove: function(tab) {
 		// Add another tab if the last one has been deleted
 		if (this._tabs.length == 1) {
-			//this.add(new Workspace());
-
+			this.add(new Workspace());
 		}
 
 		for (var i = 0, len = this._tabs.length; i < len; i++) {
