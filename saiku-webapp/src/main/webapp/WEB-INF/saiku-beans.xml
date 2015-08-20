@@ -4,8 +4,11 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="classpathDsManager"
-          class="org.saiku.service.datasource.ClassPathResourceDatasourceManager">
+    <bean id="classpathDsManager" class="org.saiku.service.datasource.ClassPathResourceDatasourceManager">
+        <property name="userService" ref="userServiceBean"/>
+        <property name="configurationpath" value="/derby/saiku-db/repository/configuration.xml"/>
+        <property name="datadir" value="/derby/saiku-db/repository/data"/>
+        <property name="repoPassword" value ="sa!kuanalyt!cs"/>
         <property name="path" value="res:saiku-datasources" />
     </bean>
 
@@ -27,9 +30,6 @@
     </bean>
 
     <bean id="userServiceBean" class="org.saiku.service.user.UserService">
-        <!--
-            <property name="jdbcUserDAO" ref="customerDAO"/>
-         -->
         <property name="datasourceService" ref="datasourceServiceBean"/>
         <property name="iDatasourceManager" ref="classpathDsManager"/>
         <property name="adminRoles">
@@ -39,6 +39,7 @@
         </property>
         <property name="sessionService" ref="sessionService"/>
     </bean>
+
     <bean id="adminBean" class="org.saiku.web.rest.resources.AdminResource">
         <property name="userService" ref="userServiceBean"/>
         <property name="datasourceService" ref="datasourceServiceBean"/>
@@ -100,7 +101,6 @@
         <property name="sessionService" ref="sessionService" />
         <property name="datasourceService" ref="datasourceServiceBean"/>
     </bean>
-    <!-- <property name="path" value="file:///var/saiku/saiku-datasources/"/> -->
 
     <bean id="tagRepositoryBean" scope="request"
           class="org.saiku.web.rest.resources.BasicTagRepositoryResource">

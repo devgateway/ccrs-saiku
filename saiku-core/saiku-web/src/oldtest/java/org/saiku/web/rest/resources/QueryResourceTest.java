@@ -44,7 +44,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * 
  */
 
-@ContextConfiguration(locations = { "saiku-beans.xml" })
+@ContextConfiguration(locations = { "old-saiku-beans.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class QueryResourceTest extends TestCase {
 
