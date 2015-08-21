@@ -1233,25 +1233,28 @@
     <Cube name="Global Cube" caption="Global Cube" visible="true"
           cache="true" enabled="true">
         <Dimensions>
-            <Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ISO2"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hasHierarchy="false" levelType="Regular" datatype="String" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hasHierarchy="false" levelType="Regular" datatype="String" />
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
-
-                <Hierarchies>
-                    <Hierarchy name="Regions" hasAll="true">
-                        <Level attribute="Region"/>
-                        <Level attribute="Country"/>
-                    </Hierarchy>
-                </Hierarchies>
             </Dimension>
 
             <Dimension name="Year" caption="Year" table="GlobalCube"
@@ -1435,7 +1438,8 @@
                     <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="Regions" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
                     <FactLink dimension="Year" />
                 </DimensionLinks>
             </MeasureGroup>

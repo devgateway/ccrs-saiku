@@ -29,27 +29,27 @@ import javax.jcr.RepositoryException;
  * Repository Manager Interface
  */
 public interface IRepositoryManager {
-  void init();
+    void init();
 
-  boolean start(UserService userService) throws RepositoryException;
+    boolean start(UserService userService) throws RepositoryException;
 
-  void createUser( String u ) throws RepositoryException;
+    void createUser( String u ) throws RepositoryException;
 
-  javax.jcr.NodeIterator getHomeFolders() throws RepositoryException;
+    javax.jcr.NodeIterator getHomeFolders() throws RepositoryException;
 
-  javax.jcr.Node getHomeFolder( String directory ) throws RepositoryException;
+    javax.jcr.Node getHomeFolder( String directory ) throws RepositoryException;
 
-  javax.jcr.Node getFolder( String user, String directory ) throws RepositoryException;
+    javax.jcr.Node getFolder( String user, String directory ) throws RepositoryException;
 
-  void shutdown();
+    void shutdown();
 
-  boolean createFolder( String username, String folder ) throws RepositoryException;
+    boolean createFolder( String username, String folder ) throws RepositoryException;
 
-  boolean deleteFolder( String folder ) throws RepositoryException;
+    boolean deleteFolder( String folder ) throws RepositoryException;
 
-  void deleteRepository() throws RepositoryException;
+    void deleteRepository() throws RepositoryException;
 
-  boolean moveFolder(String user, String folder, String source, String target) throws RepositoryException;
+    boolean moveFolder(String user, String folder, String source, String target) throws RepositoryException;
 
     javax.jcr.Node saveFile(Object file, String path, String user, String type, List<String> roles) throws RepositoryException;
 
@@ -83,7 +83,7 @@ public interface IRepositoryManager {
     List<IRepositoryObject> getAllFiles(String type, String username, List<String> roles) throws RepositoryException;
 
     List<IRepositoryObject> getAllFiles(String type, String username, List<String> roles, String path) throws
-        RepositoryException;
+            RepositoryException;
 
     void deleteFile(String datasourcePath);
 

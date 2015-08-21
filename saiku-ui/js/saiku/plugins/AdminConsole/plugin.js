@@ -42,8 +42,6 @@ var AdminConsole = Backbone.View.extend({
         'click .backup_restore' : 'backup_restore',
         'click .submitrestore' : 'restoreFile',
         'click .submitrestorelegacy' : 'restoreLegacy',
-		//'click .download_schema' : 'download_schema',
-        'click .license_info' : 'show_license_info',
         'click .license_users_list' : 'show_license_user_list',
         'click .add_license_user' : 'add_license_user',
         'click .remove_license_user' : 'remove_license_user'
@@ -55,19 +53,9 @@ var AdminConsole = Backbone.View.extend({
         this.schemas = new Schemas({}, { dialog: this });
         this.datasources = new Connections({}, { dialog: this });
 
-        var that = this,
-            license = new License();
+        var that = this;
 
-        license.fetch_license('api/license/', function(opt) {
-            if (opt.status === 'success') {
-                that.licenseInfo = opt.data.toJSON();
-                that.licenseUsers = new LicenseUsersCollection(null, {});
-                that.licenseUsers.fetch();
-            }
-            else {
-                $(that.el).find('.license_container').hide();
-            }
-        });
+
     },
     show_license_info: function(event) {
         event.preventDefault();
@@ -81,17 +69,6 @@ var AdminConsole = Backbone.View.extend({
         $(this.el).find('.license_type > li:nth-child(3)').append(this.licenseInfo.name);
         $(this.el).find('.license_type > li:nth-child(4)').append(this.licenseInfo.hostname);
         $(this.el).find('.license_type > li:nth-child(5)').append(this.licenseInfo.userLimit);
-    },
-
-    show_license_user_list: function(event) {
-        event ? event.preventDefault() : '';
-        var html = this.licenseAddUserTemplate;
-        $(this.el).find('.user_info').html(html);
-        var listUsers = this.licenseUsers.toJSON();
-        if (listUsers && !(_.isEmpty(listUsers))) {
-            var htmlListUsers = this.list_users_license_template(listUsers);
-            $(this.el).find('.license_listusers').html(htmlListUsers);
-        }
     },
 
     add_license_user: function(event) {

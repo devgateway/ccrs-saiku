@@ -19,21 +19,27 @@ package org.saiku.service.datasource;
 import org.saiku.database.dto.MondrianSchema;
 import org.saiku.datasources.connection.RepositoryFile;
 import org.saiku.datasources.datasource.SaikuDatasource;
-import org.saiku.repository.*;
+import org.saiku.repository.AclEntry;
+import org.saiku.repository.DataSource;
+import org.saiku.repository.IRepositoryManager;
+import org.saiku.repository.IRepositoryObject;
+import org.saiku.repository.JackRabbitRepositoryManager;
 import org.saiku.service.importer.LegacyImporter;
 import org.saiku.service.importer.LegacyImporterImpl;
 import org.saiku.service.user.UserService;
 import org.saiku.service.util.exception.SaikuServiceException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * A Datasource Manager for the Saiku Repository API layer.
@@ -46,15 +52,15 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     private String configurationpath;
     private String datadir;
     IRepositoryManager irm;
+    private String foodmarturl;
     private String foodmartdir;
     private String foodmartschema;
-    private String foodmarturl;
     private String repopassword;
     private String oldpassword;
 
     public void load() {
         irm = JackRabbitRepositoryManager.getJackRabbitRepositoryManager(configurationpath, datadir, repopassword,
-            oldpassword);
+                oldpassword);
         try {
             irm.start(userService);
         } catch (RepositoryException e) {
@@ -93,16 +99,16 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
                             props.put("id", file.getId());
                         }
                         if(file.getSecurityenabled()!=null) {
-                          props.put("security.enabled", file.getSecurityenabled());
+                            props.put("security.enabled", file.getSecurityenabled());
                         }
                         if(file.getSecuritytype()!=null) {
-                          props.put("security.type", file.getSecuritytype());
+                            props.put("security.type", file.getSecuritytype());
                         }
                         if(file.getSecuritymapping()!=null) {
-                          props.put("security.mapping", file.getSecuritymapping());
+                            props.put("security.mapping", file.getSecuritymapping());
                         }
                         if(file.getAdvanced()!=null){
-                          props.put("advanced", file.getAdvanced());
+                            props.put("advanced", file.getAdvanced());
                         }
                         SaikuDatasource.Type t = SaikuDatasource.Type.valueOf(file.getType().toUpperCase());
                         SaikuDatasource ds = new SaikuDatasource(file.getName(), t, props);
@@ -124,8 +130,8 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     public SaikuDatasource addDatasource(SaikuDatasource datasource) throws Exception {
         DataSource ds = new DataSource(datasource);
 
-            irm.saveDataSource(ds, "/datasources/" + ds.getName() + ".sds", "fixme");
-            datasources.put(datasource.getName(), datasource);
+        irm.saveDataSource(ds, "/datasources/" + ds.getName() + ".sds", "fixme");
+        datasources.put(datasource.getName(), datasource);
 
         return datasource;
     }
@@ -190,9 +196,6 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
         else{
             return false;
         }
-
-
-
     }
 
     public Map<String, SaikuDatasource> getDatasources() {
@@ -204,8 +207,7 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     }
 
     public void addSchema(String file, String path, String name) throws Exception {
-            irm.saveInternalFile(file, path, "nt:mondrianschema");
-
+        irm.saveInternalFile(file, path, "nt:mondrianschema");
     }
 
     public List<MondrianSchema> getMondrianSchema() {
@@ -238,7 +240,7 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 
     public String getInternalFileData(String file) throws RepositoryException {
 
-            return irm.getInternalFile(file);
+        return irm.getInternalFile(file);
 
 
     }
@@ -248,7 +250,7 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
             irm.saveFile(content, path, user, "nt:saikufiles", roles);
             return "Save Okay";
         } catch (RepositoryException e) {
-            log.error("Save Failed",e );
+            log.error("Save Failed", e);
             return "Save Failed: " + e.getLocalizedMessage();
         }
     }
@@ -464,5 +466,6 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     public String getOldRepopassword(){
         return oldpassword;
     }
+
 }
 
