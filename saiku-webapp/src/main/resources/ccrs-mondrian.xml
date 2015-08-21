@@ -427,7 +427,8 @@
                         LEFT OUTER JOIN ACTIVITY activity ON activity.OUTPUT_ID = outputs.ID
                         LEFT OUTER JOIN BUDGET budget ON budget.ACTIVITY_ID = activity.ID
                     WHERE
-                        workplan.DESIGNATION != 'AQ'
+                        workplan.DESIGNATION != 'AQ' AND
+                        workplan.WORKFLOW = 'VALIDATED'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -1452,18 +1453,18 @@
     <Cube name="Workplan" caption="Workplan Analysis" visible="true" cache="true" enabled="true">
         <!-- Define dimensions and attributes -->
         <Dimensions>
-            <Dimension name="Workflow" caption="Workflow" table='WorkplanCube' key="Dimension Id" visible="true">
-                <Attributes>
-                    <!-- by default we also have visible="false" when hasHierarchy="false" -->
-                    <Attribute name="Dimension Id" keyColumn="WORKPLAN_ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+            <!--<Dimension name="Workflow" caption="Workflow" table='WorkplanCube' key="Dimension Id" visible="true">-->
+                <!--<Attributes>-->
+                    <!--&lt;!&ndash; by default we also have visible="false" when hasHierarchy="false" &ndash;&gt;-->
+                    <!--<Attribute name="Dimension Id" keyColumn="WORKPLAN_ID"-->
+                               <!--hasHierarchy="false"-->
+                               <!--levelType="Regular" datatype="Integer"/>-->
 
-                    <Attribute name="Workflow" caption="Workflow" keyColumn="WORKPLAN_WORKFLOW"
-                               hierarchyAllMemberName="All workflows" hierarchyCaption="All workflows"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
+                    <!--<Attribute name="Workflow" caption="Workflow" keyColumn="WORKPLAN_WORKFLOW"-->
+                               <!--hierarchyAllMemberName="All workflows" hierarchyCaption="All workflows"-->
+                               <!--levelType="Regular" datatype="String"/>-->
+                <!--</Attributes>-->
+            <!--</Dimension>-->
 
             <!--<Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"-->
                        <!--key="Dimension Id" visible="true">-->
@@ -1587,7 +1588,7 @@
                     <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <FactLink dimension="Workflow" />
+                    <!--<FactLink dimension="Workflow" />-->
                     <FactLink dimension="Year" />
                     <FactLink dimension="Role of partners" />
                     <FactLink dimension="Is good practice?" />
