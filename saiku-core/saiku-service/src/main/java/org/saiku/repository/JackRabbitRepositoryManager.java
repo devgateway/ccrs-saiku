@@ -174,49 +174,28 @@ public class JackRabbitRepositoryManager implements IRepositoryManager {
             createSchemas();
             createDataSources();
 
-            Node n = JcrUtils.getOrAddFolder(root, "homes");
+            Node n = JcrUtils.getOrAddFolder(root, "home");
             n.addMixin("nt:saikufolders");
 
             HashMap<String, List<AclMethod>> m = new HashMap<String, List<AclMethod>>();
-            ArrayList<AclMethod> l = new ArrayList<AclMethod>();
-            l.add(AclMethod.READ);
-            m.put("ROLE_USER", l);
+            ArrayList<AclMethod> lUser = new ArrayList<AclMethod>();
+            ArrayList<AclMethod> lEditor = new ArrayList<AclMethod>();
+            ArrayList<AclMethod> lAdmin = new ArrayList<AclMethod>();
+
+            lUser.add(AclMethod.READ);
+
+            lEditor.add(AclMethod.READ);
+
+            lAdmin.add(AclMethod.READ);
+            lAdmin.add(AclMethod.WRITE);
+            lAdmin.add(AclMethod.GRANT);
+
+            m.put("ROLE_USER", lUser);
+            m.put("ROLE_EDITOR", lEditor);
+            m.put("ROLE_ADMIN", lAdmin);
+
             AclEntry e = new AclEntry("admin", AclType.SECURED, m, null);
-
             Acl2 acl2 = new Acl2(n);
-            acl2.addEntry(n.getPath(), e);
-            acl2.serialize(n);
-
-            n = JcrUtils.getOrAddFolder(root, "datasources");
-            n.addMixin("nt:saikufolders");
-
-            m = new HashMap<String, List<AclMethod>>();
-            l = new ArrayList<AclMethod>();
-            l.add(AclMethod.WRITE);
-            l.add(AclMethod.READ);
-            l.add(AclMethod.GRANT);
-            m.put("ROLE_ADMIN", l);
-            e = new AclEntry("admin", AclType.PUBLIC, m, null);
-
-            acl2 = new Acl2(n);
-            acl2.addEntry(n.getPath(), e);
-            acl2.serialize(n);
-
-            n = JcrUtils.getOrAddFolder(root, "etc");
-            n.addMixin("nt:saikufolders");
-            n = JcrUtils.getOrAddFolder(n, "legacyreports");
-            n.addMixin("nt:saikufolders");
-
-            acl2 = new Acl2(n);
-            acl2.addEntry(n.getPath(), e);
-            acl2.serialize(n);
-
-            n = JcrUtils.getOrAddFolder(root, "etc/theme");
-            n.addMixin("nt:saikufolders");
-            n = JcrUtils.getOrAddFolder(n, "legacyreports");
-            n.addMixin("nt:saikufolders");
-
-            acl2 = new Acl2(n);
             acl2.addEntry(n.getPath(), e);
             acl2.serialize(n);
 
@@ -227,9 +206,33 @@ public class JackRabbitRepositoryManager implements IRepositoryManager {
 
     }
 
+    public void createUserFolder(String user) throws RepositoryException {
+        login();
+
+        Node parent = JcrUtils.getNodeIfExists(root, "home");
+        if(parent != null) {
+            Node node = JcrUtils.getNodeIfExists(parent, user);
+            // only create the folder if it doesn't exist
+            if (node == null) {
+                node = parent.addNode(user, "nt:folder");
+                node.addMixin("nt:saikufolders");
+
+                AclEntry e = new AclEntry(user, AclType.PRIVATE, null, null);
+
+                Acl2 acl2 = new Acl2(node);
+                acl2.addEntry(node.getPath(), e);
+                acl2.serialize(node);
+
+                node.getSession().save();
+            }
+        }  else{
+            log.error("home folder doesn't exist!");
+        }
+    }
+
     public void createUser(String u) throws RepositoryException {
         login();
-        Node parent = JcrUtils.getNodeIfExists(root, "homes");
+        Node parent = JcrUtils.getNodeIfExists(root, "");
         if(parent != null) {
             Node node = parent.addNode("home:" + u, "nt:folder");
             node.addMixin("nt:saikufolders");
@@ -250,12 +253,12 @@ public class JackRabbitRepositoryManager implements IRepositoryManager {
 
     public javax.jcr.NodeIterator getHomeFolders() throws RepositoryException {
         //login();
-        Node homes = root.getNode("homes");
-        return homes.getNodes();
+        Node home = root.getNode("home");
+        return home.getNodes();
     }
 
     public Node getHomeFolder(String path) throws RepositoryException {
-        return root.getNode("homes").getNode("home:" + path);
+        return root.getNode("home").getNode(path);
     }
 
     public Node getFolder(String user, String directory) throws RepositoryException {
@@ -363,7 +366,33 @@ System.out.println(e.getLocalizedMessage());
         else {
             int pos = path.lastIndexOf("/");
             String filename = "./" + path.substring(pos + 1, path.length());
-            Node n = getFolder(path.substring(0, pos));
+            String rootPath;
+            boolean isAdmin = false;
+            if (pos != -1) {
+                rootPath = path.substring(0, pos);
+            } else {
+                rootPath = "/home";
+            }
+
+            for (String role : roles) {
+                for (String adminRole : userService.getAdminRoles()) {
+                    if (role.equals(adminRole)) {
+                        isAdmin = true;
+                        break;
+                    }
+                }
+            }
+
+            // normal users have their folder
+            if (!isAdmin) {
+                // check if we already have a folder for this user
+                if (!rootPath.contains(user)) {
+                    createUserFolder(user);
+                    rootPath += "/" + user;
+                }
+            }
+
+            Node n = getFolder(rootPath);
             Acl2 acl2 = new Acl2(n);
             acl2.setAdminRoles(userService.getAdminRoles());
             if (!acl2.canWrite(n, user, roles)) {
