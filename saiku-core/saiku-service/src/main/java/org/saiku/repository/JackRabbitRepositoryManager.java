@@ -348,22 +348,47 @@ System.out.println(e.getLocalizedMessage());
     public Node saveFile(Object file, String path, String user, String type, List<String> roles) throws RepositoryException {
         if(file==null){
             //Create new folder
-            String parent = path.substring(0, path.lastIndexOf("/"));
-            Node node = getFolder(parent);
+            int pos = path.lastIndexOf("/");
+            String rootPath;
+            boolean isAdmin = false;
+            if (pos != -1) {
+                rootPath = path.substring(0, pos);
+            } else {
+                rootPath = "/home";
+            }
+            for (String role : roles) {
+                for (String adminRole : userService.getAdminRoles()) {
+                    if (role.equals(adminRole)) {
+                        isAdmin = true;
+                        break;
+                    }
+                }
+            }
+
+            // normal users have their folder
+            if (!isAdmin) {
+                // check if we already have a folder for this user
+                if (!rootPath.contains(user)) {
+                    createUserFolder(user);
+                    rootPath += "/" + user;
+                }
+            }
+
+            Node node = getFolder(rootPath);
             Acl2 acl2 = new Acl2(node);
             acl2.setAdminRoles(userService.getAdminRoles());
             if (!acl2.canWrite(node, user, roles)) {
                 throw new SaikuServiceException("Can't write to file or folder");
             }
 
-            int pos = path.lastIndexOf("/");
             String filename = "./" + path.substring(pos + 1, path.length());
             Node resNode = node.addNode(filename, "nt:folder");
             resNode.addMixin("nt:saikufolders");
-            return resNode;
 
-        }
-        else {
+            resNode.getSession().save();
+
+            return resNode;
+        } else {
             int pos = path.lastIndexOf("/");
             String filename = "./" + path.substring(pos + 1, path.length());
             String rootPath;
