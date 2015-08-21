@@ -385,6 +385,12 @@ System.out.println(e.getLocalizedMessage());
             Node resNode = node.addNode(filename, "nt:folder");
             resNode.addMixin("nt:saikufolders");
 
+            AclEntry e = new AclEntry(user, AclType.PRIVATE, null, null);
+
+            acl2 = new Acl2(resNode);
+            acl2.addEntry(resNode.getPath(), e);
+            acl2.serialize(resNode);
+
             resNode.getSession().save();
 
             return resNode;
@@ -437,6 +443,22 @@ System.out.println(e.getLocalizedMessage());
                 resNode.addMixin("nt:olapdatasource");
             }
             Node contentNode = resNode.addNode("jcr:content", "nt:resource");
+
+            // keep the newly created file only for the current user
+            HashMap<String, List<AclMethod>> m = new HashMap<String, List<AclMethod>>();
+            ArrayList<AclMethod> lUser = new ArrayList<AclMethod>();
+            ArrayList<AclMethod> lEditor = new ArrayList<AclMethod>();
+
+            lUser.add(AclMethod.READ);
+            lEditor.add(AclMethod.READ);
+
+            m.put("ROLE_USER", lUser);
+            m.put("ROLE_EDITOR", lEditor);
+
+            AclEntry e = new AclEntry(user, AclType.SECURED, m, null);
+            acl2 = new Acl2(n);
+            acl2.addEntry(resNode.getPath(), e);
+            acl2.serialize(resNode);
 
             //resNode.setProperty ("jcr:mimeType", "text/plain");
             //resNode.setProperty ("jcr:encoding", "utf8");

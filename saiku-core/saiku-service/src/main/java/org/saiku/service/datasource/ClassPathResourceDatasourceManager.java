@@ -31,6 +31,7 @@ import org.saiku.service.util.exception.SaikuServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -317,15 +318,23 @@ public class ClassPathResourceDatasourceManager implements IDatasourceManager {
     }
 
     public void deleteFolder(String folder) {
-
+        try {
+            irm.deleteFolder(folder);
+        } catch (RepositoryException e) {
+            log.error("Delete User Failed", e);
+        }
     }
 
     public AclEntry getACL(String object, String username, List<String> roles) {
-        return null;
+        return irm.getACL(object, username, roles);
     }
 
     public void setACL(String object, String acl, String username, List<String> roles) {
-
+        try {
+            irm.setACL(object, acl, username, roles);
+        } catch (RepositoryException e) {
+            log.error("Set ACL Failed", e);
+        }
     }
 
     public List<MondrianSchema> getInternalFilesOfFileType(String type){
@@ -363,7 +372,15 @@ public class ClassPathResourceDatasourceManager implements IDatasourceManager {
     }
 
     public boolean hasHomeDirectory(String name) {
-
+        try{
+            Node eturn = irm.getHomeFolder(name);
+            if (eturn!=null){
+                return true;
+            }
+            return false;
+        } catch (RepositoryException e) {
+            log.error("could not get home directory");
+        }
         return false;
     }
 
