@@ -117,6 +117,22 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="GovernmentRole">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='GovernmentRole']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="HasNewConflictAnalysis">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="SOP1q">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -1272,6 +1288,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP1question" caption="SoP1 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1282,6 +1299,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP2question" caption="SoP2 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1292,6 +1310,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP3question" caption="SoP3 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1302,6 +1321,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP4question" caption="SoP4 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1312,6 +1332,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP5question" caption="SoP5 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1322,6 +1343,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP6question" caption="SoP6 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1332,6 +1354,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP7question" caption="SoP7 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1342,6 +1365,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP8question" caption="SoP8 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1352,6 +1376,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP9question" caption="SoP9 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1362,6 +1387,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP10question" caption="SoP10 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1372,6 +1398,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP11question" caption="SoP11 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1382,6 +1409,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP12question" caption="SoP12 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1392,6 +1420,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP13question" caption="SoP13 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1402,6 +1431,7 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP14question" caption="SoP14 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -1412,18 +1442,962 @@
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="SoP15question" caption="SoP15 Question" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension name="GovernmentRole" caption="Government Role" table="GovernmentRole"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="GovernmentRole" caption="Government Role" keyColumn="LABEL"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One (DaO)" caption="Do you have an official request to become a Delivering as One (DaO) country from your Government?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One (DaO)" caption="Do you have an official request to become a Delivering as One (DaO) country from your Government?" keyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="DaO Vision" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="DaO Vision" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" keyColumn="DAO_VISION_NOTE_ROADMAP_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Subnational offices" caption="Does the Resident Coordinator Office (RCO) have Subnational offices?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Subnational offices" caption="Does the Resident Coordinator Office (RCO) have Subnational offices?" keyColumn="SUBNATIONAL_OFFICES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UN Development Assistance Framework" caption="Is there an UN Development Assistance Framework (UNDAF), or equivalent?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UN Development Assistance Framework" caption="Is there an UN Development Assistance Framework (UNDAF), or equivalent?" keyColumn="HASUNDAF_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Common Country Assessment (CCA)" caption="Did the UNCT lead their own Common Country Assessment (CCA) conducted for the present UNDAF?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Common Country Assessment (CCA)" caption="Did the UNCT lead their own Common Country Assessment (CCA) conducted for the present UNDAF?" keyColumn="HAS_COMMON_COUNTRY_ASSESSMENT_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="National Development Plan" caption="Is there a National Development Plan?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="National Development Plan" caption="Is there a National Development Plan?" keyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="MDG Acceleration Framework" caption="Are you using the MDG Acceleration Framework (MAF)?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="MDG Acceleration Framework" caption="Are you using the MDG Acceleration Framework (MAF)?" keyColumn="HASMDGACCELERATION_FRAMEWORK_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Joint Programmes" caption="Do you have Joint Programmes?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Joint Programmes" caption="Do you have Joint Programmes?" keyColumn="HAS_JOINT_PROGRAMMES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNDAF Mid Term Review" caption="Have you conducted the UNDAF Mid Term Review (MTR)?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNDAF Mid Term Review" caption="Have you conducted the UNDAF Mid Term Review (MTR)?" keyColumn="HASUNDAFMID_TERM_REVIEW_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" keyColumn="HASUNDAFANNUAL_REVIEW_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNDAF Evaluation" caption="Have you conducted an UNDAF Evaluation within the past five years?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNDAF Evaluation" caption="Have you conducted an UNDAF Evaluation within the past five years?" keyColumn="HASUNDAFEVALUATION_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="MDG Country Report" caption="Has your country published an MDG Country Report this year?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="MDG Country Report" caption="Has your country published an MDG Country Report this year?" keyColumn="HASMDGCOUNTRY_REPORT_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="HACT" caption="Is a Harmonised Approach to Cash Transfer (HACT) being implemented at the country level?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="HACT" caption="Is a Harmonised Approach to Cash Transfer (HACT) being implemented at the country level?" keyColumn="COUNTRY_LEVELHACT_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UN Common Premises" caption="Does the UNCT have UN Common Premises?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UN Common Premises" caption="Does the UNCT have UN Common Premises?" keyColumn="HASUNCOMMON_PREMISES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Feasibility Study" caption="Has the UNCT ever developed a feasibility study for the implementation of common premises?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Feasibility Study" caption="Has the UNCT ever developed a feasibility study for the implementation of common premises?" keyColumn="HAS_FEASIBILITY_STUDY_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Shared Offices" caption="Do UNCT members have any shared offices at the sub-national level?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Shared Offices" caption="Do UNCT members have any shared offices at the sub-national level?" keyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Website UNCT" caption="Do you have a common website for the UNCT?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Website UNCT" caption="Do you have a common website for the UNCT?" keyColumn="HAS_COMMONUNCTWEBSITE_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Facebook UNCT" caption="Do you have a common Facebook page for the UNCT?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Facebook UNCT" caption="Do you have a common Facebook page for the UNCT?" keyColumn="HAS_COMMON_FACEBOOK_PAGE_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Twitter UNCT" caption="Do you have a common Twitter account for the UNCT?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Twitter UNCT" caption="Do you have a common Twitter account for the UNCT?" keyColumn="HAS_COMMON_TWITTER_ACCOUNT_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Guiding principles for messaging" caption="Do you have agreed guiding principles for common messaging from the UN?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Guiding principles for messaging" caption="Do you have agreed guiding principles for common messaging from the UN?" keyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Advocacy strategies to communicate" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Advocacy strategies to communicate" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" keyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="One Fund" caption="Do you have a One Fund at the country level?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="One Fund" caption="Do you have a One Fund at the country level?" keyColumn="HAS_ONE_FUND_COUNTRY_LEVEL_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="MDTFs" caption="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="MDTFs" caption="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?" keyColumn="HASMTDFS_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Code of conduct" caption="Does the UNCT have a code of conduct?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Code of conduct" caption="Does the UNCT have a code of conduct?" keyColumn="HAS_CODE_OF_CONDUCT_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Country Director" caption="Does the UNDP have a Country Director?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Country Director" caption="Does the UNDP have a Country Director?" keyColumn="HAS_COUNTRY_DIRECTOR_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" keyColumn="HASUNPEACE_KEEPING_MISSION_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" table="HasNewConflictAnalysis"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" keyColumn="LABEL"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Humanitarian to longer-term" caption="Has a UN strategy been developed to adapt coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Humanitarian to longer-term" caption="Has a UN strategy been developed to adapt coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts?" keyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" keyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" keyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" keyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <Dimension name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" keyColumn="HAS_JOINT_RISK_ASESSMENTS_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" keyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNCT ToR" caption="Are there an agreed upon UNCT ToR?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNCT ToR" caption="Are there an agreed upon UNCT ToR?" keyColumn="HAS_AGREEDUNCTTOR_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Mutual Accountability Framework" caption="Is there an agreed Mutual Accountability Framework?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Mutual Accountability Framework" caption="Is there an agreed Mutual Accountability Framework?" keyColumn="HAS_AGREEDMAF_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" keyColumn="HAS_AGREED_CONFLICT_RESOLUTION_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="South-South Cooperation" caption="Does the UNCT provide support on South-South Cooperation?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="South-South Cooperation" caption="Does the UNCT provide support on South-South Cooperation?" keyColumn="HAS_SUPPORTSSCOOPERATION_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" keyColumn="HASSWAPS_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Direct budget support" caption="Does the UNCT provide direct budget support?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Direct budget support" caption="Does the UNCT provide direct budget support?" keyColumn="HAS_DIRECT_BUDGET_SUPPORT_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Chair/co-chair aid effectiveness" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Chair/co-chair aid effectiveness" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" keyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and aid management?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and aid management?" keyColumn="HAS_CAPACITY_FOR_AID_MODALITIES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" keyColumn="HASAIMS_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Performance on aid effectiveness" caption="Does the UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Performance on aid effectiveness" caption="Does the UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework?" keyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNCT Human Rights Advisor" caption="Is there a UNCT Human Rights Advisor?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNCT Human Rights Advisor" caption="Is there a UNCT Human Rights Advisor?" keyColumn="HAS_HUMAN_RIGHTS_ADVISOR_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Human Rights-Based Approach" caption="Has a training on Human Rights-Based Approach been conducted in the current programme cycle?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Human Rights-Based Approach" caption="Has a training on Human Rights-Based Approach been conducted in the current programme cycle?" keyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" keyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNCT supported" caption="Has the UNCT supported the government in mainstreaming human rights into national development policies and programmes?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNCT supported" caption="Has the UNCT supported the government in mainstreaming human rights into national development policies and programmes?" keyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UPR" caption="Has the UNCT engaged with the Universal Periodic Review (UPR) process this year?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UPR" caption="Has the UNCT engaged with the Universal Periodic Review (UPR) process this year?" keyColumn="HASUPRPROCESS_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year?" keyColumn="HASUNHRTREATY_BODIES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" keyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" keyColumn="HASHRI_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNCT gender advisor" caption="Is there a UNCT gender advisor?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNCT gender advisor" caption="Is there a UNCT gender advisor?" keyColumn="HASUNCTGENDER_ADVISOR_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNDAF specific gender results" caption="If you have an UNDAF (or equivalent), does it have specific gender results at the outcome level?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNDAF specific gender results" caption="If you have an UNDAF (or equivalent), does it have specific gender results at the outcome level?" keyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Gender Equality Scorecard" caption="Has your UNCT implemented a Gender Equality Scorecard in the past FOUR years?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Gender Equality Scorecard" caption="Has your UNCT implemented a Gender Equality Scorecard in the past FOUR years?" keyColumn="HASUNCTGENDER_EQUALITY_SCORECARD_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" keyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Support to national statistical capacity" caption="Does the UNCT provide support to national statistical capacity?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Support to national statistical capacity" caption="Does the UNCT provide support to national statistical capacity?" keyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Citizen engagement or other crowd-sourcing" caption="Do you apply innovation, citizen engagement or other crowd-sourcing approaches during UN country programming?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Citizen engagement or other crowd-sourcing " caption="Do you apply innovation, citizen engagement or other crowd-sourcing approaches during UN country programming?" keyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNCT convene partners beyond the UN" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNCT convene partners beyond the UN" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" keyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" keyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency policies or portals?" table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency policies or portals?" keyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+
+            <Dimension name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives? " table='GlobalCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="GLOBAL_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives? " keyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_YES_NO"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
+
+        <!--<CalculatedMembers>-->
+            <!--<CalculatedMember name="Double" dimension="Measures" visible="true">-->
+                <!--<Formula>[Measures].[Count] * 2</Formula>-->
+            <!--</CalculatedMember>-->
+        <!--</CalculatedMembers>-->
 
         <MeasureGroups>
             <MeasureGroup name="Global Measures" table="GlobalCube">
                 <Measures>
                     <Measure name="Count" caption="Number of Countries" column="GLOBAL_ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="#YesFully" caption="# Yes, Fully (SOPs)" column="YES_FULLY_COUNT" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartially" caption="# Yes, Partially (SOPs)" column="YES_PARTIALLY_COUNT" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#No" caption="# No (SOPs)" column="NO_COUNT" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="countDAO" caption="Count of Delivering as One (DaO)" column="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="countDaOVision" caption="Count DaO Vision, Concept Note, or Roadmap" column="DAO_VISION_NOTE_ROADMAP_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="subnationalOffices" caption="Count Resident Coordinator Office (RCO) have Subnational offices" column="SUBNATIONAL_OFFICES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNDevelopmentAssistanceFramework" caption="Count UNDAF" column="HASUNDAF_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CommonCountryAssessment" caption="Count UNCT lead their own CCA" column="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="NationalDevelopmentPlan" caption="Count is there a National Development Plan" column="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="MDGAccelerationFramework" caption="Count of using the MDG Acceleration Framework (MAF)" column="HASMDGACCELERATION_FRAMEWORK_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="JointProgrammes" caption="Count of Joint Programmes" column="HAS_JOINT_PROGRAMMES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNDAFMidTermReview" caption="Count of Joint Programmes" column="HASUNDAFMID_TERM_REVIEW_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNDAFAnnualReview" caption="Count of conducted an UNDAF Annual Review in the last 12 months" column="HASUNDAFANNUAL_REVIEW_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNDAFEvaluation" caption="Count of conducted an UNDAF Evaluation within the past five years" column="HASUNDAFEVALUATION_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="MDGCountryReport" caption="Count of country published an MDG Country Report this year" column="HASMDGCOUNTRY_REPORT_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="HACT" caption="Count of HACT being implemented at the country level" column="COUNTRY_LEVELHACT_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNCommonPremises" caption="Count of UNCT have UN Common Premises" column="HASUNCOMMON_PREMISES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="FeasibilityStudy" caption="Count of UNCT ever developed a feasibility study for the implementation of common premises" column="HAS_FEASIBILITY_STUDY_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="SharedOffices" caption="Count of UNCT members have any shared offices at the sub-national level?" column="HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="WebsiteUNCT" caption="Count of common website for the UNCT" column="HAS_COMMONUNCTWEBSITE_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="FacebookUNCT" caption="Count of common Facebook page for the UNCT" column="HAS_COMMON_FACEBOOK_PAGE_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="TwitterUNCT" caption="Count of common Twitter page for the UNCT" column="HAS_COMMON_TWITTER_ACCOUNT_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="GuidingPrinciplesMessaging" caption="Count of agreed guiding principles for common messaging from the UN" column="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="AdvocacyStrategiesCommunicate" caption="Count of joint advocacy strategies to communicate on human rights or other normative issues" column="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="OneFund" caption="Count of One Fund at the country level" column="HAS_ONE_FUND_COUNTRY_LEVEL_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="MDTFs" caption="Count of Multi-Donor Trust Funds (MDTFs)" column="HASMTDFS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CodeOfConduct" caption="Count of UNCT have a code of conduct" column="HAS_CODE_OF_CONDUCT_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CountryDirector" caption="Count of UNDP have a Country Director" column="HAS_COUNTRY_DIRECTOR_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="HumanitarianToLongerTerm" caption="Count of coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts" column="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNCTToR" caption="Count of agreed upon UNCT ToR" column="HAS_AGREEDUNCTTOR_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="MutualAccountabilityFramework" caption="Count of agreed Mutual Accountability Framework" column="HAS_AGREEDMAF_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="ConflictResolutionMechanism" caption="Count of agreed Conflict Resolution Mechanism" column="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="SWAPs" caption="Count of UNCT participate in sector-wide approaches (SWAPs)" column="HASSWAPS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="DirectBudgetSupport" caption="Count of UNCT provide direct budget support" column="HAS_DIRECT_BUDGET_SUPPORT_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="ChairCochairAidEffectiveness" caption="Count of UNCT chair/co-chair aid effectiveness and coordination fora" column="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CapacityDevelopment for aid modalities" caption="Count of UNCT provide capacity development for use of aid modalities and aid management" column="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="PerformanceAidEffectiveness" caption="Count of UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework" column="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNCTHumanRightsAdvisor" caption="Count of UNCT Human Rights Advisor" column="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="HumanRightsBasedApproach" caption="Count of training on Human Rights-Based Approach been conducted in the current programme cycle" column="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="HumanRightsAnalysis" caption="Count of human rights analysis taken place over the past year" column="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNCTSupported" caption="Count of UNCT supported the government in mainstreaming human rights into national development policies and programmes" column="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UPR" caption="Count of UNCT engaged with the Universal Periodic Review (UPR) process this year" column="HASUPRPROCESS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNHumanRightsTreatyBodies" caption="Count of UNCT engaged with one or more UN human rights treaty bodies in the past year" column="HASUNHRTREATY_BODIES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="ReceiveVisitSpecialProcedure" caption="Count of country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year" column="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="NHRI" caption="Count of National Human Rights Institution (NHRI)" column="HASHRI_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNCTGenderAdvisor" caption="Count of UNCT gender advisor" column="HASUNCTGENDER_ADVISOR_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNDAFSpecificGenderResults" caption="Count of UNDAF (or equivalent), does it have specific gender results at the outcome level?" column="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="GenderEqualityScorecard" caption="Count of UNCT implemented a Gender Equality Scorecard in the past FOUR years" column="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CapacityBuildingUNStaff" caption="Count of capacity building for UN staff on the issue of gender mainstreaming in the past year" column="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="SupportNationalstatisticalcapacity" caption="Count of UNCT provide support to national statistical capacity" column="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CitizenEngagementCrowdSourcing" caption="Count of citizen engagement or other crowd-sourcing approaches during UN country programming" column="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNCTConvenePartnersBeyondUN" caption="Count of UNCT convene partners beyond the UN for specific policy activities" column="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="SustainableDevelopmentGoals" caption="Count of government requested support on their national response to Sustainable Development Goals" column="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="DataRransparencyPoliciesPortals" caption="Count of UNCT have open data/transparency policies or portals" column="HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CrossBorderInitiatives" caption="Count of UNCT participate in cross-border initiatives" column="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
+                    <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
                     <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
@@ -1439,11 +2413,72 @@
                     <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
-                    <FactLink dimension="Year" />
+                    <FactLink dimension="Delivering as One (DaO)" />
+                    <FactLink dimension="DaO Vision" />
+                    <FactLink dimension="Subnational offices" />
+                    <FactLink dimension="UN Development Assistance Framework" />
+                    <FactLink dimension="Common Country Assessment (CCA)" />
+                    <FactLink dimension="National Development Plan" />
+                    <FactLink dimension="MDG Acceleration Framework" />
+                    <FactLink dimension="Joint Programmes" />
+                    <FactLink dimension="UNDAF Mid Term Review" />
+                    <FactLink dimension="UNDAF Annual Review" />
+                    <FactLink dimension="UNDAF Evaluation" />
+                    <FactLink dimension="MDG Country Report" />
+                    <FactLink dimension="HACT" />
+                    <FactLink dimension="UN Common Premises" />
+                    <FactLink dimension="Feasibility Study" />
+                    <FactLink dimension="Shared Offices" />
+                    <FactLink dimension="Website UNCT" />
+                    <FactLink dimension="Facebook UNCT" />
+                    <FactLink dimension="Twitter UNCT" />
+                    <FactLink dimension="Guiding principles for messaging" />
+                    <FactLink dimension="Advocacy strategies to communicate" />
+                    <FactLink dimension="One Fund" />
+                    <FactLink dimension="MDTFs" />
+                    <FactLink dimension="Code of conduct" />
+                    <FactLink dimension="Country Director" />
+                    <FactLink dimension="UN peacekeeping" />
+                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
+                    <FactLink dimension="Humanitarian to longer-term" />
+                    <FactLink dimension="Disaster Risk Reduction" />
+
+
+                    <FactLink dimension="Key partners" />
+                    <FactLink dimension="Interaction World Bank" />
+                    <FactLink dimension="Joint risk assessments" />
+                    <FactLink dimension="Joint initiatives to manage risks" />
+                    <FactLink dimension="UNCT ToR" />
+                    <FactLink dimension="Mutual Accountability Framework" />
+                    <FactLink dimension="Conflict Resolution Mechanism" />
+                    <FactLink dimension="South-South Cooperation" />
+                    <FactLink dimension="SWAPs" />
+                    <FactLink dimension="Direct budget support" />
+                    <FactLink dimension="Chair/co-chair aid effectiveness" />
+                    <FactLink dimension="Capacity development for aid modalities" />
+                    <FactLink dimension="AIMS" />
+                    <FactLink dimension="Performance on aid effectiveness" />
+                    <FactLink dimension="UNCT Human Rights Advisor" />
+                    <FactLink dimension="Human Rights-Based Approach" />
+                    <FactLink dimension="Human rights analysis" />
+                    <FactLink dimension="UNCT supported" />
+                    <FactLink dimension="UPR" />
+                    <FactLink dimension="UN human rights treaty bodies" />
+                    <FactLink dimension="Receive a visit of a Special Procedure" />
+                    <FactLink dimension="NHRI" />
+                    <FactLink dimension="UNCT gender advisor" />
+                    <FactLink dimension="UNDAF specific gender results" />
+                    <FactLink dimension="Gender Equality Scorecard" />
+                    <FactLink dimension="Capacity building for UN staff" />
+                    <FactLink dimension="Support to national statistical capacity" />
+                    <FactLink dimension="Citizen engagement or other crowd-sourcing" />
+                    <FactLink dimension="UNCT convene partners beyond the UN" />
+                    <FactLink dimension="Sustainable Development Goals" />
+                    <FactLink dimension="Data/transparency policies or portals" />
+                    <FactLink dimension="Cross-border initiatives" />
                 </DimensionLinks>
             </MeasureGroup>
+
         </MeasureGroups>
     </Cube>
 
