@@ -493,7 +493,7 @@
     ***** CP1 UNCT Members
     *************************************************************************-->
     <Cube name="CP1 UNCT Members" caption="CP1 UNCT Members" visible="true"
-          cache="true" enabled="true">
+          cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -587,7 +587,7 @@
     <!--*************************************************************************
     ***** CP2 RCO Staff Member Details
     *************************************************************************-->
-    <Cube name="CP2RCOStaffMemberDetails" caption="CP2 RCO Staff Member Details" visible="true" cache="true" enabled="true">
+    <Cube name="CP2RCOStaffMemberDetails" caption="CP2 RCO Staff Member Details" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -688,7 +688,7 @@
     ***** CP3 Joint Programmes
     *************************************************************************-->
     <Cube name="CP3 Joint Programmes" caption="CP3 Joint Programmes" visible="true"
-          cache="true" enabled="true">
+          cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -752,7 +752,7 @@
     <!--*************************************************************************
     ***** CP4 Business Operation Areas
     *************************************************************************-->
-    <Cube name="CP4BOSAreas" caption="CP4 Business Operation Areas" visible="true" cache="true" enabled="true">
+    <Cube name="CP4BOSAreas" caption="CP4 Business Operation Areas" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -884,7 +884,7 @@
     ***** CP7 MDTF
     *************************************************************************-->
     <Cube name="CP7MDTF" caption="CP7 MDTF" visible="true"
-          cache="true" enabled="true">
+          cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -940,7 +940,7 @@
     ***** CP11 Budget Support
     *************************************************************************-->
     <Cube name="CP11 Budget Support" caption="CP11 Budget Support" visible="true"
-          cache="true" enabled="true">
+          cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -1009,7 +1009,7 @@
     ***** CP12 Human Rights Treaty Bodies
     *************************************************************************-->
     <Cube name="CP12 Human Rights Treaty Bodies" caption="CP12 Human Rights Treaty Bodies" visible="true"
-          cache="true" enabled="true">
+          cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -1103,7 +1103,7 @@
     ***** CP12 Special Procedure of Human Rights Council
     *************************************************************************-->
     <Cube name="CP12 Special Procedure of Human Rights Council" caption="CP12 Special Procedure of Human Rights Council" visible="true"
-          cache="true" enabled="true">
+          cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -1193,7 +1193,7 @@
     ***** CP13 Gender Equality Scorecard
     *************************************************************************-->
     <Cube name="CP13 Gender Equality Scorecard" caption="CP13 Gender Equality Scorecard" visible="true"
-          cache="true" enabled="true">
+          cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -1286,7 +1286,7 @@
     ***** Global Cube
     *************************************************************************-->
     <Cube name="Global Cube" caption="Global Cube" visible="true"
-          cache="true" enabled="true">
+          cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -2900,7 +2900,7 @@
     <!--*************************************************************************
     ***** Workplan Cube
     *************************************************************************-->
-    <Cube name="Workplan" caption="Workplan Analysis" visible="true" cache="true" enabled="true">
+    <Cube name="Workplan" caption="Workplan Analysis" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <!-- Define dimensions and attributes -->
         <Dimensions>
             <!--<Dimension name="Workflow" caption="Workflow" table='WorkplanCube' key="Dimension Id" visible="true">-->
