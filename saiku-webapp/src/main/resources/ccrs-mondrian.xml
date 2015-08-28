@@ -2231,30 +2231,11 @@
             </Dimension>
         </Dimensions>
 
-        <!--<CalculatedMembers>-->
-            <!--<CalculatedMember name="Double" dimension="Measures" visible="true">-->
-                <!--<Formula>[Measures].[Count] * 2</Formula>-->
-            <!--</CalculatedMember>-->
-        <!--</CalculatedMembers>-->
-
         <MeasureGroups>
-            <MeasureGroup name="Global Measures" table="GlobalCube">
+            <MeasureGroup name="SOPs (Yes, Fully) Measures" table="GlobalCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of Countries" column="GLOBAL_ID" datatype="Integer"
-                             aggregator="distinct-count" visible="true" formatString="#,###"/>
-
-                    <!--<Measure name="#YesFully" caption="# Yes, Fully (SOPs)" column="YES_FULLY_COUNT" datatype="Integer"-->
-                             <!--aggregator="sum" visible="true"/>-->
-
-                    <!--<Measure name="#YesPartially" caption="# Yes, Partially (SOPs)" column="YES_PARTIALLY_COUNT" datatype="Integer"-->
-                             <!--aggregator="sum" visible="true"/>-->
-
-                    <!--<Measure name="#No" caption="# No (SOPs)" column="NO_COUNT" datatype="Integer"-->
-                             <!--aggregator="sum" visible="true"/>-->
-
-
                     <Measure name="#YesFullySOP1" caption="# Yes, Fully SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_FULLY" datatype="Integer"
-                            aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true"/>
 
                     <Measure name="#YesFullySOP2" caption="# Yes, Fully SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
@@ -2297,9 +2278,95 @@
 
                     <Measure name="#YesFullySOP15" caption="# Yes, Fully SOP 15 - Country Communications Group" column="SOP15Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
+                    <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
+                    <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SoP4question" foreignKeyColumn="HAS_JOINT_ANNUAL_WORK_PLANS_ID"/>
+                    <ForeignKeyLink dimension="SoP5question" foreignKeyColumn="HAS_RESULTS_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="SoP6question" foreignKeyColumn="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SoP7question" foreignKeyColumn="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SoP8question" foreignKeyColumn="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP9question" foreignKeyColumn="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID"/>
+                    <ForeignKeyLink dimension="SoP10question" foreignKeyColumn="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID"/>
+                    <ForeignKeyLink dimension="SoP11question" foreignKeyColumn="HASBOSSTRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP12question" foreignKeyColumn="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID"/>
+                    <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
+                    <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
+                    <ForeignKeyLink dimension="Delivering as One (DaO)" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"/>
+                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
+                    <ForeignKeyLink dimension="Subnational offices" foreignKeyColumn="SUBNATIONAL_OFFICES_COUNT"/>
+                    <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF_COUNT"/>
+                    <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"/>
+                    <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"/>
+                    <ForeignKeyLink dimension="MDG Acceleration Framework" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK_COUNT"/>
+                    <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION_COUNT"/>
+                    <ForeignKeyLink dimension="MDG Country Report"  foreignKeyColumn="HASMDGCOUNTRY_REPORT_COUNT"/>
+                    <ForeignKeyLink dimension="HACT"  foreignKeyColumn="COUNTRY_LEVELHACT_COUNT"/>
+                    <ForeignKeyLink dimension="UN Common Premises"  foreignKeyColumn="HASUNCOMMON_PREMISES_COUNT"/>
+                    <ForeignKeyLink dimension="Feasibility Study"  foreignKeyColumn="HAS_FEASIBILITY_STUDY_COUNT"/>
+                    <ForeignKeyLink dimension="Shared Offices"  foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT"/>
+                    <ForeignKeyLink dimension="Website UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE_COUNT"/>
+                    <ForeignKeyLink dimension="Facebook UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE_COUNT"/>
+                    <ForeignKeyLink dimension="Twitter UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT_COUNT"/>
+                    <ForeignKeyLink dimension="Guiding principles for messaging"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT"/>
+                    <ForeignKeyLink dimension="Advocacy strategies to communicate"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT"/>
+                    <ForeignKeyLink dimension="One Fund"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL_COUNT"/>
+                    <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
+                    <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
+                    <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
+                    <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION_COUNT"/>
+                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
+                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"/>
+                    <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"/>
+                    <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"/>
+                    <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"/>
+                    <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
+                    <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR_COUNT"/>
+                    <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF_COUNT"/>
+                    <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"/>
+                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION_COUNT"/>
+                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_COUNT"/>
+                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT_COUNT"/>
+                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"/>
+                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"/>
+                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS_COUNT"/>
+                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"/>
+                    <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"/>
+                    <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT supported" foreignKeyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"/>
+                    <ForeignKeyLink dimension="UPR" foreignKeyColumn="HASUPRPROCESS_COUNT"/>
+                    <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES_COUNT"/>
+                    <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"/>
+                    <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"/>
+                    <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"/>
+                    <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"/>
+                    <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT"/>
+                    <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_COUNT"/>
+                    <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_COUNT"/>
+                    <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT"/>
+                    <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT"/>
+                </DimensionLinks>
+            </MeasureGroup>
 
+            <MeasureGroup name="SOPs (Yes, Partially) Measures" table="GlobalCube">
+                <Measures>
                     <Measure name="#YesPartiallySOP1" caption="# Yes, Partially SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_PARTIALLY" datatype="Integer"
-                            aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true"/>
 
                     <Measure name="#YesPartiallySOP2" caption="# Yes, Partially SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
@@ -2342,9 +2409,95 @@
 
                     <Measure name="#YesPartiallySOP15" caption="# Yes, Partially SOP 15 - Country Communications Group" column="SOP15Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
+                    <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
+                    <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SoP4question" foreignKeyColumn="HAS_JOINT_ANNUAL_WORK_PLANS_ID"/>
+                    <ForeignKeyLink dimension="SoP5question" foreignKeyColumn="HAS_RESULTS_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="SoP6question" foreignKeyColumn="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SoP7question" foreignKeyColumn="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SoP8question" foreignKeyColumn="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP9question" foreignKeyColumn="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID"/>
+                    <ForeignKeyLink dimension="SoP10question" foreignKeyColumn="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID"/>
+                    <ForeignKeyLink dimension="SoP11question" foreignKeyColumn="HASBOSSTRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP12question" foreignKeyColumn="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID"/>
+                    <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
+                    <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
+                    <ForeignKeyLink dimension="Delivering as One (DaO)" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"/>
+                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
+                    <ForeignKeyLink dimension="Subnational offices" foreignKeyColumn="SUBNATIONAL_OFFICES_COUNT"/>
+                    <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF_COUNT"/>
+                    <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"/>
+                    <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"/>
+                    <ForeignKeyLink dimension="MDG Acceleration Framework" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK_COUNT"/>
+                    <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION_COUNT"/>
+                    <ForeignKeyLink dimension="MDG Country Report"  foreignKeyColumn="HASMDGCOUNTRY_REPORT_COUNT"/>
+                    <ForeignKeyLink dimension="HACT"  foreignKeyColumn="COUNTRY_LEVELHACT_COUNT"/>
+                    <ForeignKeyLink dimension="UN Common Premises"  foreignKeyColumn="HASUNCOMMON_PREMISES_COUNT"/>
+                    <ForeignKeyLink dimension="Feasibility Study"  foreignKeyColumn="HAS_FEASIBILITY_STUDY_COUNT"/>
+                    <ForeignKeyLink dimension="Shared Offices"  foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT"/>
+                    <ForeignKeyLink dimension="Website UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE_COUNT"/>
+                    <ForeignKeyLink dimension="Facebook UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE_COUNT"/>
+                    <ForeignKeyLink dimension="Twitter UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT_COUNT"/>
+                    <ForeignKeyLink dimension="Guiding principles for messaging"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT"/>
+                    <ForeignKeyLink dimension="Advocacy strategies to communicate"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT"/>
+                    <ForeignKeyLink dimension="One Fund"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL_COUNT"/>
+                    <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
+                    <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
+                    <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
+                    <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION_COUNT"/>
+                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
+                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"/>
+                    <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"/>
+                    <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"/>
+                    <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"/>
+                    <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
+                    <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR_COUNT"/>
+                    <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF_COUNT"/>
+                    <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"/>
+                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION_COUNT"/>
+                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_COUNT"/>
+                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT_COUNT"/>
+                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"/>
+                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"/>
+                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS_COUNT"/>
+                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"/>
+                    <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"/>
+                    <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT supported" foreignKeyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"/>
+                    <ForeignKeyLink dimension="UPR" foreignKeyColumn="HASUPRPROCESS_COUNT"/>
+                    <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES_COUNT"/>
+                    <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"/>
+                    <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"/>
+                    <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"/>
+                    <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"/>
+                    <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT"/>
+                    <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_COUNT"/>
+                    <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_COUNT"/>
+                    <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT"/>
+                    <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT"/>
+                </DimensionLinks>
+            </MeasureGroup>
 
+            <MeasureGroup name="SOPs (No) Measures" table="GlobalCube">
+                <Measures>
                     <Measure name="#NoSOP1" caption="# No SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_NO" datatype="Integer"
-                            aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true"/>
 
                     <Measure name="#NoSOP2" caption="# No SOP 2 - Annual Report on Joint Results" column="SOP2Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
@@ -2387,6 +2540,95 @@
 
                     <Measure name="#NoSOP15" caption="# No SOP 15 - Country Communications Group" column="SOP15Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
+                    <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
+                    <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SoP4question" foreignKeyColumn="HAS_JOINT_ANNUAL_WORK_PLANS_ID"/>
+                    <ForeignKeyLink dimension="SoP5question" foreignKeyColumn="HAS_RESULTS_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="SoP6question" foreignKeyColumn="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SoP7question" foreignKeyColumn="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SoP8question" foreignKeyColumn="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP9question" foreignKeyColumn="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID"/>
+                    <ForeignKeyLink dimension="SoP10question" foreignKeyColumn="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID"/>
+                    <ForeignKeyLink dimension="SoP11question" foreignKeyColumn="HASBOSSTRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP12question" foreignKeyColumn="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID"/>
+                    <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
+                    <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
+                    <ForeignKeyLink dimension="Delivering as One (DaO)" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"/>
+                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
+                    <ForeignKeyLink dimension="Subnational offices" foreignKeyColumn="SUBNATIONAL_OFFICES_COUNT"/>
+                    <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF_COUNT"/>
+                    <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"/>
+                    <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"/>
+                    <ForeignKeyLink dimension="MDG Acceleration Framework" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK_COUNT"/>
+                    <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION_COUNT"/>
+                    <ForeignKeyLink dimension="MDG Country Report"  foreignKeyColumn="HASMDGCOUNTRY_REPORT_COUNT"/>
+                    <ForeignKeyLink dimension="HACT"  foreignKeyColumn="COUNTRY_LEVELHACT_COUNT"/>
+                    <ForeignKeyLink dimension="UN Common Premises"  foreignKeyColumn="HASUNCOMMON_PREMISES_COUNT"/>
+                    <ForeignKeyLink dimension="Feasibility Study"  foreignKeyColumn="HAS_FEASIBILITY_STUDY_COUNT"/>
+                    <ForeignKeyLink dimension="Shared Offices"  foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT"/>
+                    <ForeignKeyLink dimension="Website UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE_COUNT"/>
+                    <ForeignKeyLink dimension="Facebook UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE_COUNT"/>
+                    <ForeignKeyLink dimension="Twitter UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT_COUNT"/>
+                    <ForeignKeyLink dimension="Guiding principles for messaging"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT"/>
+                    <ForeignKeyLink dimension="Advocacy strategies to communicate"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT"/>
+                    <ForeignKeyLink dimension="One Fund"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL_COUNT"/>
+                    <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
+                    <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
+                    <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
+                    <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION_COUNT"/>
+                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
+                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"/>
+                    <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"/>
+                    <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"/>
+                    <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"/>
+                    <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
+                    <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR_COUNT"/>
+                    <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF_COUNT"/>
+                    <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"/>
+                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION_COUNT"/>
+                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_COUNT"/>
+                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT_COUNT"/>
+                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"/>
+                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"/>
+                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS_COUNT"/>
+                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"/>
+                    <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"/>
+                    <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT supported" foreignKeyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"/>
+                    <ForeignKeyLink dimension="UPR" foreignKeyColumn="HASUPRPROCESS_COUNT"/>
+                    <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES_COUNT"/>
+                    <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"/>
+                    <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR_COUNT"/>
+                    <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"/>
+                    <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"/>
+                    <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"/>
+                    <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT"/>
+                    <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_COUNT"/>
+                    <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_COUNT"/>
+                    <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_COUNT"/>
+                    <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT"/>
+                    <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT"/>
+                </DimensionLinks>
+            </MeasureGroup>
+
+            <MeasureGroup name="Global Measures" table="GlobalCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of Countries" column="GLOBAL_ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="countDAO" caption="Count of Delivering as One (DaO)" column="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" />
@@ -2588,7 +2830,6 @@
                     <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-
                     <ForeignKeyLink dimension="Delivering as One (DaO)" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
                     <ForeignKeyLink dimension="Subnational offices" foreignKeyColumn="SUBNATIONAL_OFFICES_COUNT"/>
