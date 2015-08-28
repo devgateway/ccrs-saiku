@@ -17,7 +17,7 @@
 
 }
 .fields_list .fields_list_header {
-    border-bottom: 1px solid #CCC; 
+    border-bottom: 1px solid #CCC;
     float: left;
     font-weight: bold;
     padding: 3px 5px 3px 13px;
@@ -38,7 +38,7 @@
     background: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#efefef));
     background: -moz-linear-gradient(top, #ddd 0%, #efefef 100%);
     */
-    
+
 }
 
 
@@ -72,7 +72,7 @@ span.clear_axis {
 }
 
 .fields_list .on {
-    background-color: #CCC ;    
+    background-color: #CCC ;
 }
 
 
@@ -101,7 +101,7 @@ ul.hierarchy {
   display: block;
   min-height: 30px;
   padding-bottom: 5px;
-  
+
 }
 
 li.selection .hgroup {
@@ -117,7 +117,7 @@ li.selection .hgroup:hover {
     background-color: #EDEDED;
 }
 
-.fields_list .fields_list_body ul.hierarchy,  
+.fields_list .fields_list_body ul.hierarchy,
 .fields_list_body.details li {
     padding-left: 0px;
 }
@@ -134,7 +134,7 @@ li.selection .hgroup:hover {
     font-weight: bold;
 }
 
-.fields_list .fields_list_body ul.hierarchy li, 
+.fields_list .fields_list_body ul.hierarchy li,
 .fields_list_body.details li,
 .fields_list_body li.placeholder,
 .fields_list_body li.selection {
@@ -143,9 +143,9 @@ li.selection .hgroup:hover {
     text-align: left;
     white-space:nowrap;
     cursor: pointer;
-    
+
 }
-.fields_list .fields_list_body ul.hierarchy li, 
+.fields_list .fields_list_body ul.hierarchy li,
 .fields_list_body.details li,
 .fields_list_body li.placeholder {
     padding: 3px;
@@ -173,6 +173,7 @@ li.selection .hgroup:hover {
 
 .fields_list .fields_list_body ul.hierarchy li a , .fields_list_body.details li a {
     padding: 2px 0px 2px 10px;
+	white-space: pre-wrap; !important;
 }
 
 /*
@@ -195,7 +196,7 @@ li.selection .hgroup:hover {
 }
 
 .workspace_fields .d_level {
-    /* 
+    /*
     background: #e5f6ff;
     background: -webkit-gradient(linear, left top, left bottom, from(#e0e9ef), to(#c2d5e2));
     background: -moz-linear-gradient(top, #e0e9ef 0%, #c2d5e2 100%);
@@ -204,7 +205,7 @@ li.selection .hgroup:hover {
     */
     color: #2a6085;
     /* display: inline !important; */
-    
+
 }
 .workspace_fields .d_level:hover {
     background: #C2DAEF;
@@ -294,7 +295,7 @@ li.selection .hgroup:hover {
     padding: 0 !important;
     white-space: nowrap;
 }
-.dimension_tree ul .ui-draggable-dragging, 
+.dimension_tree ul .ui-draggable-dragging,
 .workspace_fields ul  .ui-draggable-dragging,
 .workspace_fields li.ui-sortable-helper {
     background: #e5f6ff !important;
