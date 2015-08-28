@@ -1325,7 +1325,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP1question" caption="SoP1 Question" keyColumn="LABEL"
+                    <Attribute name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1336,7 +1336,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP2question" caption="SoP2 Question" keyColumn="LABEL"
+                    <Attribute name="SoP2question" caption="SoP2 Annual Report on Joint Results" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1347,7 +1347,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP3question" caption="SoP3 Question" keyColumn="LABEL"
+                    <Attribute name="SoP3question" caption="SoP3 Signed UNDAF" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1358,7 +1358,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP4question" caption="SoP4 Question" keyColumn="LABEL"
+                    <Attribute name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1369,7 +1369,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP5question" caption="SoP5 Question" keyColumn="LABEL"
+                    <Attribute name="SoP5question" caption="SoP5 Results Groups Established" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1380,7 +1380,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP6question" caption="SoP6 Question" keyColumn="LABEL"
+                    <Attribute name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1391,7 +1391,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP7question" caption="SoP7 Question" keyColumn="LABEL"
+                    <Attribute name="SoP7question" caption="SoP7 Annual Common Budgetary Framework" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1402,7 +1402,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP8question" caption="SoP8 Question" keyColumn="LABEL"
+                    <Attribute name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1413,7 +1413,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP9question" caption="SoP9 Question" keyColumn="LABEL"
+                    <Attribute name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1424,7 +1424,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP10question" caption="SoP10 Question" keyColumn="LABEL"
+                    <Attribute name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1435,7 +1435,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP11question" caption="SoP11 Question" keyColumn="LABEL"
+                    <Attribute name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1446,7 +1446,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP12question" caption="SoP12 Question" keyColumn="LABEL"
+                    <Attribute name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1457,7 +1457,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP13question" caption="SoP13 Question" keyColumn="LABEL"
+                    <Attribute name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1468,7 +1468,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP14question" caption="SoP14 Question" keyColumn="LABEL"
+                    <Attribute name="SoP14question" caption="SoP14 Joint Communication Strategy" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1479,7 +1479,7 @@
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP15question" caption="SoP15 Question" keyColumn="LABEL"
+                    <Attribute name="SoP15question" caption="SoP15 Country Communications Group" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -2253,154 +2253,139 @@
                              <!--aggregator="sum" visible="true"/>-->
 
 
-                    <!--Annual Report on Joint Results-->
-                    <!--Signed UNDAF-->
-                    <!--Joint Workplans (for Results Groups)-->
-                    <!--Results Groups Established-->
-                    <!--Medium-Term Common Budgetary Framework-->
-                    <!--Annual Common Budgetary Framework-->
-                    <!--Joint Resource Mobilization Strategy-->
-                    <!--Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements-->
-                    <!--Joint Decision-Making by UNCT-->
-                    <!--Business Operations Strategy Endorsed by UNCT-->
-                    <!--OMT Chaired by Head of Agency-->
-                    <!--Operations Costs/ Budgets in Medium Term Common Budgetary Framework-->
-                    <!--Joint Communication Strategy-->
-                    <!--Country Communications Group-->
-
                     <Measure name="#YesFullySOP1" caption="# Yes, Fully SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_FULLY" datatype="Integer"
                             aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP2" caption="# Yes, Fully SOP 2" column="SOP2Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP2" caption="# Yes, Fully SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP3" caption="# Yes, Fully SOP 3" column="SOP3Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP3" caption="# Yes, Fully SOP 3 - Signed UNDAF" column="SOP3Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP4" caption="# Yes, Fully SOP 4" column="SOP4Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP4" caption="# Yes, Fully SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP5" caption="# Yes, Fully SOP 5" column="SOP5Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP5" caption="# Yes, Fully SOP 5 - Results Groups Established" column="SOP5Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP6" caption="# Yes, Fully SOP 6" column="SOP6Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP6" caption="# Yes, Fully SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP7" caption="# Yes, Fully SOP 7" column="SOP7Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP7" caption="# Yes, Fully SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP8" caption="# Yes, Fully SOP 8" column="SOP8Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP8" caption="# Yes, Fully SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP9" caption="# Yes, Fully SOP 9" column="SOP9Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP9" caption="# Yes, Fully SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP10" caption="# Yes, Fully SOP 10" column="SOP10Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP10" caption="# Yes, Fully SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP11" caption="# Yes, Fully SOP 11" column="SOP11Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP11" caption="# Yes, Fully SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP12" caption="# Yes, Fully SOP 12" column="SOP12Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP12" caption="# Yes, Fully SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP13" caption="# Yes, Fully SOP 13" column="SOP13Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP13" caption="# Yes, Fully SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP14" caption="# Yes, Fully SOP 14" column="SOP14Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP14" caption="# Yes, Fully SOP 14 - Joint Communication Strategy" column="SOP14Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesFullySOP15" caption="# Yes, Fully SOP 15" column="SOP15Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP15" caption="# Yes, Fully SOP 15 - Country Communications Group" column="SOP15Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
                     <Measure name="#YesPartiallySOP1" caption="# Yes, Partially SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_PARTIALLY" datatype="Integer"
                             aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP2" caption="# Yes, Partially SOP 2" column="SOP2Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP2" caption="# Yes, Partially SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP3" caption="# Yes, Partially SOP 3" column="SOP3Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP3" caption="# Yes, Partially SOP 3 - Signed UNDAF" column="SOP3Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP4" caption="# Yes, Partially SOP 4" column="SOP4Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP4" caption="# Yes, Partially SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP5" caption="# Yes, Partially SOP 5" column="SOP5Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP5" caption="# Yes, Partially SOP 5 - Results Groups Established" column="SOP5Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP6" caption="# Yes, Partially SOP 6" column="SOP6Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP6" caption="# Yes, Partially SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP7" caption="# Yes, Partially SOP 7" column="SOP7Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP7" caption="# Yes, Partially SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP8" caption="# Yes, Partially SOP 8" column="SOP8Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP8" caption="# Yes, Partially SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP9" caption="# Yes, Partially SOP 9" column="SOP9Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP9" caption="# Yes, Partially SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP10" caption="# Yes, Partially SOP 10" column="SOP10Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP10" caption="# Yes, Partially SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP11" caption="# Yes, Partially SOP 11" column="SOP11Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP11" caption="# Yes, Partially SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP12" caption="# Yes, Partially SOP 12" column="SOP12Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP12" caption="# Yes, Partially SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP13" caption="# Yes, Partially SOP 13" column="SOP13Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP13" caption="# Yes, Partially SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP14" caption="# Yes, Partially SOP 14" column="SOP14Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP14" caption="# Yes, Partially SOP 14 - Joint Communication Strategy" column="SOP14Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartiallySOP15" caption="# Yes, Partially SOP 15" column="SOP15Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP15" caption="# Yes, Partially SOP 15 - Country Communications Group" column="SOP15Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
                     <Measure name="#NoSOP1" caption="# No SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_NO" datatype="Integer"
                             aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP2" caption="# No SOP 2" column="SOP2Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP2" caption="# No SOP 2 - Annual Report on Joint Results" column="SOP2Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP3" caption="# No SOP 3" column="SOP3Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP3" caption="# No SOP 3 - Signed UNDAF" column="SOP3Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP4" caption="# No SOP 4" column="SOP4Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP4" caption="# No SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP5" caption="# No SOP 5" column="SOP5Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP5" caption="# No SOP 5 - Results Groups Established" column="SOP5Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP6" caption="# No SOP 6" column="SOP6Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP6" caption="# No SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP7" caption="# No SOP 7" column="SOP7Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP7" caption="# No SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP8" caption="# No SOP 8" column="SOP8Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP8" caption="# No SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP9" caption="# No SOP 9" column="SOP9Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP9" caption="# No SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP10" caption="# No SOP 10" column="SOP10Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP10" caption="# No SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP11" caption="# No SOP 11" column="SOP11Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP11" caption="# No SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP12" caption="# No SOP 12" column="SOP12Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP12" caption="# No SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP13" caption="# No SOP 13" column="SOP13Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP13" caption="# No SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP14" caption="# No SOP 14" column="SOP14Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP14" caption="# No SOP 14 - Joint Communication Strategy" column="SOP14Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#NoSOP15" caption="# No SOP 15" column="SOP15Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP15" caption="# No SOP 15 - Country Communications Group" column="SOP15Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
                     <Measure name="countDAO" caption="Count of Delivering as One (DaO)" column="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"
