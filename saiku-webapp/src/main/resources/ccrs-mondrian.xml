@@ -6,12 +6,21 @@
     </Annotations>
 
     <PhysicalSchema>
-        <!-- Used by Agency which has 90% of all categories-->
-        <Table name="CATEGORY">
-            <Key>
-                <Column name="ID"/>
-            </Key>
-        </Table>
+        <Query alias="Agency">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Agency']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="BudgetType">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='BudgetType']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="BASE_COUNTRY">
             <ExpressionView>
@@ -370,38 +379,6 @@
 
         <!--
         GLOBAL_CUBE is a view for this query:
-
-        create view GLOBAL_CUBE as
-            select cp1.ID as GLOBAL_ID, cp1.DESIGNATION as GLOBAL_DESIGNATION, cp1.ENTITY_YEAR as GLOBAL_ENTITY_YEAR, cp1.*
-            from
-                CP1GENERAL_PROFILE cp1,
-                CP2COORDINATION_CAPACITY cp2,
-                CP3COMMON_COUNTRY_PROGRAMMING cp3,
-                CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4,
-                CP5COMMON_PREMISES_PROFILE cp5,
-                CP6JOINT_COMMUNICATION_ADVOCACY cp6,
-                CP7JOINT_FUNDING_PROFILE cp7,
-                CP8JOINT_LEADERSHIP_MANAGEMENT cp8,
-                CP9POST_CRISIS_PROFILE cp9,
-                CP10DELIVERING_AS_ONE_PROFILE cp10,
-                CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11,
-                CP12HUMAN_RIGHTS_PROFILE cp12,
-                CP13GENDER_PROFILE cp13,
-                CP14EMERGING_ISSUES cp14
-            WHERE
-                cp1.DESIGNATION = cp2.DESIGNATION AND
-                cp2.DESIGNATION = cp3.DESIGNATION AND
-                cp3.DESIGNATION = cp4.DESIGNATION AND
-                cp4.DESIGNATION = cp5.DESIGNATION AND
-                cp5.DESIGNATION = cp6.DESIGNATION AND
-                cp6.DESIGNATION = cp7.DESIGNATION AND
-                cp7.DESIGNATION = cp8.DESIGNATION AND
-                cp8.DESIGNATION = cp9.DESIGNATION AND
-                cp9.DESIGNATION = cp10.DESIGNATION AND
-                cp10.DESIGNATION = cp11.DESIGNATION AND
-                cp11.DESIGNATION = cp12.DESIGNATION AND
-                cp12.DESIGNATION = cp13.DESIGNATION AND
-                cp13.DESIGNATION = cp14.DESIGNATION;
         -->
 
         <InlineTable alias="YES_NO_TABLE_1"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
@@ -2266,13 +2243,164 @@
                     <Measure name="Count" caption="Number of Countries" column="GLOBAL_ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="#YesFully" caption="# Yes, Fully (SOPs)" column="YES_FULLY_COUNT" datatype="Integer"
+                    <!--<Measure name="#YesFully" caption="# Yes, Fully (SOPs)" column="YES_FULLY_COUNT" datatype="Integer"-->
+                             <!--aggregator="sum" visible="true"/>-->
+
+                    <!--<Measure name="#YesPartially" caption="# Yes, Partially (SOPs)" column="YES_PARTIALLY_COUNT" datatype="Integer"-->
+                             <!--aggregator="sum" visible="true"/>-->
+
+                    <!--<Measure name="#No" caption="# No (SOPs)" column="NO_COUNT" datatype="Integer"-->
+                             <!--aggregator="sum" visible="true"/>-->
+
+
+                    <!--Annual Report on Joint Results-->
+                    <!--Signed UNDAF-->
+                    <!--Joint Workplans (for Results Groups)-->
+                    <!--Results Groups Established-->
+                    <!--Medium-Term Common Budgetary Framework-->
+                    <!--Annual Common Budgetary Framework-->
+                    <!--Joint Resource Mobilization Strategy-->
+                    <!--Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements-->
+                    <!--Joint Decision-Making by UNCT-->
+                    <!--Business Operations Strategy Endorsed by UNCT-->
+                    <!--OMT Chaired by Head of Agency-->
+                    <!--Operations Costs/ Budgets in Medium Term Common Budgetary Framework-->
+                    <!--Joint Communication Strategy-->
+                    <!--Country Communications Group-->
+
+                    <Measure name="#YesFullySOP1" caption="# Yes, Fully SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_FULLY" datatype="Integer"
+                            aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP2" caption="# Yes, Fully SOP 2" column="SOP2Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#YesPartially" caption="# Yes, Partially (SOPs)" column="YES_PARTIALLY_COUNT" datatype="Integer"
+                    <Measure name="#YesFullySOP3" caption="# Yes, Fully SOP 3" column="SOP3Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
-                    <Measure name="#No" caption="# No (SOPs)" column="NO_COUNT" datatype="Integer"
+                    <Measure name="#YesFullySOP4" caption="# Yes, Fully SOP 4" column="SOP4Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP5" caption="# Yes, Fully SOP 5" column="SOP5Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP6" caption="# Yes, Fully SOP 6" column="SOP6Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP7" caption="# Yes, Fully SOP 7" column="SOP7Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP8" caption="# Yes, Fully SOP 8" column="SOP8Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP9" caption="# Yes, Fully SOP 9" column="SOP9Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP10" caption="# Yes, Fully SOP 10" column="SOP10Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP11" caption="# Yes, Fully SOP 11" column="SOP11Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP12" caption="# Yes, Fully SOP 12" column="SOP12Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP13" caption="# Yes, Fully SOP 13" column="SOP13Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP14" caption="# Yes, Fully SOP 14" column="SOP14Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesFullySOP15" caption="# Yes, Fully SOP 15" column="SOP15Q_YES_FULLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP1" caption="# Yes, Partially SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_PARTIALLY" datatype="Integer"
+                            aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP2" caption="# Yes, Partially SOP 2" column="SOP2Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP3" caption="# Yes, Partially SOP 3" column="SOP3Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP4" caption="# Yes, Partially SOP 4" column="SOP4Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP5" caption="# Yes, Partially SOP 5" column="SOP5Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP6" caption="# Yes, Partially SOP 6" column="SOP6Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP7" caption="# Yes, Partially SOP 7" column="SOP7Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP8" caption="# Yes, Partially SOP 8" column="SOP8Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP9" caption="# Yes, Partially SOP 9" column="SOP9Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP10" caption="# Yes, Partially SOP 10" column="SOP10Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP11" caption="# Yes, Partially SOP 11" column="SOP11Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP12" caption="# Yes, Partially SOP 12" column="SOP12Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP13" caption="# Yes, Partially SOP 13" column="SOP13Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP14" caption="# Yes, Partially SOP 14" column="SOP14Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#YesPartiallySOP15" caption="# Yes, Partially SOP 15" column="SOP15Q_YES_PARTIALLY" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP1" caption="# No SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_NO" datatype="Integer"
+                            aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP2" caption="# No SOP 2" column="SOP2Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP3" caption="# No SOP 3" column="SOP3Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP4" caption="# No SOP 4" column="SOP4Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP5" caption="# No SOP 5" column="SOP5Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP6" caption="# No SOP 6" column="SOP6Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP7" caption="# No SOP 7" column="SOP7Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP8" caption="# No SOP 8" column="SOP8Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP9" caption="# No SOP 9" column="SOP9Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP10" caption="# No SOP 10" column="SOP10Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP11" caption="# No SOP 11" column="SOP11Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP12" caption="# No SOP 12" column="SOP12Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP13" caption="# No SOP 13" column="SOP13Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP14" caption="# No SOP 14" column="SOP14Q_NO" datatype="Integer"
+                             aggregator="sum" visible="true"/>
+
+                    <Measure name="#NoSOP15" caption="# No SOP 15" column="SOP15Q_NO" datatype="Integer"
                              aggregator="sum" visible="true"/>
 
                     <Measure name="countDAO" caption="Count of Delivering as One (DaO)" column="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"
@@ -2625,7 +2753,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Lead Agency" caption="Lead Agency" table='CATEGORY' key="Dimension Id" visible="true">
+            <Dimension name="Lead Agency" caption="Lead Agency" table='Agency' key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
@@ -2661,7 +2789,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Budget Type" caption="Budget Type" table='CATEGORY' key="Dimension Id" visible="true">
+            <Dimension name="Budget Type" caption="Budget Type" table='BudgetType' key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
