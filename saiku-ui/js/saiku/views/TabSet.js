@@ -7,6 +7,7 @@
 var TabSet = Backbone.View.extend({
 	className: 'tabs',
 	queryCount: 0,
+	dashCount: 0,
 
 	events: {
 		'click a.pager': 'togglePager' ,
@@ -33,7 +34,12 @@ var TabSet = Backbone.View.extend({
 	 */
 	add: function(content, close) {
 		// Add it to the set
-		this.queryCount++;
+		if (content.pluginName === 'dashboards') {
+			this.dashCount++;
+		}
+		else {
+			this.queryCount++;
+		}
 
 		var tab = new Tab({ content: content, close: close});
 		this._tabs.push(tab);
@@ -84,8 +90,7 @@ var TabSet = Backbone.View.extend({
 	remove: function(tab) {
 		// Add another tab if the last one has been deleted
 		if (this._tabs.length == 1) {
-			//this.add(new Workspace());
-
+			this.add(new Workspace());
 		}
 
 		for (var i = 0, len = this._tabs.length; i < len; i++) {

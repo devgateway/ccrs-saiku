@@ -19,20 +19,27 @@ package org.saiku.service.datasource;
 import org.saiku.database.dto.MondrianSchema;
 import org.saiku.datasources.connection.RepositoryFile;
 import org.saiku.datasources.datasource.SaikuDatasource;
-import org.saiku.repository.*;
+import org.saiku.repository.AclEntry;
+import org.saiku.repository.DataSource;
+import org.saiku.repository.IRepositoryManager;
+import org.saiku.repository.IRepositoryObject;
+import org.saiku.repository.JackRabbitRepositoryManager;
 import org.saiku.service.importer.LegacyImporter;
 import org.saiku.service.importer.LegacyImporterImpl;
 import org.saiku.service.user.UserService;
 import org.saiku.service.util.exception.SaikuServiceException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.*;
-
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * A Datasource Manager for the Saiku Repository API layer.
@@ -45,12 +52,15 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     private String configurationpath;
     private String datadir;
     IRepositoryManager irm;
+    private String foodmarturl;
     private String foodmartdir;
     private String foodmartschema;
-    private String foodmarturl;
+    private String repopassword;
+    private String oldpassword;
 
     public void load() {
-        irm = JackRabbitRepositoryManager.getJackRabbitRepositoryManager(configurationpath, datadir);
+        irm = JackRabbitRepositoryManager.getJackRabbitRepositoryManager(configurationpath, datadir, repopassword,
+                oldpassword);
         try {
             irm.start(userService);
         } catch (RepositoryException e) {
@@ -70,23 +80,35 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
                 for (DataSource file : exporteddatasources) {
                     if (file.getName() != null && file.getType() != null) {
                         Properties props = new Properties();
-                        props.put("driver", file.getDriver());
-                        props.put("location", file.getLocation());
-                        props.put("username", file.getUsername());
-                        props.put("password", file.getPassword());
-                        props.put("path", file.getPath());
-                        props.put("id", file.getId());
+                        if(file.getDriver()!= null) {
+                            props.put("driver", file.getDriver());
+                        }
+                        if(file.getLocation()!=null) {
+                            props.put("location", file.getLocation());
+                        }
+                        if(file.getUsername()!=null) {
+                            props.put("username", file.getUsername());
+                        }
+                        if(file.getPassword()!=null) {
+                            props.put("password", file.getPassword());
+                        }
+                        if(file.getPath()!=null) {
+                            props.put("path", file.getPath());
+                        }
+                        if(file.getId()!=null) {
+                            props.put("id", file.getId());
+                        }
                         if(file.getSecurityenabled()!=null) {
-                          props.put("security.enabled", file.getSecurityenabled());
+                            props.put("security.enabled", file.getSecurityenabled());
                         }
                         if(file.getSecuritytype()!=null) {
-                          props.put("security.type", file.getSecuritytype());
+                            props.put("security.type", file.getSecuritytype());
                         }
                         if(file.getSecuritymapping()!=null) {
-                          props.put("security.mapping", file.getSecuritymapping());
+                            props.put("security.mapping", file.getSecuritymapping());
                         }
                         if(file.getAdvanced()!=null){
-                          props.put("advanced", file.getAdvanced());
+                            props.put("advanced", file.getAdvanced());
                         }
                         SaikuDatasource.Type t = SaikuDatasource.Type.valueOf(file.getType().toUpperCase());
                         SaikuDatasource ds = new SaikuDatasource(file.getName(), t, props);
@@ -108,8 +130,8 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     public SaikuDatasource addDatasource(SaikuDatasource datasource) throws Exception {
         DataSource ds = new DataSource(datasource);
 
-            irm.saveDataSource(ds, "/datasources/" + ds.getName() + ".sds", "fixme");
-            datasources.put(datasource.getName(), datasource);
+        irm.saveDataSource(ds, "/datasources/" + ds.getName() + ".sds", "fixme");
+        datasources.put(datasource.getName(), datasource);
 
         return datasource;
     }
@@ -174,9 +196,6 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
         else{
             return false;
         }
-
-
-
     }
 
     public Map<String, SaikuDatasource> getDatasources() {
@@ -188,8 +207,7 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     }
 
     public void addSchema(String file, String path, String name) throws Exception {
-            irm.saveInternalFile(file, path, "nt:mondrianschema");
-
+        irm.saveInternalFile(file, path, "nt:mondrianschema");
     }
 
     public List<MondrianSchema> getMondrianSchema() {
@@ -222,17 +240,17 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 
     public String getInternalFileData(String file) throws RepositoryException {
 
-            return irm.getInternalFile(file);
+        return irm.getInternalFile(file);
 
 
     }
 
-    public String saveFile(String path, String content, String user, List<String> roles) {
+    public String saveFile(String path, Object content, String user, List<String> roles) {
         try {
             irm.saveFile(content, path, user, "nt:saikufiles", roles);
             return "Save Okay";
         } catch (RepositoryException e) {
-            log.error("Save Failed",e );
+            log.error("Save Failed", e);
             return "Save Failed: " + e.getLocalizedMessage();
         }
     }
@@ -257,7 +275,7 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
         }
     }
 
-    public String saveInternalFile(String path, String content, String type) {
+    public String saveInternalFile(String path, Object content, String type) {
         try {
             irm.saveInternalFile(content, path, type);
             return "Save Okay";
@@ -266,7 +284,16 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
             return "Save Failed: " + e.getLocalizedMessage();
         }
     }
-    
+
+    public String saveBinaryInternalFile(String path, InputStream content, String type) {
+        try {
+            irm.saveBinaryInternalFile(content, path, type);
+            return "Save Okay";
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+            return "Save Failed: " + e.getLocalizedMessage();
+        }
+    }
     public void removeInternalFile(String filePath) {
         try{
             irm.removeInternalFile(filePath);
@@ -284,6 +311,16 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
         }
         return null;
     }
+
+    public List<IRepositoryObject> getFiles(String type, String username, List<String> roles, String path) {
+        try {
+            return irm.getAllFiles(type, username, roles, path);
+        } catch (RepositoryException e) {
+            log.error("Get failed", e);
+        }
+        return null;
+    }
+
 
     public void createUser(String username){
         try {
@@ -413,5 +450,22 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     public String getFoodmarturl() {
         return foodmarturl;
     }
+
+    public void setRepoPassword(String password){
+        this.repopassword = password;
+    }
+
+    public String getRepopassword(){
+        return repopassword;
+    }
+
+    public void setOldRepoPassword(String password){
+        this.oldpassword = password;
+    }
+
+    public String getOldRepopassword(){
+        return oldpassword;
+    }
+
 }
 

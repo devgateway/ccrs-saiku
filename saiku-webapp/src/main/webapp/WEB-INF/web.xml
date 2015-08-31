@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE web-app PUBLIC
-  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-  "http://java.sun.com/dtd/web-app_2_3.dtd">
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
 
-	<display-name>saiku</display-name>
+    <display-name>saiku</display-name>
 
-	<context-param>
-		<param-name>encoding</param-name>
-		<param-value>UTF-8</param-value>
-	</context-param>
+    <context-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+    </context-param>
     <context-param>
         <param-name>db.url</param-name>
         <param-value>jdbc:h2:../../data/saiku;MODE=MySQL</param-value>
@@ -21,6 +21,10 @@
     <context-param>
         <param-name>db.password</param-name>
         <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>db.encryptpassword</param-name>
+        <param-value>true</param-value>
     </context-param>
     <context-param>
         <param-name>foodmart.url</param-name>
@@ -40,23 +44,31 @@
     </context-param>
 
     <context-param>
-     <param-name>contextConfigLocation</param-name>
-     <param-value>/WEB-INF/applicationContext.xml</param-value>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
     </context-param>
-	<session-config>
-		<session-timeout>60</session-timeout>
-	</session-config>
-	
-	<filter>
-		<filter-name>org.springframework.security.filterChainProxy</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-	</filter>
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
 
-	
-	<filter-mapping>
-		<filter-name>org.springframework.security.filterChainProxy</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+    <filter>
+        <filter-name>org.springframework.security.filterChainProxy</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>org.springframework.security.filterChainProxy</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -69,7 +81,7 @@
     <!-- ====================================================================== -->
     <!-- W E B D A V S E R V L E T -->
     <!-- ====================================================================== -->
-    
+
     <!-- 
     <servlet>
         <servlet-name>Webdav</servlet-name>
@@ -99,30 +111,30 @@
     <!-- ====================================================================== -->
     <!-- J C R R E M O T I N G S E R V L E T -->
     <!-- ====================================================================== -->
-   <!-- <servlet>
-        <servlet-name>JCRWebdavServer</servlet-name>
-        <description>
-            The servlet used to remote JCR calls over HTTP.
-        </description>
-        <servlet-class>org.apache.jackrabbit.server.remoting.davex.JcrRemotingServlet</servlet-class>
-        <init-param>
-            <param-name>missing-auth-mapping</param-name>
-            <param-value></param-value>
-        </init-param>
-        <init-param>
-            <param-name>resource-path-prefix</param-name>
-            <param-value>/server</param-value>
-            <description>
-                defines the prefix for spooling resources out of the repository.
-            </description>
-        </init-param>
-        <init-param>
-            <param-name>batchread-config</param-name>
-            <param-value>/WEB-INF/batchread.properties</param-value>
-            <description>JcrRemotingServlet: Optional mapping from node type names to default depth.</description>
-        </init-param>
-         <load-on-startup>5</load-on-startup>
-    </servlet>-->
+    <!-- <servlet>
+         <servlet-name>JCRWebdavServer</servlet-name>
+         <description>
+             The servlet used to remote JCR calls over HTTP.
+         </description>
+         <servlet-class>org.apache.jackrabbit.server.remoting.davex.JcrRemotingServlet</servlet-class>
+         <init-param>
+             <param-name>missing-auth-mapping</param-name>
+             <param-value></param-value>
+         </init-param>
+         <init-param>
+             <param-name>resource-path-prefix</param-name>
+             <param-value>/server</param-value>
+             <description>
+                 defines the prefix for spooling resources out of the repository.
+             </description>
+         </init-param>
+         <init-param>
+             <param-name>batchread-config</param-name>
+             <param-value>/WEB-INF/batchread.properties</param-value>
+             <description>JcrRemotingServlet: Optional mapping from node type names to default depth.</description>
+         </init-param>
+          <load-on-startup>5</load-on-startup>
+     </servlet>-->
     <!-- ====================================================================== -->
     <!-- R M I B I N D I N G S E R V L E T -->
     <!-- ====================================================================== -->
@@ -133,25 +145,25 @@
     <!-- ====================================================================== -->
     <!-- S E R V L E T M A P P I N G -->
     <!-- ====================================================================== -->
-<!--     
-    <servlet-mapping>
-        <servlet-name>Webdav</servlet-name>
-        <url-pattern>/repository/*</url-pattern>
-    </servlet-mapping>
- -->    
-  <!--  <servlet-mapping>
-        <servlet-name>JCRWebdavServer</servlet-name>
-        <url-pattern>/server/*</url-pattern>
-    </servlet-mapping>-->
+    <!--
+        <servlet-mapping>
+            <servlet-name>Webdav</servlet-name>
+            <url-pattern>/repository/*</url-pattern>
+        </servlet-mapping>
+     -->
+    <!--  <servlet-mapping>
+          <servlet-name>JCRWebdavServer</servlet-name>
+          <url-pattern>/server/*</url-pattern>
+      </servlet-mapping>-->
     <!--<servlet-mapping>
         <servlet-name>RMI</servlet-name>
         <url-pattern>/rmi</url-pattern>
     </servlet-mapping>-->
 
+    <!--
     <servlet>
         <servlet-name>H2Console</servlet-name>
         <servlet-class>org.h2.server.web.WebServlet</servlet-class>
-        <!--
         <init-param>
             <param-name>webAllowOthers</param-name>
             <param-value></param-value>
@@ -160,29 +172,30 @@
             <param-name>trace</param-name>
             <param-value></param-value>
         </init-param>
-        -->
+
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>H2Console</servlet-name>
         <url-pattern>/console/*</url-pattern>
     </servlet-mapping>
+    -->
 
-	<servlet>
-    	<servlet-name>jersey2</servlet-name>
-    	<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
-    	<init-param>
-      		<param-name>com.sun.jersey.config.property.packages</param-name>
-      		<param-value>org.saiku.web;com.fasterxml.jackson.jaxrs.json</param-value>
-    	</init-param>
+    <servlet>
+        <servlet-name>jersey2</servlet-name>
+        <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>org.saiku.web;com.fasterxml.jackson.jaxrs.json</param-value>
+        </init-param>
         <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
             <param-value>true</param-value>
         </init-param>
-    	<!--<init-param>
-      		<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
-      		<param-value>com.sun.jersey.api.container.filter.PostReplaceFilter</param-value>
-    	</init-param>-->
+        <!--<init-param>
+              <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+              <param-value>com.sun.jersey.api.container.filter.PostReplaceFilter</param-value>
+        </init-param>-->
         <init-param>
             <param-name>com.sun.jersey.config.feature.Trace</param-name>
             <param-value>true</param-value>
@@ -191,23 +204,33 @@
             <param-name>jaxrs.providers</param-name>
             <param-value>org.saiku.web.rest.SerializableProvider</param-value>
         </init-param>
-<!-- 		<init-param>
-		    <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
-		    <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter</param-value>
-		</init-param>  -->
+        <!-- 		<init-param>
+                    <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+                    <param-value>com.sun.jersey.api.container.filter.GZIPContentEncodingFilter</param-value>
+                </init-param>  -->
 
-    	<load-on-startup>1</load-on-startup>
-  	</servlet>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
-	  <servlet-mapping>
-	    <servlet-name>jersey2</servlet-name>
-	    <url-pattern>/rest/*</url-pattern>
-	  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>jersey2</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
 
-  <!--<servlet-mapping>
-    <servlet-name>jersey2</servlet-name>
-    <url-pattern>/rest/saiku/session</url-pattern>
-  </servlet-mapping>-->
+    <servlet>
+        <servlet-name>webapp</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value/>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>webapp</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>xmla</servlet-name>
         <servlet-class>org.saiku.olap.util.SaikuXmlaServlet</servlet-class>

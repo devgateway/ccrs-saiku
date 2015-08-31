@@ -25,11 +25,15 @@ var Toolbar = Backbone.View.extend({
     },
 
     template: function() {
-        return _.template( $("#template-toolbar").html() )(this);
+        return _.template( $("#template-toolbar").html() )({data: this});
     },
 
     initialize: function() {
-        this.render();
+        var self = this;
+        self.logo = "<h1 id='logo_override'>"+
+            "<a href='/' title='United Nations Development Group' target='_blank'><img src='undg-logo.png' alt='United Nations Development Group'/></a>"+
+            "</h1>";
+        self.render();
     },
 
     render: function() {
@@ -50,10 +54,14 @@ var Toolbar = Backbone.View.extend({
         }
         e.preventDefault();
     },
+
     /**
      * Add a new tab to the interface
      */
     new_query: function() {
+        if(typeof ga!= 'undefined'){
+		ga('send', 'event', 'MainToolbar', 'New Query');
+        }
         Saiku.tabs.add(new Workspace());
         return false;
     },
@@ -81,28 +89,4 @@ var Toolbar = Backbone.View.extend({
     logout: function() {
         Saiku.session.logout();
     },
-
-    /**
-     * Show the credits dialog
-     */
-    about: function() {
-        (new AboutModal()).render().open();
-        return false;
-    },
-
-    /**
-     * Go to the issue tracker
-     */
-    issue_tracker: function() {
-        window.open('http://jira.meteorite.bi/');
-        return false;
-    },
-
-	/**
-	 * Go to the help
-	 */
-	help: function() {
-		window.open('http://wiki.meteorite.bi/display/SAIK/Saiku+Documentation');
-		return false;
-	}
 });

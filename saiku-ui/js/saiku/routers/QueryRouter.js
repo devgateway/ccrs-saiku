@@ -27,18 +27,9 @@ var QueryRouter = Backbone.Router.extend({
         Settings.ACTION = "OPEN_QUERY";
         var options = {};
         var dataType = "text";
-        if (!Settings.BIPLUGIN5 && Settings.BIPLUGIN) {
-            var file = (Settings.GET.SOLUTION ? (Settings.GET.SOLUTION + "/") : "") +
-                       (Settings.GET.PATH && Settings.GET.PATH != "/" ? (Settings.GET.PATH + "/") : "") +
-                       (Settings.GET.ACTION || "");
-            options = {
-                file: file
-            };
-        } else {
-            options = {
-                file: query_name
-            };
-        }
+        options = {
+            file: query_name
+        };
 
         var params = _.extend({
                 file: options.file
@@ -49,6 +40,7 @@ var QueryRouter = Backbone.Router.extend({
                 if (repository && repository.length > 0) {
                     var f = repository[0];
                     var query = new Query(params,{ name: options.file });
+
                     Saiku.tabs.add(new Workspace({ query: query, item: repository[0] }));
 
                 } else {

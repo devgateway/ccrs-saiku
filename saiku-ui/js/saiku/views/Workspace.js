@@ -256,12 +256,6 @@ var Workspace = Backbone.View.extend({
         // Adjust the height of the separator
         var $separator = $(this.el).find('.sidebar_separator');
         var heightReduction = 87;
-        if (Settings.PLUGIN === true || Settings.BIPLUGIN === true) {
-            heightReduction = 2;
-            if (Settings.MODE == 'table') {
-                heightReduction = -5;
-            }
-        }
         if ($('#header').length === 0 || $('#header').is('hidden')) {
             heightReduction = 2;
         }
@@ -274,13 +268,12 @@ var Workspace = Backbone.View.extend({
         // Adjust the dimensions of the results window
         var editorHeight = $(this.el).find('.workspace_editor').is(':hidden') ? 0 : $(this.el).find('.workspace_editor').height();
         var processingHeight = $(this.el).find('.query_processing').is(':hidden') ? 0 : $(this.el).find('.query_processing').height() + 62;
-        var upgradeHeight = $(this.el).find('.upgradeheader').is(':hidden') ? 0 : $(this.el).find('.upgrade').height();
 
         $(this.el).find('.workspace_results').css({
             height: $("body").height() - heightReduction -
                 $(this.el).find('.workspace_toolbar').height() -
                 $(this.el).find('.workspace_results_info').height() -
-                editorHeight - processingHeight - upgradeHeight - 20
+                editorHeight - processingHeight - 20
         });
 
         if (this.querytoolbar) { $(this.querytoolbar.el).find('a').tipsy({ delayIn: 700, fade: true}); }
@@ -334,35 +327,33 @@ var Workspace = Backbone.View.extend({
             });
         });
     },
-
-    new_query: function() {
-        // Delete the existing query
-        if (this.query) {
-            this.query.destroy();
-            this.query.clear();
-            if (this.query.name) {
-                this.query.name = undefined;
-                this.update_caption(true);
+    create_new_query: function(obj){
+        if (obj.query) {
+            obj.query.destroy();
+            obj.query.clear();
+            if (obj.query.name) {
+                obj.query.name = undefined;
+                obj.update_caption(true);
             }
-            this.query.name = undefined;
+            obj.query.name = undefined;
         }
-        this.clear();
-        this.processing.hide();
-        Saiku.session.trigger('workspace:clear', { workspace: this });
+        obj.clear();
+        obj.processing.hide();
+        Saiku.session.trigger('workspace:clear', { workspace: obj });
 
         // Initialize the new query
-        this.selected_cube = $(this.el).find('.cubes').val()
-            ? $(this.el).find('.cubes').val()
-            : this.selected_cube;
-        if (!this.selected_cube) {
+        obj.selected_cube = $(obj.el).find('.cubes').val()
+            ? $(obj.el).find('.cubes').val()
+            : obj.selected_cube;
+        if (!obj.selected_cube) {
             // Someone literally selected "Select a cube"
-            $(this.el).find('.calculated_measures, .addMeasure').hide();
-            $(this.el).find('.dimension_tree').html('');
-            $(this.el).find('.measure_tree').html('');
+            $(obj.el).find('.calculated_measures, .addMeasure').hide();
+            $(obj.el).find('.dimension_tree').html('');
+            $(obj.el).find('.measure_tree').html('');
             return false;
         }
-        this.metadata = Saiku.session.sessionworkspace.cube[this.selected_cube];
-        var parsed_cube = this.selected_cube.split('/');
+        obj.metadata = Saiku.session.sessionworkspace.cube[obj.selected_cube];
+        var parsed_cube = obj.selected_cube.split('/');
         var cube = parsed_cube[3];
         for (var i = 4, len = parsed_cube.length; i < len; i++) {
             cube += "/" + parsed_cube[i];
@@ -375,12 +366,34 @@ var Workspace = Backbone.View.extend({
                 name: decodeURIComponent(cube)
             }
         }, {
-                workspace: this
+            workspace: obj
         });
 
+        obj.query = this.query;
+
         // Save the query to the server and init the UI
-        this.query.save({},{ data: { json: JSON.stringify(this.query.model) }, async: false });
-        this.init_query();
+        obj.query.save({},{ data: { json: JSON.stringify(this.query.model) }, async: false });
+        obj.init_query();
+
+    },
+
+    new_query: function() {
+        // Delete the existing query
+        if (this.query) {
+            if(Settings.QUERY_OVERWRITE_WARNING) {
+                (new WarningModal({
+                    title: "New Query", message: "You are about to clear your existing query",
+                    okay: this.create_new_query, okayobj: this
+                })).render().open();
+            }
+            else{
+                this.create_new_query(this);
+            }
+        }
+        else{
+            this.create_new_query(this);
+        }
+
     },
 
     init_query: function(isNew) {
@@ -454,6 +467,15 @@ var Workspace = Backbone.View.extend({
         }
         if ((Settings.MODE == "view") && this.query || this.isReadOnly) {
             this.query.run(true);
+            if (this.selected_cube === undefined) {
+                var schema = this.query.model.cube.schema;
+                this.selected_cube = this.query.model.cube.connection + "/" +
+                    this.query.model.cube.catalog + "/" +
+                    ((schema === "" || schema === null) ? "null" : schema) +
+                    "/" + encodeURIComponent(this.query.model.cube.name);
+                $(this.el).find('.cubes')
+                    .val(this.selected_cube);
+            }
             return;
         }
 
@@ -793,6 +815,22 @@ var Workspace = Backbone.View.extend({
         this.update_parameters();
 
         $(this.el).find(".workspace_results_info").html(info);
+
+        var h = args.workspace.query.getProperty("saiku.ui.headings");
+        if(h!=undefined) {
+            var headings = JSON.parse(h);
+            var header = '';
+            if(headings.title!=null && headings.title != "") {
+                header = '<h3><span class="i18n">Title:</span></h3> &nbsp;' + headings.title + '<br/>';
+            }
+            if(headings.variable != null && headings.variable != "") {
+                header += '<h3><span class="i18n">Variable:</span></h3> &nbsp;' + headings.variable + '<br/>';
+            }
+            if(headings.explanation!=null && headings.explanation != "") {
+                header += '<h3><span class="i18n">Explanation:</span></h3> &nbsp;' + headings.explanation;
+            }
+            $(this.el).find(".workspace_results_titles").html(header);
+        }
         this.adjust();
         return;
     },
@@ -830,17 +868,21 @@ var Workspace = Backbone.View.extend({
     },
 
     block: function(message) {
-        /* Most probably not needed anymore. Seems ok now with fix #192
-        if (isIE) {
-            var $msg = $("<span>" + message + "</span>");
-            $msg.find('.processing_image').removeClass('processing_image');
-            Saiku.ui.block($msg.html());
+        var self = this;
+
+        if(Settings.LOGO_32x32){
+            $(self.el).block({
+                message: '<img class="saiku_logo_override" style="float:left" src="'+Settings.LOGO_32x32+'"/> ' + message
+            });
+            Saiku.i18n.translate();
         }
-        */
-            $(this.el).block({
+        else{
+            $(self.el).block({
                 message: '<span class="saiku_logo" style="float:left">&nbsp;&nbsp;</span> ' + message
             });
             Saiku.i18n.translate();
+
+        }
     },
 
     unblock: function() {

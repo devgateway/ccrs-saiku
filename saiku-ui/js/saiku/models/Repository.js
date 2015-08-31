@@ -19,24 +19,35 @@
  */
 var RepositoryUrl = "api/repository";
 var repoPathUrl = function() {
-    /*
-    return (Settings.BIPLUGIN5 ? "/repository"
-                    : (Settings.BIPLUGIN ? "/pentahorepository2" : "/repository2"));
-    */
-    if (Settings.BIPLUGIN)
-        return "pentaho/repository";
-
     return  RepositoryUrl;
 };
 
+var RepositoryObject = Backbone.Model.extend({
+    initialize: function(args, options) {
+        if (options && options.dialog) {
+            this.dialog = options.dialog;
+            this.file = options.file;
+        }
+    },
 
+    parse: function(response) {
+        if (this.dialog) {
+            this.dialog.generate_grids_reports(response);
+        }
+        return response;
+    },
 
-var RepositoryObject = Backbone.Model.extend( {
-    url: function( ) {
-        var segment = repoPathUrl() + "/resource";
+    url: function() {
+        var segment;
+        if (this.file) {
+            segment = repoPathUrl() + '/resource?file=' + this.file;
+        }
+        else {
+            segment = repoPathUrl() + '/resource';
+        }
         return segment;
     }
-} );
+});
 
 var RepositoryAclObject = Backbone.Model.extend( {
     url: function( ) {
@@ -103,6 +114,7 @@ var Repository = Backbone.Collection.extend({
     initialize: function(args, options) {
         if (options && options.dialog) {
             this.dialog = options.dialog;
+            this.type = options.type;
         }
     },
 
@@ -114,9 +126,9 @@ var Repository = Backbone.Collection.extend({
     },
 
 	url: function() {
-		var segment = repoPathUrl() + "?type=saiku";
+        var segment = repoPathUrl() + '?type=' + (this.type ? this.type : 'saiku');
 		if (Settings.REPO_BASE && !this.file) {
-			segment += "&path=" + Settings.REPO_BASE;
+			segment += '&path=' + Settings.REPO_BASE;
 		}
 		return segment;
 	}

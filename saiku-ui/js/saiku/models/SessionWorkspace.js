@@ -1,4 +1,4 @@
-/*  
+/*
  *   Copyright 2012 OSBI Ltd
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@
  * @returns {Session}
  */
 var SessionWorkspace = Backbone.Model.extend({
-        
+
     initialize: function(args, options) {
         // Attach a custom event bus to this model
         _.extend(this, Backbone.Events);
@@ -39,10 +39,9 @@ var SessionWorkspace = Backbone.Model.extend({
                 localStorage.clear();
                 localStorage.setItem('saiku-version', Settings.VERSION);
             }
-        }        
+        }
         Saiku.ui.block("Loading datasources....");
         this.fetch({success:this.process_datasources},{});
-        
     },
 
     refresh: function() {
@@ -53,24 +52,24 @@ var SessionWorkspace = Backbone.Model.extend({
         this.clear();
 
         if(typeof localStorage !== "undefined" && localStorage) {
-          localStorage.setItem('saiku-version', Settings.VERSION);  
+            localStorage.setItem('saiku-version', Settings.VERSION);
         }
 
         this.fetch({success:this.process_datasources},{});
     },
-        
+
     destroy: function() {
         if (typeof localStorage !== "undefined" && localStorage) {
             localStorage.clear();
         }
         return false;
     },
-    
+
     process_datasources: function(model, response) {
         // Save session in localStorage for other tabs to use
         if (typeof localStorage !== "undefined" && localStorage && localStorage.getItem('session') === null) {
             localStorage.setItem('session', JSON.stringify(response));
-            
+
             // Set expiration on localStorage to one day in the future
             var expires = (new Date()).getTime() +  Settings.LOCALSTORAGE_EXPIRATION;
             if (typeof localStorage !== "undefined" && localStorage) {
@@ -82,13 +81,13 @@ var SessionWorkspace = Backbone.Model.extend({
         this.cube_navigation = _.template($("#template-cubes").html())({
             connections: response
         });
-        
-        
+
+
         // Create cube objects
         this.cube = {};
         this.connections = response;
         _.delay(this.prefetch_dimensions, 20);
-        
+
         if (!this.initialized) {
             // Show UI
             $(Saiku.toolbar.el).prependTo($("#header"));
@@ -96,7 +95,7 @@ var SessionWorkspace = Backbone.Model.extend({
             Saiku.ui.unblock();
             // Add initial tab
             Saiku.tabs.render();
-            
+
             // Notify the rest of the application that login was successful
             Saiku.events.trigger('session:new', {
                 session: this
@@ -104,26 +103,13 @@ var SessionWorkspace = Backbone.Model.extend({
 
             var paramsURI = Saiku.URLParams.paramsURI();
 
-            if (!(_.has(paramsURI, 'splash'))) {
-                paramsURI.splash = true;
-            }
-            else if (_.has(paramsURI, 'splash') && paramsURI.splash ||
-                _.has(paramsURI, 'splash') && paramsURI.splash === null) {
-                paramsURI.splash = true;
-            }
-
             if (!Settings.INITIAL_QUERY) {
-                Saiku.tabs.add(new Workspace());
+                Saiku.tabs.add(new Workspace())
             }
-        } else {
-            if (!Settings.INITIAL_QUERY) {
-                Saiku.tabs.add(new Workspace());
-            }
-
         }
     },
-    
-    prefetch_dimensions: function() {        
+
+    prefetch_dimensions: function() {
         for(var i = 0, iLen = this.connections.length; i < iLen; i++) {
             var connection = this.connections[i];
             for(var j = 0, jLen = connection.catalogs.length; j < jLen; j++) {
@@ -136,7 +122,7 @@ var SessionWorkspace = Backbone.Model.extend({
                             ((schema.name === "" || schema.name === null) ? "null" : schema.name) +
                             "/" + encodeURIComponent(cube.name);
 
-                        if (typeof localStorage !== "undefined" && localStorage && 
+                        if (typeof localStorage !== "undefined" && localStorage &&
                             localStorage.getItem("cube." + key) !== null) {
                             this.cube[key] = new Cube(JSON.parse(localStorage.getItem("cube." + key)));
                         } else {
@@ -149,14 +135,14 @@ var SessionWorkspace = Backbone.Model.extend({
                 }
             }
         }
-        
+
         // Start routing
         if (!this.initialized && Backbone.history) {
             Backbone.history.start();
             this.initialized = true;
         }
     },
-    
+
     url: function() {
         if (this.first) {
             this.first = false;

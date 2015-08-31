@@ -2,16 +2,13 @@
     <parent>
         <artifactId>saiku</artifactId>
         <groupId>org.saiku</groupId>
-        <version>3.1.9</version>
+        <version>3.3.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>saiku-webapp</artifactId>
     <name>saiku - webapp</name>
     <packaging>war</packaging>
 
-    <properties>     
-        <derby.version>10.11.1.1</derby.version>
-    </properties>
     <build>
         <plugins>
             <plugin>
@@ -38,37 +35,6 @@
                     </instructions>
                 </configuration>
             </plugin>
-            <!-- START this is useless -->
-            
-            <!-- 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.saiku</groupId>
-                                    <artifactId>saiku-web</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>jar</type>
-                                    <classifier>sources</classifier>
-                                    <outputDirectory>target/saiku-webapp-3.0.1-SNAPSHOT/WEB-INF/lib/</outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-             -->
-             
-			<!-- END this is useless -->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -179,26 +145,50 @@
                     <warSourceExcludes>WEB-INF/saiku-beans.xml</warSourceExcludes>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-package</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <mkdir dir="/derby/saiku-db/repository" />
+                                <mkdir dir="/derby/saiku-db/repository/data" />
+                                <copy todir="/derby/saiku-db/repository">
+                                    <fileset dir="${basedir}/../util/">
+                                        <include name="configuration.xml" />
+                                    </fileset>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
-    
-    	<dependency>
-    			<artifactId>servlet-api</artifactId>
-            	<groupId>javax.servlet</groupId>
-            	<scope>provided</scope>
-    	</dependency>
-    
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyclient</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
 
-    
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.jasig.cas.client</groupId>
             <artifactId>cas-client-integration-tomcat-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.jasig.cas.client</groupId>
@@ -209,35 +199,43 @@
             <artifactId>spring-security-cas</artifactId>
             <version>${spring.security.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-remoting</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-			<version>${spring.security.version}</version>            
+            <version>${spring.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.saiku</groupId>
             <artifactId>saiku-service</artifactId>
             <exclusions>
-            	<exclusion>
-            		<artifactId>servlet-api</artifactId>
-            		<groupId>javax.servlet</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>servlet-api-2.5</artifactId>
-            		<groupId>org.mortbay.jetty</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>slf4j-log4j12</artifactId>
-            		<groupId>org.slf4j</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>javax.el-api</artifactId>
-            		<groupId>javax.el</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>servlet-api</artifactId>
+                    <groupId>javax.servlet</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>servlet-api-2.5</artifactId>
+                    <groupId>org.mortbay.jetty</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>javax.el-api</artifactId>
+                    <groupId>javax.el</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
-        
-        
+
+
         <dependency>
             <groupId>org.saiku</groupId>
             <artifactId>saiku-web</artifactId>
@@ -246,21 +244,21 @@
             <groupId>org.saiku</groupId>
             <artifactId>saiku-olap-util</artifactId>
             <exclusions>
-            	<exclusion>
-            		<artifactId>slf4j-log4j12</artifactId>
-            		<groupId>org.slf4j</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.saiku</groupId>
             <artifactId>saiku-query</artifactId>
         </dependency>
-        
-		<dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>jstl</artifactId>
-            </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-spring</artifactId>
@@ -301,8 +299,21 @@
             <artifactId>mimepull</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -356,7 +367,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
     </dependencies>
     <reporting>
         <plugins>

@@ -35,12 +35,7 @@ var Session = Backbone.Model.extend({
         if (options && options.username && options.password) {
             this.username = options.username;
             this.password = options.password;
-            if (!Settings.DEMO) {
-                this.save({username:this.username, password:this.password},{success: this.check_session, error: this.check_session});
-            } else {
-                this.check_session();
-            }
-
+            this.save({username:this.username, password:this.password},{success: this.check_session, error: this.check_session});
         } else {
             this.check_session();
         }
@@ -48,7 +43,7 @@ var Session = Backbone.Model.extend({
 
     check_session: function() {
         if (this.sessionid === null || this.username === null || this.password === null) {
-			var that = this;
+            var that = this;
             this.clear();
             this.fetch({ success: this.process_session, error: this.brute_force });
         } else {
@@ -57,38 +52,33 @@ var Session = Backbone.Model.extend({
         }
     },
 
-	/**
-	 * This is a complete hack to get the BI platform plugin working.
-	 * @param obj
-	 */
-	brute_force: function(model, response){
-		this.clear();
-		this.fetch({ success: this.process_session, error: this.show_error });
-	},
-	show_error: function(model, response){
-
-		// Open form and retrieve credentials
-		Saiku.ui.unblock();
-		this.form = new SessionErrorModal({ issue: response.responseText });
-		this.form.render().open();
-
-
-	},
+    /**
+     * This is a complete hack to get the BI platform plugin working.
+     * @param obj
+     */
+    brute_force: function(model, response){
+        this.clear();
+        this.fetch({ success: this.process_session, error: this.show_error });
+    },
+    show_error: function(model, response){
+        // Open form and retrieve credentials
+        Saiku.ui.unblock();
+        this.form = new SessionErrorModal({ issue: response.responseText });
+        this.form.render().open();
+    },
 
     load_session: function() {
         this.sessionworkspace = new SessionWorkspace();
     },
 
     process_session: function(model, response) {
+        // check if the user is logged in the IMS application
+        if (!_.isUndefined(response.session) && _.isNull(response.session)) {
+            window.location.replace("/login");
+        }
+
         if ((response === null || response.sessionid == null)) {
-            // Open form and retrieve credentials
-            Saiku.ui.unblock();
-            if (Settings.DEMO) {
-                this.form = new DemoLoginForm({ session: this });
-            } else {
-                this.form = new LoginForm({ session: this });
-            }
-            this.form.render().open();
+            window.location.replace("/login");
         } else {
             this.sessionid = response.sessionid;
             this.roles = response.roles;
@@ -116,13 +106,15 @@ var Session = Backbone.Model.extend({
         }});
 
     },
-    login_failed: function(response){
-        this.form = new LoginForm({ session: this });
-        this.form.render().open();
-        this.form.setError(response);
+    login_failed: function(response) {
+        //this.form = new LoginForm({ session: this });
+        //this.form.render().open();
+        //this.form.setError(response);
+        window.location.replace("/login");
     },
     logout: function() {
         // FIXME - This is a hack (inherited from old UI)
+
         Saiku.ui.unblock();
         $('#header').empty().hide();
         $('#tab_panel').remove();
@@ -134,24 +126,23 @@ var Session = Backbone.Model.extend({
             localStorage.clear();
         }
 
+        // Backbone is not sending a DELETE request without an 'id'
         this.set('id', _.uniqueId('queryaction_'));
-        this.destroy({async: false });
+        this.destroy({async: false});
 
         this.clear();
         this.sessionid = null;
         this.username = null;
         this.password = null;
-		this.roles = null;
+        this.roles = null;
         this.isAdmin = false;
-        this.destroy({async: false });
-        //console.log("REFRESH!");
-        document.location.reload(false);
-        delete this.id;
 
+        document.location.reload(false);
+
+        delete this.id;
     },
 
     url: function() {
-
         return "session";
     }
 });

@@ -35,7 +35,9 @@ public class PlatformUtilsService {
 
 	if (filePath == null) {
 		String realPath = servletContext.getRealPath("/");
-		filePath = realPath.substring(0, realPath.indexOf("/saiku-webapp")) + "/saiku-ui/js/saiku/plugins/";
+		filePath = realPath.substring(0, realPath.indexOf(File.separator+"saiku-webapp")) + 
+				File.separator+"saiku-ui"+File.separator+"js"+File.separator+"saiku"+File.separator+"plugins"+
+				File.separator;
 	}        
 
     

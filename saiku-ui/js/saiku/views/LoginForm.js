@@ -24,18 +24,6 @@ var LoginForm = Modal.extend({
         "<input type='text' id='username' name='username' value='' />" +
         "<label for='password' class='i18n'>Password</label>" +
         "<input type='password' id='password' name='password' value='' />" +
-        "<% if (Settings.EVALUATION_PANEL_LOGIN) { %>" +
-        "<div class='eval-panel'>" +
-        "<a href='#eval_login' class='i18n' id='eval-login'>Evaluation Login</a>" +
-        "<div class='eval-panel-user clearfix' hidden>" +
-        "<ul>" +
-        "<li class='i18n'>Administrator</li>" +
-        "<li class='i18n'>Username: admin</li>" +
-        "<li class='i18n'>Password: admin</li>" +
-        "</ul>" +
-        "</div>" +
-        "</div>" +
-        "<% } %>" +
         "</form>")(),
 
     buttons: [
@@ -45,7 +33,8 @@ var LoginForm = Modal.extend({
     events: {
         'click a': 'call',
         'keyup #login_form input': 'check',
-        'click #eval-login': 'show_panel_user'
+        'click #eval-login': 'show_panel_user',
+	'click .clearlink': 'clear_login'
     },
 
     initialize: function(args) {
@@ -75,14 +64,17 @@ var LoginForm = Modal.extend({
 
         return true;
     },
-
+    clear_login: function(event) {
+	window.open("/clear.html", "_blank");
+    },
     setMessage: function(message) {
         this.$el.find('.dialog_body').html(this.message);
     },
 
 	setError: function(message){
 		$(this.el).find(".dialog_response").html(message);
-	},
+        $(this.el).find('.clearlink').unbind();
+    },
 
     show_panel_user: function(event) {
         event.preventDefault();
