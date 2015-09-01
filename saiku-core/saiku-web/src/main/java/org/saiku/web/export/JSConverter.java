@@ -1,16 +1,18 @@
 package org.saiku.web.export;
 
-import org.saiku.web.rest.objects.resultset.QueryResult;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.apache.commons.io.IOUtils;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
+import org.saiku.web.rest.objects.resultset.QueryResult;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.util.Properties;
 
 public class JSConverter {
@@ -18,7 +20,7 @@ public class JSConverter {
         StringWriter stringWriter = new StringWriter();
         useJavascriptToConvertToHtml(queryResult, stringWriter);
         String content = stringWriter.toString();
-        content = appendSaikuCommercialIfNecessary(content);
+        //content = appendSaikuCommercialIfNecessary(content);
         return content;
     }
 
