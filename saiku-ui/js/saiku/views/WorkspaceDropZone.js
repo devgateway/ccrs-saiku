@@ -449,7 +449,6 @@ var WorkspaceDropZone = Backbone.View.extend({
                 var levels=[];
 				 _.each(a.hierarchies, function(hierarchy){
 					 for(var property in hierarchy.levels){
-						 console.log(property);
 						 var n ="";
 						 if(hierarchy.levels[property].caption!=null){
 							 n = hierarchy.levels[property].caption;
