@@ -344,10 +344,15 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                     if (header.value == "null") {
                         rowContent += '<th class="col_null">&nbsp;</th>';
                     } else {
+                        var headerValue = header.value;
+                        if (header.value === 'Yes' || header.value === 'No') {
+                            headerValue = header.value + ' - ' + header.properties.dimension;
+                        }
+
                         if (totalsLists[ROWS])
                             colSpan = totalsLists[ROWS][row + 1][scanIndexes[ROWS][row + 1]].span;
                         rowContent += '<th class="col" style="text-align: center;" colspan="' + colSpan + '" title="' + header.value + '">'
-                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + header.value + '</div>' : header.value)
+                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + headerValue + '</div>' : header.value)
                             + '</th>';    
                     }
                     
@@ -362,10 +367,15 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                         if (header.value == "null") {
                             rowContent += '<th class="col_null" colspan="' + colSpan + '">&nbsp;</th>';
                         } else {
+                            var headerValue = header.value;
+                            if (header.value === 'Yes' || header.value === 'No') {
+                                headerValue = header.value + ' - ' + header.properties.dimension;
+                            }
+
                             if (totalsLists[ROWS])
                                 colSpan = totalsLists[ROWS][row + 1][scanIndexes[ROWS][row + 1]].span;
                             rowContent += '<th class="col" style="text-align: center;" colspan="' + (colSpan == 0 ? 1 : colSpan) + '" title="' + header.value + '">'
-                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + header.value + '</div>' : header.value)
+                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + headerValue + '</div>' : header.value)
                             + '</th>';    
                         }
                         colSpan = 1;
