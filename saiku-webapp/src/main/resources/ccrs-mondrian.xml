@@ -377,6 +377,25 @@
             </ExpressionView>
         </Query>
 
+
+        <Query alias="CP13GenderEqualityScorecardTest">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR,
+                            CASE WHEN CP13.PERCENTAGE_ONE_FUND_RESOURCES_ALLOCATED_GENDER_EQUALITY is null THEN 0 ELSE PERCENTAGE_ONE_FUND_RESOURCES_ALLOCATED_GENDER_EQUALITY END as PERCENTAGE_ONE_FUND_RESOURCES_ALLOCATED_GENDER_EQUALITY,
+                            CASE WHEN CP13.HASUNCTGENDER_ADVISOR = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_ADVISOR_COUNT,
+                            CASE WHEN CP13.HASUNCTGENDER_ADVISOR IS NULL THEN 'No' ELSE CASE WHEN CP13.HASUNCTGENDER_ADVISOR = FALSE THEN 'No' ELSE 'Yes' END END as HASUNCTGENDER_ADVISOR_YES_NO,
+                            CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
+                            CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN IS NULL THEN 'No' ELSE CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = FALSE THEN 'No' ELSE 'Yes' END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO
+                        FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13
+                        WHERE CP13.ID=D.PARENT_ID AND CP13.WORKFLOW='VALIDATED' AND CP13.DESIGNATION!='AQ'
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <!--
         GLOBAL_CUBE is a view for this query:
         -->
@@ -1277,6 +1296,119 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <FactLink dimension="Has UNCT addressed the recommendations" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+
+    <!--*************************************************************************
+    ***** TEST - CP13 Gender Equality Scorecard
+    *************************************************************************-->
+    <Cube name="[Test] CP13 Gender Equality Scorecard" caption="[Test] CP13 Gender Equality Scorecard" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP13GenderEqualityScorecardTest"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Scorecard" caption="Scorecard" table="Scorecard"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Scorecard" caption="Scorecard" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Scorecards" hierarchyCaption="All Scorecards"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="GenderEqualityRating" caption="GenderEqualityRating" table="GenderEqualityRating"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="GenderEqualityRating" caption="GenderEqualityRating" keyColumn="LABEL"
+                               hierarchyAllMemberName="All GenderEqualityRatings" hierarchyCaption="All GenderEqualityRatings"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" table='CP13GenderEqualityScorecardTest' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" keyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is there a UNCT gender advisor" caption="Is there a UNCT gender advisor?" table='CP13GenderEqualityScorecardTest' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is there a UNCT gender advisor" caption="Is there a UNCT gender advisor?" keyColumn="HASUNCTGENDER_ADVISOR_YES_NO"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Gender Equality Scorecard" table="CP13GenderEqualityScorecardTest">
+                <Measures>
+                    <Measure name="Count" caption="Number of Gender Equality Scorecard" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of UNCT that addressed the recommendations" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasUNCTGenderAdvisor" caption="Count 'Is there a UNCT gender advisor?'" column="HASUNCTGENDER_ADVISOR_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="percentageOneFundResourcesAllocatedGenderEquality" caption="Percentage of One Fund resources allocated to gender equality" column="PERCENTAGE_ONE_FUND_RESOURCES_ALLOCATED_GENDER_EQUALITY"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Scorecard" foreignKeyColumn="SCORECARD_ID" />
+                    <ForeignKeyLink dimension="GenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <FactLink dimension="Has UNCT addressed the recommendations" />
+                    <FactLink dimension="Is there a UNCT gender advisor" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
