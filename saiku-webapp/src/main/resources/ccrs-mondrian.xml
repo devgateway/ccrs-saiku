@@ -632,6 +632,39 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Representative Name" caption="Representative Name" table="CP1UnctMember"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Name" caption="Name" keyColumn="REPRESENTATIVE_NAME"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Representative Title" caption="Representative Title" table="CP1UnctMember"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Title" caption="Title" keyColumn="REPRESENTATIVE_TITLE"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Representative Email" caption="Representative Email" table="CP1UnctMember"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Email" caption="Email" keyColumn="EMAIL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <!-- hide this dimension for now -->
             <Dimension name="CountryIncomeStatus" caption="CountryIncomeStatus" table="CountryIncomeStatus"
                        key="Dimension Id" visible="false">
@@ -698,6 +731,9 @@
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Representative Name" />
+                    <FactLink dimension="Representative Title" />
+                    <FactLink dimension="Representative Email" />
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_COUNT"/>
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
