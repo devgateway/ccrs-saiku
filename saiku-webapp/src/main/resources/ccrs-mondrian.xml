@@ -567,19 +567,16 @@
                         BUDGET.ID as BUDGET_ID,
                         BUDGET.TYPE_ID as BUDGET_TYPE_ID,
                         BUDGET.REQUIRED_AMOUNT as BUDGET_EXPECTED,
-                        BUDGET.SPENT_AMOUNT as BUDGET_ACTUAL,
-                        CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                    FROM CP1GENERAL_PROFILE CP1, WORKPLAN workplan
+                        BUDGET.SPENT_AMOUNT as BUDGET_ACTUAL
+                    FROM WORKPLAN workplan
                         LEFT OUTER JOIN WORKSTREAM workstream ON workstream.WORKPLAN_ID = workplan.ID
                         LEFT OUTER JOIN OUTPUTS outputs ON outputs.WORKSTREAM_ID = workstream.ID
                         LEFT OUTER JOIN AGENCY_ROLES agency_roles ON agency_roles.OUTPUT_ID = outputs.ID
                         LEFT OUTER JOIN ACTIVITY activity ON activity.OUTPUT_ID = outputs.ID
                         LEFT OUTER JOIN BUDGET budget ON budget.ACTIVITY_ID = activity.ID
                     WHERE
-                        workplan.DESIGNATION = CP1.DESIGNATION AND workplan.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                         workplan.WORKFLOW = 'VALIDATED' AND
-                        workplan.DESIGNATION != 'AQ' AND workplan.DESIGNATION != 'DOCO' AND workplan.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
-                        workplan.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = workplan.ENTITY_YEAR)
+                        workplan.DESIGNATION != 'AQ' AND workplan.DESIGNATION != 'DOCO' AND workplan.DESIGNATION in (select iso2 from BASE_COUNTRY)
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -3251,17 +3248,17 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+            <!--<Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">-->
+                <!--<Attributes>-->
+                    <!--<Attribute name="Dimension Id" keyColumn="id"-->
+                               <!--hasHierarchy="false"-->
+                               <!--levelType="Regular" datatype="Integer"/>-->
 
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+                    <!--<Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"-->
+                               <!--approxRowCount="2" hierarchyHasAll="true"-->
+                               <!--levelType="Regular" datatype="Boolean"/>-->
+                <!--</Attributes>-->
+            <!--</Dimension>-->
 
         </Dimensions>
 
@@ -3282,7 +3279,7 @@
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                     <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
                     <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!--<ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>-->
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
