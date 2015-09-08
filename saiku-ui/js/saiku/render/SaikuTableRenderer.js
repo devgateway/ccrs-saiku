@@ -4,6 +4,12 @@ function SaikuTableRenderer(data, options) {
     this._options = _.extend({}, SaikuRendererOptions, options);
 }
 
+SaikuTableRenderer.TotalsMap = {
+    "sum": "Sum",
+    "min": "Minimum",
+    "max": "Maximum",
+    "avg": "Average"
+};
 
 SaikuTableRenderer.prototype.render = function(data, options) {
         var self = this;
@@ -138,7 +144,7 @@ function genTotalHeaderCells(allData, currentIndex, bottom, scanSums, scanIndexe
                         else text = "";
 
                         if (!_.isUndefined(allData.query.queryModel.axes.COLUMNS.aggregators) && allData.query.queryModel.axes.COLUMNS.aggregators.length > 0) {
-                            aggregator = ' (' + allData.query.queryModel.axes.COLUMNS.aggregators[0] + ')';
+                            aggregator = ' (' + SaikuTableRenderer.TotalsMap[allData.query.queryModel.axes.COLUMNS.aggregators[0]] + ')';
                         }
 
                         text += (wrapContent ? "<span class='i18n'>Grand Total" + aggregator + "</span>" :  "Grand Total" + aggregator);
@@ -206,7 +212,7 @@ function genTotalHeaderRowCells(allData, currentIndex, scanSums, scanIndexes, to
                             else text = "";
                             var aggregator = '';
                             if (!_.isUndefined(allData.query.queryModel.axes.ROWS.aggregators) && allData.query.queryModel.axes.ROWS.aggregators.length > 0) {
-                                aggregator = ' (' + allData.query.queryModel.axes.ROWS.aggregators[0] + ')';
+                                aggregator = ' (' + SaikuTableRenderer.TotalsMap[allData.query.queryModel.axes.ROWS.aggregators[0]] + ')';
                             }
                             text += (wrapContent ? "<span class='i18n'>Grand Total" + aggregator + "</span>" :  "Grand Total" + aggregator);
                         }
