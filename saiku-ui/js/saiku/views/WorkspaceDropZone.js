@@ -125,7 +125,6 @@ var WorkspaceDropZone = Backbone.View.extend({
 
         if (model.hasOwnProperty('queryModel') && model.queryModel.hasOwnProperty('axes')) {
             var axes = model.queryModel.axes;
-            console.dir(axes);
 
             var o = this.workspace.query.helper.getHierarchy("[Store].[Stores]");
             if(o!=null) {
@@ -449,7 +448,6 @@ var WorkspaceDropZone = Backbone.View.extend({
                 var levels=[];
 				 _.each(a.hierarchies, function(hierarchy){
 					 for(var property in hierarchy.levels){
-						 console.log(property);
 						 var n ="";
 						 if(hierarchy.levels[property].caption!=null){
 							 n = hierarchy.levels[property].caption;

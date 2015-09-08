@@ -14,6 +14,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="BudgetType">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -267,31 +275,65 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR,
-                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
-                            CASE WHEN M.NON_RESIDENT_AGENCY IS NULL THEN 'No' ELSE CASE WHEN M.NON_RESIDENT_AGENCY = FALSE THEN 'No' ELSE 'Yes' END END as NON_RESIDENT_AGENCY_YES_NO
-                        from CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1
-                        WHERE M.PARENT_ID=CP1.ID and CP1.WORKFLOW='VALIDATED' AND CP1.DESIGNATION!='AQ'
+                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, income.COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT
+                        from
+                            CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1, CP1GENERAL_PROFILE_COUNTRY_INCOME_STATUS income
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.WORKFLOW = 'VALIDATED' AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR) AND
+                            income.index = 0 AND
+                            CP1.id = income.CP1GENERAL_PROFILE_ID
                     ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="NON_RESIDENT_AGENCY_TABLE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="DAOCP1UnctMember"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
 
         <Query alias="CP2RcoStaffMemberDetail">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select D.*, CP2.DESIGNATION, CP2.ENTITY_YEAR FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2 WHERE CP2.ID=D.PARENT_ID AND CP2.WORKFLOW='VALIDATED' AND CP2.DESIGNATION!='AQ']]>
+                    <![CDATA[
+                        select
+                            D.*, CP2.DESIGNATION, CP2.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP2.DESIGNATION = CP1.DESIGNATION AND CP2.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP2.ID = D.PARENT_ID AND
+                            CP2.WORKFLOW = 'VALIDATED' AND
+                            CP2.DESIGNATION != 'AQ' AND CP2.DESIGNATION != 'DOCO' AND CP2.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP2.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP2.ENTITY_YEAR)
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="DAOCP2RcoStaffMemberDetail"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP3JointProgrammes">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select D.*, CP3.DESIGNATION, CP3.ENTITY_YEAR FROM CP3JOINT_PROGRAMMES D,  CP3COMMON_COUNTRY_PROGRAMMING CP3 WHERE CP3.ID=D.PARENT_ID AND CP3.WORKFLOW='VALIDATED' AND CP3.DESIGNATION!='AQ']]>
+                    <![CDATA[
+                        select
+                            D.*, CP3.DESIGNATION, CP3.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP3JOINT_PROGRAMMES D, CP3COMMON_COUNTRY_PROGRAMMING CP3, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP3.DESIGNATION = CP1.DESIGNATION AND CP3.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP3.ID = D.PARENT_ID AND
+                            CP3.WORKFLOW = 'VALIDATED' AND
+                            CP3.DESIGNATION != 'AQ' AND CP3.DESIGNATION != 'DOCO' AND CP3.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP3.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP3.ENTITY_YEAR)
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="DAOCP3JointProgrammes"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP4BusinessOperationAreasDetails">
             <ExpressionView>
@@ -299,34 +341,66 @@
                     <![CDATA[
                         select BOS.*,
                             CASE WHEN BOS.HASMOU = TRUE THEN 1 ELSE 0 END as HASMOU_COUNT,
-                            CASE WHEN BOS.HASMOU IS NULL THEN 'No' ELSE CASE WHEN BOS.HASMOU = FALSE THEN 'No' ELSE 'Yes' END END as HASMOU_YES_NO,
                             CASE WHEN BOS.HASLTA = TRUE THEN 1 ELSE 0 END as HASLTA_COUNT,
-                            CASE WHEN BOS.HASLTA IS NULL THEN 'No' ELSE CASE WHEN BOS.HASLTA = FALSE THEN 'No' ELSE 'Yes' END END as HASLTA_YES_NO,
                             CASE WHEN BOS.HASLTA = TRUE THEN CASE WHEN LTA.LTA_EVALUATED = TRUE THEN 1 ELSE 0 END ELSE 0 END as LTA_EVALUATED_COUNT,
-                            CASE WHEN BOS.HASLTA = TRUE THEN CASE WHEN LTA.LTA_EVALUATED IS NULL THEN 'No' ELSE CASE WHEN LTA.LTA_EVALUATED = FALSE THEN 'No' ELSE 'Yes' END END ELSE 'No' END as LTA_EVALUATED_YES_NO,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.MONETARY_VOLUME, LTA.DISCOUNT_RATE_APPLIED, LTA.ANNUAL_VALUE_OF_TOTAL_PROCUREMENT, LTA.MANAGEMENT_MODALITY_ID
-                        from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA
-                        WHERE LTA.PARENT_ID=BOS.ID AND BOS.PARENT_ID=CP4.ID and CP4.WORKFLOW='VALIDATED' AND CP4.DESIGNATION!='AQ'
+                        from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP4.DESIGNATION = CP1.DESIGNATION AND CP4.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            LTA.PARENT_ID = BOS.ID AND
+                            BOS.PARENT_ID = CP4.ID AND
+                            CP4.WORKFLOW = 'VALIDATED' AND
+                            CP4.DESIGNATION != 'AQ' AND CP4.DESIGNATION != 'DOCO' AND CP4.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP4.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP4.ENTITY_YEAR)
                     ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="DAOCP4BusinessOperationAreasDetails"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASMOU_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASLTA_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="LTA_EVALUATED_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP7MDTF">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select D.*, CP7.DESIGNATION, CP7.ENTITY_YEAR FROM CP7MTDF D, CP7JOINT_FUNDING_PROFILE CP7 WHERE CP7.ID=D.PARENT_ID AND CP7.WORKFLOW='VALIDATED' AND CP7.DESIGNATION!='AQ']]>
+                    <![CDATA[
+                        select
+                            D.*, CP7.DESIGNATION, CP7.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP7MTDF D, CP7JOINT_FUNDING_PROFILE CP7, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP7.DESIGNATION = CP1.DESIGNATION AND CP7.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP7.ID = D.PARENT_ID AND
+                            CP7.WORKFLOW = 'VALIDATED' AND
+                            CP7.DESIGNATION != 'AQ' AND CP7.DESIGNATION != 'DOCO' AND CP7.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP7.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP7.ENTITY_YEAR)
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="DAOCP7MDTF"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP11BudgetSupport">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select D.*, CP11.DESIGNATION, CP11.ENTITY_YEAR from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE CP11, CP11DIRECT_BUDGET_SUPPORT D WHERE CP11.ID = D.PARENT_ID AND CP11.WORKFLOW='VALIDATED' AND CP11.DESIGNATION != 'AQ']]>
+                    <![CDATA[
+                        select
+                            D.*, CP11.DESIGNATION, CP11.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE CP11, CP11DIRECT_BUDGET_SUPPORT D, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP11.DESIGNATION = CP1.DESIGNATION AND CP11.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP11.ID = D.PARENT_ID AND
+                            CP11.WORKFLOW = 'VALIDATED' AND
+                            CP11.DESIGNATION != 'AQ' AND CP11.DESIGNATION != 'DOCO' AND CP11.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP11.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP11.ENTITY_YEAR)
+                    ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="DAOCP11BudgetSupport"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP12HumanRightsTreatyBodies">
             <ExpressionView>
@@ -335,15 +409,22 @@
                         select
                             D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR,
                             CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = TRUE THEN 1 ELSE 0 END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT,
-                            CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT IS NULL THEN 'No' ELSE CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = FALSE THEN 'No' ELSE 'Yes' END END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO,
                             CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
-                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS IS NULL THEN 'No' ELSE CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = FALSE THEN 'No' ELSE 'Yes' END END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO
-                        FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12
-                        WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ'
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP12.ID = D.PARENT_ID AND
+                            CP12.WORKFLOW = 'VALIDATED' AND
+                            CP12.DESIGNATION != 'AQ' AND CP12.DESIGNATION != 'DOCO' AND CP12.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP12.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP12.ENTITY_YEAR)
                     ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="DAOCP12HumanRightsTreatyBodies"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP12SpecialProcedureHumanRightsCouncil">
             <ExpressionView>
@@ -352,15 +433,21 @@
                         select
                             D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR,
                             CASE WHEN D.UNCT_SUPPORTED = TRUE THEN 1 ELSE 0 END as UNCT_SUPPORTED_COUNT,
-                            CASE WHEN D.UNCT_SUPPORTED IS NULL THEN 'No' ELSE CASE WHEN D.UNCT_SUPPORTED = FALSE THEN 'No' ELSE 'Yes' END END as UNCT_SUPPORTED_YES_NO,
                             CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
-                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS IS NULL THEN 'No' ELSE CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = FALSE THEN 'No' ELSE 'Yes' END END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO
-                        FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D, CP12HUMAN_RIGHTS_PROFILE CP12
-                        WHERE CP12.ID=D.PARENT_ID AND CP12.WORKFLOW='VALIDATED' AND CP12.DESIGNATION!='AQ'
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D, CP12HUMAN_RIGHTS_PROFILE CP12, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP12.ID = D.PARENT_ID AND
+                            CP12.WORKFLOW = 'VALIDATED' AND
+                            CP12.DESIGNATION != 'AQ' AND CP12.DESIGNATION != 'DOCO' AND CP12.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP12.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP12.ENTITY_YEAR)
                     ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="DAOCP12SpecialProcedureHumanRightsCouncil"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="UNCT_SUPPORTED_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP13GenderEqualityScorecard">
             <ExpressionView>
@@ -369,17 +456,20 @@
                         select
                             D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR,
                             CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
-                            CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN IS NULL THEN 'No' ELSE CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = FALSE THEN 'No' ELSE 'Yes' END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO
-                        FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13
-                        WHERE CP13.ID=D.PARENT_ID AND CP13.WORKFLOW='VALIDATED' AND CP13.DESIGNATION!='AQ'
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP13.ID = D.PARENT_ID AND
+                            CP13.WORKFLOW = 'VALIDATED' AND
+                            CP13.DESIGNATION != 'AQ' AND CP13.DESIGNATION != 'DOCO' AND CP13.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP13.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP13.ENTITY_YEAR)
                     ]]>
                 </SQL>
             </ExpressionView>
         </Query>
-
-        <!--
-        GLOBAL_CUBE is a view for this query:
-        -->
+        <InlineTable alias="DAOCP13GenderEqualityScorecard"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <InlineTable alias="YES_NO_TABLE_1"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="YES_NO_TABLE_2"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
@@ -446,7 +536,11 @@
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
-                        select * from GLOBAL_CUBE
+                        select *
+                        from GLOBAL_CUBE
+                        WHERE
+                            GLOBAL_DESIGNATION != 'DOCO' AND GLOBAL_DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            GLOBAL_DESIGNATION in (select v.designation from v_cp_validated_designations v where v.entity_year = GLOBAL_ENTITY_YEAR)
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -481,8 +575,8 @@
                         LEFT OUTER JOIN ACTIVITY activity ON activity.OUTPUT_ID = outputs.ID
                         LEFT OUTER JOIN BUDGET budget ON budget.ACTIVITY_ID = activity.ID
                     WHERE
-                        workplan.DESIGNATION != 'AQ' AND
-                        workplan.WORKFLOW = 'VALIDATED'
+                        workplan.WORKFLOW = 'VALIDATED' AND
+                        workplan.DESIGNATION != 'AQ' AND workplan.DESIGNATION != 'DOCO' AND workplan.DESIGNATION in (select iso2 from BASE_COUNTRY)
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -538,6 +632,19 @@
                 </Attributes>
             </Dimension>
 
+            <!-- hide this dimension for now -->
+            <Dimension name="CountryIncomeStatus" caption="CountryIncomeStatus" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="false">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Status"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
                        table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
                 <Attributes>
@@ -551,13 +658,26 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" table='CP1UnctMember' key="Dimension Id">
+            <Dimension name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" table='NON_RESIDENT_AGENCY_TABLE' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" keyColumn="NON_RESIDENT_AGENCY_YES_NO"
+                    <Attribute name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1UnctMember' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
@@ -573,12 +693,14 @@
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
-                    <FactLink dimension="Has Non-Resident Agency" />
+                    <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_COUNT"/>
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -654,6 +776,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP2RcoStaffMemberDetail' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
         </Dimensions>
 
         <MeasureGroups>
@@ -661,9 +795,6 @@
                 <Measures>
                     <Measure name="Count" caption="Number of RCO Staff Members" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
-
-                    <Measure name="AverageAnnualNetSalaryAmount" caption="Average Annual Net Salary Amount"
-                             column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="avg" visible="true" />
 
                     <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
                              column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" />
@@ -679,6 +810,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -729,12 +861,23 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
             <MeasureGroup name="CP Joint Programmes Measures" table="CP3JointProgrammes">
                 <Measures>
-                    <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Joint Programmes" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="Total Budget" caption="Total Budget (Currency USD)" column="TOTAL_BUDGET"
                              datatype="Numeric" aggregator="sum" visible="true" />
@@ -744,6 +887,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -809,39 +953,53 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has MOUs" caption="Has MOUs in Place?" table='CP4BusinessOperationAreasDetails' key="Dimension Id">
+            <Dimension name="Has MOUs" caption="Has MOUs in Place?" table='HASMOU_YES_NO' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has MOUs" caption="Has MOUs in Place?" keyColumn="HASMOU_YES_NO"
+                    <Attribute name="Has MOUs" caption="Has MOUs in Place?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has LTA" caption="Has LTA?" table='CP4BusinessOperationAreasDetails' key="Dimension Id">
+            <Dimension name="Has LTA" caption="Has LTA?" table='HASLTA_YES_NO' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has LTA" caption="Has LTA?" keyColumn="HASLTA_YES_NO"
+                    <Attribute name="Has LTA" caption="Has LTA?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has LTA evaluated" caption="Has LTA evaluated?" table='CP4BusinessOperationAreasDetails' key="Dimension Id">
+            <Dimension name="Has LTA evaluated" caption="Has LTA evaluated?" table='LTA_EVALUATED_YES_NO' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has LTA evaluated" caption="Has LTA evaluated?" keyColumn="LTA_EVALUATED_YES_NO"
+                    <Attribute name="Has LTA evaluated" caption="Has LTA evaluated?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -871,10 +1029,11 @@
                     <ForeignKeyLink dimension="ManagementModality" foreignKeyColumn="MANAGEMENT_MODALITY_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Has MOUs" />
-                    <FactLink dimension="Has LTA" />
-                    <FactLink dimension="Has LTA evaluated" />
+                    <ForeignKeyLink dimension="Has MOUs" foreignKeyColumn="HASMOU_COUNT"/>
+                    <ForeignKeyLink dimension="Has LTA" foreignKeyColumn="HASLTA_COUNT"/>
+                    <ForeignKeyLink dimension="Has LTA evaluated" foreignKeyColumn="LTA_EVALUATED_COUNT"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -917,6 +1076,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
         </Dimensions>
 
         <MeasureGroups>
@@ -931,6 +1102,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -984,6 +1156,18 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -1000,6 +1184,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -1054,24 +1239,38 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" table='CP12HumanRightsTreatyBodies' key="Dimension Id">
+            <Dimension name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" table='HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" keyColumn="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO"
+                    <Attribute name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" table='CP12HumanRightsTreatyBodies' key="Dimension Id">
+            <Dimension name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" table='HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" keyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO"
+                    <Attribute name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
@@ -1092,8 +1291,9 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
-                    <FactLink dimension="Has UNCT engaged in developing national capacity" />
-                    <FactLink dimension="Has UNCT facilitated recommendations by the Gov" />
+                    <ForeignKeyLink dimension="Has UNCT engaged in developing national capacity" foreignKeyColumn="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT"/>
+                    <ForeignKeyLink dimension="Has UNCT facilitated recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"/>
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -1144,27 +1344,42 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has UNCT support this visit" caption="Has UNCT support this visit?" table='CP12SpecialProcedureHumanRightsCouncil' key="Dimension Id">
+            <Dimension name="Has UNCT support this visit" caption="Has UNCT support this visit?" table='UNCT_SUPPORTED_YES_NO' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has UNCT support this visit" caption="Has UNCT support this visit?" keyColumn="UNCT_SUPPORTED_YES_NO"
+                    <Attribute name="Has UNCT support this visit" caption="Has UNCT support this visit?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" table='CP12SpecialProcedureHumanRightsCouncil' key="Dimension Id">
+            <Dimension name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" table='HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" keyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO"
+                    <Attribute name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
         </Dimensions>
 
         <MeasureGroups>
@@ -1182,8 +1397,9 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <FactLink dimension="Name" />
-                    <FactLink dimension="Has UNCT support this visit" />
-                    <FactLink dimension="Has UNCT facilitate recommendations by the Gov" />
+                    <ForeignKeyLink dimension="Has UNCT support this visit" foreignKeyColumn="UNCT_SUPPORTED_COUNT"/>
+                    <ForeignKeyLink dimension="Has UNCT facilitate recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"/>
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -1250,16 +1466,30 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" table='CP13GenderEqualityScorecard' key="Dimension Id">
+            <Dimension name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" table='HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" keyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO"
+                    <Attribute name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
         </Dimensions>
 
         <MeasureGroups>
@@ -1276,7 +1506,8 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
-                    <FactLink dimension="Has UNCT addressed the recommendations" />
+                    <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -2903,19 +3134,6 @@
     <Cube name="Workplan" caption="Workplan Analysis" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <!-- Define dimensions and attributes -->
         <Dimensions>
-            <!--<Dimension name="Workflow" caption="Workflow" table='WorkplanCube' key="Dimension Id" visible="true">-->
-                <!--<Attributes>-->
-                    <!--&lt;!&ndash; by default we also have visible="false" when hasHierarchy="false" &ndash;&gt;-->
-                    <!--<Attribute name="Dimension Id" keyColumn="WORKPLAN_ID"-->
-                               <!--hasHierarchy="false"-->
-                               <!--levelType="Regular" datatype="Integer"/>-->
-
-                    <!--<Attribute name="Workflow" caption="Workflow" keyColumn="WORKPLAN_WORKFLOW"-->
-                               <!--hierarchyAllMemberName="All workflows" hierarchyCaption="All workflows"-->
-                               <!--levelType="Regular" datatype="String"/>-->
-                <!--</Attributes>-->
-            <!--</Dimension>-->
-
             <!--<Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"-->
                        <!--key="Dimension Id" visible="true">-->
                 <!--<Attributes>-->
@@ -3027,6 +3245,18 @@
                 </Attributes>
             </Dimension>
 
+            <!--<Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">-->
+                <!--<Attributes>-->
+                    <!--<Attribute name="Dimension Id" keyColumn="id"-->
+                               <!--hasHierarchy="false"-->
+                               <!--levelType="Regular" datatype="Integer"/>-->
+
+                    <!--<Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"-->
+                               <!--approxRowCount="2" hierarchyHasAll="true"-->
+                               <!--levelType="Regular" datatype="Boolean"/>-->
+                <!--</Attributes>-->
+            <!--</Dimension>-->
+
         </Dimensions>
 
         <!-- Define Measures -->
@@ -3038,7 +3268,6 @@
                     <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <!--<FactLink dimension="Workflow" />-->
                     <FactLink dimension="Year" />
                     <FactLink dimension="Role of partners" />
                     <FactLink dimension="Is good practice?" />
@@ -3047,6 +3276,7 @@
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                     <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
                     <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
+                    <!--<ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>-->
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

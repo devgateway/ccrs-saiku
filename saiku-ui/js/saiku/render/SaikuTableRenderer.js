@@ -4,6 +4,12 @@ function SaikuTableRenderer(data, options) {
     this._options = _.extend({}, SaikuRendererOptions, options);
 }
 
+SaikuTableRenderer.TotalsMap = {
+    "sum": "Sum",
+    "min": "Minimum",
+    "max": "Maximum",
+    "avg": "Average"
+};
 
 SaikuTableRenderer.prototype.render = function(data, options) {
         var self = this;
@@ -112,7 +118,7 @@ function genTotalDataCells(currentIndex, cellIndex, scanSums, scanIndexes, lists
     return contents;
 }
 
-function genTotalHeaderCells(currentIndex, bottom, scanSums, scanIndexes, lists, wrapContent) {
+function genTotalHeaderCells(allData, currentIndex, bottom, scanSums, scanIndexes, lists, wrapContent) {
     var contents = '';
     for (var i = bottom; i >= 0; i--) {
         if (currentIndex == scanSums[i]) {
@@ -136,7 +142,12 @@ function genTotalHeaderCells(currentIndex, bottom, scanSums, scanIndexes, lists,
                         if (currentListNode.captions)
                             text += "&nbsp;";
                         else text = "";
-                        text += (wrapContent ? "<span class='i18n'>Grand Total</span>" :  "Grand Total");
+
+                        if (!_.isUndefined(allData.query.queryModel.axes.COLUMNS.aggregators) && allData.query.queryModel.axes.COLUMNS.aggregators.length > 0) {
+                            aggregator = ' (' + SaikuTableRenderer.TotalsMap[allData.query.queryModel.axes.COLUMNS.aggregators[0]] + ')';
+                        }
+
+                        text += (wrapContent ? "<span class='i18n'>Grand Total" + aggregator + "</span>" :  "Grand Total" + aggregator);
                     }
                 }
                 contents += '<th class="' + cssClass + '">'
@@ -168,7 +179,7 @@ function totalIntersectionCells(currentIndex, bottom, scanSums, scanIndexes, lis
     return contents;
 }
 
-function genTotalHeaderRowCells(currentIndex, scanSums, scanIndexes, totalsLists, wrapContent) {
+function genTotalHeaderRowCells(allData, currentIndex, scanSums, scanIndexes, totalsLists, wrapContent) {
     var colLists = totalsLists[COLUMNS];
     var colScanSums = scanSums[COLUMNS];
     var colScanIndexes = scanIndexes[COLUMNS];
@@ -199,7 +210,11 @@ function genTotalHeaderRowCells(currentIndex, scanSums, scanIndexes, totalsLists
                             if (colLists[i][colScanIndexes[i]].captions)
                                 text += "&nbsp;";
                             else text = "";
-                            text += (wrapContent ? "<span class='i18n'>Grand Total</span>" :  "Grand Total");
+                            var aggregator = '';
+                            if (!_.isUndefined(allData.query.queryModel.axes.ROWS.aggregators) && allData.query.queryModel.axes.ROWS.aggregators.length > 0) {
+                                aggregator = ' (' + SaikuTableRenderer.TotalsMap[allData.query.queryModel.axes.ROWS.aggregators[0]] + ')';
+                            }
+                            text += (wrapContent ? "<span class='i18n'>Grand Total" + aggregator + "</span>" :  "Grand Total" + aggregator);
                         }
                     }
                     contents += '<th class="' + cssClass + '">'
@@ -335,10 +350,15 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                     if (header.value == "null") {
                         rowContent += '<th class="col_null">&nbsp;</th>';
                     } else {
+                        var headerValue = header.value;
+                        if (header.value === 'Yes' || header.value === 'No') {
+                            headerValue = header.value + ' - ' + header.properties.dimension;
+                        }
+
                         if (totalsLists[ROWS])
                             colSpan = totalsLists[ROWS][row + 1][scanIndexes[ROWS][row + 1]].span;
                         rowContent += '<th class="col" style="text-align: center;" colspan="' + colSpan + '" title="' + header.value + '">'
-                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + header.value + '</div>' : header.value)
+                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + headerValue + '</div>' : header.value)
                             + '</th>';    
                     }
                     
@@ -353,10 +373,15 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                         if (header.value == "null") {
                             rowContent += '<th class="col_null" colspan="' + colSpan + '">&nbsp;</th>';
                         } else {
+                            var headerValue = header.value;
+                            if (header.value === 'Yes' || header.value === 'No') {
+                                headerValue = header.value + ' - ' + header.properties.dimension;
+                            }
+
                             if (totalsLists[ROWS])
                                 colSpan = totalsLists[ROWS][row + 1][scanIndexes[ROWS][row + 1]].span;
                             rowContent += '<th class="col" style="text-align: center;" colspan="' + (colSpan == 0 ? 1 : colSpan) + '" title="' + header.value + '">'
-                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + header.value + '</div>' : header.value)
+                            + (wrapContent ? '<div rel="' + row + ":" + col +'">' + headerValue + '</div>' : header.value)
                             + '</th>';    
                         }
                         colSpan = 1;
@@ -365,7 +390,7 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                     }
                 }
                 if (totalsLists[ROWS])
-                    rowContent += genTotalHeaderCells(col - allData.leftOffset + 1, row + 1, scanSums[ROWS], scanIndexes[ROWS], totalsLists[ROWS], wrapContent);
+                    rowContent += genTotalHeaderCells(allData, col - allData.leftOffset + 1, row + 1, scanSums[ROWS], scanIndexes[ROWS], totalsLists[ROWS], wrapContent);
             } // If the cell is a row header and is null (grouped row header)
             else if (header.type === "ROW_HEADER" && header.value === "null") {
                 rowContent += '<th class="row_null">&nbsp;</th>';
@@ -455,7 +480,7 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
         rowContent += "</tr>";
         var totals = "";
         if (totalsLists[COLUMNS] && rowShifted >= 0) {
-            totals += genTotalHeaderRowCells(rowShifted + 1, scanSums, scanIndexes, totalsLists, wrapContent);
+            totals += genTotalHeaderRowCells(allData, rowShifted + 1, scanSums, scanIndexes, totalsLists, wrapContent);
         }
         if (batchStarted && batchSize) {
                 if (row <= batchSize) {
