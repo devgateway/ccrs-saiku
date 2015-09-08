@@ -794,7 +794,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP Joint Programmes Measures" table="CP3JointProgrammes">
                 <Measures>
-                    <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Joint Programmes" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="Total Budget" caption="Total Budget (Currency USD)" column="TOTAL_BUDGET"
                              datatype="Numeric" aggregator="sum" visible="true" />
