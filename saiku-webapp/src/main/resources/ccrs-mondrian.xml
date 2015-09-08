@@ -14,6 +14,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="BudgetType">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -267,15 +275,25 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR,
-                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
-                            CASE WHEN M.NON_RESIDENT_AGENCY IS NULL THEN 'No' ELSE CASE WHEN M.NON_RESIDENT_AGENCY = FALSE THEN 'No' ELSE 'Yes' END END as NON_RESIDENT_AGENCY_YES_NO
-                        from CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1
-                        WHERE M.PARENT_ID=CP1.ID and CP1.WORKFLOW='VALIDATED' AND CP1.DESIGNATION!='AQ'
+                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, income.COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT
+                        from
+                            CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1, CP1GENERAL_PROFILE_COUNTRY_INCOME_STATUS income
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.WORKFLOW = 'VALIDATED' AND
+                            CP1.DESIGNATION != 'AQ' AND
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR) AND
+                            income.index = 0 AND
+                            CP1.id = income.CP1GENERAL_PROFILE_ID
                     ]]>
                 </SQL>
             </ExpressionView>
         </Query>
+        <InlineTable alias="NON_RESIDENT_AGENCY_TABLE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="DAOCP1UnctMember"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
 
         <Query alias="CP2RcoStaffMemberDetail">
             <ExpressionView>
@@ -395,10 +413,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-
-        <!--
-        GLOBAL_CUBE is a view for this query:
-        -->
 
         <InlineTable alias="YES_NO_TABLE_1"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="YES_NO_TABLE_2"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
@@ -557,6 +571,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="CountryIncomeStatus" caption="CountryIncomeStatus" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Status"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
                        table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
                 <Attributes>
@@ -570,13 +596,26 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" table='CP1UnctMember' key="Dimension Id">
+            <Dimension name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" table='NON_RESIDENT_AGENCY_TABLE' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
+                    <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" keyColumn="NON_RESIDENT_AGENCY_YES_NO"
+                    <Attribute name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1UnctMember' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
@@ -592,12 +631,14 @@
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
-                    <FactLink dimension="Has Non-Resident Agency" />
+                    <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_COUNT"/>
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
