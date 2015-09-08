@@ -571,8 +571,9 @@
                 </Attributes>
             </Dimension>
 
+            <!-- hide this dimension for now -->
             <Dimension name="CountryIncomeStatus" caption="CountryIncomeStatus" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
+                       key="Dimension Id" visible="false">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
