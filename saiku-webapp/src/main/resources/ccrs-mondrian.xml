@@ -575,8 +575,8 @@
                         LEFT OUTER JOIN ACTIVITY activity ON activity.OUTPUT_ID = outputs.ID
                         LEFT OUTER JOIN BUDGET budget ON budget.ACTIVITY_ID = activity.ID
                     WHERE
-                        workplan.DESIGNATION != 'AQ' AND
-                        workplan.WORKFLOW = 'VALIDATED'
+                        workplan.WORKFLOW = 'VALIDATED' AND
+                        workplan.DESIGNATION != 'AQ' AND workplan.DESIGNATION != 'DOCO' AND workplan.DESIGNATION in (select iso2 from BASE_COUNTRY)
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -795,9 +795,6 @@
                 <Measures>
                     <Measure name="Count" caption="Number of RCO Staff Members" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
-
-                    <Measure name="AverageAnnualNetSalaryAmount" caption="Average Annual Net Salary Amount"
-                             column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="avg" visible="true" />
 
                     <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
                              column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" />
@@ -3137,19 +3134,6 @@
     <Cube name="Workplan" caption="Workplan Analysis" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <!-- Define dimensions and attributes -->
         <Dimensions>
-            <!--<Dimension name="Workflow" caption="Workflow" table='WorkplanCube' key="Dimension Id" visible="true">-->
-                <!--<Attributes>-->
-                    <!--&lt;!&ndash; by default we also have visible="false" when hasHierarchy="false" &ndash;&gt;-->
-                    <!--<Attribute name="Dimension Id" keyColumn="WORKPLAN_ID"-->
-                               <!--hasHierarchy="false"-->
-                               <!--levelType="Regular" datatype="Integer"/>-->
-
-                    <!--<Attribute name="Workflow" caption="Workflow" keyColumn="WORKPLAN_WORKFLOW"-->
-                               <!--hierarchyAllMemberName="All workflows" hierarchyCaption="All workflows"-->
-                               <!--levelType="Regular" datatype="String"/>-->
-                <!--</Attributes>-->
-            <!--</Dimension>-->
-
             <!--<Dimension name="Regions" caption="Regions" table="BASE_COUNTRY"-->
                        <!--key="Dimension Id" visible="true">-->
                 <!--<Attributes>-->
@@ -3261,6 +3245,18 @@
                 </Attributes>
             </Dimension>
 
+            <!--<Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">-->
+                <!--<Attributes>-->
+                    <!--<Attribute name="Dimension Id" keyColumn="id"-->
+                               <!--hasHierarchy="false"-->
+                               <!--levelType="Regular" datatype="Integer"/>-->
+
+                    <!--<Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"-->
+                               <!--approxRowCount="2" hierarchyHasAll="true"-->
+                               <!--levelType="Regular" datatype="Boolean"/>-->
+                <!--</Attributes>-->
+            <!--</Dimension>-->
+
         </Dimensions>
 
         <!-- Define Measures -->
@@ -3272,7 +3268,6 @@
                     <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <!--<FactLink dimension="Workflow" />-->
                     <FactLink dimension="Year" />
                     <FactLink dimension="Role of partners" />
                     <FactLink dimension="Is good practice?" />
@@ -3281,6 +3276,7 @@
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                     <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
                     <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
+                    <!--<ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>-->
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
