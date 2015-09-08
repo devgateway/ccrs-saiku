@@ -796,9 +796,6 @@
                     <Measure name="Count" caption="Number of RCO Staff Members" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="AverageAnnualNetSalaryAmount" caption="Average Annual Net Salary Amount"
-                             column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="avg" visible="true" />
-
                     <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
                              column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" />
 
