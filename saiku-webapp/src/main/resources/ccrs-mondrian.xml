@@ -5,6 +5,71 @@
         <Annotation name="desc">Cube Schema for CCRS</Annotation>
     </Annotations>
 
+    <!--
+    <Cube name="" caption="" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP1UnctMember"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1UnctMember' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP UNCT Measures" table="CP1UnctMember">
+                <Measures>
+                    <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+    -->
+
     <PhysicalSchema>
         <Query alias="Agency">
             <ExpressionView>
@@ -134,14 +199,6 @@
             </ExpressionView>
         </Query>
 
-        <Query alias="GovernmentRole">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='GovernmentRole']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
         <Query alias="HasNewConflictAnalysis">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -149,151 +206,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-
-        <Query alias="SOP1q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP2q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP3q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP4q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP5q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP6q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP7q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP8q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP9q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP10q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP11q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP12q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP13q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP14q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP15q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CP1UnctMember">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[
-                        select
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, income.COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
-                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT
-                        from
-                            CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1, CP1GENERAL_PROFILE_COUNTRY_INCOME_STATUS income
-                        WHERE
-                            M.PARENT_ID = CP1.ID AND
-                            CP1.WORKFLOW = 'VALIDATED' AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR) AND
-                            income.index = 0 AND
-                            CP1.id = income.CP1GENERAL_PROFILE_ID
-                    ]]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-        <InlineTable alias="NON_RESIDENT_AGENCY_TABLE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="DAOCP1UnctMember"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-
 
         <Query alias="CP2RcoStaffMemberDetail">
             <ExpressionView>
@@ -582,129 +494,6 @@
             </ExpressionView>
         </Query>
     </PhysicalSchema>
-
-    <!--*************************************************************************
-    ***** CP1 UNCT Members
-    *************************************************************************-->
-    <Cube name="CP1 UNCT Members" caption="CP1 UNCT Members" visible="true"
-          cache="true" enabled="true" defaultMeasure="Count">
-        <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP1UnctMember"
-                       visible="true">
-                <Attributes>
-                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNAgency" caption="UNAgency" table="UNAgency"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Agency" caption="Agency" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Agencies" hierarchyCaption="All Agencies"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <!-- hide this dimension for now -->
-            <Dimension name="CountryIncomeStatus" caption="CountryIncomeStatus" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="false">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Status"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
-                       table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="RepresentativePostLevel" caption="Representative Post Level"
-                               keyColumn="LABEL" hierarchyAllMemberName="All Representative Post Levels"
-                               hierarchyCaption="All Representative Post Levels" levelType="Regular"
-                               datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" table='NON_RESIDENT_AGENCY_TABLE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1UnctMember' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-        </Dimensions>
-
-        <MeasureGroups>
-            <MeasureGroup name="CP UNCT Measures" table="CP1UnctMember">
-                <Measures>
-                    <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
-                             aggregator="distinct-count" visible="true" formatString="#,###"/>
-                    <Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-                </Measures>
-                <DimensionLinks>
-                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="RepresentativePostLevel"
-                                    foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_COUNT"/>
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
-                </DimensionLinks>
-            </MeasureGroup>
-        </MeasureGroups>
-    </Cube>
 
     <!--*************************************************************************
     ***** CP2 RCO Staff Member Details
@@ -1550,184 +1339,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="SoP1question" caption="SoP1 Question" table="SOP1q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP2question" caption="SoP2 Question" table="SOP2q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP2question" caption="SoP2 Annual Report on Joint Results" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP3question" caption="SoP3 Question" table="SOP3q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP3question" caption="SoP3 Signed UNDAF" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP4question" caption="SoP4 Question" table="SOP4q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP5question" caption="SoP5 Question" table="SOP5q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP5question" caption="SoP5 Results Groups Established" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP6question" caption="SoP6 Question" table="SOP6q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP7question" caption="SoP7 Question" table="SOP7q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP7question" caption="SoP7 Annual Common Budgetary Framework" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP8question" caption="SoP8 Question" table="SOP8q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP9question" caption="SoP9 Question" table="SOP9q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP10question" caption="SoP10 Question" table="SOP10q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP11question" caption="SoP11 Question" table="SOP11q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP12question" caption="SoP12 Question" table="SOP12q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP13question" caption="SoP13 Question" table="SOP13q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP14question" caption="SoP14 Question" table="SOP14q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP14question" caption="SoP14 Joint Communication Strategy" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP15question" caption="SoP15 Question" table="SOP15q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP15question" caption="SoP15 Country Communications Group" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="GovernmentRole" caption="Government Role" table="GovernmentRole"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="GovernmentRole" caption="Government Role" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Delivering as One (DaO)" caption="Do you have an official request to become a Delivering as One (DaO) country from your Government?" table='YES_NO_TABLE_1' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -1735,18 +1346,6 @@
                                levelType="Regular" datatype="Integer"/>
 
                     <Attribute name="Delivering as One (DaO)" caption="Do you have an official request to become a Delivering as One (DaO) country from your Government?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="DaO Vision" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" table='YES_NO_TABLE_2' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="DaO Vision" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -2463,399 +2062,6 @@
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="SOPs (Yes, Fully) Measures" table="GlobalCube">
-                <Measures>
-                    <Measure name="#YesFullySOP1" caption="# Yes, Fully SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP2" caption="# Yes, Fully SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP3" caption="# Yes, Fully SOP 3 - Signed UNDAF" column="SOP3Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP4" caption="# Yes, Fully SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP5" caption="# Yes, Fully SOP 5 - Results Groups Established" column="SOP5Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP6" caption="# Yes, Fully SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP7" caption="# Yes, Fully SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP8" caption="# Yes, Fully SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP9" caption="# Yes, Fully SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP10" caption="# Yes, Fully SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP11" caption="# Yes, Fully SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP12" caption="# Yes, Fully SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP13" caption="# Yes, Fully SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP14" caption="# Yes, Fully SOP 14 - Joint Communication Strategy" column="SOP14Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesFullySOP15" caption="# Yes, Fully SOP 15 - Country Communications Group" column="SOP15Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-                </Measures>
-                <DimensionLinks>
-                    <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
-                    <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
-                    <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
-                    <ForeignKeyLink dimension="SoP4question" foreignKeyColumn="HAS_JOINT_ANNUAL_WORK_PLANS_ID"/>
-                    <ForeignKeyLink dimension="SoP5question" foreignKeyColumn="HAS_RESULTS_GROUPS_ID"/>
-                    <ForeignKeyLink dimension="SoP6question" foreignKeyColumn="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SoP7question" foreignKeyColumn="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SoP8question" foreignKeyColumn="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP9question" foreignKeyColumn="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID"/>
-                    <ForeignKeyLink dimension="SoP10question" foreignKeyColumn="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID"/>
-                    <ForeignKeyLink dimension="SoP11question" foreignKeyColumn="HASBOSSTRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP12question" foreignKeyColumn="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID"/>
-                    <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
-                    <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="Delivering as One (DaO)" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"/>
-                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
-                    <ForeignKeyLink dimension="Subnational offices" foreignKeyColumn="SUBNATIONAL_OFFICES_COUNT"/>
-                    <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF_COUNT"/>
-                    <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"/>
-                    <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"/>
-                    <ForeignKeyLink dimension="MDG Acceleration Framework" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK_COUNT"/>
-                    <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION_COUNT"/>
-                    <ForeignKeyLink dimension="MDG Country Report"  foreignKeyColumn="HASMDGCOUNTRY_REPORT_COUNT"/>
-                    <ForeignKeyLink dimension="HACT"  foreignKeyColumn="COUNTRY_LEVELHACT_COUNT"/>
-                    <ForeignKeyLink dimension="UN Common Premises"  foreignKeyColumn="HASUNCOMMON_PREMISES_COUNT"/>
-                    <ForeignKeyLink dimension="Feasibility Study"  foreignKeyColumn="HAS_FEASIBILITY_STUDY_COUNT"/>
-                    <ForeignKeyLink dimension="Shared Offices"  foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT"/>
-                    <ForeignKeyLink dimension="Website UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE_COUNT"/>
-                    <ForeignKeyLink dimension="Facebook UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE_COUNT"/>
-                    <ForeignKeyLink dimension="Twitter UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT_COUNT"/>
-                    <ForeignKeyLink dimension="Guiding principles for messaging"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT"/>
-                    <ForeignKeyLink dimension="Advocacy strategies to communicate"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT"/>
-                    <ForeignKeyLink dimension="One Fund"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL_COUNT"/>
-                    <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
-                    <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
-                    <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
-                    <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION_COUNT"/>
-                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
-                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"/>
-                    <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"/>
-                    <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"/>
-                    <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"/>
-                    <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
-                    <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR_COUNT"/>
-                    <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF_COUNT"/>
-                    <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"/>
-                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION_COUNT"/>
-                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_COUNT"/>
-                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT_COUNT"/>
-                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"/>
-                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"/>
-                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS_COUNT"/>
-                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"/>
-                    <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"/>
-                    <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT supported" foreignKeyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"/>
-                    <ForeignKeyLink dimension="UPR" foreignKeyColumn="HASUPRPROCESS_COUNT"/>
-                    <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES_COUNT"/>
-                    <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"/>
-                    <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"/>
-                    <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"/>
-                    <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"/>
-                    <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT"/>
-                    <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_COUNT"/>
-                    <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_COUNT"/>
-                    <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT"/>
-                    <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT"/>
-                </DimensionLinks>
-            </MeasureGroup>
-
-            <MeasureGroup name="SOPs (Yes, Partially) Measures" table="GlobalCube">
-                <Measures>
-                    <Measure name="#YesPartiallySOP1" caption="# Yes, Partially SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP2" caption="# Yes, Partially SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP3" caption="# Yes, Partially SOP 3 - Signed UNDAF" column="SOP3Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP4" caption="# Yes, Partially SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP5" caption="# Yes, Partially SOP 5 - Results Groups Established" column="SOP5Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP6" caption="# Yes, Partially SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP7" caption="# Yes, Partially SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP8" caption="# Yes, Partially SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP9" caption="# Yes, Partially SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP10" caption="# Yes, Partially SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP11" caption="# Yes, Partially SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP12" caption="# Yes, Partially SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP13" caption="# Yes, Partially SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP14" caption="# Yes, Partially SOP 14 - Joint Communication Strategy" column="SOP14Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#YesPartiallySOP15" caption="# Yes, Partially SOP 15 - Country Communications Group" column="SOP15Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-                </Measures>
-                <DimensionLinks>
-                    <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
-                    <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
-                    <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
-                    <ForeignKeyLink dimension="SoP4question" foreignKeyColumn="HAS_JOINT_ANNUAL_WORK_PLANS_ID"/>
-                    <ForeignKeyLink dimension="SoP5question" foreignKeyColumn="HAS_RESULTS_GROUPS_ID"/>
-                    <ForeignKeyLink dimension="SoP6question" foreignKeyColumn="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SoP7question" foreignKeyColumn="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SoP8question" foreignKeyColumn="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP9question" foreignKeyColumn="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID"/>
-                    <ForeignKeyLink dimension="SoP10question" foreignKeyColumn="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID"/>
-                    <ForeignKeyLink dimension="SoP11question" foreignKeyColumn="HASBOSSTRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP12question" foreignKeyColumn="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID"/>
-                    <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
-                    <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="Delivering as One (DaO)" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"/>
-                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
-                    <ForeignKeyLink dimension="Subnational offices" foreignKeyColumn="SUBNATIONAL_OFFICES_COUNT"/>
-                    <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF_COUNT"/>
-                    <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"/>
-                    <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"/>
-                    <ForeignKeyLink dimension="MDG Acceleration Framework" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK_COUNT"/>
-                    <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION_COUNT"/>
-                    <ForeignKeyLink dimension="MDG Country Report"  foreignKeyColumn="HASMDGCOUNTRY_REPORT_COUNT"/>
-                    <ForeignKeyLink dimension="HACT"  foreignKeyColumn="COUNTRY_LEVELHACT_COUNT"/>
-                    <ForeignKeyLink dimension="UN Common Premises"  foreignKeyColumn="HASUNCOMMON_PREMISES_COUNT"/>
-                    <ForeignKeyLink dimension="Feasibility Study"  foreignKeyColumn="HAS_FEASIBILITY_STUDY_COUNT"/>
-                    <ForeignKeyLink dimension="Shared Offices"  foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT"/>
-                    <ForeignKeyLink dimension="Website UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE_COUNT"/>
-                    <ForeignKeyLink dimension="Facebook UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE_COUNT"/>
-                    <ForeignKeyLink dimension="Twitter UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT_COUNT"/>
-                    <ForeignKeyLink dimension="Guiding principles for messaging"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT"/>
-                    <ForeignKeyLink dimension="Advocacy strategies to communicate"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT"/>
-                    <ForeignKeyLink dimension="One Fund"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL_COUNT"/>
-                    <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
-                    <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
-                    <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
-                    <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION_COUNT"/>
-                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
-                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"/>
-                    <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"/>
-                    <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"/>
-                    <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"/>
-                    <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
-                    <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR_COUNT"/>
-                    <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF_COUNT"/>
-                    <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"/>
-                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION_COUNT"/>
-                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_COUNT"/>
-                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT_COUNT"/>
-                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"/>
-                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"/>
-                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS_COUNT"/>
-                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"/>
-                    <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"/>
-                    <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT supported" foreignKeyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"/>
-                    <ForeignKeyLink dimension="UPR" foreignKeyColumn="HASUPRPROCESS_COUNT"/>
-                    <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES_COUNT"/>
-                    <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"/>
-                    <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"/>
-                    <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"/>
-                    <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"/>
-                    <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT"/>
-                    <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_COUNT"/>
-                    <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_COUNT"/>
-                    <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT"/>
-                    <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT"/>
-                </DimensionLinks>
-            </MeasureGroup>
-
-            <MeasureGroup name="SOPs (No) Measures" table="GlobalCube">
-                <Measures>
-                    <Measure name="#NoSOP1" caption="# No SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP2" caption="# No SOP 2 - Annual Report on Joint Results" column="SOP2Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP3" caption="# No SOP 3 - Signed UNDAF" column="SOP3Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP4" caption="# No SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP5" caption="# No SOP 5 - Results Groups Established" column="SOP5Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP6" caption="# No SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP7" caption="# No SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP8" caption="# No SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP9" caption="# No SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP10" caption="# No SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP11" caption="# No SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP12" caption="# No SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP13" caption="# No SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP14" caption="# No SOP 14 - Joint Communication Strategy" column="SOP14Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-
-                    <Measure name="#NoSOP15" caption="# No SOP 15 - Country Communications Group" column="SOP15Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
-                </Measures>
-                <DimensionLinks>
-                    <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
-                    <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
-                    <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
-                    <ForeignKeyLink dimension="SoP4question" foreignKeyColumn="HAS_JOINT_ANNUAL_WORK_PLANS_ID"/>
-                    <ForeignKeyLink dimension="SoP5question" foreignKeyColumn="HAS_RESULTS_GROUPS_ID"/>
-                    <ForeignKeyLink dimension="SoP6question" foreignKeyColumn="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SoP7question" foreignKeyColumn="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SoP8question" foreignKeyColumn="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP9question" foreignKeyColumn="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID"/>
-                    <ForeignKeyLink dimension="SoP10question" foreignKeyColumn="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID"/>
-                    <ForeignKeyLink dimension="SoP11question" foreignKeyColumn="HASBOSSTRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP12question" foreignKeyColumn="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID"/>
-                    <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
-                    <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="Delivering as One (DaO)" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"/>
-                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
-                    <ForeignKeyLink dimension="Subnational offices" foreignKeyColumn="SUBNATIONAL_OFFICES_COUNT"/>
-                    <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF_COUNT"/>
-                    <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"/>
-                    <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"/>
-                    <ForeignKeyLink dimension="MDG Acceleration Framework" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK_COUNT"/>
-                    <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION_COUNT"/>
-                    <ForeignKeyLink dimension="MDG Country Report"  foreignKeyColumn="HASMDGCOUNTRY_REPORT_COUNT"/>
-                    <ForeignKeyLink dimension="HACT"  foreignKeyColumn="COUNTRY_LEVELHACT_COUNT"/>
-                    <ForeignKeyLink dimension="UN Common Premises"  foreignKeyColumn="HASUNCOMMON_PREMISES_COUNT"/>
-                    <ForeignKeyLink dimension="Feasibility Study"  foreignKeyColumn="HAS_FEASIBILITY_STUDY_COUNT"/>
-                    <ForeignKeyLink dimension="Shared Offices"  foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT"/>
-                    <ForeignKeyLink dimension="Website UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE_COUNT"/>
-                    <ForeignKeyLink dimension="Facebook UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE_COUNT"/>
-                    <ForeignKeyLink dimension="Twitter UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT_COUNT"/>
-                    <ForeignKeyLink dimension="Guiding principles for messaging"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT"/>
-                    <ForeignKeyLink dimension="Advocacy strategies to communicate"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT"/>
-                    <ForeignKeyLink dimension="One Fund"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL_COUNT"/>
-                    <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
-                    <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
-                    <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
-                    <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION_COUNT"/>
-                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
-                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"/>
-                    <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"/>
-                    <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"/>
-                    <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"/>
-                    <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
-                    <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR_COUNT"/>
-                    <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF_COUNT"/>
-                    <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"/>
-                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION_COUNT"/>
-                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_COUNT"/>
-                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT_COUNT"/>
-                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"/>
-                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"/>
-                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS_COUNT"/>
-                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"/>
-                    <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"/>
-                    <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT supported" foreignKeyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"/>
-                    <ForeignKeyLink dimension="UPR" foreignKeyColumn="HASUPRPROCESS_COUNT"/>
-                    <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES_COUNT"/>
-                    <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"/>
-                    <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR_COUNT"/>
-                    <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"/>
-                    <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"/>
-                    <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"/>
-                    <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT"/>
-                    <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_COUNT"/>
-                    <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_COUNT"/>
-                    <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT"/>
-                    <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT"/>
-                </DimensionLinks>
-            </MeasureGroup>
-
             <MeasureGroup name="Global Measures" table="GlobalCube">
                 <Measures>
                     <Measure name="Count" caption="Number of Countries" column="GLOBAL_ID" datatype="Integer"
@@ -3042,27 +2248,10 @@
                              datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="GLOBAL_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="GLOBAL_DESIGNATION"/>
                     <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
-                    <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
-                    <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
-                    <ForeignKeyLink dimension="SoP4question" foreignKeyColumn="HAS_JOINT_ANNUAL_WORK_PLANS_ID"/>
-                    <ForeignKeyLink dimension="SoP5question" foreignKeyColumn="HAS_RESULTS_GROUPS_ID"/>
-                    <ForeignKeyLink dimension="SoP6question" foreignKeyColumn="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SoP7question" foreignKeyColumn="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SoP8question" foreignKeyColumn="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP9question" foreignKeyColumn="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID"/>
-                    <ForeignKeyLink dimension="SoP10question" foreignKeyColumn="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID"/>
-                    <ForeignKeyLink dimension="SoP11question" foreignKeyColumn="HASBOSSTRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP12question" foreignKeyColumn="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID"/>
-                    <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
-                    <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
-                    <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="Delivering as One (DaO)" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY_COUNT"/>
-                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
                     <ForeignKeyLink dimension="Subnational offices" foreignKeyColumn="SUBNATIONAL_OFFICES_COUNT"/>
                     <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF_COUNT"/>
                     <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"/>
