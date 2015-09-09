@@ -1,0 +1,282 @@
+<Schema name="CP 2" metamodelVersion="4.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
+    <Annotations>
+        <Annotation name="desc">Cube Schema for CCRS - CP 2</Annotation>
+    </Annotations>
+
+    <PhysicalSchema>
+        <Query alias="BASE_COUNTRY">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="ContractModality">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='ContractModality']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="Level">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Level']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="OfficeType">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='OfficeType']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP2RcoStaffMemberDetail">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            D.*, CP2.DESIGNATION, CP2.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP2.DESIGNATION = CP1.DESIGNATION AND CP2.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP2.ID = D.PARENT_ID AND
+                            CP2.WORKFLOW = 'VALIDATED' AND
+                            CP2.DESIGNATION != 'AQ' AND CP2.DESIGNATION != 'DOCO' AND CP2.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP2.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP2.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP2RcoStaffMemberDetail"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+        <Query alias="CP2GeneralCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            cp2.ID, cp2.DESIGNATION, cp2.ENTITY_YEAR,
+                            CASE WHEN cp2.SUBNATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as SUBNATIONAL_OFFICES,
+                            CASE WHEN cp2.SUBNATIONAL_OFFICES = TRUE THEN cp2.NUMBER_OF_OFFICES ELSE null END as NUMBER_OF_OFFICES,
+                            (select count(*) from CP2RCO_STAFF_MEMBER_DETAIL where PARENT_ID = cp2.id) STAFF_MEMEBER_COUNT,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP2COORDINATION_CAPACITY cp2, CP1GENERAL_PROFILE cp1
+                        WHERE
+                            cp2.DESIGNATION = cp1.DESIGNATION AND cp2.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                            cp2.WORKFLOW = 'VALIDATED' AND
+                            cp2.DESIGNATION != 'AQ' AND cp2.DESIGNATION != 'DOCO' AND cp2.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            cp2.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp2.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP2GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="SUBNATIONAL_OFFICES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+    </PhysicalSchema>
+
+    <!--*************************************************************************
+    ***** CP2 RCO Staff Member Details
+    *************************************************************************-->
+    <Cube name="CP2RCOStaffMember" caption="CP2 RCO Staff Member" visible="true" cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP2RcoStaffMemberDetail" visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="OfficeType" caption="Office Type"  table="OfficeType"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="OfficeType" caption="Office Type" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Office Types" hierarchyCaption="All Office Types"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="ContractModality" caption="Contract Modality" table="ContractModality"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="ContractModality" caption="Contract Modality" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Contract Modality" hierarchyCaption="All Contract Modality"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Level" caption="Level" table="Level" key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Level" caption="Level" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Levels" hierarchyCaption="All Levels"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP2RcoStaffMemberDetail' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP2 RCOStaffMemberDetails Measures" table="CP2RcoStaffMemberDetail">
+                <Measures>
+                    <Measure name="Count" caption="Number of RCO Staff Members" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
+                             column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" />
+
+                    <Measure name="AverageContractDurationYears" caption="Average Contract Duration Years"
+                             column="CONTRACT_DURATION_YEARS" datatype="Numeric" aggregator="avg" visible="true" />
+                </Measures>
+
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="OfficeType" foreignKeyColumn="OFFICE_TYPE_ID"/>
+                    <ForeignKeyLink dimension="ContractModality" foreignKeyColumn="CONTRACT_MODALITY_ID"/>
+                    <ForeignKeyLink dimension="Level" foreignKeyColumn="LEVEL_ID"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP2 General Cube
+    *************************************************************************-->
+    <Cube name="CP2GeneralCube" caption="CP2 General Cube" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP2GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP2GeneralCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Does the RCO have Subnational offices" caption="Does the RCO have Subnational offices?" table='SUBNATIONAL_OFFICES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Does the RCO have Subnational offices" caption="Does the RCO have Subnational offices?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP2 General Cube Measures" table="CP2GeneralCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="subnationalOffices" caption="Count of 'Does the RCO have Subnational offices?'" column="SUBNATIONAL_OFFICES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="howManyOffices" caption="Count of RCO Subnational offices" column="NUMBER_OF_OFFICES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="countRCOStaffMember" caption="Count of RCO Staff Member" column="STAFF_MEMEBER_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="Does the RCO have Subnational offices"  foreignKeyColumn="SUBNATIONAL_OFFICES"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+</Schema>

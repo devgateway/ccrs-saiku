@@ -1,4 +1,4 @@
-<Schema name="CP 1 - General Profile" metamodelVersion="4.0"
+<Schema name="CP 1" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
         <Annotation name="desc">Cube Schema for CCRS - CP 1</Annotation>
@@ -558,6 +558,9 @@
         </MeasureGroups>
     </Cube>
 
+    <!--*************************************************************************
+    ***** CP1 General Cube
+    *************************************************************************-->
     <Cube name="CP1GeneralCube" caption="CP1 General Cube" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
