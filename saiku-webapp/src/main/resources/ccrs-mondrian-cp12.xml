@@ -13,6 +13,61 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="UNHRTreatyBody">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNHRTreatyBody']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP12HumanRightsTreatyBodies">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR,
+                            CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = TRUE THEN 1 ELSE 0 END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP12.ID = D.PARENT_ID AND
+                            CP12.WORKFLOW = 'VALIDATED' AND
+                            CP12.DESIGNATION != 'AQ' AND CP12.DESIGNATION != 'DOCO' AND CP12.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP12.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP12.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP12HumanRightsTreatyBodies"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+        <Query alias="CP12SpecialProcedureHumanRightsCouncil">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR,
+                            CASE WHEN D.UNCT_SUPPORTED = TRUE THEN 1 ELSE 0 END as UNCT_SUPPORTED_COUNT,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D, CP12HUMAN_RIGHTS_PROFILE CP12, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP12.ID = D.PARENT_ID AND
+                            CP12.WORKFLOW = 'VALIDATED' AND
+                            CP12.DESIGNATION != 'AQ' AND CP12.DESIGNATION != 'DOCO' AND CP12.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP12.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP12.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP12SpecialProcedureHumanRightsCouncil"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="UNCT_SUPPORTED_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
         <Query alias="CP12GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -32,6 +87,221 @@
         </Query>
         <InlineTable alias="DAOCP12GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
+
+    <!--*************************************************************************
+***** CP12 Human Rights Treaty Bodies
+*************************************************************************-->
+    <Cube name="CP12 Human Rights Treaty Bodies" caption="CP12 Human Rights Treaty Bodies" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP12HumanRightsTreatyBodies"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNHRTreatyBody" caption="UN HR Treaty Body" table="UNHRTreatyBody"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="UN HR Treaty Body" caption="UN HR Treaty Body" keyColumn="LABEL"
+                               hierarchyAllMemberName="All UNHRTreatyBody" hierarchyCaption="All UNHRTreatyBody"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" table='HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" table='HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP12HumanRightsTreatyBodies' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Human Rights Treaty Bodies Measures" table="CP12HumanRightsTreatyBodies">
+                <Measures>
+                    <Measure name="Count" caption="Number of Human Rights Measures" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="hasEngagedDevelopNatlCapacityToReport" caption="Count of UNCT engaged in developing national capacity" column="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                    <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitated recommendations by the Gov" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="UNHRTreatyBody" foreignKeyColumn="UNHR_TREATY_BODY_TYPE_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Has UNCT engaged in developing national capacity" foreignKeyColumn="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT"/>
+                    <ForeignKeyLink dimension="Has UNCT facilitated recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"/>
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP12 Special Procedure of Human Rights Council
+    *************************************************************************-->
+    <Cube name="CP12 Special Procedure of Human Rights Council" caption="CP12 Special Procedure of Human Rights Council" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP12SpecialProcedureHumanRightsCouncil"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Name" caption="Name of special procedure" table="CP12SpecialProcedureHumanRightsCouncil"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Name" caption="Name" keyColumn="NAME"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has UNCT support this visit" caption="Has UNCT support this visit?" table='UNCT_SUPPORTED_YES_NO' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT support this visit" caption="Has UNCT support this visit?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" table='HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP12SpecialProcedureHumanRightsCouncil' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Special Procedure of Human Rights Council" table="CP12SpecialProcedureHumanRightsCouncil">
+                <Measures>
+                    <Measure name="Count" caption="Number of Special Procedure of HRC" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="unctSupported" caption="Count of UNCT support this visit" column="UNCT_SUPPORTED_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                    <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitate recommendations by the Gov" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <FactLink dimension="Name" />
+                    <ForeignKeyLink dimension="Has UNCT support this visit" foreignKeyColumn="UNCT_SUPPORTED_COUNT"/>
+                    <ForeignKeyLink dimension="Has UNCT facilitate recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"/>
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
 
     <!--*************************************************************************
     ***** CP12 General Cube
