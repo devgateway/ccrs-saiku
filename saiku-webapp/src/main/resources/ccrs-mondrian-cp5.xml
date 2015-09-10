@@ -1,0 +1,309 @@
+<Schema name="CP 5" metamodelVersion="4.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
+    <Annotations>
+        <Annotation name="desc">Cube Schema for CCRS - CP 5</Annotation>
+    </Annotations>
+
+    <PhysicalSchema>
+        <Query alias="BASE_COUNTRY">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CommonPremisesType">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CommonPremisesType']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP5UNCTMembersSharedOffices">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            M.ID, M.LOCATION, M.COMMON_PREMISES_TYPE_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP5SHARED_SUB_NATIONAL_OFFICES M, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.WORKFLOW = 'VALIDATED' AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP5UNCTMembersSharedOffices"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+        <Query alias="CP5GeneralCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            CP5.ID, CP5.DESIGNATION, CP5.ENTITY_YEAR,
+                            CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN 1 ELSE 0 END as HASUNCOMMON_PREMISES,
+                            CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.COMMON_PREMISES_TYPE_ID ELSE null END as COMMON_PREMISES_TYPE_ID,
+                            CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.VALUE_OF_SAVINGS ELSE null END as VALUE_OF_SAVINGS,
+                            CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN 1 ELSE 0 END as HAS_FEASIBILITY_STUDY,
+                            CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN CASE WHEN cp5study.TTCP_REVIEW_AND_FEEDBACK = TRUE THEN 1 ELSE 0 END ELSE null END as TTCP_REVIEW_AND_FEEDBACK,
+                            CASE WHEN cp5.HAS_SHARED_SUB_NATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as HAS_SHARED_SUB_NATIONAL_OFFICES,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP5COMMON_PREMISES_PROFILE CP5, CP1GENERAL_PROFILE CP1, CP5UNCOMMON_PREMISES cp5uncommon, CP5COMMON_PREMISES_FEASIBILITY_STUDY cp5study
+                        WHERE
+                            CP5.DESIGNATION = CP1.DESIGNATION AND CP5.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            cp5uncommon.PARENT_ID = cp5.id AND
+                            cp5study.PARENT_ID = cp5.id AND
+                            CP1.WORKFLOW = 'VALIDATED' AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP5GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASUNCOMMON_PREMISES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_FEASIBILITY_STUDY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="TTCP_REVIEW_AND_FEEDBACK"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_SHARED_SUB_NATIONAL_OFFICES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+    </PhysicalSchema>
+
+    <Cube name="CP5UNCTMembersSharedOffices" caption="CP5 UNCT Members Shared Offices" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP5UNCTMembersSharedOffices"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP5UNCTMembersSharedOffices' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Location" caption="Location" table="CP5UNCTMembersSharedOffices"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Location" caption="Location" keyColumn="LOCATION"
+                               hierarchyAllMemberName="All Locations" hierarchyCaption="All Locations"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CommonPremisesType" caption="Type of the Office" table="CommonPremisesType"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CommonPremisesType" caption="Type of the Office" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Type of the Office" hierarchyCaption="Type of the Office"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP5 UNCT Members Shared Offices Measures" table="CP5UNCTMembersSharedOffices">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <FactLink dimension="Location" />
+                    <ForeignKeyLink dimension="CommonPremisesType" foreignKeyColumn="COMMON_PREMISES_TYPE_ID"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP5 General Cube
+    *************************************************************************-->
+    <Cube name="CP5GeneralCube" caption="CP5 General Cube" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP5GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP5GeneralCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CommonPremisesType" caption="Are the premises government-provided, rented or owned?" table="CommonPremisesType"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CommonPremisesType" caption="Type of the Office" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Type of the Office" hierarchyCaption="Type of the Office"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Does the UNCT have UN Common Premises" caption="Does the UNCT have UN Common Premises?" table='HASUNCOMMON_PREMISES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Does the UNCT have UN Common Premises" caption="Does the UNCT have UN Common Premises?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT ever developed a feasibility study for the implementation of common premises" caption="Has the UNCT ever developed a feasibility study for the implementation of common premises?" table='HAS_FEASIBILITY_STUDY' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT ever developed a feasibility study for the implementation of common premises" caption="Has the UNCT ever developed a feasibility study for the implementation of common premises?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study" caption="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study?" table='TTCP_REVIEW_AND_FEEDBACK' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study" caption="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do UNCT members have any shared offices at the sub-national level" caption="Do UNCT members have any shared offices at the sub-national level?" table='HAS_SHARED_SUB_NATIONAL_OFFICES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do UNCT members have any shared offices at the sub-national level" caption="Do UNCT members have any shared offices at the sub-national level?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP5 General Cube Measures" table="CP5GeneralCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="valueOfSavings" caption="What is the approximate USD value of the savings" column="VALUE_OF_SAVINGS"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+
+                    <Measure name="hasUNCommonPremises" caption="Count of 'Does the UNCT have UN Common Premises?'" column="HASUNCOMMON_PREMISES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasFeasibilityStudy" caption="Count of 'Has the UNCT ever developed a feasibility study for the implementation of common premises?'" column="HAS_FEASIBILITY_STUDY"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="ttcpReviewAndFeedback" caption="Count of 'Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study?'" column="TTCP_REVIEW_AND_FEEDBACK"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasSharedSubNationalOffices" caption="Count of 'Do UNCT members have any shared offices at the sub-national level?'" column="HAS_SHARED_SUB_NATIONAL_OFFICES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="CommonPremisesType" foreignKeyColumn="COMMON_PREMISES_TYPE_ID"/>
+                    <ForeignKeyLink dimension="Does the UNCT have UN Common Premises" foreignKeyColumn="HASUNCOMMON_PREMISES"/>
+                    <ForeignKeyLink dimension="Has the UNCT ever developed a feasibility study for the implementation of common premises" foreignKeyColumn="HAS_FEASIBILITY_STUDY"/>
+                    <ForeignKeyLink dimension="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study" foreignKeyColumn="TTCP_REVIEW_AND_FEEDBACK"/>
+                    <ForeignKeyLink dimension="Do UNCT members have any shared offices at the sub-national level" foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+</Schema>

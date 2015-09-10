@@ -226,7 +226,7 @@
     </Cube>
 
     <!--*************************************************************************
-    ***** CP2 General Cube
+    ***** CP4 General Cube
     *************************************************************************-->
     <Cube name="CP4GeneralCube" caption="CP4 General Cube" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
