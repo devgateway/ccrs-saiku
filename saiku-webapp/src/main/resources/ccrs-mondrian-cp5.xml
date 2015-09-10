@@ -72,6 +72,9 @@
         <InlineTable alias="HAS_SHARED_SUB_NATIONAL_OFFICES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
+    <!--*************************************************************************
+    ***** CP5 UNCT Members Shared Offices
+    *************************************************************************-->
     <Cube name="CP5UNCTMembersSharedOffices" caption="CP5 UNCT Members Shared Offices" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
