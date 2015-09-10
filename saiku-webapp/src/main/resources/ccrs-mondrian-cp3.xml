@@ -40,6 +40,9 @@
                         select
                             cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN 1 ELSE 0 END as HASUNDAF,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN date(cp3undaf.DATE_OF_SIGNATURE) ELSE null END as DATE_OF_SIGNATURE,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN year(cp3undaf.START_DATE) ELSE null END as START_DATE,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN year(cp3undaf.END_DATE) ELSE null END as END_DATE,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN cp3undaf.TOTAL_PLANNED_BUDGET ELSE null END as TOTAL_PLANNED_BUDGET,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN cp3undaf.PREPARATION_PROCESS_MONTHS ELSE null END as PREPARATION_PROCESS_MONTHS,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.IS_DEVELOPING_NEWUNDAF = TRUE THEN 1 ELSE 0 END ELSE null END as IS_DEVELOPING_NEWUNDAF,
@@ -51,15 +54,18 @@
                             CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HASMDGACCELERATION_FRAMEWORK,
                             CASE WHEN cp3.HAS_JOINT_PROGRAMMES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_PROGRAMMES,
                             CASE WHEN cp3.HASUNDAFMID_TERM_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFMID_TERM_REVIEW,
+                            CASE WHEN cp3.HASUNDAFMID_TERM_REVIEW = TRUE THEN date(cp3undafmid.DATE_COMPLETED) ELSE null END as HASUNDAFMID_DATE_COMPLETED,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFANNUAL_REVIEW,
+                            CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN date(cp3undafannual.DATE_COMPLETED) ELSE null END as HASUNDAFANNUAL_DATE_COMPLETED,
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN 1 ELSE 0 END as HASUNDAFEVALUATION,
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN CASE WHEN cp3undafevaluation.MANAGEMENT_RESPONSE_PREPARED = TRUE THEN 1 ELSE 0 END ELSE null END as MANAGEMENT_RESPONSE_PREPARED,
+                            CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN date(cp3undafevaluation.DATE_COMPLETED) ELSE null END as HASUNDAFEVALUATION_DATE_COMPLETED,
                             CASE WHEN cp3.HASMDGCOUNTRY_REPORT = TRUE THEN 1 ELSE 0 END as HASMDGCOUNTRY_REPORT,
                             CASE WHEN cp3.HASMDGCOUNTRY_REPORT = TRUE THEN CASE WHEN cp3mdgcountryreport.UN_ASSISTANCE = TRUE THEN 1 ELSE 0 END ELSE null END as UN_ASSISTANCE,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
                             CP3UNDAF cp3undaf, CP3COMMON_COUNTRY_ASSESSMENT cp3assessment, CP3NATIONAL_DEVELOPMENT_PLAN cp3plan,
-                            CP3UNDAFEVALUATION cp3undafevaluation, CP3MDGCOUNTRY_REPORT cp3mdgcountryreport
+                            CP3UNDAFEVALUATION cp3undafevaluation, CP3MDGCOUNTRY_REPORT cp3mdgcountryreport, CP3UNDAFMID_TERM_REVIEW cp3undafmid, CP3UNDAFANNUAL_REVIEW cp3undafannual
                         WHERE
                             cp3.DESIGNATION = cp1.DESIGNATION AND cp3.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             cp3undaf.PARENT_ID = cp3.id AND
@@ -67,6 +73,8 @@
                             cp3plan.PARENT_ID = cp3.id AND
                             cp3undafevaluation.PARENT_ID = cp3.id AND
                             cp3mdgcountryreport.PARENT_ID = cp3.id AND
+                            cp3undafmid.PARENT_ID = cp3.id AND
+                            cp3undafannual.PARENT_ID = cp3.id AND
                             cp3.WORKFLOW = 'VALIDATED' AND
                             cp3.DESIGNATION != 'AQ' AND cp3.DESIGNATION != 'DOCO' AND cp3.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp3.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp3.ENTITY_YEAR)
@@ -396,6 +404,79 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Date of Signature" caption="Date of Signature" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Date" caption="Date" keyColumn="DATE_OF_SIGNATURE"
+                               hierarchyHasAll="true"
+                               levelType="TimeUndefined" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Start Date" caption="Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Year" caption="Start Date - Year" keyColumn="START_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeYears" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="End Date" caption="End Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Year" caption="End Date - Year" keyColumn="END_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeYears" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" caption="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Date Completed" caption="Date Completed" keyColumn="HASUNDAFMID_DATE_COMPLETED"
+                               hierarchyHasAll="true"
+                               levelType="TimeUndefined" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" caption="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Date Completed" caption="Date Completed" keyColumn="HASUNDAFANNUAL_DATE_COMPLETED"
+                               hierarchyHasAll="true"
+                               levelType="TimeUndefined" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" caption="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Date Completed" caption="Date Completed" keyColumn="HASUNDAFEVALUATION_DATE_COMPLETED"
+                               hierarchyHasAll="true"
+                               levelType="TimeUndefined" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
         </Dimensions>
 
         <MeasureGroups>
@@ -419,7 +500,7 @@
                     <Measure name="JointProgrammes" caption="Count of Joint Programmes" column="HAS_JOINT_PROGRAMMES"
                              datatype="Integer" aggregator="sum" visible="true" />
 
-                    <Measure name="UNDAFMidTermReview" caption="Count of Joint Programmes" column="HASUNDAFMID_TERM_REVIEW"
+                    <Measure name="UNDAFMidTermReview" caption="Count of Have you conducted the UNDAF Mid Term Review (MTR)?" column="HASUNDAFMID_TERM_REVIEW"
                              datatype="Integer" aggregator="sum" visible="true" />
 
                     <Measure name="UNDAFAnnualReview" caption="Count of conducted an UNDAF Annual Review in the last 12 months" column="HASUNDAFANNUAL_REVIEW"
@@ -472,6 +553,12 @@
                     <ForeignKeyLink dimension="Did the UN support the development of the National Plan"  foreignKeyColumn="HASUNSUPPORT"/>
                     <ForeignKeyLink dimension="Was a management response prepared"  foreignKeyColumn="MANAGEMENT_RESPONSE_PREPARED"/>
                     <ForeignKeyLink dimension="Did the UN assist"  foreignKeyColumn="UN_ASSISTANCE"/>
+                    <FactLink dimension="Date of Signature" />
+                    <FactLink dimension="Start Date" />
+                    <FactLink dimension="End Date" />
+                    <FactLink dimension="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" />
+                    <FactLink dimension="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" />
+                    <FactLink dimension="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
