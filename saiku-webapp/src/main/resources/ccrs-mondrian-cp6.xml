@@ -291,7 +291,7 @@
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="CP5 General Cube Measures" table="CP6GeneralCube">
+            <MeasureGroup name="CP6 General Cube Measures" table="CP6GeneralCube">
                 <Measures>
                     <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
