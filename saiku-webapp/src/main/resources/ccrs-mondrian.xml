@@ -107,14 +107,6 @@
             </ExpressionView>
         </Query>
 
-        <Query alias="HasNewConflictAnalysis">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
         <InlineTable alias="YES_NO_TABLE_1"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="YES_NO_TABLE_2"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="YES_NO_TABLE_3"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
@@ -391,138 +383,6 @@
                                levelType="Regular" datatype="Integer"/>
 
                     <Attribute name="Country Director" caption="Does the UNDP have a Country Director?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" table='YES_NO_TABLE_26' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" table="HasNewConflictAnalysis"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Humanitarian to longer-term" caption="Has a UN strategy been developed to adapt coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts?" table='YES_NO_TABLE_27' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Humanitarian to longer-term" caption="Has a UN strategy been developed to adapt coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" table='YES_NO_TABLE_28' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" table='YES_NO_TABLE_29' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" keyColumn="answer"
-                               orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" table='YES_NO_TABLE_30' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" table='YES_NO_TABLE_31' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" table='YES_NO_TABLE_32' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNCT ToR" caption="Are there an agreed upon UNCT ToR?" table='YES_NO_TABLE_33' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT ToR" caption="Are there an agreed upon UNCT ToR?" keyColumn="answer"
-                               orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Mutual Accountability Framework" caption="Is there an agreed Mutual Accountability Framework?" table='YES_NO_TABLE_34' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Mutual Accountability Framework" caption="Is there an agreed Mutual Accountability Framework?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" table='YES_NO_TABLE_35' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -881,36 +741,6 @@
                     <Measure name="CountryDirector" caption="Count of UNDP have a Country Director" column="HAS_COUNTRY_DIRECTOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" />
 
-                    <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="HumanitarianToLongerTerm" caption="Count of coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts" column="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="UNCTToR" caption="Count of agreed upon UNCT ToR" column="HAS_AGREEDUNCTTOR_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="MutualAccountabilityFramework" caption="Count of agreed Mutual Accountability Framework" column="HAS_AGREEDMAF_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="ConflictResolutionMechanism" caption="Count of agreed Conflict Resolution Mechanism" column="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
                     <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" />
 
@@ -1004,17 +834,6 @@
                     <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
                     <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
                     <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
-                    <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION_COUNT"/>
-                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
-                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM_COUNT"/>
-                    <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"/>
-                    <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"/>
-                    <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"/>
-                    <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
-                    <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR_COUNT"/>
-                    <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF_COUNT"/>
-                    <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"/>
                     <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION_COUNT"/>
                     <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_COUNT"/>
                     <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT_COUNT"/>
