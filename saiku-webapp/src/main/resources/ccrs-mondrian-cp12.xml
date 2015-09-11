@@ -86,8 +86,8 @@
     </PhysicalSchema>
 
     <!--*************************************************************************
-***** CP12 Human Rights Treaty Bodies
-*************************************************************************-->
+    ***** CP12 Human Rights Treaty Bodies
+    *************************************************************************-->
     <Cube name="CP12 Human Rights Treaty Bodies" caption="CP12 Human Rights Treaty Bodies" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>

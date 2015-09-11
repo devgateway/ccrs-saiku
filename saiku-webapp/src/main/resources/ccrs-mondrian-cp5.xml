@@ -147,7 +147,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP5 UNCT Members Shared Offices Measures" table="CP5UNCTMembersSharedOffices">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of UNCT Members Shared Offices" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>

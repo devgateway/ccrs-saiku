@@ -128,7 +128,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP6 Joint Advocacy Strategies" table="CP6JointAdvocacyStrategies">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Joint Advocacy Strategies" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
