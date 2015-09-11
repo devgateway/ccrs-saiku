@@ -13,24 +13,333 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="HasNewConflictAnalysis">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="isNewMonitoredAndReported">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP9CountryMechanisms">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            M.ID, M.LIST_MECHANISMS, M.PARTNERS_FOR_MECHANISMS, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP9COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT M, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP9CountryMechanisms"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+        <Query alias="CP9KeyPartners">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            M.ID, M.KEY_PARTNER, M.DESCRIBE_AGREEMENTS, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP9KEY_PARTNERS M, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP9KeyPartners"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
         <Query alias="CP9GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp9.ID, cp9.DESIGNATION, cp9.ENTITY_YEAR,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE cp1
-                        WHERE
-                            cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp9.DESIGNATION != 'AQ' AND cp9.DESIGNATION != 'DOCO' AND cp9.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            cp9.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp9.ENTITY_YEAR)
+                        cp9.ID, cp9.DESIGNATION, cp9.ENTITY_YEAR,
+                        CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = TRUE THEN 1 ELSE 0 END as HASUNPEACE_KEEPING_MISSION,
+
+                            CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HAS_INTEGRATED_STRATEGIC_FRAMEWORK,
+                                CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.DATE_OF_SIGNATURE) ELSE null END as DATE_OF_SIGNATURE,
+                                CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.START_DATE) ELSE null END as START_DATE,
+                                CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.END_DATE) ELSE null END as END_DATE,
+                                CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_JOINT_STRUCTURESUNCTUN = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_JOINT_STRUCTURESUNCTUN,
+                                CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT = TRUE THEN 1 ELSE 0 END ELSE null END as DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT,
+                                CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_MECHANISMS_FOR_MONITORING = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_MECHANISMS_FOR_MONITORING,
+                                CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN cp9integrated.IS_NEW_MONITORED_AND_REPORTED_ID ELSE null END as IS_NEW_MONITORED_AND_REPORTED_ID,
+                            CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN 1 ELSE 0 END as HASUNUNCTCOLABORATION,
+                                CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN CASE WHEN cp9ununctcolaboration.IS_JOINT_PROGRAMME = TRUE THEN 1 ELSE 0 END ELSE null END as IS_JOINT_PROGRAMME,
+                            CASE WHEN cp9unpeace.HAS_COMMON_SERVICES_TOUNCTMEMBERS = TRUE THEN 1 ELSE 0 END as HAS_COMMON_SERVICES_TOUNCTMEMBERS,
+                            CASE WHEN cp9unpeace.IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP = TRUE THEN 1 ELSE 0 END as IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP,
+                            CASE WHEN cp9unpeace.IS_DRAWDOWN_WITHDRAWALUNMISSION = TRUE THEN 1 ELSE 0 END as IS_DRAWDOWN_WITHDRAWALUNMISSION,
+
+                        cp9.HAS_NEW_CONFLICT_ANALYSIS_ID,
+
+                            CASE WHEN cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN = TRUE THEN 1 ELSE 0 END as HAS_ANALYSIS_BEEN_TAKEN_WITHUN,
+
+                        CASE WHEN cp9.HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM = TRUE THEN 1 ELSE 0 END as HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM,
+
+                            CASE WHEN cp9.HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM = TRUE THEN CASE WHEN cp9unstrategy.HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT,
+
+                        CASE WHEN cp9.HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY = TRUE THEN 1 ELSE 0 END as HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY,
+                        CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = TRUE THEN 1 ELSE 0 END as HAS_AGREEMENTS_WITH_KEY_PARTNERS,
+
+                            CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = TRUE THEN CASE WHEN cp9agreements.HAS_ACTIVE_COORDINATION_MECHANISMS = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_ACTIVE_COORDINATION_MECHANISMS,
+
+
+                        CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN 1 ELSE 0 END as HAS_INTERACTIONWBDIRECTORUNLEADER,
+
+                            CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN CASE WHEN cp9interactionwbdirectorunleader.WBUNCOLLABORATE_ON_UPSTREAM_POLICY = TRUE THEN 1 ELSE 0 END ELSE null END as WBUNCOLLABORATE_ON_UPSTREAM_POLICY,
+
+                        CASE WHEN cp9.HAS_JOINT_RISK_ASESSMENTS = TRUE THEN 1 ELSE 0 END as HAS_JOINT_RISK_ASESSMENTS,
+                        CASE WHEN cp9.HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS = TRUE THEN 1 ELSE 0 END as HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS,
+                        CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                    from CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE cp1, CP9UNPEACE_KEEPING_MISSION cp9unpeace,
+                        CP9INTEGRATED_STRATEGIC_FRAMEWORK cp9integrated, CP9UNUNCTCOLABORATION cp9ununctcolaboration,
+                        CP9CONFLICT_ANALYSIS cp9conflict, CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy, CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements,
+                        CP9INTERACTIONWBDIRECTORUNLEADER cp9interactionwbdirectorunleader
+                    WHERE
+                        cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                        cp9unpeace.PARENT_ID = cp9.ID AND
+                        cp9integrated.PARENT_ID = cp9unpeace.ID AND
+                        cp9ununctcolaboration.PARENT_ID = cp9unpeace.ID AND
+                        cp9conflict.PARENT_ID = cp9.ID AND
+                        cp9unstrategy.PARENT_ID = cp9.ID AND
+                        cp9agreements.PARENT_ID = cp9.ID AND
+                        cp9interactionwbdirectorunleader.PARENT_ID = cp9.ID AND
+                        cp9.DESIGNATION != 'AQ' AND cp9.DESIGNATION != 'DOCO' AND cp9.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                        cp9.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp9.ENTITY_YEAR)
                     ]]>
                 </SQL>
             </ExpressionView>
         </Query>
         <InlineTable alias="DAOCP9GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASUNPEACE_KEEPING_MISSION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_AGREEMENTS_WITH_KEY_PARTNERS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_INTERACTIONWBDIRECTORUNLEADER"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_JOINT_RISK_ASESSMENTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+
+
+
+
+
+
+        <InlineTable alias="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_JOINT_STRUCTURESUNCTUN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_MECHANISMS_FOR_MONITORING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASUNUNCTCOLABORATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="IS_JOINT_PROGRAMME"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_COMMON_SERVICES_TOUNCTMEMBERS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="IS_DRAWDOWN_WITHDRAWALUNMISSION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_ANALYSIS_BEEN_TAKEN_WITHUN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_ACTIVE_COORDINATION_MECHANISMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
+
+    <!--*************************************************************************
+    ***** CP9 Country Mechanisms
+    *************************************************************************-->
+    <Cube name="CP9CountryMechanisms" caption="CP9 Country Mechanisms" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP9CountryMechanisms"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9CountryMechanisms' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Mechanism" caption="Mechanism" table="CP9CountryMechanisms"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Mechanism" caption="Mechanism" keyColumn="LIST_MECHANISMS"
+                               hierarchyAllMemberName="All Mechanisms" hierarchyCaption="All Mechanisms"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Partners that support this mechanism" caption="Partners that support this mechanism" table="CP9CountryMechanisms"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Partners that support this mechanism" caption="Partners that support this mechanism" keyColumn="PARTNERS_FOR_MECHANISMS"
+                               hierarchyAllMemberName="All Partners" hierarchyCaption="All Partners"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP9 Country Mechanisms Measures" table="CP9CountryMechanisms">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <FactLink dimension="Mechanism" />
+                    <FactLink dimension="Partners that support this mechanism" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP9 Key Partners
+    *************************************************************************-->
+    <Cube name="CP9KeyPartners" caption="CP9 Key Partners" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP9KeyPartners"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9KeyPartners' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Key Partner" caption="Key Partner" table="CP9KeyPartners"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Key Partner" caption="Key Partner" keyColumn="KEY_PARTNER"
+                               hierarchyAllMemberName="All Partners" hierarchyCaption="All Partners"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Describe the agreements/arrangements/initiatives for crisis" caption="Describe the agreements/arrangements/initiatives for crisis" table="CP9KeyPartners"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Describe the agreements/arrangements/initiatives for crisis" caption="Describe the agreements/arrangements/initiatives for crisis" keyColumn="DESCRIBE_AGREEMENTS"
+                               hierarchyAllMemberName="All Agreements" hierarchyCaption="All Agreements"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP9 Key Partners Measures" table="CP9KeyPartners">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <FactLink dimension="Key Partner" />
+                    <FactLink dimension="Describe the agreements/arrangements/initiatives for crisis" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
 
     <!--*************************************************************************
     ***** CP9 General Cube
@@ -80,6 +389,306 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" table='HASUNPEACE_KEEPING_MISSION' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" table="HasNewConflictAnalysis"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" keyColumn="LABEL"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Humanitarian to longer-term" caption="Has a UN strategy been developed to adapt coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts?" table='HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Humanitarian to longer-term" caption="Has a UN strategy been developed to adapt coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" table='HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" table='HAS_AGREEMENTS_WITH_KEY_PARTNERS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" keyColumn="answer"
+                               orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" table='HAS_INTERACTIONWBDIRECTORUNLEADER' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" table='HAS_JOINT_RISK_ASESSMENTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" table='HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Date of Signature" caption="Date of Signature" table='CP9GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Date of Signature" caption="Date of Signature" keyColumn="DATE_OF_SIGNATURE"
+                               hierarchyHasAll="true"
+                               levelType="TimeUndefined" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Start Date" caption="Start Date" table='CP9GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Start Date" caption="Start Date" keyColumn="START_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeYears" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="End Date" caption="End Date" table='CP9GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="End Date" caption="End Date" keyColumn="END_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeYears" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" table="isNewMonitoredAndReported"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" table='HAS_INTEGRATED_STRATEGIC_FRAMEWORK' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Are there joint structures in place between the UNCT and the UN Mission" caption="Are there joint structures in place between the UNCT and the UN Mission?" table='HAS_JOINT_STRUCTURESUNCTUN' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Are there joint structures in place between the UNCT and the UN Mission" caption="Are there joint structures in place between the UNCT and the UN Mission?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" caption="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?" table='DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" caption="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" caption="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?" table='HAS_MECHANISMS_FOR_MONITORING' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" caption="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" caption="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?" table='HASUNUNCTCOLABORATION' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" caption="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is this in the form of a Joint Programme/Joint Programming" caption="Is this in the form of a Joint Programme/Joint Programming?" table='IS_JOINT_PROGRAMME' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is this in the form of a Joint Programme/Joint Programming" caption="Is this in the form of a Joint Programme/Joint Programming?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Does the UN Mission provide common services to UNCT members or vice versa" caption="Does the UN Mission provide common services to UNCT members or vice versa?" table='HAS_COMMON_SERVICES_TOUNCTMEMBERS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Does the UN Mission provide common services to UNCT members or vice versa" caption="Does the UN Mission provide common services to UNCT members or vice versa?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is the mission a member of the Joint UNCT Communications Group" caption="Is the mission a member of the Joint UNCT Communications Group?" table='IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is the mission a member of the Joint UNCT Communications Group" caption="Is the mission a member of the Joint UNCT Communications Group?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission" caption="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?" table='IS_DRAWDOWN_WITHDRAWALUNMISSION' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission" caption="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the conflict analysis been undertaken together with the UN Mission" caption="Has the conflict analysis been undertaken together with the UN Mission?" table='HAS_ANALYSIS_BEEN_TAKEN_WITHUN' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the conflict analysis been undertaken together with the UN Mission" caption="Has the conflict analysis been undertaken together with the UN Mission?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" table='HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Are there any active coordination mechanisms in place with key partners such as the World Bank" caption="Are there any active coordination mechanisms in place with key partners such as the World Bank?" table='HAS_ACTIVE_COORDINATION_MECHANISMS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Are there any active coordination mechanisms in place with key partners such as the World Bank" caption="Are there any active coordination mechanisms in place with key partners such as the World Bank?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes??" table='WBUNCOLLABORATE_ON_UPSTREAM_POLICY' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes??" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -87,12 +696,97 @@
                 <Measures>
                     <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="HumanitarianToLongerTerm" caption="Count of coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts" column="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasIntegratedStrategicFramework" caption="Count of 'Is there an Integrated Strategic Framework (ISF)?'" column="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasJointStructuresUNCTUN" caption="Count of 'Are there joint structures in place between the UNCT and the UN Mission?'" column="HAS_JOINT_STRUCTURESUNCTUN"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="developmentSupportedByPlanningUnit" caption="Count of 'Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?'" column="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasMechanismsForMonitoring" caption="Count of 'Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?'" column="HAS_MECHANISMS_FOR_MONITORING"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasUNUNCTColaboration" caption="Count of 'Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?'" column="HASUNUNCTCOLABORATION"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="isJointProgramme" caption="Count of 'Is this in the form of a Joint Programme/Joint Programming?'" column="IS_JOINT_PROGRAMME"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasCommonServicesToUNCTMembers" caption="Count of 'Does the UN Mission provide common services to UNCT members or vice versa?'" column="HAS_COMMON_SERVICES_TOUNCTMEMBERS"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="isMemberOfJointUNCTCommunicationsGroup" caption="Count of 'Is the mission a member of the Joint UNCT Communications Group?'" column="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="isDrawdownWithdrawalUNMission" caption="Count of 'If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?'" column="IS_DRAWDOWN_WITHDRAWALUNMISSION"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasAnalysisBeenTakenWithUN" caption="Count of 'Has the conflict analysis been undertaken together with the UN Mission?'" column="HAS_ANALYSIS_BEEN_TAKEN_WITHUN"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasCountryMechanismsCoordinateIntlSupport" caption="Count of 'Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?'" column="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasActiveCoordinationMechanisms" caption="Count of 'Are there any active coordination mechanisms in place with key partners such as the World Bank?'" column="HAS_ACTIVE_COORDINATION_MECHANISMS"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="wbUNCollaborateOnUpstreamPolicy" caption="Count of 'Do the World Bank and UN collaborate on upstream policy processes?'" column="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"
+                             datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION"/>
+                    <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
+                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM"/>
+                    <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"/>
+                    <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS"/>
+                    <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER"/>
+                    <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_RISK_ASESSMENTS"/>
+                    <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"/>
+                    <FactLink dimension="Date of Signature" />
+                    <FactLink dimension="Start Date" />
+                    <FactLink dimension="End Date" />
+                    <ForeignKeyLink dimension="Is the ISF regularly monitored and reported on" foreignKeyColumn="IS_NEW_MONITORED_AND_REPORTED_ID"/>
+                    <ForeignKeyLink dimension="Is there an Integrated Strategic Framework (ISF)" foreignKeyColumn="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"/>
+                    <ForeignKeyLink dimension="Are there joint structures in place between the UNCT and the UN Mission" foreignKeyColumn="HAS_JOINT_STRUCTURESUNCTUN"/>
+                    <ForeignKeyLink dimension="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" foreignKeyColumn="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"/>
+                    <ForeignKeyLink dimension="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" foreignKeyColumn="HAS_MECHANISMS_FOR_MONITORING"/>
+                    <ForeignKeyLink dimension="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" foreignKeyColumn="HASUNUNCTCOLABORATION"/>
+                    <ForeignKeyLink dimension="Is this in the form of a Joint Programme/Joint Programming" foreignKeyColumn="IS_JOINT_PROGRAMME"/>
+                    <ForeignKeyLink dimension="Does the UN Mission provide common services to UNCT members or vice versa" foreignKeyColumn="HAS_COMMON_SERVICES_TOUNCTMEMBERS"/>
+                    <ForeignKeyLink dimension="Is the mission a member of the Joint UNCT Communications Group" foreignKeyColumn="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP"/>
+                    <ForeignKeyLink dimension="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission" foreignKeyColumn="IS_DRAWDOWN_WITHDRAWALUNMISSION"/>
+                    <ForeignKeyLink dimension="Has the conflict analysis been undertaken together with the UN Mission" foreignKeyColumn="HAS_ANALYSIS_BEEN_TAKEN_WITHUN"/>
+                    <ForeignKeyLink dimension="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" foreignKeyColumn="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"/>
+                    <ForeignKeyLink dimension="Are there any active coordination mechanisms in place with key partners such as the World Bank" foreignKeyColumn="HAS_ACTIVE_COORDINATION_MECHANISMS"/>
+                    <ForeignKeyLink dimension="Do the World Bank and UN collaborate on upstream policy processes" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

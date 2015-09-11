@@ -409,7 +409,7 @@
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Date" caption="Date" keyColumn="DATE_OF_SIGNATURE"
+                    <Attribute name="Date of Signature" caption="Date of Signature" keyColumn="DATE_OF_SIGNATURE"
                                hierarchyHasAll="true"
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
@@ -421,7 +421,7 @@
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Year" caption="Start Date - Year" keyColumn="START_DATE"
+                    <Attribute name="Start Date" caption="Start Date" keyColumn="START_DATE"
                                hierarchyHasAll="true"
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
@@ -433,7 +433,7 @@
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Year" caption="End Date - Year" keyColumn="END_DATE"
+                    <Attribute name="End Date" caption="End Date" keyColumn="END_DATE"
                                hierarchyHasAll="true"
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
