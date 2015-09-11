@@ -1,0 +1,329 @@
+<Schema name="CP 6" metamodelVersion="4.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
+    <Annotations>
+        <Annotation name="desc">Cube Schema for CCRS - CP 6</Annotation>
+    </Annotations>
+
+    <PhysicalSchema>
+        <Query alias="BASE_COUNTRY">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP6JointAdvocacyStrategies">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            M.ID, M.FOR_WHICH_ISSUES, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP6JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES M, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP6JointAdvocacyStrategies"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+        <Query alias="CP6GeneralCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR,
+                            CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE 0 END as HAS_COMMONUNCTWEBSITE,
+                            CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN cp6.COMMONUNCTURL ELSE null END as COMMONUNCTURL,
+                            CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN 1 ELSE 0 END as HAS_COMMON_FACEBOOK_PAGE,
+                            CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN cp6.COMMON_FACEBOOKURL ELSE null END as COMMON_FACEBOOKURL,
+                            CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_TWITTER_ACCOUNT,
+                            CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN cp6.TWITTER_HANDLE ELSE null END as TWITTER_HANDLE,
+                            CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = TRUE THEN 1 ELSE 0 END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING,
+                            CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP6JOINT_COMMUNICATION_ADVOCACY cp6, CP1GENERAL_PROFILE cp1
+                        WHERE
+                            cp6.DESIGNATION = cp1.DESIGNATION AND cp6.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                            cp6.DESIGNATION != 'AQ' AND cp6.DESIGNATION != 'DOCO' AND cp6.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            cp6.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp6.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP6GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_COMMONUNCTWEBSITE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_COMMON_FACEBOOK_PAGE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_COMMON_TWITTER_ACCOUNT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+    </PhysicalSchema>
+
+    <!--*************************************************************************
+    ***** CP6 Joint Advocacy Strategies
+    *************************************************************************-->
+    <Cube name="CP6JointAdvocacyStrategies" caption="CP6 Joint Advocacy Strategies" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP6JointAdvocacyStrategies"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP6JointAdvocacyStrategies' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="For which issues" caption="For which issues?" table="CP6JointAdvocacyStrategies"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="For which issues" caption="For which issues?" keyColumn="FOR_WHICH_ISSUES"
+                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP6 Joint Advocacy Strategies" table="CP6JointAdvocacyStrategies">
+                <Measures>
+                    <Measure name="Count" caption="Number of Joint Advocacy Strategies" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <FactLink dimension="For which issues" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP6 General Cube
+    *************************************************************************-->
+    <Cube name="CP6GeneralCube" caption="CP6 General Cube" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP6GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP6GeneralCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="website URL" caption="website URL" table="CP6GeneralCube"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="website URL" caption="website URL" keyColumn="COMMONUNCTURL"
+                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Facebook URL" caption="Facebook URL" table="CP6GeneralCube"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Facebook URL" caption="Facebook URL" keyColumn="COMMON_FACEBOOKURL"
+                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Twitter account" caption="Twitter account" table="CP6GeneralCube"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Twitter account" caption="Twitter account" keyColumn="TWITTER_HANDLE"
+                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" table='HAS_COMMONUNCTWEBSITE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do you have a common Facebook page for the UNCT" caption="Do you have a common Facebook page for the UNCT?" table='HAS_COMMON_FACEBOOK_PAGE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do you have a common Facebook page for the UNCT" caption="Do you have a common Facebook page for the UNCT?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do you have a common Twitter account for the UNCT" caption="Do you have a common Twitter account for the UNCT?" table='HAS_COMMON_TWITTER_ACCOUNT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do you have a common Twitter account for the UNCT" caption="Do you have a common Twitter account for the UNCT?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do you have agreed guiding principles for common messaging from the UN" caption="Do you have agreed guiding principles for common messaging from the UN?" table='HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do you have agreed guiding principles for common messaging from the UN" caption="Do you have agreed guiding principles for common messaging from the UN?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do you have any joint advocacy strategies to communicate on human rights or other normative issues" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" table='HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do you have any joint advocacy strategies to communicate on human rights or other normative issues" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP6 General Cube Measures" table="CP6GeneralCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasCommonUNCTWebsite" caption="Count of 'o you have a common website for the UNCT?'" column="HAS_COMMONUNCTWEBSITE"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasCommonFacebookPage" caption="Count of 'Do you have a common Facebook page for the UNCT?'" column="HAS_COMMON_FACEBOOK_PAGE"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasCommonTwitterAccount" caption="Count of 'Do you have a common Twitter account for the UNCT?'" column="HAS_COMMON_TWITTER_ACCOUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasGuidingPrinciplesCommonMessaging" caption="Count of 'Do you have agreed guiding principles for common messaging from the UN?'" column="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasJointAdvocacyStrategiesOnNormativeIssues" caption="Count of 'Do you have any joint advocacy strategies to communicate on human rights or other normative issues?'" column="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <FactLink dimension="website URL" />
+                    <FactLink dimension="Facebook URL" />
+                    <FactLink dimension="Twitter account" />
+                    <ForeignKeyLink dimension="Do you have a common website for the UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE"/>
+                    <ForeignKeyLink dimension="Do you have a common Facebook page for the UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE"/>
+                    <ForeignKeyLink dimension="Do you have a common Twitter account for the UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT"/>
+                    <ForeignKeyLink dimension="Do you have agreed guiding principles for common messaging from the UN"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"/>
+                    <ForeignKeyLink dimension="Do you have any joint advocacy strategies to communicate on human rights or other normative issues"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+</Schema>
