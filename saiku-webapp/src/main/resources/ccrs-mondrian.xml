@@ -388,90 +388,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="South-South Cooperation" caption="Does the UNCT provide support on South-South Cooperation?" table='YES_NO_TABLE_36' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="South-South Cooperation" caption="Does the UNCT provide support on South-South Cooperation?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" table='YES_NO_TABLE_37' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Direct budget support" caption="Does the UNCT provide direct budget support?" table='YES_NO_TABLE_38' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Direct budget support" caption="Does the UNCT provide direct budget support?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Chair/co-chair aid effectiveness" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" table='YES_NO_TABLE_39' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Chair/co-chair aid effectiveness" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and aid management?" table='YES_NO_TABLE_40' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and aid management?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" table='YES_NO_TABLE_41' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Performance on aid effectiveness" caption="Does the UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework?" table='YES_NO_TABLE_42' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Performance on aid effectiveness" caption="Does the UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="UNCT Human Rights Advisor" caption="Is there a UNCT Human Rights Advisor?" table='YES_NO_TABLE_43' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -741,27 +657,6 @@
                     <Measure name="CountryDirector" caption="Count of UNDP have a Country Director" column="HAS_COUNTRY_DIRECTOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" />
 
-                    <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="SWAPs" caption="Count of UNCT participate in sector-wide approaches (SWAPs)" column="HASSWAPS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="DirectBudgetSupport" caption="Count of UNCT provide direct budget support" column="HAS_DIRECT_BUDGET_SUPPORT_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="ChairCochairAidEffectiveness" caption="Count of UNCT chair/co-chair aid effectiveness and coordination fora" column="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="CapacityDevelopment for aid modalities" caption="Count of UNCT provide capacity development for use of aid modalities and aid management" column="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="PerformanceAidEffectiveness" caption="Count of UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework" column="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
                     <Measure name="UNCTHumanRightsAdvisor" caption="Count of UNCT Human Rights Advisor" column="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" />
 
@@ -834,13 +729,6 @@
                     <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
                     <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
                     <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
-                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION_COUNT"/>
-                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_COUNT"/>
-                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT_COUNT"/>
-                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"/>
-                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"/>
-                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS_COUNT"/>
-                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP_COUNT"/>
                     <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"/>
                     <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"/>
                     <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"/>

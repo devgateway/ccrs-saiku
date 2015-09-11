@@ -46,10 +46,20 @@
                     <![CDATA[
                         select
                             cp11.ID, cp11.DESIGNATION, cp11.ENTITY_YEAR,
+                            CASE WHEN cp11.HAS_SUPPORTSSCOOPERATION = TRUE THEN 1 ELSE 0 END as HAS_SUPPORTSSCOOPERATION,
+                            CASE WHEN cp11.HASSWAPS = TRUE THEN 1 ELSE 0 END as HASSWAPS,
+                            CASE WHEN cp11.HAS_DIRECT_BUDGET_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_DIRECT_BUDGET_SUPPORT,
+                            CASE WHEN cp11.IS_CHAIR_AID_EFFECTIVENESS_FORA = TRUE THEN 1 ELSE 0 END as IS_CHAIR_AID_EFFECTIVENESS_FORA,
+                            CASE WHEN cp11.HAS_CAPACITY_FOR_AID_MODALITIES = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_FOR_AID_MODALITIES,
+                            CASE WHEN cp11.HASAIMS = TRUE THEN 1 ELSE 0 END as HASAIMS,
+                            CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.SUPPORTED_BYUN = TRUE THEN 1 ELSE 0 END ELSE null END as SUPPORTED_BYUN,
+                            CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.UNCT_REPORT_TOAIMS = TRUE THEN 1 ELSE 0 END ELSE null END as UNCT_REPORT_TOAIMS,
+                            CASE WHEN cp11.MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP = TRUE THEN 1 ELSE 0 END as MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11, CP1GENERAL_PROFILE cp1
+                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11, CP1GENERAL_PROFILE cp1, CP11AIMS cp11aims
                         WHERE
                             cp11.DESIGNATION = cp1.DESIGNATION AND cp11.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                            CP11AIMS.PARENT_ID = cp11.id AND
                             cp11.DESIGNATION != 'AQ' AND cp11.DESIGNATION != 'DOCO' AND cp11.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp11.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp11.ENTITY_YEAR)
                     ]]>
@@ -57,6 +67,15 @@
             </ExpressionView>
         </Query>
         <InlineTable alias="DAOCP11GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_SUPPORTSSCOOPERATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASSWAPS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_DIRECT_BUDGET_SUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="IS_CHAIR_AID_EFFECTIVENESS_FORA"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_CAPACITY_FOR_AID_MODALITIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASAIMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="SUPPORTED_BYUN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="UNCT_REPORT_TOAIMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -189,6 +208,114 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="South-South Cooperation" caption="Does the UNCT provide support on South-South Cooperation?" table='HAS_SUPPORTSSCOOPERATION' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="South-South Cooperation" caption="Does the UNCT provide support on South-South Cooperation?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" table='HASSWAPS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Direct budget support" caption="Does the UNCT provide direct budget support?" table='HAS_DIRECT_BUDGET_SUPPORT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Direct budget support" caption="Does the UNCT provide direct budget support?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Chair/co-chair aid effectiveness" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" table='IS_CHAIR_AID_EFFECTIVENESS_FORA' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Chair/co-chair aid effectiveness" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and aid management?" table='HAS_CAPACITY_FOR_AID_MODALITIES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and aid management?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" table='HASAIMS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Performance on aid effectiveness" caption="Does the UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework?" table='MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Performance on aid effectiveness" caption="Does the UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is the system supported by the UN" caption="Is the system supported by the UN?" table='SUPPORTED_BYUN' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is the system supported by the UN" caption="Is the system supported by the UN?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Does the UNCT report to the AIMS" caption="Does the UNCT report to the AIMS?" table='UNCT_REPORT_TOAIMS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Does the UNCT report to the AIMS" caption="Does the UNCT report to the AIMS?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -196,12 +323,46 @@
                 <Measures>
                     <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="SWAPs" caption="Count of UNCT participate in sector-wide approaches (SWAPs)" column="HASSWAPS"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="DirectBudgetSupport" caption="Count of UNCT provide direct budget support" column="HAS_DIRECT_BUDGET_SUPPORT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="ChairCochairAidEffectiveness" caption="Count of UNCT chair/co-chair aid effectiveness and coordination fora" column="IS_CHAIR_AID_EFFECTIVENESS_FORA"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CapacityDevelopment for aid modalities" caption="Count of UNCT provide capacity development for use of aid modalities and aid management" column="HAS_CAPACITY_FOR_AID_MODALITIES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="PerformanceAidEffectiveness" caption="Count of UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework" column="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                    <Measure name="supportedByUN" caption="Count of 'Is the system supported by the UN?'" column="SUPPORTED_BYUN"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                    <Measure name="unctReportToAIMS" caption="Count of 'Does the UNCT report to the AIMS?'" column="UNCT_REPORT_TOAIMS"
+                             datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION"/>
+                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS"/>
+                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT"/>
+                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA"/>
+                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES"/>
+                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS"/>
+                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"/>
+                    <ForeignKeyLink dimension="Is the system supported by the UN" foreignKeyColumn="SUPPORTED_BYUN"/>
+                    <ForeignKeyLink dimension="Does the UNCT report to the AIMS" foreignKeyColumn="UNCT_REPORT_TOAIMS"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
