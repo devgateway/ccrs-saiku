@@ -13,6 +13,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="AlternativeAnalysis">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='AlternativeAnalysis']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP3JointProgrammes">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -48,6 +56,7 @@
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_COUNTRY_ASSESSMENT,
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = TRUE THEN cp3assessment.ASSESSMENT_YEAR ELSE null END as ASSESSMENT_YEAR,
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = TRUE THEN CASE WHEN cp3assessment.HAS_DISAGGREGATED_DATA = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_DISAGGREGATED_DATA,
+                            CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = FALSE THEN cp3assessment.OTHER_ANALYSIS_SOURCE_ID ELSE null END as OTHER_ANALYSIS_SOURCE_ID,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_DEVELOPMENT_PLAN,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN CASE WHEN cp3plan.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNSUPPORT,
                             CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HASMDGACCELERATION_FRAMEWORK,
@@ -475,6 +484,17 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="AlternativeAnalysis" caption="Alternative Analysis" table="AlternativeAnalysis"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="AlternativeAnalysis" caption="Alternative Analysis" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Alternatives" hierarchyCaption="All Alternatives"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -557,6 +577,7 @@
                     <FactLink dimension="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" />
                     <FactLink dimension="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" />
                     <FactLink dimension="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" />
+                    <ForeignKeyLink dimension="AlternativeAnalysis"  foreignKeyColumn="OTHER_ANALYSIS_SOURCE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

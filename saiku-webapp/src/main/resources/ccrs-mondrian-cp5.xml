@@ -48,6 +48,7 @@
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN 1 ELSE 0 END as HASUNCOMMON_PREMISES,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.COMMON_PREMISES_TYPE_ID ELSE null END as COMMON_PREMISES_TYPE_ID,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.VALUE_OF_SAVINGS ELSE null END as VALUE_OF_SAVINGS,
+                            CASE WHEN cp5.HASUNCOMMON_PREMISES = FALSE THEN CASE WHEN cp5uncommon.HASUNCTSTRATEGY = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNCTSTRATEGY,
                             CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN 1 ELSE 0 END as HAS_FEASIBILITY_STUDY,
                             CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN CASE WHEN cp5study.TTCP_REVIEW_AND_FEEDBACK = TRUE THEN 1 ELSE 0 END ELSE null END as TTCP_REVIEW_AND_FEEDBACK,
                             CASE WHEN cp5.HAS_SHARED_SUB_NATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as HAS_SHARED_SUB_NATIONAL_OFFICES,
@@ -68,6 +69,7 @@
         <InlineTable alias="HAS_FEASIBILITY_STUDY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="TTCP_REVIEW_AND_FEEDBACK"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_SHARED_SUB_NATIONAL_OFFICES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASUNCTSTRATEGY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -270,6 +272,18 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Does the UNCT have a strategy to support the establishment of common premises" caption="Does the UNCT have a strategy to support the establishment of common premises?" table='HASUNCTSTRATEGY' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Does the UNCT have a strategy to support the establishment of common premises" caption="Does the UNCT have a strategy to support the establishment of common premises?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -292,6 +306,9 @@
 
                     <Measure name="hasSharedSubNationalOffices" caption="Count of 'Do UNCT members have any shared offices at the sub-national level?'" column="HAS_SHARED_SUB_NATIONAL_OFFICES"
                              datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasUNCTStrategy" caption="Count of 'Does the UNCT have a strategy to support the establishment of common premises?'" column="HASUNCTSTRATEGY"
+                             datatype="Integer" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -303,6 +320,7 @@
                     <ForeignKeyLink dimension="Has the UNCT ever developed a feasibility study for the implementation of common premises" foreignKeyColumn="HAS_FEASIBILITY_STUDY"/>
                     <ForeignKeyLink dimension="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study" foreignKeyColumn="TTCP_REVIEW_AND_FEEDBACK"/>
                     <ForeignKeyLink dimension="Do UNCT members have any shared offices at the sub-national level" foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES"/>
+                    <ForeignKeyLink dimension="Does the UNCT have a strategy to support the establishment of common premises" foreignKeyColumn="HASUNCTSTRATEGY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
