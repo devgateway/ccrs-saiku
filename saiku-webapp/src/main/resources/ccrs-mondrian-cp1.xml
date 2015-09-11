@@ -178,7 +178,6 @@
                             CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1, CP1GENERAL_PROFILE_COUNTRY_INCOME_STATUS income
                         WHERE
                             M.PARENT_ID = CP1.ID AND
-                            CP1.WORKFLOW = 'VALIDATED' AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR) AND
                             income.index = 0 AND
@@ -203,7 +202,6 @@
                         from CP1INTERAGENCY_GROUP M, CP1GENERAL_PROFILE CP1
                         WHERE
                             M.PARENT_ID = CP1.ID AND
-                            CP1.WORKFLOW = 'VALIDATED' AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
                     ]]>
@@ -293,7 +291,6 @@
                             cp1joint.PARENT_ID = cp1.ID AND
                             cp1annual.PARENT_ID = cp1.ID AND
                             cp1jointstrategy.PARENT_ID = cp1.ID AND
-                            CP1.WORKFLOW = 'VALIDATED' AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
                     ]]>

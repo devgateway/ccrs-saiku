@@ -31,7 +31,6 @@
                         from CP5SHARED_SUB_NATIONAL_OFFICES M, CP1GENERAL_PROFILE CP1
                         WHERE
                             M.PARENT_ID = CP1.ID AND
-                            CP1.WORKFLOW = 'VALIDATED' AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
                     ]]>
@@ -58,7 +57,6 @@
                             CP5.DESIGNATION = CP1.DESIGNATION AND CP5.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             cp5uncommon.PARENT_ID = cp5.id AND
                             cp5study.PARENT_ID = cp5.id AND
-                            CP1.WORKFLOW = 'VALIDATED' AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
                     ]]>

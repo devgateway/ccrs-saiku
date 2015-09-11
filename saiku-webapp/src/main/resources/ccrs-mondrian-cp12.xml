@@ -34,7 +34,6 @@
                         WHERE
                             CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP12.ID = D.PARENT_ID AND
-                            CP12.WORKFLOW = 'VALIDATED' AND
                             CP12.DESIGNATION != 'AQ' AND CP12.DESIGNATION != 'DOCO' AND CP12.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
                             CP12.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP12.ENTITY_YEAR)
                     ]]>
@@ -58,7 +57,6 @@
                         WHERE
                             CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP12.ID = D.PARENT_ID AND
-                            CP12.WORKFLOW = 'VALIDATED' AND
                             CP12.DESIGNATION != 'AQ' AND CP12.DESIGNATION != 'DOCO' AND CP12.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
                             CP12.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP12.ENTITY_YEAR)
                     ]]>
@@ -78,7 +76,6 @@
                         from CP12HUMAN_RIGHTS_PROFILE cp12, CP1GENERAL_PROFILE cp1
                         WHERE
                             cp12.DESIGNATION = cp1.DESIGNATION AND cp12.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp12.WORKFLOW = 'VALIDATED' AND
                             cp12.DESIGNATION != 'AQ' AND cp12.DESIGNATION != 'DOCO' AND cp12.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp12.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp12.ENTITY_YEAR)
                     ]]>

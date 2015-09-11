@@ -41,7 +41,6 @@
                         WHERE
                             CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP13.ID = D.PARENT_ID AND
-                            CP13.WORKFLOW = 'VALIDATED' AND
                             CP13.DESIGNATION != 'AQ' AND CP13.DESIGNATION != 'DOCO' AND CP13.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
                             CP13.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP13.ENTITY_YEAR)
                     ]]>
@@ -61,7 +60,6 @@
                         from CP13GENDER_PROFILE cp13, CP1GENERAL_PROFILE cp1
                         WHERE
                             cp13.DESIGNATION = cp1.DESIGNATION AND cp13.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp13.WORKFLOW = 'VALIDATED' AND
                             cp13.DESIGNATION != 'AQ' AND cp13.DESIGNATION != 'DOCO' AND cp13.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp13.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp13.ENTITY_YEAR)
                     ]]>

@@ -44,7 +44,6 @@
                             CP4.DESIGNATION = CP1.DESIGNATION AND CP4.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             LTA.PARENT_ID = BOS.ID AND
                             BOS.PARENT_ID = CP4.ID AND
-                            CP4.WORKFLOW = 'VALIDATED' AND
                             CP4.DESIGNATION != 'AQ' AND CP4.DESIGNATION != 'DOCO' AND CP4.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
                             CP4.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP4.ENTITY_YEAR)
                     ]]>
@@ -67,7 +66,6 @@
                         from CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4, CP1GENERAL_PROFILE cp1
                         WHERE
                             cp4.DESIGNATION = cp1.DESIGNATION AND cp4.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp4.WORKFLOW = 'VALIDATED' AND
                             cp4.DESIGNATION != 'AQ' AND cp4.DESIGNATION != 'DOCO' AND cp4.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp4.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp4.ENTITY_YEAR)
                     ]]>

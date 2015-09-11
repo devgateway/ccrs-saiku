@@ -23,7 +23,6 @@
                         from CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE cp1
                         WHERE
                             cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp9.WORKFLOW = 'VALIDATED' AND
                             cp9.DESIGNATION != 'AQ' AND cp9.DESIGNATION != 'DOCO' AND cp9.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp9.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp9.ENTITY_YEAR)
                     ]]>

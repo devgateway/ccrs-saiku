@@ -48,7 +48,6 @@
                         WHERE
                             CP2.DESIGNATION = CP1.DESIGNATION AND CP2.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP2.ID = D.PARENT_ID AND
-                            CP2.WORKFLOW = 'VALIDATED' AND
                             CP2.DESIGNATION != 'AQ' AND CP2.DESIGNATION != 'DOCO' AND CP2.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
                             CP2.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP2.ENTITY_YEAR)
                     ]]>
@@ -70,7 +69,6 @@
                         from CP2COORDINATION_CAPACITY cp2, CP1GENERAL_PROFILE cp1
                         WHERE
                             cp2.DESIGNATION = cp1.DESIGNATION AND cp2.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp2.WORKFLOW = 'VALIDATED' AND
                             cp2.DESIGNATION != 'AQ' AND cp2.DESIGNATION != 'DOCO' AND cp2.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp2.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp2.ENTITY_YEAR)
                     ]]>

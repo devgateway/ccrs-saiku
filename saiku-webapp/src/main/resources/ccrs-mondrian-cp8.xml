@@ -28,7 +28,6 @@
                         WHERE
                             cp8.DESIGNATION = cp1.DESIGNATION AND cp8.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             cp8code.PARENT_ID = cp8.ID AND
-                            cp8.WORKFLOW = 'VALIDATED' AND
                             cp8.DESIGNATION != 'AQ' AND cp8.DESIGNATION != 'DOCO' AND cp8.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp8.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp8.ENTITY_YEAR)
                     ]]>

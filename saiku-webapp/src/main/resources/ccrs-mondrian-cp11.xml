@@ -32,7 +32,6 @@
                         WHERE
                             CP11.DESIGNATION = CP1.DESIGNATION AND CP11.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP11.ID = D.PARENT_ID AND
-                            CP11.WORKFLOW = 'VALIDATED' AND
                             CP11.DESIGNATION != 'AQ' AND CP11.DESIGNATION != 'DOCO' AND CP11.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
                             CP11.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP11.ENTITY_YEAR)
                     ]]>
@@ -51,7 +50,6 @@
                         from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11, CP1GENERAL_PROFILE cp1
                         WHERE
                             cp11.DESIGNATION = cp1.DESIGNATION AND cp11.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp11.WORKFLOW = 'VALIDATED' AND
                             cp11.DESIGNATION != 'AQ' AND cp11.DESIGNATION != 'DOCO' AND cp11.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp11.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp11.ENTITY_YEAR)
                     ]]>

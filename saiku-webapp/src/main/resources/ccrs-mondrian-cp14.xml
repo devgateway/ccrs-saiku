@@ -23,7 +23,6 @@
                         from CP14EMERGING_ISSUES cp14, CP1GENERAL_PROFILE cp1
                         WHERE
                             cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp14.WORKFLOW = 'VALIDATED' AND
                             cp14.DESIGNATION != 'AQ' AND cp14.DESIGNATION != 'DOCO' AND cp14.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp14.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp14.ENTITY_YEAR)
                     ]]>

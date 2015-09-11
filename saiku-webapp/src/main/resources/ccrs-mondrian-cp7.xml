@@ -24,7 +24,6 @@
                         WHERE
                             CP7.DESIGNATION = CP1.DESIGNATION AND CP7.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP7.ID = D.PARENT_ID AND
-                            CP7.WORKFLOW = 'VALIDATED' AND
                             CP7.DESIGNATION != 'AQ' AND CP7.DESIGNATION != 'DOCO' AND CP7.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
                             CP7.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP7.ENTITY_YEAR)
                     ]]>
@@ -47,7 +46,6 @@
                         WHERE
                             cp7.DESIGNATION = cp1.DESIGNATION AND cp7.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             cp7onefund.PARENT_ID = cp7.id AND
-                            cp7.WORKFLOW = 'VALIDATED' AND
                             cp7.DESIGNATION != 'AQ' AND cp7.DESIGNATION != 'DOCO' AND cp7.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp7.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp7.ENTITY_YEAR)
                     ]]>

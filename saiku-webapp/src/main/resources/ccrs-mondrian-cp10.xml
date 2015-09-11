@@ -23,7 +23,6 @@
                         from CP10DELIVERING_AS_ONE_PROFILE cp10, CP1GENERAL_PROFILE cp1
                         WHERE
                             cp10.DESIGNATION = cp1.DESIGNATION AND cp10.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp10.WORKFLOW = 'VALIDATED' AND
                             cp10.DESIGNATION != 'AQ' AND cp10.DESIGNATION != 'DOCO' AND cp10.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp10.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp10.ENTITY_YEAR)
                     ]]>

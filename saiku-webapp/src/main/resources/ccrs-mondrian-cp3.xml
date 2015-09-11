@@ -24,7 +24,6 @@
                         WHERE
                             CP3.DESIGNATION = CP1.DESIGNATION AND CP3.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP3.ID = D.PARENT_ID AND
-                            CP3.WORKFLOW = 'VALIDATED' AND
                             CP3.DESIGNATION != 'AQ' AND CP3.DESIGNATION != 'DOCO' AND CP3.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
                             CP3.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP3.ENTITY_YEAR)
                     ]]>
@@ -75,7 +74,6 @@
                             cp3mdgcountryreport.PARENT_ID = cp3.id AND
                             cp3undafmid.PARENT_ID = cp3.id AND
                             cp3undafannual.PARENT_ID = cp3.id AND
-                            cp3.WORKFLOW = 'VALIDATED' AND
                             cp3.DESIGNATION != 'AQ' AND cp3.DESIGNATION != 'DOCO' AND cp3.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp3.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp3.ENTITY_YEAR)
                     ]]>
