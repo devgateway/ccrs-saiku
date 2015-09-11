@@ -611,8 +611,6 @@
                     <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES"/>
                     <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC"/>
                     <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI"/>
-
-
                     <ForeignKeyLink dimension="Was it undertaken as part of the UNDAF rollout process" foreignKeyColumn="PART_OF_ROLLOUT_PROCESS"/>
                     <ForeignKeyLink dimension="Has action been taken to address the human rights issues identified in the human rights analysis" foreignKeyColumn="HAS_ADDRESSEDHRISSUES"/>
                     <ForeignKeyLink dimension="Has the UNCT supported national capacity to develop a report for the UPR" foreignKeyColumn="HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT"/>
