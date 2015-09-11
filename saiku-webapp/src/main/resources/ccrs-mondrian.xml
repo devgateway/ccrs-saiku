@@ -388,102 +388,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="UNCT Human Rights Advisor" caption="Is there a UNCT Human Rights Advisor?" table='YES_NO_TABLE_43' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT Human Rights Advisor" caption="Is there a UNCT Human Rights Advisor?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Human Rights-Based Approach" caption="Has a training on Human Rights-Based Approach been conducted in the current programme cycle?" table='YES_NO_TABLE_44' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Human Rights-Based Approach" caption="Has a training on Human Rights-Based Approach been conducted in the current programme cycle?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" table='YES_NO_TABLE_45' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNCT supported" caption="Has the UNCT supported the government in mainstreaming human rights into national development policies and programmes?" table='YES_NO_TABLE_46' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT supported" caption="Has the UNCT supported the government in mainstreaming human rights into national development policies and programmes?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UPR" caption="Has the UNCT engaged with the Universal Periodic Review (UPR) process this year?" table='YES_NO_TABLE_47' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UPR" caption="Has the UNCT engaged with the Universal Periodic Review (UPR) process this year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year?" table='YES_NO_TABLE_48' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" table='YES_NO_TABLE_49' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" table='YES_NO_TABLE_50' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="UNCT gender advisor" caption="Is there a UNCT gender advisor?" table='YES_NO_TABLE_51' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -657,30 +561,6 @@
                     <Measure name="CountryDirector" caption="Count of UNDP have a Country Director" column="HAS_COUNTRY_DIRECTOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" />
 
-                    <Measure name="UNCTHumanRightsAdvisor" caption="Count of UNCT Human Rights Advisor" column="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="HumanRightsBasedApproach" caption="Count of training on Human Rights-Based Approach been conducted in the current programme cycle" column="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="HumanRightsAnalysis" caption="Count of human rights analysis taken place over the past year" column="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="UNCTSupported" caption="Count of UNCT supported the government in mainstreaming human rights into national development policies and programmes" column="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="UPR" caption="Count of UNCT engaged with the Universal Periodic Review (UPR) process this year" column="HASUPRPROCESS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="UNHumanRightsTreatyBodies" caption="Count of UNCT engaged with one or more UN human rights treaty bodies in the past year" column="HASUNHRTREATY_BODIES_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="ReceiveVisitSpecialProcedure" caption="Count of country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year" column="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="NHRI" caption="Count of National Human Rights Institution (NHRI)" column="HASHRI_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
                     <Measure name="UNCTGenderAdvisor" caption="Count of UNCT gender advisor" column="HASUNCTGENDER_ADVISOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" />
 
@@ -729,14 +609,6 @@
                     <ForeignKeyLink dimension="MDTFs"  foreignKeyColumn="HASMTDFS_COUNT"/>
                     <ForeignKeyLink dimension="Code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT_COUNT"/>
                     <ForeignKeyLink dimension="Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"/>
-                    <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"/>
-                    <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"/>
-                    <ForeignKeyLink dimension="UNCT supported" foreignKeyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"/>
-                    <ForeignKeyLink dimension="UPR" foreignKeyColumn="HASUPRPROCESS_COUNT"/>
-                    <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES_COUNT"/>
-                    <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"/>
-                    <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI_COUNT"/>
                     <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR_COUNT"/>
                     <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"/>
                     <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"/>
