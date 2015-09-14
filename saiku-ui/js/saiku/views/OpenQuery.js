@@ -121,7 +121,7 @@ var OpenQuery = Backbone.View.extend({
                     var item = self.queries[path];
                     self.selected_query = new SavedQuery({ file: path, name: item.name, type: item.type });
                     if (key == "open" && $(this).hasClass('query')) {
-                        self.open_query();
+                        self.edit_query();
                     } if (key == "edit" && $(this).hasClass('query')) {
                         self.edit_query();
                     } else if (key == "new") {
