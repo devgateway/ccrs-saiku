@@ -378,8 +378,8 @@ var Workspace = Backbone.View.extend({
     },
 
     new_query: function() {
-        // Delete the existing query
-        if (this.query) {
+		// Delete the existing query
+        if (this.query && !_.isNull(this.query.model.mdx)) {
             if(Settings.QUERY_OVERWRITE_WARNING) {
                 (new WarningModal({
                     title: "New Query", message: "You are about to clear your existing query",
