@@ -204,7 +204,7 @@
                     <Measure name="monetaryVolume" caption="Monetary Volume of LTAs" column="MONETARY_VOLUME"
                              datatype="Numeric" aggregator="sum" visible="true" />
 
-                    <Measure name="annualValueOfTotalProcurement" caption="Annual Value of Total Procuremen" column="ANNUAL_VALUE_OF_TOTAL_PROCUREMENT"
+                    <Measure name="annualValueOfTotalProcurement" caption="Annual Value of Total Procurement" column="ANNUAL_VALUE_OF_TOTAL_PROCUREMENT"
                              datatype="Numeric" aggregator="sum" visible="true" />
                 </Measures>
 
