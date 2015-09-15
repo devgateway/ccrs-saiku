@@ -23,19 +23,19 @@
 /** Globals */
 
 html, body {
-    background: #FFF;
-    height: 100%;
-    min-width: 960px;
-    min-height: 600px;
-    overflow: auto;
-    text-align: left;
-    width: 100%;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    line-height: 1.5;
-    margin:0;
-    padding:0;
-    border:0;
+	background: #FFF;
+	height: 100%;
+	min-width: 960px;
+	min-height: 600px;
+	overflow: auto;
+	text-align: left;
+	width: 100%;
+	font-family:'Open Sans', sans-serif;
+	font-size: 11px;
+	line-height: 1.5;
+	margin:0;
+	padding:0;
+	border:0;
 }
 
 .clearfix:before,
@@ -172,10 +172,9 @@ textarea, select {
 /** Toolbar */
 
 #toolbar {
-    background: #EEEEEE;
-    background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#DDDDDD));
-    border-bottom: 1px solid #BBB;
-    height: 55px;
+	background: #e7e7e7;
+	border-bottom: 1px solid #eeeeee;
+	height: 55px;
 }
 #toolbar ul {
     list-style-type: none;
@@ -266,7 +265,7 @@ textarea, select {
     float: right;
     width: 200px;
     height: 37px;
-    margin: -15px 10px 0 0;
+    margin: -20px 10px 0 0;
 }
 /** Tabs */
 
