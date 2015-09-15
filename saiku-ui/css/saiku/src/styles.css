@@ -188,26 +188,23 @@ textarea, select {
     padding-right: 6px;
 }
 #toolbar ul li.separator {
-    border-left: 1px solid #CCC;
-    display: block;
-    height: 26px;
-    padding: 4px 4px 6px 4px;
-    width: 1px;
+	border-left: 1px solid #74a4d6;
+	display: block;
+	height: 20px;
+	padding: 4px 4px 6px 4px;
+	width: 1px;
 }
 #toolbar ul li a {
-    border: 1px solid transparent;
-    display: block;
-    height: 26px;
-    padding: 4px;
-    width: 26px;
+	border: 1px solid transparent;
+	display: block;
+	height: 26px;
+	padding: 4px;
+	width: 26px;
+	opacity:1;
 }
 #toolbar ul li a:hover {
-    background-color: #F0F0F0;
-    border: 1px solid #CCC;
-    padding: 4px;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+	opacity:0.8;
+	padding: 4px;
 }
 #toolbar ul li a.new_tab {
     background-position: -1554px 5px;
