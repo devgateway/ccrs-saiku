@@ -1,5 +1,5 @@
 type=OLAP
-name=Delivering as One Profile
+name=CP 10
 driver=mondrian.olap4j.MondrianOlap4jDriver
 location=jdbc:mondrian:Jdbc=jdbc:derby://localhost//derby/ccrs;Catalog=res:ccrs-mondrian-cp10.xml
 username=app

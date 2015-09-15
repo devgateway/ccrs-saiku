@@ -1,5 +1,5 @@
 type=OLAP
-name=Human Rights Profile
+name=CP 12
 driver=mondrian.olap4j.MondrianOlap4jDriver
 location=jdbc:mondrian:Jdbc=jdbc:derby://localhost//derby/ccrs;Catalog=res:ccrs-mondrian-cp12.xml
 username=app

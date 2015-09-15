@@ -1,7 +1,7 @@
-<Schema name="CP 3" metamodelVersion="4.0"
+<Schema name="Common Country Programming" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - CP 3</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - Common Country Programming</Annotation>
     </Annotations>
 
     <PhysicalSchema>

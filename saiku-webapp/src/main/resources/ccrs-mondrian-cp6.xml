@@ -1,7 +1,7 @@
-<Schema name="CP 6" metamodelVersion="4.0"
+<Schema name="Joint Communication &amp; Advocacy Profile" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - CP 6</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - Joint Communication &amp; Advocacy Profile</Annotation>
     </Annotations>
 
     <PhysicalSchema>

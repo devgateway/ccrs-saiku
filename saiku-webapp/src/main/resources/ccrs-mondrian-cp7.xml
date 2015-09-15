@@ -1,7 +1,7 @@
-<Schema name="CP 7" metamodelVersion="4.0"
+<Schema name="Joint Funding Profile" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - CP 7</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - Joint Funding Profile</Annotation>
     </Annotations>
 
     <PhysicalSchema>

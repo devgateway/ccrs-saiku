@@ -1,7 +1,7 @@
-<Schema name="CP 10" metamodelVersion="4.0"
+<Schema name="Delivering as One Profile" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - CP 10</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - Delivering as One Profile</Annotation>
     </Annotations>
 
     <PhysicalSchema>

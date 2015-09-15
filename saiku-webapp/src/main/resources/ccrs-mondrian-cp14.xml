@@ -1,7 +1,7 @@
-<Schema name="CP 14" metamodelVersion="4.0"
+<Schema name="Emerging Issues" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - CP 14</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - Emerging Issues</Annotation>
     </Annotations>
 
     <PhysicalSchema>

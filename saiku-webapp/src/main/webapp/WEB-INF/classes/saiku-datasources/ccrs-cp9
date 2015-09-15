@@ -1,5 +1,5 @@
 type=OLAP
-name=Crisis Prevention Profile
+name=CP 9
 driver=mondrian.olap4j.MondrianOlap4jDriver
 location=jdbc:mondrian:Jdbc=jdbc:derby://localhost//derby/ccrs;Catalog=res:ccrs-mondrian-cp9.xml
 username=app

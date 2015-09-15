@@ -1,7 +1,7 @@
-<Schema name="CP 13" metamodelVersion="4.0"
+<Schema name="Gender Profile" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - CP 13</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - Gender Profile</Annotation>
     </Annotations>
 
     <PhysicalSchema>
