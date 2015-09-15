@@ -558,7 +558,7 @@
     <!--*************************************************************************
     ***** CP1 General Cube
     *************************************************************************-->
-    <Cube name="CP1GeneralCube" caption="CP1 General Cube" visible="true"
+    <Cube name="CP1GeneralCube" caption="SoPs for Delivering as One" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
