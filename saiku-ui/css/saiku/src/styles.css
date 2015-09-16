@@ -23,19 +23,19 @@
 /** Globals */
 
 html, body {
-    background: #FFF;
-    height: 100%;
-    min-width: 960px;
-    min-height: 600px;
-    overflow: auto;
-    text-align: left;
-    width: 100%;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    line-height: 1.5;
-    margin:0;
-    padding:0;
-    border:0;
+	background: #FFF;
+	height: 100%;
+	min-width: 960px;
+	min-height: 600px;
+	overflow: auto;
+	text-align: left;
+	width: 100%;
+	font-family:'Open Sans', sans-serif;
+	font-size: 11px;
+	line-height: 1.5;
+	margin:0;
+	padding:0;
+	border:0;
 }
 
 .clearfix:before,
@@ -172,10 +172,9 @@ textarea, select {
 /** Toolbar */
 
 #toolbar {
-    background: #EEEEEE;
-    background: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#DDDDDD));
-    border-bottom: 1px solid #BBB;
-    height: 55px;
+	background: #00589e;
+	border-bottom: 1px solid #eeeeee;
+	height: 55px;
 }
 #toolbar ul {
     list-style-type: none;
@@ -189,26 +188,23 @@ textarea, select {
     padding-right: 6px;
 }
 #toolbar ul li.separator {
-    border-left: 1px solid #CCC;
-    display: block;
-    height: 26px;
-    padding: 4px 4px 6px 4px;
-    width: 1px;
+	border-left: 1px solid #74a4d6;
+	display: block;
+	height: 20px;
+	padding: 4px 4px 6px 4px;
+	width: 1px;
 }
 #toolbar ul li a {
-    border: 1px solid transparent;
-    display: block;
-    height: 26px;
-    padding: 4px;
-    width: 26px;
+	border: 1px solid transparent;
+	display: block;
+	height: 26px;
+	padding: 4px;
+	width: 26px;
+	opacity:1;
 }
 #toolbar ul li a:hover {
-    background-color: #F0F0F0;
-    border: 1px solid #CCC;
-    padding: 4px;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+	opacity:0.8;
+	padding: 4px;
 }
 #toolbar ul li a.new_tab {
     background-position: -1554px 5px;
@@ -266,7 +262,7 @@ textarea, select {
     float: right;
     width: 200px;
     height: 37px;
-    margin: -15px 10px 0 0;
+    margin: -20px 10px 0 0;
 }
 /** Tabs */
 
@@ -404,7 +400,7 @@ textarea, select {
 }
 .sidebar .sidebar_inner select {
     border: 1px solid #CCC;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 100.01%;
     margin: 0;
     padding: 2px;
@@ -1801,7 +1797,7 @@ a.disabled_toolbar:hover {
 }
 
 /* CCC styles */
-.tipsy { pointer-events: none; padding: 5px; font-size: 10px; font-family: Arial,Helvetica,sans-serif; position: absolute; z-index: 100000; }
+.tipsy { pointer-events: none; padding: 5px; font-size: 10px; font-family: 'Open Sans', sans-serif; position: absolute; z-index: 100000; }
   .tipsy-inner { padding: 5px 8px 4px 8px; background-color: black; color: white; max-width: 200px; text-align: center; }
   .tipsy-inner { border-radius: 3px; -moz-border-radius:3px; -webkit-border-radius:3px; }
   .tipsy-arrow { position: absolute; width: 9px; height: 5px; }
@@ -2179,7 +2175,7 @@ form {
 }
 .conn_forms select {
     border: 1px solid #CCC;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 100.01%;
     margin: 0;
     padding: 2px;
@@ -2216,7 +2212,7 @@ margin-bottom: 20px;
 }
 .user_info select {
     border: 1px solid #CCC;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 100.01%;
     margin: 0;
     padding: 2px;

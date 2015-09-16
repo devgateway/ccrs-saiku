@@ -78,7 +78,7 @@
     <!--*************************************************************************
     ***** Workplan Cube
     *************************************************************************-->
-    <Cube name="Workplan" caption="Workplan Analysis" visible="true" cache="true" enabled="true" defaultMeasure="Count">
+    <Cube name="Workplan1" caption="Workplan (Budget)" visible="true" cache="true" enabled="true" defaultMeasure="Actual Budget">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -187,7 +187,6 @@
         <MeasureGroups>
             <MeasureGroup name="Workplan Measures" table="WorkplanCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of workplans" column="WORKPLAN_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="Expected Budget" caption="Expected Budget" column="BUDGET_EXPECTED" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                     <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
@@ -204,6 +203,121 @@
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
+    </Cube>
 
+
+
+    <Cube name="Workplan2" caption="Workplan (Activity count)" visible="true" cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="WorkplanCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="WORKPLAN_ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="WorkstreamSection" caption="Workstream Section" table="WorkstreamSection"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="WorkstreamSection" caption="Section name" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Lead Agency" caption="Lead Agency" table='Agency' key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Lead Agency" caption="Lead Agency" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Lead Agencies" hierarchyCaption="All Lead Agencies"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Role of partners" table='WorkplanCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Role of partners" caption="Role of partners" keyColumn="AGENCY_ROLES_ROLE_OF_PARTNERS"
+                               hierarchyAllMemberName="All roles" hierarchyCaption="All roles"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is good practice?" table='WorkplanCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is good practice?" caption="Is good practice?" keyColumn="ACTIVITY_SELECT_AS_GOOD_PRACTICE"
+                               hierarchyAllMemberName="All good practice" hierarchyCaption="All good practice"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Budget Type" caption="Budget Type" table='BudgetType' key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Budget Type" caption="Budget Type" keyColumn="LABEL"
+                               hierarchyAllMemberName="All budget types" hierarchyCaption="All budget types"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="Workplan Measures" table="WorkplanCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of Activities" column="ACTIVITY_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Expected Budget" caption="Expected Budget" column="BUDGET_EXPECTED" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
+                    <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <FactLink dimension="Year" />
+                    <FactLink dimension="Role of partners" />
+                    <FactLink dimension="Is good practice?" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
+                    <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
+                    <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
+                    <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
     </Cube>
 </Schema>

@@ -1,4 +1,4 @@
-/*  
+/*
  *   Copyright 2015 OSBI Ltd
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,18 +57,18 @@ html {
  * Link: http://nicolasgallagher.com/micro-clearfix-hack/
  */
 
-.clearfix:before, 
-.clearfix:after { 
-	content: " "; 
-	display: table; 
+.clearfix:before,
+.clearfix:after {
+	content: " ";
+	display: table;
 }
 
-.clearfix:after { 
-	clear: both; 
+.clearfix:after {
+	clear: both;
 }
 
 body {
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	color: #333;
 }
 
@@ -90,8 +90,8 @@ body {
 	padding: 2.875em 1.875em 1.875em;
 }
 
-.container > header .saiku-logo { 
-	display: block; 
+.container > header .saiku-logo {
+	display: block;
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -191,7 +191,7 @@ body {
 
 .alert-danger {
 	padding: 10px;
-	background-color: red;  
+	background-color: red;
 }
 
 #notification > p {
