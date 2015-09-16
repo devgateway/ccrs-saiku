@@ -66,6 +66,40 @@ var SessionWorkspace = Backbone.Model.extend({
     },
 
     process_datasources: function(model, response) {
+		// use this to change the order of the cubes (by default everything is sorted alphabetically)
+		var cubeNames = [
+			"CP 1",
+			"CP 2",
+			"CP 3",
+			"CP 4",
+			"CP 5",
+			"CP 6",
+			"CP 7",
+			"CP 8",
+			"CP 9",
+			"CP 10",
+			"CP 11",
+			"CP 12",
+			"CP 13",
+			"CP 14"
+		];
+
+		var i, j, newResponse = [];
+		for(i = 0; i < cubeNames.length; i++) {
+			for (j = 0; j < response.length; j++) {
+				if (response[j].name === cubeNames[i]) {
+					newResponse.push(response[j]);
+					response.splice(j, 1);
+					break;
+				}
+			}
+		}
+		// add the remaining catalogues
+		for (i = 0; i < response.length; i++) {
+			newResponse.push(response[i]);
+		}
+		response = newResponse;
+
         // Save session in localStorage for other tabs to use
         if (typeof localStorage !== "undefined" && localStorage && localStorage.getItem('session') === null) {
             localStorage.setItem('session', JSON.stringify(response));

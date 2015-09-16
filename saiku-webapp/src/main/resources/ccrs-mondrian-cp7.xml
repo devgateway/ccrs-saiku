@@ -1,0 +1,255 @@
+<Schema name="Joint Funding Profile" metamodelVersion="4.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
+    <Annotations>
+        <Annotation name="desc">Cube Schema for CCRS - Joint Funding Profile</Annotation>
+    </Annotations>
+
+    <PhysicalSchema>
+        <Query alias="BASE_COUNTRY">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP7MDTF">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            D.ID, D.NAME, D.TOTAL_BUDGET, CP7.DESIGNATION, CP7.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP7MTDF D, CP7JOINT_FUNDING_PROFILE CP7, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP7.DESIGNATION = CP1.DESIGNATION AND CP7.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP7.ID = D.PARENT_ID AND
+                            CP7.DESIGNATION != 'AQ' AND CP7.DESIGNATION != 'DOCO' AND CP7.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP7.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP7.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP7MDTF"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+        <Query alias="CP7GeneralCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            cp7.ID, cp7.DESIGNATION, cp7.ENTITY_YEAR,
+                            CASE WHEN cp7.HAS_ONE_FUND_COUNTRY_LEVEL = TRUE THEN 1 ELSE 0 END as HAS_ONE_FUND_COUNTRY_LEVEL,
+                            CASE WHEN cp7.HAS_ONE_FUND_COUNTRY_LEVEL = TRUE THEN CASE WHEN cp7onefund.ALLOCATION_CRITERIA_AGREED = TRUE THEN 1 ELSE 0 END ELSE null END as ALLOCATION_CRITERIA_AGREED,
+                            CASE WHEN cp7.HASMTDFS = TRUE THEN 1 ELSE 0 END as HASMTDFS,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP7JOINT_FUNDING_PROFILE cp7, CP1GENERAL_PROFILE cp1, CP7ONE_FUND_COUNTRY_LEVEL cp7onefund
+                        WHERE
+                            cp7.DESIGNATION = cp1.DESIGNATION AND cp7.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                            cp7onefund.PARENT_ID = cp7.id AND
+                            cp7.DESIGNATION != 'AQ' AND cp7.DESIGNATION != 'DOCO' AND cp7.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            cp7.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp7.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP7GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_ONE_FUND_COUNTRY_LEVEL"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="ALLOCATION_CRITERIA_AGREED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASMTDFS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+    </PhysicalSchema>
+
+    <!--*************************************************************************
+    ***** CP7 MDTF
+    *************************************************************************-->
+    <Cube name="CP7MDTF" caption="CP7 MDTF" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP7MDTF"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP7MDTF' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Name" caption="Name" table="CP7MDTF"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Name" caption="Name" keyColumn="NAME"
+                               hierarchyAllMemberName="All Locations" hierarchyCaption="All Locations"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP MDTF Measures" table="CP7MDTF">
+                <Measures>
+                    <Measure name="Count" caption="Number of MDTFs" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Total Budget" caption="Total Budget (Currency USD)" column="TOTAL_BUDGET"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <FactLink dimension="Name" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP7 General Cube
+    *************************************************************************-->
+    <Cube name="CP7GeneralCube" caption="CP7 General Cube" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP7GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP7GeneralCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do you have a One Fund at the country level" caption="Do you have a One Fund at the country level?" table='HAS_ONE_FUND_COUNTRY_LEVEL' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do you have a One Fund at the country level" caption="Do you have a One Fund at the country level?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee" caption="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee?" table='ALLOCATION_CRITERIA_AGREED' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee" caption="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)" caption="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?" table='HASMTDFS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)" caption="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP7 General Cube Measures" table="CP7GeneralCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasOneFundCountryLevel" caption="Count of 'Do you have a One Fund at the country level?'" column="HAS_ONE_FUND_COUNTRY_LEVEL"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="allocationCriteriaAgreed" caption="Count of 'Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee?'" column="ALLOCATION_CRITERIA_AGREED"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasMTDFs" caption="Count of 'Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?'" column="HASMTDFS"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="Do you have a One Fund at the country level"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL"/>
+                    <ForeignKeyLink dimension="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee"  foreignKeyColumn="ALLOCATION_CRITERIA_AGREED"/>
+                    <ForeignKeyLink dimension="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)"  foreignKeyColumn="HASMTDFS"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+</Schema>

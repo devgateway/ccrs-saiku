@@ -1,0 +1,6 @@
+type=OLAP
+name=Workplan
+driver=mondrian.olap4j.MondrianOlap4jDriver
+location=jdbc:mondrian:Jdbc=jdbc:derby://localhost//derby/ccrs;Catalog=res:ccrs-mondrian-workplan.xml
+username=app
+password=app

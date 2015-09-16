@@ -1,0 +1,307 @@
+<Schema name="Common Services Harmonized Business Practices" metamodelVersion="4.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
+    <Annotations>
+        <Annotation name="desc">Cube Schema for CCRS - Common Services Harmonized Business Practices</Annotation>
+    </Annotations>
+
+    <PhysicalSchema>
+        <Query alias="BASE_COUNTRY">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="BusinessOperationArea">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='BusinessOperationArea']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="ManagementModality">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='ManagementModality']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP4BusinessOperationAreasDetails">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select BOS.*,
+                            CASE WHEN BOS.HASMOU = TRUE THEN 1 ELSE 0 END as HASMOU_COUNT,
+                            CASE WHEN BOS.HASLTA = TRUE THEN 1 ELSE 0 END as HASLTA_COUNT,
+                            CASE WHEN BOS.HASLTA = TRUE THEN CASE WHEN LTA.LTA_EVALUATED = TRUE THEN 1 ELSE 0 END ELSE 0 END as LTA_EVALUATED_COUNT,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.MONETARY_VOLUME, LTA.DISCOUNT_RATE_APPLIED, LTA.ANNUAL_VALUE_OF_TOTAL_PROCUREMENT, LTA.MANAGEMENT_MODALITY_ID
+                        from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            CP4.DESIGNATION = CP1.DESIGNATION AND CP4.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            LTA.PARENT_ID = BOS.ID AND
+                            BOS.PARENT_ID = CP4.ID AND
+                            CP4.DESIGNATION != 'AQ' AND CP4.DESIGNATION != 'DOCO' AND CP4.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
+                            CP4.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP4.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP4BusinessOperationAreasDetails"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASMOU_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HASLTA_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="LTA_EVALUATED_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+        <Query alias="CP4GeneralCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            cp4.ID, cp4.DESIGNATION, cp4.ENTITY_YEAR,
+                            CASE WHEN cp4.COUNTRY_LEVELHACT = TRUE THEN 1 ELSE 0 END as COUNTRY_LEVELHACT,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4, CP1GENERAL_PROFILE cp1
+                        WHERE
+                            cp4.DESIGNATION = cp1.DESIGNATION AND cp4.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                            cp4.DESIGNATION != 'AQ' AND cp4.DESIGNATION != 'DOCO' AND cp4.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            cp4.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp4.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP4GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="COUNTRY_LEVELHACT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+    </PhysicalSchema>
+
+
+    <!--*************************************************************************
+    ***** CP4 Business Operation Areas
+    *************************************************************************-->
+    <Cube name="CP4BOSAreas" caption="CP4 Business Operation Areas" visible="true" cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP4BusinessOperationAreasDetails"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="BusinessOperationArea" caption="Business Operation Area" table="BusinessOperationArea"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="BusinessOperationArea" caption="Business Operation Area" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Business Operation Area" hierarchyCaption="Business Operation Areas"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="ManagementModality" caption="Management Modality" table="ManagementModality"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="ManagementModality" caption="Management Modality" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Management Modalities" hierarchyCaption="Management Modalities"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has MOUs" caption="Has MOUs in Place?" table='HASMOU_YES_NO' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has MOUs" caption="Has MOUs in Place?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has LTA" caption="Has LTA?" table='HASLTA_YES_NO' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has LTA" caption="Has LTA?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has LTA evaluated" caption="Has LTA evaluated?" table='LTA_EVALUATED_YES_NO' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has LTA evaluated" caption="Has LTA evaluated?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP4BusinessOperationAreasDetails' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP4 BOS Areas Measures" table="CP4BusinessOperationAreasDetails">
+                <Measures>
+                    <Measure name="Count" caption="Number of Business Operation Areas" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="hasLTA" caption="Count of LTA" column="HASLTA_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="ltaEvaluated" caption="Count of LTA evaluated" column="LTA_EVALUATED_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="monetaryVolume" caption="Monetary Volume of LTAs" column="MONETARY_VOLUME"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+
+                    <Measure name="annualValueOfTotalProcurement" caption="Annual Value of Total Procurement" column="ANNUAL_VALUE_OF_TOTAL_PROCUREMENT"
+                             datatype="Numeric" aggregator="sum" visible="true" />
+                </Measures>
+
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="BusinessOperationArea" foreignKeyColumn="BUSINESS_OPERATION_AREA_ID" />
+                    <ForeignKeyLink dimension="ManagementModality" foreignKeyColumn="MANAGEMENT_MODALITY_ID" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Has MOUs" foreignKeyColumn="HASMOU_COUNT"/>
+                    <ForeignKeyLink dimension="Has LTA" foreignKeyColumn="HASLTA_COUNT"/>
+                    <ForeignKeyLink dimension="Has LTA evaluated" foreignKeyColumn="LTA_EVALUATED_COUNT"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP4 General Cube
+    *************************************************************************-->
+    <Cube name="CP4GeneralCube" caption="CP4 General Cube" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP4GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP4GeneralCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is a HACT being implemented at the country level" caption="Is a HACT being implemented at the country level?" table='COUNTRY_LEVELHACT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is a HACT being implemented at the country level" caption="Is a HACT being implemented at the country level?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP4 General Cube Measures" table="CP4GeneralCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="countryLevelHACT" caption="Count of 'Is a HACT being implemented at the country level?'" column="COUNTRY_LEVELHACT"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="Is a HACT being implemented at the country level"  foreignKeyColumn="COUNTRY_LEVELHACT"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+</Schema>

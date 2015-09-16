@@ -1,0 +1,314 @@
+<Schema name="Emerging Issues" metamodelVersion="4.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
+    <Annotations>
+        <Annotation name="desc">Cube Schema for CCRS - Emerging Issues</Annotation>
+    </Annotations>
+
+    <PhysicalSchema>
+        <Query alias="BASE_COUNTRY">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="LocalInstitution">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='LocalInstitution']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP14UNCTPartners">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            M.ID, M.PARTNER_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP1GENERAL_PROFILE CP1
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP14UNCTPartners"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+        <Query alias="CP14GeneralCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            cp14.ID, cp14.DESIGNATION, cp14.ENTITY_YEAR,
+                            CASE WHEN cp14.HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY = TRUE THEN 1 ELSE 0 END as HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY,
+                            CASE WHEN cp14.HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING = TRUE THEN 1 ELSE 0 END as HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING,
+                            CASE WHEN cp14.HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES = TRUE THEN 1 ELSE 0 END as HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES,
+                            CASE WHEN cp14.HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG = TRUE THEN 1 ELSE 0 END as HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG,
+                            CASE WHEN cp14.HAS_OPEN_DATA_TRANSPARENCY_POLICIES = TRUE THEN 1 ELSE 0 END as HAS_OPEN_DATA_TRANSPARENCY_POLICIES,
+                            CASE WHEN cp14.PARTICIPATES_IN_CROSS_BORDER_INITIATIVES = TRUE THEN 1 ELSE 0 END as PARTICIPATES_IN_CROSS_BORDER_INITIATIVES,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP14EMERGING_ISSUES cp14, CP1GENERAL_PROFILE cp1
+                        WHERE
+                            cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                            cp14.DESIGNATION != 'AQ' AND cp14.DESIGNATION != 'DOCO' AND cp14.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            cp14.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp14.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP14GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+    </PhysicalSchema>
+
+    <!--*************************************************************************
+    ***** CP14 UNCT Partners
+    *************************************************************************-->
+    <Cube name="CP14UNCTPartners" caption="CP14 UNCT Partners" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP14UNCTPartners"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP14UNCTPartners' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Partner" caption="Partner" table="LocalInstitution"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Partner" caption="Partner" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Partners" hierarchyCaption="All Partners"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP14 UNCT Partners Measures" table="CP14UNCTPartners">
+                <Measures>
+                    <Measure name="Count" caption="Number of UNCT Partners" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="Partner"  foreignKeyColumn="PARTNER_ID"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <!--*************************************************************************
+    ***** CP14 General Cube
+    *************************************************************************-->
+    <Cube name="CP14GeneralCube" caption="CP14 General Cube" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP14GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP14GeneralCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Support to national statistical capacity" caption="Does the UNCT provide support to national statistical capacity?" table='HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Support to national statistical capacity" caption="Does the UNCT provide support to national statistical capacity?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Citizen engagement or other crowd-sourcing" caption="Do you apply innovation, citizen engagement or other crowd-sourcing approaches during UN country programming?" table='HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Citizen engagement or other crowd-sourcing " caption="Do you apply innovation, citizen engagement or other crowd-sourcing approaches during UN country programming?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNCT convene partners beyond the UN" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" table='HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNCT convene partners beyond the UN" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" table='HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency policies or portals?" table='HAS_OPEN_DATA_TRANSPARENCY_POLICIES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency policies or portals?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+
+            <Dimension name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives? " table='PARTICIPATES_IN_CROSS_BORDER_INITIATIVES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives? " keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP14 General Cube Measures" table="CP14GeneralCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="SupportNationalstatisticalcapacity" caption="Count of UNCT provide support to national statistical capacity" column="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CitizenEngagementCrowdSourcing" caption="Count of citizen engagement or other crowd-sourcing approaches during UN country programming" column="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="UNCTConvenePartnersBeyondUN" caption="Count of UNCT convene partners beyond the UN for specific policy activities" column="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="SustainableDevelopmentGoals" caption="Count of government requested support on their national response to Sustainable Development Goals" column="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="DataRransparencyPoliciesPortals" caption="Count of UNCT have open data/transparency policies or portals" column="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="CrossBorderInitiatives" caption="Count of UNCT participate in cross-border initiatives" column="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"/>
+                    <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"/>
+                    <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"/>
+                    <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"/>
+                    <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"/>
+                    <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+</Schema>

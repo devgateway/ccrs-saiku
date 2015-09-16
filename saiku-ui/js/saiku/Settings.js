@@ -58,7 +58,7 @@ var Settings = {
     PLUGINS: [
         "Chart"
     ],
-    DEFAULT_VIEW_STATE: 'view',                     // could be 'edit' as well
+    DEFAULT_VIEW_STATE: 'edit',                     // could be 'view' as well
     LOCALSTORAGE_EXPIRATION: 10 * 60 * 60 * 1000    /* 10 hours, in ms */,
     QUERY_OVERWRITE_WARNING: true,
     MAPS: true

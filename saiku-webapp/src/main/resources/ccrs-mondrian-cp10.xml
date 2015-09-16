@@ -1,0 +1,154 @@
+<Schema name="Delivering as One Profile" metamodelVersion="4.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
+    <Annotations>
+        <Annotation name="desc">Cube Schema for CCRS - Delivering as One Profile</Annotation>
+    </Annotations>
+
+    <PhysicalSchema>
+        <Query alias="BASE_COUNTRY">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="CP10GeneralCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            cp10.ID, cp10.DESIGNATION, cp10.ENTITY_YEAR,
+                            CASE WHEN cp10.HAS_AGREEDUNCTTOR = TRUE THEN 1 ELSE 0 END as HAS_AGREEDUNCTTOR,
+                            CASE WHEN cp10.HAS_AGREEDMAF = TRUE THEN 1 ELSE 0 END as HAS_AGREEDMAF,
+                            CASE WHEN cp10.HAS_AGREED_CONFLICT_RESOLUTION = TRUE THEN 1 ELSE 0 END as HAS_AGREED_CONFLICT_RESOLUTION,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP10DELIVERING_AS_ONE_PROFILE cp10, CP1GENERAL_PROFILE cp1
+                        WHERE
+                            cp10.DESIGNATION = cp1.DESIGNATION AND cp10.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                            cp10.DESIGNATION != 'AQ' AND cp10.DESIGNATION != 'DOCO' AND cp10.DESIGNATION in (select iso2 from BASE_COUNTRY) and
+                            cp10.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp10.ENTITY_YEAR)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP10GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_AGREEDUNCTTOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_AGREEDMAF"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_AGREED_CONFLICT_RESOLUTION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+    </PhysicalSchema>
+
+    <!--*************************************************************************
+    ***** CP10 General Cube
+    *************************************************************************-->
+    <Cube name="CP10GeneralCube" caption="CP10 General Cube" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP10GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP10GeneralCube' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UNCT ToR" caption="Are there an agreed upon UNCT ToR?" table='HAS_AGREEDUNCTTOR' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UNCT ToR" caption="Are there an agreed upon UNCT ToR?" keyColumn="answer"
+                               orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Mutual Accountability Framework" caption="Is there an agreed Mutual Accountability Framework?" table='HAS_AGREEDMAF' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Mutual Accountability Framework" caption="Is there an agreed Mutual Accountability Framework?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" table='HAS_AGREED_CONFLICT_RESOLUTION' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP10 General Cube Measures" table="CP10GeneralCube">
+                <Measures>
+                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="UNCTToR" caption="Count of agreed upon UNCT ToR" column="HAS_AGREEDUNCTTOR"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="MutualAccountabilityFramework" caption="Count of agreed Mutual Accountability Framework" column="HAS_AGREEDMAF"
+                             datatype="Integer" aggregator="sum" visible="true" />
+
+                    <Measure name="ConflictResolutionMechanism" caption="Count of agreed Conflict Resolution Mechanism" column="HAS_AGREED_CONFLICT_RESOLUTION"
+                             datatype="Integer" aggregator="sum" visible="true" />
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR"/>
+                    <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF"/>
+                    <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+</Schema>
