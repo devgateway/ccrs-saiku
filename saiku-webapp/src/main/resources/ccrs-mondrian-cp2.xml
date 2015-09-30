@@ -170,10 +170,10 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
-                             column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" />
+                             column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="AverageContractDurationYears" caption="Average Contract Duration Years"
-                             column="CONTRACT_DURATION_YEARS" datatype="Numeric" aggregator="avg" visible="true" />
+                             column="CONTRACT_DURATION_YEARS" datatype="Numeric" aggregator="avg" visible="true" formatString="#,###"/>
                 </Measures>
 
                 <DimensionLinks>
@@ -258,13 +258,13 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="subnationalOffices" caption="Count of 'Does the RCO have Subnational offices?'" column="SUBNATIONAL_OFFICES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="howManyOffices" caption="Count of RCO Subnational offices" column="NUMBER_OF_OFFICES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="countRCOStaffMember" caption="Count of RCO Staff Member" column="STAFF_MEMEBER_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                 </Measures>
                 <DimensionLinks>

@@ -170,8 +170,9 @@
                 <Measures>
                     <Measure name="Count" caption="Number of Gender Equality Scorecard" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
+
                     <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of UNCT that addressed the recommendations" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Scorecard" foreignKeyColumn="SCORECARD_ID" />
@@ -303,16 +304,16 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="UNCTGenderAdvisor" caption="Count of UNCT gender advisor" column="HASUNCTGENDER_ADVISOR"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="UNDAFSpecificGenderResults" caption="Count of UNDAF (or equivalent), does it have specific gender results at the outcome level?" column="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="GenderEqualityScorecard" caption="Count of UNCT implemented a Gender Equality Scorecard in the past FOUR years" column="HASUNCTGENDER_EQUALITY_SCORECARD"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="CapacityBuildingUNStaff" caption="Count of capacity building for UN staff on the issue of gender mainstreaming in the past year" column="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

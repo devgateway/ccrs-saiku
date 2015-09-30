@@ -208,10 +208,12 @@
                 <Measures>
                     <Measure name="Count" caption="Number of Human Rights Measures" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
+
                     <Measure name="hasEngagedDevelopNatlCapacityToReport" caption="Count of UNCT engaged in developing national capacity" column="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
                     <Measure name="hasFacilitatedFollowupRecommendations" caption="Count of UNCT facilitated recommendations by the Gov" column="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="UNHRTreatyBody" foreignKeyColumn="UNHR_TREATY_BODY_TYPE_ID" />
@@ -557,46 +559,46 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="UNCTHumanRightsAdvisor" caption="Count of UNCT Human Rights Advisor" column="HAS_HUMAN_RIGHTS_ADVISOR"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="HumanRightsBasedApproach" caption="Count of training on Human Rights-Based Approach been conducted in the current programme cycle" column="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="HumanRightsAnalysis" caption="Count of human rights analysis taken place over the past year" column="HAS_HUMAN_RIGHTS_ANALYSIS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="UNCTSupported" caption="Count of UNCT supported the government in mainstreaming human rights into national development policies and programmes" column="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="UPR" caption="Count of UNCT engaged with the Universal Periodic Review (UPR) process this year" column="HASUPRPROCESS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="UNHumanRightsTreatyBodies" caption="Count of UNCT engaged with one or more UN human rights treaty bodies in the past year" column="HASUNHRTREATY_BODIES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="ReceiveVisitSpecialProcedure" caption="Count of country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year" column="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="NHRI" caption="Count of National Human Rights Institution (NHRI)" column="HASHRI"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="partOfRolloutProcess" caption="Count of 'Was it undertaken as part of the UNDAF rollout process?'" column="PART_OF_ROLLOUT_PROCESS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasAddressedHRIssues" caption="Count of 'Has action been taken to address the human rights issues identified in the human rights analysis?'" column="HAS_ADDRESSEDHRISSUES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasSupportedNationalReportDevelopment" caption="Count of 'Has the UNCT supported national capacity to develop a report for the UPR?'" column="HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasUNCTReportUPRSubmitted" caption="Count of 'Has the UNCT submitted a UNCT report to the UPR?'" column="HASUNCTREPORTUPRSUBMITTED"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasFacilitatedFolloupGovRecommendations" caption="Count of 'Has the UNCT facilitated follow up of the UPR recommendations by the Government?'" column="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasUNCTInformedUN" caption="Count of 'Has the UNCT drawn on the UPR recommendations to inform UN analysis, programming and advocacy strategies?'" column="HASUNCTINFORMEDUN"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

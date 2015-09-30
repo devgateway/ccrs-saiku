@@ -131,13 +131,13 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="UNCTToR" caption="Count of agreed upon UNCT ToR" column="HAS_AGREEDUNCTTOR"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="MutualAccountabilityFramework" caption="Count of agreed Mutual Accountability Framework" column="HAS_AGREEDMAF"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="ConflictResolutionMechanism" caption="Count of agreed Conflict Resolution Mechanism" column="HAS_AGREED_CONFLICT_RESOLUTION"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

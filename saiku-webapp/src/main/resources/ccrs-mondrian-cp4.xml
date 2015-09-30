@@ -193,19 +193,19 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasMOU" caption="Count of MOUs in Place" column="HASMOU_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasLTA" caption="Count of LTA" column="HASLTA_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="ltaEvaluated" caption="Count of LTA evaluated" column="LTA_EVALUATED_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="monetaryVolume" caption="Monetary Volume of LTAs" column="MONETARY_VOLUME"
-                             datatype="Numeric" aggregator="sum" visible="true" />
+                             datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="annualValueOfTotalProcurement" caption="Annual Value of Total Procurement" column="ANNUAL_VALUE_OF_TOTAL_PROCUREMENT"
-                             datatype="Numeric" aggregator="sum" visible="true" />
+                             datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
 
                 <DimensionLinks>
@@ -292,7 +292,7 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="countryLevelHACT" caption="Count of 'Is a HACT being implemented at the country level?'" column="COUNTRY_LEVELHACT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
