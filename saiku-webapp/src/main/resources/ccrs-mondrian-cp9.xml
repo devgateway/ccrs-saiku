@@ -687,64 +687,64 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="HumanitarianToLongerTerm" caption="Count of coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts" column="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasIntegratedStrategicFramework" caption="Count of 'Is there an Integrated Strategic Framework (ISF)?'" column="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasJointStructuresUNCTUN" caption="Count of 'Are there joint structures in place between the UNCT and the UN Mission?'" column="HAS_JOINT_STRUCTURESUNCTUN"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="developmentSupportedByPlanningUnit" caption="Count of 'Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?'" column="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasMechanismsForMonitoring" caption="Count of 'Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?'" column="HAS_MECHANISMS_FOR_MONITORING"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasUNUNCTColaboration" caption="Count of 'Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?'" column="HASUNUNCTCOLABORATION"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="isJointProgramme" caption="Count of 'Is this in the form of a Joint Programme/Joint Programming?'" column="IS_JOINT_PROGRAMME"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCommonServicesToUNCTMembers" caption="Count of 'Does the UN Mission provide common services to UNCT members or vice versa?'" column="HAS_COMMON_SERVICES_TOUNCTMEMBERS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="isMemberOfJointUNCTCommunicationsGroup" caption="Count of 'Is the mission a member of the Joint UNCT Communications Group?'" column="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="isDrawdownWithdrawalUNMission" caption="Count of 'If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?'" column="IS_DRAWDOWN_WITHDRAWALUNMISSION"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasAnalysisBeenTakenWithUN" caption="Count of 'Has the conflict analysis been undertaken together with the UN Mission?'" column="HAS_ANALYSIS_BEEN_TAKEN_WITHUN"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCountryMechanismsCoordinateIntlSupport" caption="Count of 'Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?'" column="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasActiveCoordinationMechanisms" caption="Count of 'Are there any active coordination mechanisms in place with key partners such as the World Bank?'" column="HAS_ACTIVE_COORDINATION_MECHANISMS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="wbUNCollaborateOnUpstreamPolicy" caption="Count of 'Do the World Bank and UN collaborate on upstream policy processes?'" column="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

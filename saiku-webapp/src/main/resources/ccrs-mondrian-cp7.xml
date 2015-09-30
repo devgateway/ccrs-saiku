@@ -126,7 +126,7 @@
                     <Measure name="Count" caption="Number of MDTFs" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="Total Budget" caption="Total Budget (Currency USD)" column="TOTAL_BUDGET"
-                             datatype="Numeric" aggregator="sum" visible="true" />
+                             datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -232,13 +232,13 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasOneFundCountryLevel" caption="Count of 'Do you have a One Fund at the country level?'" column="HAS_ONE_FUND_COUNTRY_LEVEL"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="allocationCriteriaAgreed" caption="Count of 'Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee?'" column="ALLOCATION_CRITERIA_AGREED"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasMTDFs" caption="Count of 'Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?'" column="HASMTDFS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

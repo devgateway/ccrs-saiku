@@ -279,22 +279,22 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="SupportNationalstatisticalcapacity" caption="Count of UNCT provide support to national statistical capacity" column="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="CitizenEngagementCrowdSourcing" caption="Count of citizen engagement or other crowd-sourcing approaches during UN country programming" column="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="UNCTConvenePartnersBeyondUN" caption="Count of UNCT convene partners beyond the UN for specific policy activities" column="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="SustainableDevelopmentGoals" caption="Count of government requested support on their national response to Sustainable Development Goals" column="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="DataRransparencyPoliciesPortals" caption="Count of UNCT have open data/transparency policies or portals" column="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="CrossBorderInitiatives" caption="Count of UNCT participate in cross-border initiatives" column="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

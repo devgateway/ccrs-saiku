@@ -147,7 +147,7 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="Budget Support" caption="Budget Support" column="BUDGETED_AMOUNT"
-                             datatype="Numeric" aggregator="sum" visible="true" />
+                             datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Sector" foreignKeyColumn="SECTOR_ID" />
@@ -325,29 +325,31 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="SWAPs" caption="Count of UNCT participate in sector-wide approaches (SWAPs)" column="HASSWAPS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="DirectBudgetSupport" caption="Count of UNCT provide direct budget support" column="HAS_DIRECT_BUDGET_SUPPORT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="ChairCochairAidEffectiveness" caption="Count of UNCT chair/co-chair aid effectiveness and coordination fora" column="IS_CHAIR_AID_EFFECTIVENESS_FORA"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="CapacityDevelopment for aid modalities" caption="Count of UNCT provide capacity development for use of aid modalities and aid management" column="HAS_CAPACITY_FOR_AID_MODALITIES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="PerformanceAidEffectiveness" caption="Count of UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework" column="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
                     <Measure name="supportedByUN" caption="Count of 'Is the system supported by the UN?'" column="SUPPORTED_BYUN"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
                     <Measure name="unctReportToAIMS" caption="Count of 'Does the UNCT report to the AIMS?'" column="UNCT_REPORT_TOAIMS"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

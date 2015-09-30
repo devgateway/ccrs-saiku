@@ -295,19 +295,19 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCommonUNCTWebsite" caption="Count of 'o you have a common website for the UNCT?'" column="HAS_COMMONUNCTWEBSITE"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCommonFacebookPage" caption="Count of 'Do you have a common Facebook page for the UNCT?'" column="HAS_COMMON_FACEBOOK_PAGE"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCommonTwitterAccount" caption="Count of 'Do you have a common Twitter account for the UNCT?'" column="HAS_COMMON_TWITTER_ACCOUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasGuidingPrinciplesCommonMessaging" caption="Count of 'Do you have agreed guiding principles for common messaging from the UN?'" column="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasJointAdvocacyStrategiesOnNormativeIssues" caption="Count of 'Do you have any joint advocacy strategies to communicate on human rights or other normative issues?'" column="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

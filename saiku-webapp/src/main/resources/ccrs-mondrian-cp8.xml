@@ -146,13 +146,13 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCodeOfConduct" caption="Count of 'Does the UNCT have a code of conduct?'" column="HAS_CODE_OF_CONDUCT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCountryDirector" caption="Count of 'Does the UNDP have a Country Director?'" column="HAS_COUNTRY_DIRECTOR"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="signedDelegationOfAuthorityLetter" caption="Count of 'Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization?'" column="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
