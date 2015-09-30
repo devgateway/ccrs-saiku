@@ -16,44 +16,45 @@
 package org.saiku.web.rest.resources;
 
 
-import org.saiku.olap.query2.ThinQuery;
-import org.saiku.web.rest.objects.resultset.QueryResult;
-import org.saiku.web.rest.util.ServletUtil;
-import org.saiku.web.svg.Converter;
-
-import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.saiku.olap.query2.ThinQuery;
+import org.saiku.web.rest.objects.resultset.QueryResult;
+import org.saiku.web.rest.util.ServletUtil;
+import org.saiku.web.svg.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.UUID;
-
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.UUID;
 
 /**
  * QueryServlet contains all the methods required when manipulating an OLAP Query.
@@ -300,20 +301,19 @@ public class ExporterResource {
 			PdfStamper pdfStamper = new PdfStamper(reader,
 				baos);
 
-			URL dir_url = ExporterResource.class.getResource("/org/saiku/web/svg/watermark.png");
-			Image image = Image.getInstance(dir_url);
-
+			//URL dir_url = ExporterResource.class.getResource("/org/saiku/web/svg/watermark.png");
+			//Image image = Image.getInstance(dir_url);
 
 			for (int i = 1; i <= reader.getNumberOfPages(); i++) {
 
 			  PdfContentByte content = pdfStamper.getOverContent(i);
 
 
-			  image.setAbsolutePosition(450f, 280f);
+			  //image.setAbsolutePosition(450f, 280f);
 			/*image.setAbsolutePosition(reader.getPageSize(1).getWidth() - image.getScaledWidth(), reader.getPageSize
 				(1).getHeight() - image.getScaledHeight());*/
 			  //image.setAlignment(Image.MIDDLE);
-			  content.addImage(image);
+			  //content.addImage(image);
 			}
 			pdfStamper.close();
 			b = baos.toByteArray();
