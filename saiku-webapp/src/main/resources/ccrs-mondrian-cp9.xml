@@ -13,6 +13,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="HasNewConflictAnalysis">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -34,7 +42,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.LIST_MECHANISMS, M.PARTNERS_FOR_MECHANISMS, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            M.ID, M.LIST_MECHANISMS, M.PARTNERS_FOR_MECHANISMS, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP9COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT M, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -52,7 +60,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.KEY_PARTNER, M.DESCRIBE_AGREEMENTS, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            M.ID, M.KEY_PARTNER, M.DESCRIBE_AGREEMENTS, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP9KEY_PARTNERS M, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -70,7 +78,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                        cp9.ID, cp9.DESIGNATION, cp9.ENTITY_YEAR,
+                        cp9.ID, cp9.DESIGNATION, cp9.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                         CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = TRUE THEN 1 ELSE 0 END as HASUNPEACE_KEEPING_MISSION,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HAS_INTEGRATED_STRATEGIC_FRAMEWORK,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.DATE_OF_SIGNATURE) ELSE null END as DATE_OF_SIGNATURE,
@@ -124,13 +132,6 @@
         <InlineTable alias="HAS_INTERACTIONWBDIRECTORUNLEADER"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_JOINT_RISK_ASESSMENTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-
-
-
-
-
-
-
         <InlineTable alias="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_JOINT_STRUCTURESUNCTUN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
@@ -183,6 +184,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9CountryMechanisms' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -230,6 +243,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <FactLink dimension="Mechanism" />
                     <FactLink dimension="Partners that support this mechanism" />
@@ -272,6 +286,18 @@
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -322,6 +348,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <FactLink dimension="Key Partner" />
                     <FactLink dimension="Describe the agreements/arrangements/initiatives for crisis" />
@@ -364,6 +391,18 @@
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -750,6 +789,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION"/>
                     <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>

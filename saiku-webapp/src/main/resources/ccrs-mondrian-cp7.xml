@@ -13,12 +13,20 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP7MDTF">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.ID, D.NAME, D.TOTAL_BUDGET, CP7.DESIGNATION, CP7.ENTITY_YEAR,
+                            D.ID, D.NAME, D.TOTAL_BUDGET, CP7.DESIGNATION, CP7.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP7MTDF D, CP7JOINT_FUNDING_PROFILE CP7, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -37,7 +45,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp7.ID, cp7.DESIGNATION, cp7.ENTITY_YEAR,
+                            cp7.ID, cp7.DESIGNATION, cp7.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp7.HAS_ONE_FUND_COUNTRY_LEVEL = TRUE THEN 1 ELSE 0 END as HAS_ONE_FUND_COUNTRY_LEVEL,
                             CASE WHEN cp7.HAS_ONE_FUND_COUNTRY_LEVEL = TRUE THEN CASE WHEN cp7onefund.ALLOCATION_CRITERIA_AGREED = TRUE THEN 1 ELSE 0 END ELSE null END as ALLOCATION_CRITERIA_AGREED,
                             CASE WHEN cp7.HASMTDFS = TRUE THEN 1 ELSE 0 END as HASMTDFS,
@@ -95,6 +103,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP7MDTF' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -132,6 +152,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <FactLink dimension="Name" />
                 </DimensionLinks>
@@ -173,6 +194,18 @@
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -244,6 +277,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="Do you have a One Fund at the country level"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL"/>
                     <ForeignKeyLink dimension="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee"  foreignKeyColumn="ALLOCATION_CRITERIA_AGREED"/>

@@ -13,12 +13,20 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP6JointAdvocacyStrategies">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.FOR_WHICH_ISSUES, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            M.ID, M.FOR_WHICH_ISSUES, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP6JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES M, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -36,7 +44,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR,
+                            cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE 0 END as HAS_COMMONUNCTWEBSITE,
                             CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN cp6.COMMONUNCTURL ELSE null END as COMMONUNCTURL,
                             CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN 1 ELSE 0 END as HAS_COMMON_FACEBOOK_PAGE,
@@ -100,6 +108,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP6JointAdvocacyStrategies' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -135,6 +155,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <FactLink dimension="For which issues" />
                 </DimensionLinks>
@@ -176,6 +197,18 @@
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -313,6 +346,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <FactLink dimension="website URL" />
                     <FactLink dimension="Facebook URL" />

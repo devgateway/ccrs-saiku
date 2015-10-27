@@ -13,6 +13,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="BusinessOperationArea">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -33,7 +41,7 @@
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
-                        select BOS.*,
+                        select BOS.*, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN BOS.HASMOU = TRUE THEN 1 ELSE 0 END as HASMOU_COUNT,
                             CASE WHEN BOS.HASLTA = TRUE THEN 1 ELSE 0 END as HASLTA_COUNT,
                             CASE WHEN BOS.HASLTA = TRUE THEN CASE WHEN LTA.LTA_EVALUATED = TRUE THEN 1 ELSE 0 END ELSE 0 END as LTA_EVALUATED_COUNT,
@@ -60,7 +68,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp4.ID, cp4.DESIGNATION, cp4.ENTITY_YEAR,
+                            cp4.ID, cp4.DESIGNATION, cp4.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp4.COUNTRY_LEVELHACT = TRUE THEN 1 ELSE 0 END as COUNTRY_LEVELHACT,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4, CP1GENERAL_PROFILE cp1
@@ -110,6 +118,18 @@
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -217,6 +237,7 @@
                     <ForeignKeyLink dimension="Has LTA" foreignKeyColumn="HASLTA_COUNT"/>
                     <ForeignKeyLink dimension="Has LTA evaluated" foreignKeyColumn="LTA_EVALUATED_COUNT"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
@@ -260,6 +281,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP4GeneralCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -298,6 +331,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="Is a HACT being implemented at the country level"  foreignKeyColumn="COUNTRY_LEVELHACT"/>
                 </DimensionLinks>
