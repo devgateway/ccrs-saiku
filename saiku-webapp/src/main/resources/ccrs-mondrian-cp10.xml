@@ -13,12 +13,20 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP10GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp10.ID, cp10.DESIGNATION, cp10.ENTITY_YEAR,
+                            cp10.ID, cp10.DESIGNATION, cp10.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp10.HAS_AGREEDUNCTTOR = TRUE THEN 1 ELSE 0 END as HAS_AGREEDUNCTTOR,
                             CASE WHEN cp10.HAS_AGREEDMAF = TRUE THEN 1 ELSE 0 END as HAS_AGREEDMAF,
                             CASE WHEN cp10.HAS_AGREED_CONFLICT_RESOLUTION = TRUE THEN 1 ELSE 0 END as HAS_AGREED_CONFLICT_RESOLUTION,
@@ -72,6 +80,18 @@
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -143,6 +163,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR"/>
                     <ForeignKeyLink dimension="Mutual Accountability Framework" foreignKeyColumn="HAS_AGREEDMAF"/>

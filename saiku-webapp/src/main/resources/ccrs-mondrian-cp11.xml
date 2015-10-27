@@ -13,6 +13,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="Sector">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -26,7 +34,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.*, CP11.DESIGNATION, CP11.ENTITY_YEAR,
+                            D.*, CP11.DESIGNATION, CP11.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE CP11, CP11DIRECT_BUDGET_SUPPORT D, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -45,7 +53,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp11.ID, cp11.DESIGNATION, cp11.ENTITY_YEAR,
+                            cp11.ID, cp11.DESIGNATION, cp11.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp11.HAS_SUPPORTSSCOOPERATION = TRUE THEN 1 ELSE 0 END as HAS_SUPPORTSSCOOPERATION,
                             CASE WHEN cp11.HASSWAPS = TRUE THEN 1 ELSE 0 END as HASSWAPS,
                             CASE WHEN cp11.HAS_DIRECT_BUDGET_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_DIRECT_BUDGET_SUPPORT,
@@ -115,6 +123,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Sector" caption="Sector" table="Sector"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -154,6 +174,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
@@ -194,6 +215,18 @@
                        visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -355,6 +388,7 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION"/>
                     <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS"/>
