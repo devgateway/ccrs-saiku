@@ -30,6 +30,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="SecondaryCountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="RepresentativePostLevelCategory">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -171,7 +179,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT
                         from
@@ -192,7 +200,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN M.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_DEFINED_BYSOP_COUNT,
                             CASE WHEN M.JOINT_WORKPLAN = TRUE THEN 1 ELSE 0 END as JOINT_WORKPLAN_COUNT,
                             CASE WHEN M.RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_COUNT,
@@ -217,7 +225,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp1.DAO_VISION_NOTE_ROADMAP = TRUE THEN 1 ELSE 0 END as DAO_VISION_NOTE_ROADMAP_COUNT,
                             CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12561 THEN 1 ELSE 0 END as SOP1q_YES_FULLY,
@@ -363,6 +371,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
                        table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
                 <Attributes>
@@ -412,6 +432,7 @@
                 <DimensionLinks>
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -470,6 +491,18 @@
 
                     <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
                                hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -555,6 +588,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)"  foreignKeyColumn="RESULTS_GROUP_DEFINED_BYSOP_COUNT"/>
                     <ForeignKeyLink dimension="Does the Results Group have a Joint Workplan"  foreignKeyColumn="JOINT_WORKPLAN_COUNT"/>
@@ -622,6 +656,18 @@
 
                     <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
                                hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -906,6 +952,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
@@ -982,6 +1029,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
@@ -1058,6 +1106,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
@@ -1104,6 +1153,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
