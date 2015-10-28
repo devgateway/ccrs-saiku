@@ -21,6 +21,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="SecondaryCountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="AlternativeAnalysis">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -34,7 +42,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.*, CP3.DESIGNATION, CP3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            D.*, CP3.DESIGNATION, CP3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP3JOINT_PROGRAMMES D, CP3COMMON_COUNTRY_PROGRAMMING CP3, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -53,7 +61,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN 1 ELSE 0 END as HASUNDAF,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN date(cp3undaf.DATE_OF_SIGNATURE) ELSE null END as DATE_OF_SIGNATURE,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN year(cp3undaf.START_DATE) ELSE null END as START_DATE,
@@ -163,6 +171,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Title" caption="Title of Joint Programme" table="CP3JointProgrammes"
                        visible="true">
                 <Attributes>
@@ -198,6 +218,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
@@ -249,6 +270,18 @@
 
                     <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
                                hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -589,6 +622,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF"/>
                     <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT"/>

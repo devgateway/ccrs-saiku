@@ -21,12 +21,20 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="SecondaryCountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP8GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp8.ID, cp8.DESIGNATION, cp8.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            cp8.ID, cp8.DESIGNATION, cp8.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp8.HAS_CODE_OF_CONDUCT = TRUE THEN 1 ELSE 0 END as HAS_CODE_OF_CONDUCT,
                             CASE WHEN cp8.HAS_CODE_OF_CONDUCT = TRUE THEN date(cp8code.DATE_IMPLEMENTED) ELSE null END as DATE_IMPLEMENTED,
                             CASE WHEN cp8.HAS_COUNTRY_DIRECTOR = TRUE THEN 1 ELSE 0 END as HAS_COUNTRY_DIRECTOR,
@@ -93,6 +101,18 @@
 
                     <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
                                hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -179,6 +199,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <FactLink dimension="Date code of conduct was implemented" />
                     <ForeignKeyLink dimension="Does the UNCT have a code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT"/>

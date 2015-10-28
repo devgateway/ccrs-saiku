@@ -21,6 +21,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="SecondaryCountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CommonPremisesType">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -34,7 +42,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.LOCATION, M.COMMON_PREMISES_TYPE_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            M.ID, M.LOCATION, M.COMMON_PREMISES_TYPE_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP5SHARED_SUB_NATIONAL_OFFICES M, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -52,7 +60,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            CP5.ID, CP5.DESIGNATION, CP5.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            CP5.ID, CP5.DESIGNATION, CP5.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN 1 ELSE 0 END as HASUNCOMMON_PREMISES,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.COMMON_PREMISES_TYPE_ID ELSE null END as COMMON_PREMISES_TYPE_ID,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.VALUE_OF_SAVINGS ELSE null END as VALUE_OF_SAVINGS,
@@ -129,6 +137,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP5UNCTMembersSharedOffices' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -177,6 +197,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <FactLink dimension="Location" />
                     <ForeignKeyLink dimension="CommonPremisesType" foreignKeyColumn="COMMON_PREMISES_TYPE_ID"/>
@@ -230,6 +251,18 @@
 
                     <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
                                hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -348,6 +381,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="CommonPremisesType" foreignKeyColumn="COMMON_PREMISES_TYPE_ID"/>
                     <ForeignKeyLink dimension="Does the UNCT have UN Common Premises" foreignKeyColumn="HASUNCOMMON_PREMISES"/>
