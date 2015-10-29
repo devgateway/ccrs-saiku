@@ -28,13 +28,21 @@
                 </SQL>
             </ExpressionView>
         </Query>
+
+        <Query alias="YesNoNAQuestion">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='YesNoNAQuestion']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
         
         <Query alias="Sector">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Sector']]>
                 </SQL>
-            </ExpressionView>
+            </ExpressionView>ele
         </Query>
 
         <Query alias="CP11BudgetSupport">
@@ -63,7 +71,7 @@
                         select
                             cp11.ID, cp11.DESIGNATION, cp11.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp11.HAS_SUPPORTSSCOOPERATION = TRUE THEN 1 ELSE 0 END as HAS_SUPPORTSSCOOPERATION,
-                            CASE WHEN cp11.HASSWAPS = TRUE THEN 1 ELSE 0 END as HASSWAPS,
+                            HASSWAPS_ID,
                             CASE WHEN cp11.HAS_DIRECT_BUDGET_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_DIRECT_BUDGET_SUPPORT,
                             CASE WHEN cp11.IS_CHAIR_AID_EFFECTIVENESS_FORA = TRUE THEN 1 ELSE 0 END as IS_CHAIR_AID_EFFECTIVENESS_FORA,
                             CASE WHEN cp11.HAS_CAPACITY_FOR_AID_MODALITIES = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_FOR_AID_MODALITIES,
@@ -84,7 +92,6 @@
         </Query>
         <InlineTable alias="DAOCP11GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_SUPPORTSSCOOPERATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASSWAPS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_DIRECT_BUDGET_SUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="IS_CHAIR_AID_EFFECTIVENESS_FORA"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_CAPACITY_FOR_AID_MODALITIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
@@ -287,13 +294,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" table='HASSWAPS' key="Dimension Id">
+            <Dimension name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" table='YesNoNAQuestion' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
+                    <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" keyColumn="answer"
+                    <Attribute name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" keyColumn="LABEL"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -393,9 +400,6 @@
                     <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="SWAPs" caption="Count of UNCT participate in sector-wide approaches (SWAPs)" column="HASSWAPS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="DirectBudgetSupport" caption="Count of UNCT provide direct budget support" column="HAS_DIRECT_BUDGET_SUPPORT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -425,7 +429,7 @@
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION"/>
-                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS"/>
+                    <ForeignKeyLink dimension="SWAPs" foreignKeyColumn="HASSWAPS_ID"/>
                     <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT"/>
                     <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA"/>
                     <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES"/>
