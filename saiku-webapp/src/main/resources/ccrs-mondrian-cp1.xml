@@ -38,6 +38,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="YesNoNAQuestion">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='YesNoNAQuestion']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="RepresentativePostLevelCategory">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -203,7 +211,6 @@
                             M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN M.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_DEFINED_BYSOP_COUNT,
                             CASE WHEN M.JOINT_WORKPLAN = TRUE THEN 1 ELSE 0 END as JOINT_WORKPLAN_COUNT,
-                            CASE WHEN M.RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_COUNT,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP1INTERAGENCY_GROUP M, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -217,8 +224,6 @@
         <InlineTable alias="DAOCP1InteragencyGroups"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="RESULTS_GROUP_DEFINED_BYSOP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="JOINT_WORKPLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-
 
         <Query alias="CP1GeneralCube">
             <ExpressionView>
@@ -543,14 +548,14 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is the results group aligned to nationally led sector working groups or theme groups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" table='RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS' key="Dimension Id">
+            <Dimension name="Is the results group aligned to nationally led sector working groups or theme groups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" table='YesNoNAQuestion' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
+                    <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
+                    <Attribute name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
@@ -579,9 +584,6 @@
 
                     <Measure name="jointWorkplan" caption="Count of 'Does the Results Group have a Joint Workplan'" column="JOINT_WORKPLAN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="resultsGroupAlignedToSectorGroups" caption="Count of 'Is the results group aligned to nationally led sector working groups or theme groups'" column="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -592,7 +594,7 @@
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)"  foreignKeyColumn="RESULTS_GROUP_DEFINED_BYSOP_COUNT"/>
                     <ForeignKeyLink dimension="Does the Results Group have a Joint Workplan"  foreignKeyColumn="JOINT_WORKPLAN_COUNT"/>
-                    <ForeignKeyLink dimension="Is the results group aligned to nationally led sector working groups or theme groups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_COUNT"/>
+                    <ForeignKeyLink dimension="Is the results group aligned to nationally led sector working groups or theme groups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID"/>
                     <FactLink dimension="Interagency Group Name" />
                 </DimensionLinks>
             </MeasureGroup>
