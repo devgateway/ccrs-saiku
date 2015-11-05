@@ -257,12 +257,12 @@
 		<% _.each(g, function(group, key) { %>
 			<% if(key != "null") { %>
 			<li class='parent_dimension'>
-		<span class="root expand sprite"></span>
+		<span class="root collapsed sprite"></span>
 			  <a class="folder_expand sprite" href="#" title="<%= key %>"><%= key %></a>
 		<ul>
 				<% _.each(group, function(measure) { %>
 			<% if (typeof measure["visible"] == "undefined" || measure["visible"]) { %>
-				<li class="d_measure"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
+				<li class="d_measure" style="display: none;"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
 						measure="<%= measure.name %>" type="EXACT"
 					class="measure" href="#Measures/member/<%= encodeURIComponent(measure.uniqueName) %>"><%= measure.caption %></a>
 				</li>
@@ -272,12 +272,12 @@
 		</li>
 			<% } else {%>
 			<li class='parent_dimension'>
-			<span class="root expand sprite"></span>
+			<span class="root collapsed sprite"></span>
 			  <a class="folder_expand sprite" href="#" title=" "> </a>
 				<ul>
 			<% _.each(group, function(measure) { %>
 
-				<li class="d_measure"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
+				<li class="d_measure" style="display: none;"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
 						measure="<%= measure.name %>" type="EXACT"
 					class="measure" href="#Measures/member/<%= encodeURIComponent(measure.uniqueName) %>"><%= measure.caption %></a>
 				</li>
