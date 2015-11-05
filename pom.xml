@@ -258,11 +258,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.apache.pdfbox</groupId>
-                <artifactId>pdfbox</artifactId>
-                <version>2.0.0-20141212.210914-782</version>
-            </dependency>
-            <dependency>
                 <groupId>com.sun.jersey.jersey-test-framework</groupId>
                 <artifactId>jersey-test-framework-core</artifactId>
                 <version>${jersey.version}</version>
@@ -950,8 +945,13 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>2.0.0-RC1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
                 <artifactId>fontbox</artifactId>
-                <version>2.0.0-20150122.193253-1019</version>
+                <version>2.0.0-RC1</version>
             </dependency>
             <dependency>
                 <groupId>pentaho</groupId>

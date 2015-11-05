@@ -34,13 +34,7 @@ import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -325,7 +319,7 @@ public class ExporterResource {
 
 		  if(!type.equals("pdf")) {
 
-			PDDocument document = PDDocument.load(new ByteArrayInputStream(b), null);
+			PDDocument document = PDDocument.load(new ByteArrayInputStream(b));
 
 			PDPageTree pdPages = document.getDocumentCatalog().getPages();
 			PDPage page = pdPages.get(0);
