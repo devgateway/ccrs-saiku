@@ -30,6 +30,22 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="SecondaryCountryIncomeStatus">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="YesNoNAQuestion">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='YesNoNAQuestion']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="RepresentativePostLevelCategory">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -171,17 +187,15 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, income.COUNTRY_INCOME_STATUS_ID,
+                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT
                         from
-                            CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1, CP1GENERAL_PROFILE_COUNTRY_INCOME_STATUS income
+                            CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1
                         WHERE
                             M.PARENT_ID = CP1.ID AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR) AND
-                            income.index = 0 AND
-                            CP1.id = income.CP1GENERAL_PROFILE_ID
+                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -194,10 +208,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN M.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_DEFINED_BYSOP_COUNT,
                             CASE WHEN M.JOINT_WORKPLAN = TRUE THEN 1 ELSE 0 END as JOINT_WORKPLAN_COUNT,
-                            CASE WHEN M.RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_COUNT,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP1INTERAGENCY_GROUP M, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -211,15 +224,13 @@
         <InlineTable alias="DAOCP1InteragencyGroups"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="RESULTS_GROUP_DEFINED_BYSOP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="JOINT_WORKPLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-
 
         <Query alias="CP1GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp1.DAO_VISION_NOTE_ROADMAP = TRUE THEN 1 ELSE 0 END as DAO_VISION_NOTE_ROADMAP_COUNT,
                             CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12561 THEN 1 ELSE 0 END as SOP1q_YES_FULLY,
@@ -353,15 +364,26 @@
                 </Attributes>
             </Dimension>
 
-            <!-- hide this dimension for now -->
-            <Dimension name="CountryIncomeStatus" caption="CountryIncomeStatus" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="false">
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
                     <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Status"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -410,11 +432,12 @@
                     <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -465,6 +488,30 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1InteragencyGroups' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -501,14 +548,14 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is the results group aligned to nationally led sector working groups or theme groups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" table='RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS' key="Dimension Id">
+            <Dimension name="Is the results group aligned to nationally led sector working groups or theme groups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" table='YesNoNAQuestion' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
+                    <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
+                    <Attribute name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
@@ -533,22 +580,21 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="resultsGroupDefinedBySOP" caption="Count of 'Is this a Results Group as defined by the Standard Operating Procedures (SOPs)'" column="RESULTS_GROUP_DEFINED_BYSOP_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="jointWorkplan" caption="Count of 'Does the Results Group have a Joint Workplan'" column="JOINT_WORKPLAN_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
-
-                    <Measure name="resultsGroupAlignedToSectorGroups" caption="Count of 'Is the results group aligned to nationally led sector working groups or theme groups'" column="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)"  foreignKeyColumn="RESULTS_GROUP_DEFINED_BYSOP_COUNT"/>
                     <ForeignKeyLink dimension="Does the Results Group have a Joint Workplan"  foreignKeyColumn="JOINT_WORKPLAN_COUNT"/>
-                    <ForeignKeyLink dimension="Is the results group aligned to nationally led sector working groups or theme groups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_COUNT"/>
+                    <ForeignKeyLink dimension="Is the results group aligned to nationally led sector working groups or theme groups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID"/>
                     <FactLink dimension="Interagency Group Name" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -601,6 +647,30 @@
                     <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -835,54 +905,56 @@
             <MeasureGroup name="SOPs (Yes, Fully) Measures" table="CP1GeneralCube">
                 <Measures>
                     <Measure name="#YesFullySOP1" caption="# Yes, Fully SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP2" caption="# Yes, Fully SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP3" caption="# Yes, Fully SOP 3 - Signed UNDAF" column="SOP3Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP4" caption="# Yes, Fully SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP5" caption="# Yes, Fully SOP 5 - Results Groups Established" column="SOP5Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP6" caption="# Yes, Fully SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP7" caption="# Yes, Fully SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP8" caption="# Yes, Fully SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP9" caption="# Yes, Fully SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP10" caption="# Yes, Fully SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP11" caption="# Yes, Fully SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP12" caption="# Yes, Fully SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP13" caption="# Yes, Fully SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP14" caption="# Yes, Fully SOP 14 - Joint Communication Strategy" column="SOP14Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP15" caption="# Yes, Fully SOP 15 - Country Communications Group" column="SOP15Q_YES_FULLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
@@ -910,54 +982,56 @@
             <MeasureGroup name="SOPs (Yes, Partially) Measures" table="CP1GeneralCube">
                 <Measures>
                     <Measure name="#YesPartiallySOP1" caption="# Yes, Partially SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP2" caption="# Yes, Partially SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP3" caption="# Yes, Partially SOP 3 - Signed UNDAF" column="SOP3Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP4" caption="# Yes, Partially SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP5" caption="# Yes, Partially SOP 5 - Results Groups Established" column="SOP5Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP6" caption="# Yes, Partially SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP7" caption="# Yes, Partially SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP8" caption="# Yes, Partially SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP9" caption="# Yes, Partially SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP10" caption="# Yes, Partially SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP11" caption="# Yes, Partially SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP12" caption="# Yes, Partially SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP13" caption="# Yes, Partially SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP14" caption="# Yes, Partially SOP 14 - Joint Communication Strategy" column="SOP14Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP15" caption="# Yes, Partially SOP 15 - Country Communications Group" column="SOP15Q_YES_PARTIALLY" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
@@ -985,54 +1059,56 @@
             <MeasureGroup name="SOPs (No) Measures" table="CP1GeneralCube">
                 <Measures>
                     <Measure name="#NoSOP1" caption="# No SOP 1 - Joint National/UN Steering Committee" column="SOP1Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP2" caption="# No SOP 2 - Annual Report on Joint Results" column="SOP2Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP3" caption="# No SOP 3 - Signed UNDAF" column="SOP3Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP4" caption="# No SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP5" caption="# No SOP 5 - Results Groups Established" column="SOP5Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP6" caption="# No SOP 6 - Medium-Term Common Budgetary Framework" column="SOP6Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP7" caption="# No SOP 7 - Annual Common Budgetary Framework" column="SOP7Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP8" caption="# No SOP 8 - Joint Resource Mobilization Strategy" column="SOP8Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP9" caption="# No SOP 9 - Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" column="SOP9Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP10" caption="# No SOP 10 - Joint Decision-Making by UNCT" column="SOP10Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP11" caption="# No SOP 11 - Business Operations Strategy Endorsed by UNCT" column="SOP11Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP12" caption="# No SOP 12 - OMT Chaired by Head of Agency" column="SOP12Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP13" caption="# No SOP 13 - Operations Costs/ Budgets in Medium Term Common Budgetary Framework" column="SOP13Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP14" caption="# No SOP 14 - Joint Communication Strategy" column="SOP14Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP15" caption="# No SOP 15 - Country Communications Group" column="SOP15Q_NO" datatype="Integer"
-                             aggregator="sum" visible="true"/>
+                             aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
@@ -1063,21 +1139,23 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="countDaOVision" caption="Count DaO Vision, Concept Note, or Roadmap" column="DAO_VISION_NOTE_ROADMAP_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasAnnualReview" caption="Count 'Has the Joint National/UN Steering Committee conducted an annual review'" column="HAS_ANNUAL_REVIEW"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="reportSubmittedToGov" caption="Count 'Was the report submitted to the National Government'" column="REPORT_SUBMITTED_TO_GOV"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="budgetedWorkplan" caption="Count 'Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy'" column="BUDGETED_WORKPLAN"
-                             datatype="Integer" aggregator="sum" visible="true" />
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>

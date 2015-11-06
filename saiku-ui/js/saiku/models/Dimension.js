@@ -29,7 +29,9 @@ var Cube = Backbone.Model.extend({
             "Region",
             "Country",
             "Delivering as One",
-            "Year"
+            "Year",
+            "CountryIncomeStatus",
+            "SecondaryCountryIncomeStatus"
         ];
 
         var i, j, newDimension = [];
