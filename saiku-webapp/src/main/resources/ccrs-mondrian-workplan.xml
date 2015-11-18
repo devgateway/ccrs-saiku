@@ -51,7 +51,7 @@
                         WORKSTREAM.SECTION_ID WORKSTREAM_SECTION_ID,
                         OUTPUTS.ID as OUTPUTS_ID,
                         OUTPUTS.LEAD_UNIT_ID as OUTPUTS_LEAD_UNIT_ID,
-                        AGENCY_ROLES.LEAD_AGENCY_ID as AGENCY_ROLES_LEAD_AGENCY_ID,
+                        AGENCY_ROLES.ID as AGENCY_ROLES_ID,
                         AGENCY_ROLES.ROLE_OF_PARTNERS as AGENCY_ROLES_ROLE_OF_PARTNERS,
                         ACTIVITY.ID as ACTIVITY_ID,
                         ACTIVITY.LEAD_UNIT_ID as ACTIVITY_LEAD_UNIT_ID,
@@ -122,21 +122,9 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Lead Agency" caption="Lead Agency" table='Agency' key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Lead Agency" caption="Lead Agency" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Lead Agencies" hierarchyCaption="All Lead Agencies"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Role of partners" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"
+                    <Attribute name="Dimension Id" keyColumn="AGENCY_ROLES_ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
@@ -197,7 +185,6 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
-                    <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
                     <ForeignKeyLink dimension="Budget Source" foreignKeyColumn="BUDGET_SOURCE_ID"/>
                     <!--<ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>-->
                 </DimensionLinks>
@@ -251,21 +238,9 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Lead Agency" caption="Lead Agency" table='Agency' key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Lead Agency" caption="Lead Agency" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Lead Agencies" hierarchyCaption="All Lead Agencies"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Role of partners" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"
+                    <Attribute name="Dimension Id" keyColumn="AGENCY_ROLES_ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
@@ -314,7 +289,6 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
-                    <ForeignKeyLink dimension="Lead Agency" foreignKeyColumn="AGENCY_ROLES_LEAD_AGENCY_ID"/>
                     <ForeignKeyLink dimension="Budget Source" foreignKeyColumn="BUDGET_SOURCE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
