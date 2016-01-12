@@ -595,17 +595,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has the UNCT supported national capacity to develop a report for the UPR" caption="Has the UNCT supported national capacity to develop a report for the UPR?" table='HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported national capacity to develop a report for the UPR" caption="Has the UNCT supported national capacity to develop a report for the UPR?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
 
             <Dimension name="Has the UNCT submitted a UNCT report to the UPR" caption="Has the UNCT submitted a UNCT report to the UPR?" table='HASUNCTREPORTUPRSUBMITTED' key="Dimension Id">
                 <Attributes>
@@ -680,9 +669,6 @@
                     <Measure name="hasAddressedHRIssues" caption="Count of 'Has action been taken to address the human rights issues identified in the human rights analysis?'" column="HAS_ADDRESSEDHRISSUES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasSupportedNationalReportDevelopment" caption="Count of 'Has the UNCT supported national capacity to develop a report for the UPR?'" column="HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="hasUNCTReportUPRSubmitted" caption="Count of 'Has the UNCT submitted a UNCT report to the UPR?'" column="HASUNCTREPORTUPRSUBMITTED"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -708,8 +694,7 @@
                     <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC"/>
                     <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI"/>
                     <ForeignKeyLink dimension="Was it undertaken as part of the UNDAF rollout process" foreignKeyColumn="PART_OF_ROLLOUT_PROCESS"/>
-                    <ForeignKeyLink dimension="Has action been taken to address the human rights issues identified in the human rights analysis" foreignKeyColumn="HAS_ADDRESSEDHRISSUES"/>
-                    <ForeignKeyLink dimension="Has the UNCT supported national capacity to develop a report for the UPR" foreignKeyColumn="HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT"/>
+                    <ForeignKeyLink dimension="Has action been taken to address the human rights issues identified in the human rights analysis" foreignKeyColumn="HAS_ADDRESSEDHRISSUES"/>                    
                     <ForeignKeyLink dimension="Has the UNCT submitted a UNCT report to the UPR" foreignKeyColumn="HASUNCTREPORTUPRSUBMITTED"/>
                     <ForeignKeyLink dimension="Has the UNCT facilitated follow up of the UPR recommendations by the Government" foreignKeyColumn="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"/>
                     <ForeignKeyLink dimension="Has the UNCT drawn on the UPR recommendations to inform UN analysis, programming and advocacy strategies" foreignKeyColumn="HASUNCTINFORMEDUN"/>
