@@ -212,8 +212,6 @@
                     <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
                              column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="AverageContractDurationYears" caption="Average Contract Duration Years"
-                             column="CONTRACT_DURATION_YEARS" datatype="Numeric" aggregator="avg" visible="true" formatString="#,###"/>
                 </Measures>
 
                 <DimensionLinks>
