@@ -36,6 +36,15 @@
                 </SQL>
             </ExpressionView>
         </Query>
+        
+        
+        <Query alias="StaffMemberTitle">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='StaffMemberTitle']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="Level">
             <ExpressionView>
@@ -59,6 +68,7 @@
                     <![CDATA[
                         select
                             D.*, CP2.DESIGNATION, CP2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN D.HEADRCO = TRUE THEN 1 ELSE 0 END as HEAD_OF_RCO,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2, CP1GENERAL_PROFILE CP1
                         WHERE
@@ -71,6 +81,26 @@
             </ExpressionView>
         </Query>
         <InlineTable alias="DAOCP2RcoStaffMemberDetail"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+	<InlineTable alias="HEAD_RCO_TABLE">
+			<ColumnDefs>
+				<ColumnDef name="id" type="Numeric" />
+				<ColumnDef name="answer" type="String" />
+			</ColumnDefs>
+			<Key>
+				<Column name="id" />
+			</Key>
+			<Rows>
+				<Row>
+					<Value column="id">0</Value>
+					<Value column="answer">No</Value>
+				</Row>
+				<Row>
+					<Value column="id">1</Value>
+					<Value column="answer">Yes</Value>
+				</Row>
+			</Rows>
+		</InlineTable>
 
         <Query alias="CP2GeneralCube">
             <ExpressionView>
@@ -177,6 +207,20 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+            
+            
+            <Dimension name="StaffMemberTitle" caption="Staff Member Title" table="StaffMemberTitle"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="StaffMemberTitle" caption="Staff Member Title" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Staff Member Titles" hierarchyCaption="All Staff Member Titles"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            
 
             <Dimension name="Level" caption="Level" table="Level" key="Dimension Id" visible="true">
                 <Attributes>
@@ -200,6 +244,19 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+            
+            
+              <Dimension name="Head of RCO" caption="Head of RCO" table='HEAD_RCO_TABLE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Head of RCO" caption="Head of RCO" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
 
         </Dimensions>
 
@@ -217,6 +274,7 @@
                 <DimensionLinks>
                     <ForeignKeyLink dimension="OfficeType" foreignKeyColumn="OFFICE_TYPE_ID"/>
                     <ForeignKeyLink dimension="ContractModality" foreignKeyColumn="CONTRACT_MODALITY_ID"/>
+                    <ForeignKeyLink dimension="StaffMemberTitle" foreignKeyColumn="STAFF_MEMBER_TITLE_ID"/>
                     <ForeignKeyLink dimension="Level" foreignKeyColumn="LEVEL_ID"/>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
@@ -224,6 +282,7 @@
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <ForeignKeyLink dimension="Head of RCO"  foreignKeyColumn="HEAD_OF_RCO"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
