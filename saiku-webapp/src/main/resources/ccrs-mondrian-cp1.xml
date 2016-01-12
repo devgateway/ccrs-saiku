@@ -53,6 +53,15 @@
                 </SQL>
             </ExpressionView>
         </Query>
+        
+         <Query alias="AgencyRepresentativeTitleCategory">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNAgencyRepresentativeTitle']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        
 
         <Query alias="GovernmentRole">
             <ExpressionView>
@@ -200,8 +209,44 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="NON_RESIDENT_AGENCY_TABLE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="DAOCP1UnctMember"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+	<InlineTable alias="NON_RESIDENT_AGENCY_TABLE">
+		<ColumnDefs>
+			<ColumnDef name="id" type="Numeric" />
+			<ColumnDef name="answer" type="String" />
+		</ColumnDefs>
+		<Key>
+			<Column name="id" />
+		</Key>
+		<Rows>
+			<Row>
+				<Value column="id">0</Value>
+				<Value column="answer">No</Value>
+			</Row>
+			<Row>
+				<Value column="id">1</Value>
+				<Value column="answer">Yes</Value>
+			</Row>
+		</Rows>
+	</InlineTable>
+	<InlineTable alias="DAOCP1UnctMember">
+		<ColumnDefs>
+			<ColumnDef name="id" type="Numeric" />
+			<ColumnDef name="answer" type="String" />
+		</ColumnDefs>
+		<Key>
+			<Column name="id" />
+		</Key>
+		<Rows>
+			<Row>
+				<Value column="id">0</Value>
+				<Value column="answer">No</Value>
+			</Row>
+			<Row>
+				<Value column="id">1</Value>
+				<Value column="answer">Yes</Value>
+			</Row>
+		</Rows>
+	</InlineTable>
 
         <Query alias="CP1InteragencyGroups">
             <ExpressionView>
@@ -388,6 +433,21 @@
                 </Attributes>
             </Dimension>
 
+
+            <Dimension name="AgencyRepresentativeTitle" caption="Agency Representative Title"
+                       table="AgencyRepresentativeTitleCategory" key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Agency RepresentativeTitle" caption="Agency Representative Title"
+                               keyColumn="LABEL" hierarchyAllMemberName="All Agency Representative Titles"
+                               hierarchyCaption="All Agency Representative Titles" levelType="Regular"
+                               datatype="String" />
+                </Attributes>
+            </Dimension>
+
+
             <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
                        table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
                 <Attributes>
@@ -440,6 +500,9 @@
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
+                    <ForeignKeyLink dimension="AgencyRepresentativeTitle"
+                                    foreignKeyColumn="AGENCY_REPRESENTATIVE_TITLE_ID" />
+                                    
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
