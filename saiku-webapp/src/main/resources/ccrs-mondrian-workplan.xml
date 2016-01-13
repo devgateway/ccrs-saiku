@@ -52,7 +52,6 @@
                         OUTPUTS.ID as OUTPUTS_ID,
                         OUTPUTS.LEAD_UNIT_ID as OUTPUTS_LEAD_UNIT_ID,
                         AGENCY_ROLES.ID as AGENCY_ROLES_ID,
-                        AGENCY_ROLES.ROLE_OF_PARTNERS as AGENCY_ROLES_ROLE_OF_PARTNERS,
                         ACTIVITY.ID as ACTIVITY_ID,
                         ACTIVITY.LEAD_UNIT_ID as ACTIVITY_LEAD_UNIT_ID,
                         CASE WHEN ACTIVITY.SELECT_AS_GOOD_PRACTICE IS NULL THEN 'No' ELSE CASE WHEN ACTIVITY.SELECT_AS_GOOD_PRACTICE = FALSE THEN 'No' ELSE 'Yes' END END as ACTIVITY_SELECT_AS_GOOD_PRACTICE,
@@ -122,18 +121,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Role of partners" table='WorkplanCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="AGENCY_ROLES_ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Role of partners" caption="Role of partners" keyColumn="AGENCY_ROLES_ROLE_OF_PARTNERS"
-                               hierarchyAllMemberName="All roles" hierarchyCaption="All roles"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Is good practice?" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
@@ -180,7 +167,6 @@
                 </Measures>
                 <DimensionLinks>
                     <FactLink dimension="Year" />
-                    <FactLink dimension="Role of partners" />
                     <FactLink dimension="Is good practice?" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
@@ -238,18 +224,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Role of partners" table='WorkplanCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="AGENCY_ROLES_ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Role of partners" caption="Role of partners" keyColumn="AGENCY_ROLES_ROLE_OF_PARTNERS"
-                               hierarchyAllMemberName="All roles" hierarchyCaption="All roles"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Is good practice?" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
@@ -284,7 +258,6 @@
                 </Measures>
                 <DimensionLinks>
                     <FactLink dimension="Year" />
-                    <FactLink dimension="Role of partners" />
                     <FactLink dimension="Is good practice?" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>

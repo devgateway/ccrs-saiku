@@ -42,7 +42,7 @@
                 <SQL dialect="generic">
                     <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Sector']]>
                 </SQL>
-            </ExpressionView>ele
+            </ExpressionView>
         </Query>
 
         <Query alias="CP11BudgetSupport">
