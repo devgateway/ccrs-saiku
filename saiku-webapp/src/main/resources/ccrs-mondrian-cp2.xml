@@ -21,6 +21,22 @@
             </ExpressionView>
         </Query>
 
+  		<Query alias="FundingOrganization">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='FundingOrganization']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        
+        <Query alias="FinancingSource">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='FinancingSource']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="SecondaryCountryIncomeStatus">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -68,6 +84,8 @@
                     <![CDATA[
                         select
                             D.*, CP2.DESIGNATION, CP2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            date(d.start_date) as start_date_date,
+                            date(d.end_date) as end_date_date,
                             CASE WHEN D.HEADRCO = TRUE THEN 1 ELSE 0 END as HEAD_OF_RCO,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2, CP1GENERAL_PROFILE CP1
@@ -171,6 +189,56 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension name="FundingOrganization" caption="Funding Organization" table="FundingOrganization"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="FundingOrganization" caption="Funding Organization" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Funding Organizations" hierarchyCaption="All Funding Organizations"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="FinancingSource" caption="Financing Source" table="FinancingSource"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="FinancingSource" caption="Financing Source" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Financing Sources" hierarchyCaption="All Financing Sources"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+
+            <Dimension name="Start Date" caption="Start Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Start Date" caption="Start Date" keyColumn="START_DATE_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeYears" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="End Date" caption="End Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="End Date" caption="End Date" keyColumn="END_DATE_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeYears" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
 
             <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
                        key="Dimension Id" visible="true">
@@ -279,7 +347,11 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
+                    <FactLink dimension="Start Date" />
+                    <FactLink dimension="End Date" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="FundingOrganization" foreignKeyColumn="FUNDING_ORGANIZATION_ID" />
+                    <ForeignKeyLink dimension="FinancingSource" foreignKeyColumn="FINANCING_SOURCE_ID" />
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="Head of RCO"  foreignKeyColumn="HEAD_OF_RCO"/>

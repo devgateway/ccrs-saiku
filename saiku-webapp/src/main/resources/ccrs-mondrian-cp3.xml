@@ -20,6 +20,14 @@
                 </SQL>
             </ExpressionView>
         </Query>
+        
+          <Query alias="JointProgrammeModality">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='JointProgrammeModality']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="SecondaryCountryIncomeStatus">
             <ExpressionView>
@@ -171,6 +179,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="JointProgrammeModality" caption="Which Modality?" table="JointProgrammeModality"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="JointProgrammeModality" caption="Which Modality?" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Joint Programme Modalities" hierarchyCaption="All Joint Programme Modalities"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -218,6 +238,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="JointProgrammeModality" foreignKeyColumn="WHICH_MODALITY_ID" />
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
@@ -334,13 +355,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="MDG Acceleration Framework" caption="Are you using the MDG Acceleration Framework (MAF)?" table='HASMDGACCELERATION_FRAMEWORK' key="Dimension Id">
+            <Dimension name="MAPS Guide" caption="Are you using the Mainstreaming, Acceleration, and Policy Support (MAPS) Guide?" table='HASMDGACCELERATION_FRAMEWORK' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="MDG Acceleration Framework" caption="Are you using the MDG Acceleration Framework (MAF)?" keyColumn="answer"
+                    <Attribute name="MAPS Guide" caption="Are you using the Mainstreaming, Acceleration, and Policy Support (MAPS) Guide?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -578,7 +599,7 @@
                     <Measure name="NationalDevelopmentPlan" caption="Count is there a National Development Plan" column="HAS_NATIONAL_DEVELOPMENT_PLAN"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="MDGAccelerationFramework" caption="Count of using the MDG Acceleration Framework (MAF)" column="HASMDGACCELERATION_FRAMEWORK"
+                    <Measure name="MDGAccelerationFramework" caption="Count of using the MAPS Guide" column="HASMDGACCELERATION_FRAMEWORK"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="JointProgrammes" caption="Count of Joint Programmes" column="HAS_JOINT_PROGRAMMES"
@@ -627,7 +648,7 @@
                     <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF"/>
                     <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT"/>
                     <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN"/>
-                    <ForeignKeyLink dimension="MDG Acceleration Framework" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK"/>
+                    <ForeignKeyLink dimension="MAPS Guide" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK"/>
                     <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES"/>
                     <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW"/>
                     <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW"/>
