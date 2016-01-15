@@ -89,6 +89,10 @@
                         select
                             cp12.ID, cp12.DESIGNATION, cp12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ADVISOR = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ADVISOR,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS,                            
+                            CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETYUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETYUPR,  
+                            CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR,                                                      
+                            CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENTUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_GOVERNMENTUPR,                            
                             CASE WHEN cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH = TRUE THEN 1 ELSE 0 END as HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH,
                             CASE WHEN cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH = TRUE THEN CASE WHEN cp12training.PART_OF_ROLLOUT_PROCESS = TRUE THEN 1 ELSE 0 END ELSE null END as PART_OF_ROLLOUT_PROCESS,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ANALYSIS,
@@ -97,8 +101,7 @@
                             CASE WHEN cp12.HASUPRPROCESS = TRUE THEN 1 ELSE 0 END as HASUPRPROCESS,
                             CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT,
                             CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HASUNCTREPORTUPRSUBMITTED = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNCTREPORTUPRSUBMITTED,
-                            CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS,
-                            CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HASUNCTINFORMEDUN = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNCTINFORMEDUN,
+                            CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS,                            
                             CASE WHEN cp12.HASUNHRTREATY_BODIES = TRUE THEN 1 ELSE 0 END as HASUNHRTREATY_BODIES,
                             CASE WHEN cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC = TRUE THEN 1 ELSE 0 END as HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC,
                             CASE WHEN cp12.HASHRI = TRUE THEN 1 ELSE 0 END as HASHRI,
@@ -129,8 +132,11 @@
         <InlineTable alias="HAS_ADDRESSEDHRISSUES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HASUNCTREPORTUPRSUBMITTED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNCTINFORMEDUN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>        
+		<InlineTable alias="HASUNCTSUPPORTED_GOVERNMENTUPR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>    
+		<InlineTable alias="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>   
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -535,13 +541,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year?" table='HASUNHRTREATY_BODIES' key="Dimension Id">
+            <Dimension name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" table='HASUNHRTREATY_BODIES' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year?" keyColumn="answer"
+                    <Attribute name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -595,6 +601,60 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Has the UNCT supported the government to develop a report for the UPR" caption="Has the UNCT supported the government to develop a report for the UPR?" table='HASUNCTSUPPORTED_GOVERNMENTUPR' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported national capacity to develop a report for the UPR" caption="Has the UNCT supported national capacity to develop a report for the UPR?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+
+            <Dimension name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society develop inputs or reports for the UPR?" table='HASUNCTSUPPORTED_CIVIL_SOCIETYUPR' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society develop inputs or reports for the UPR?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            
+            
+         	<Dimension name="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" caption="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?" table='HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" caption="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            
+
+
+
+            <Dimension name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?" table='HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+
 
             <Dimension name="Has the UNCT submitted a UNCT report to the UPR" caption="Has the UNCT submitted a UNCT report to the UPR?" table='HASUNCTREPORTUPRSUBMITTED' key="Dimension Id">
                 <Attributes>
@@ -620,17 +680,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has the UNCT drawn on the UPR recommendations to inform UN analysis, programming and advocacy strategies" caption="Has the UNCT drawn on the UPR recommendations to inform UN analysis, programming and advocacy strategies?" table='HASUNCTINFORMEDUN' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT drawn on the UPR recommendations to inform UN analysis, programming and advocacy strategies" caption="Has the UNCT drawn on the UPR recommendations to inform UN analysis, programming and advocacy strategies?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -675,8 +724,18 @@
                     <Measure name="hasFacilitatedFolloupGovRecommendations" caption="Count of 'Has the UNCT facilitated follow up of the UPR recommendations by the Government?'" column="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasUNCTInformedUN" caption="Count of 'Has the UNCT drawn on the UPR recommendations to inform UN analysis, programming and advocacy strategies?'" column="HASUNCTINFORMEDUN"
+                    <Measure name="hasUNCTSupportedGovernmentUPR" caption="Count of 'Has the UNCT supported the government to develop a report for the UPR?'" column="HASUNCTSUPPORTED_GOVERNMENTUPR"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+				   <Measure name="hasUNCTSupportedCivilSocietyUPR" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
+                   
+                   <Measure name="hasUNCTSupportedNationalHumanRightsInstitutionUPR" caption="Count of 'Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
+			
+			       <Measure name="hasUNCTSupportedCivilSocietyDevelopInputs" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
+			                                                          
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -696,8 +755,12 @@
                     <ForeignKeyLink dimension="Was it undertaken as part of the UNDAF rollout process" foreignKeyColumn="PART_OF_ROLLOUT_PROCESS"/>
                     <ForeignKeyLink dimension="Has action been taken to address the human rights issues identified in the human rights analysis" foreignKeyColumn="HAS_ADDRESSEDHRISSUES"/>                    
                     <ForeignKeyLink dimension="Has the UNCT submitted a UNCT report to the UPR" foreignKeyColumn="HASUNCTREPORTUPRSUBMITTED"/>
-                    <ForeignKeyLink dimension="Has the UNCT facilitated follow up of the UPR recommendations by the Government" foreignKeyColumn="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"/>
-                    <ForeignKeyLink dimension="Has the UNCT drawn on the UPR recommendations to inform UN analysis, programming and advocacy strategies" foreignKeyColumn="HASUNCTINFORMEDUN"/>
+                    <ForeignKeyLink dimension="Has the UNCT facilitated follow up of the UPR recommendations by the Government" foreignKeyColumn="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"/>                    
+                    <ForeignKeyLink dimension="Has the UNCT supported the government to develop a report for the UPR" foreignKeyColumn="HASUNCTSUPPORTED_GOVERNMENTUPR"/>
+            		<ForeignKeyLink dimension="Has the UNCT supported civil society develop inputs or reports for the UPR" foreignKeyColumn="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR"/>                                   
+                    <ForeignKeyLink dimension="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" foreignKeyColumn="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR"/>
+                    <ForeignKeyLink dimension="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" foreignKeyColumn="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS"/>           
+            			
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
