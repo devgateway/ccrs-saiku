@@ -35,10 +35,12 @@
                     <![CDATA[
                         select
                             cp8.ID, cp8.DESIGNATION, cp8.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp8.HASUNDPDEPUTY_REPRESENTATIVE = TRUE THEN 1 ELSE 0 END as HASUNDPDEPUTY_REPRESENTATIVE,
                             CASE WHEN cp8.HAS_CODE_OF_CONDUCT = TRUE THEN 1 ELSE 0 END as HAS_CODE_OF_CONDUCT,
                             CASE WHEN cp8.HAS_CODE_OF_CONDUCT = TRUE THEN date(cp8code.DATE_IMPLEMENTED) ELSE null END as DATE_IMPLEMENTED,
-                            CASE WHEN cp8.HAS_COUNTRY_DIRECTOR = TRUE THEN 1 ELSE 0 END as HAS_COUNTRY_DIRECTOR,
+                            CASE WHEN cp8.HAS_COUNTRY_DIRECTOR = TRUE THEN 1 ELSE 0 END as HAS_COUNTRY_DIRECTOR,                            
                             CASE WHEN cp8.HAS_COUNTRY_DIRECTOR = TRUE THEN CASE WHEN cp8.SIGNED_DELEGATION_OF_AUTHORITY_LETTER = TRUE THEN 1 ELSE 0 END ELSE null END as SIGNED_DELEGATION_OF_AUTHORITY_LETTER,
+                            CASE WHEN cp8.HASUNDPDEPUTY_REPRESENTATIVE = TRUE THEN CASE WHEN cp8.SIGNED_DELEGATION_AUTHORITY = TRUE THEN 1 ELSE 0 END ELSE null END as SIGNED_DELEGATION_AUTHORITY,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP8JOINT_LEADERSHIP_MANAGEMENT cp8, CP1GENERAL_PROFILE cp1, CP8CODE_OF_CONDUCT cp8code
                         WHERE
@@ -53,7 +55,9 @@
         <InlineTable alias="DAOCP8GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_CODE_OF_CONDUCT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_COUNTRY_DIRECTOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_UNDPDEPUTY_REPRESENTATIVE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>       
         <InlineTable alias="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="SIGNED_DELEGATION_AUTHORITY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>       
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -153,6 +157,31 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+            
+             <Dimension name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" table='HAS_CODE_OF_CONDUCT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" table='HAS_UNDPDEPUTY_REPRESENTATIVE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
 
             <Dimension name="Does the UNDP have a Country Director" caption="Does the UNDP have a Country Director?" table='HAS_COUNTRY_DIRECTOR' key="Dimension Id">
                 <Attributes>
@@ -188,6 +217,12 @@
                     <Measure name="hasCodeOfConduct" caption="Count of 'Does the UNCT have a code of conduct?'" column="HAS_CODE_OF_CONDUCT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <Measure name="hasUNDPDeputyRepresentative" caption="Count of 'Does UNDP have a Deputy Representative?'" column="HASUNDPDEPUTY_REPRESENTATIVE"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                             
+                    <Measure name="signedDelegationAuthority" caption="Count of 'Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?'" column="SIGNED_DELEGATION_AUTHORITY"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
+
                     <Measure name="hasCountryDirector" caption="Count of 'Does the UNDP have a Country Director?'" column="HAS_COUNTRY_DIRECTOR"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -203,7 +238,9 @@
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <FactLink dimension="Date code of conduct was implemented" />
                     <ForeignKeyLink dimension="Does the UNCT have a code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT"/>
+                    <ForeignKeyLink dimension="Does UNDP have a Deputy Representative"  foreignKeyColumn="HASUNDPDEPUTY_REPRESENTATIVE"/>
                     <ForeignKeyLink dimension="Does the UNDP have a Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR"/>
+                    <ForeignKeyLink dimension="Is there a signed delegation of authority letter"  foreignKeyColumn="SIGNED_DELEGATION_AUTHORITY"/>                   
                     <ForeignKeyLink dimension="Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization"  foreignKeyColumn="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"/>
                 </DimensionLinks>
             </MeasureGroup>

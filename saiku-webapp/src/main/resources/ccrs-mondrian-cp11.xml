@@ -367,13 +367,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is the system supported by the UN" caption="Is the system supported by the UN?" table='SUPPORTED_BYUN' key="Dimension Id">
+            <Dimension name="Is the system supported by the UNCT" caption="Is the system supported by the UNCT?" table='SUPPORTED_BYUN' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Is the system supported by the UN" caption="Is the system supported by the UN?" keyColumn="answer"
+                    <Attribute name="Is the system supported by the UNCT" caption="Is the system supported by the UNCT?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -416,7 +416,7 @@
                     <Measure name="PerformanceAidEffectiveness" caption="Count of UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework" column="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="supportedByUN" caption="Count of 'Is the system supported by the UN?'" column="SUPPORTED_BYUN"
+                    <Measure name="supportedByUN" caption="Count of 'Is the system supported by the UNCT?'" column="SUPPORTED_BYUN"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="unctReportToAIMS" caption="Count of 'Does the UNCT report to the AIMS?'" column="UNCT_REPORT_TOAIMS"
@@ -436,7 +436,7 @@
                     <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES"/>
                     <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS"/>
                     <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"/>
-                    <ForeignKeyLink dimension="Is the system supported by the UN" foreignKeyColumn="SUPPORTED_BYUN"/>
+                    <ForeignKeyLink dimension="Is the system supported by the UNCT" foreignKeyColumn="SUPPORTED_BYUN"/>
                     <ForeignKeyLink dimension="Does the UNCT report to the AIMS" foreignKeyColumn="UNCT_REPORT_TOAIMS"/>
                 </DimensionLinks>
             </MeasureGroup>
