@@ -59,6 +59,8 @@
                             CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN cp6.COMMON_FACEBOOKURL ELSE null END as COMMON_FACEBOOKURL,
                             CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_TWITTER_ACCOUNT,
                             CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN cp6.TWITTER_HANDLE ELSE null END as TWITTER_HANDLE,
+                            CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN cp6.COORDINATOR_TWITTER_HANDLE ELSE null END as COORDINATOR_TWITTER_HANDLE,
+                            CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COORDINATOR_TWITTER_ACCOUNT,
                             CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = TRUE THEN 1 ELSE 0 END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING,
                             CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
@@ -293,6 +295,20 @@
                 </Attributes>
             </Dimension>
 
+
+			<Dimension name="Coordinator Twitter Account" caption="Coordinator Twitter account" table="CP6GeneralCube"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Coordinator Twitter Account" caption="Coordinator Twitter Account" keyColumn="COORDINATOR_TWITTER_HANDLE"
+                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+
             <Dimension name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" table='HAS_COMMONUNCTWEBSITE' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -369,6 +385,9 @@
                     <Measure name="hasCommonTwitterAccount" caption="Count of 'Do you have a common Twitter account for the UNCT?'" column="HAS_COMMON_TWITTER_ACCOUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+					<Measure name="hasCoordinatorTwitterAccount" caption="Count of 'Does the Resident Coordinator have a Twitter account?'" column="HAS_COORDINATOR_TWITTER_ACCOUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
                     <Measure name="hasGuidingPrinciplesCommonMessaging" caption="Count of 'Do you have agreed guiding principles for common messaging from the UN?'" column="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -385,6 +404,7 @@
                     <FactLink dimension="website URL" />
                     <FactLink dimension="Facebook URL" />
                     <FactLink dimension="Twitter account" />
+                    <FactLink dimension="Coordinator Twitter Account" />
                     <ForeignKeyLink dimension="Do you have a common website for the UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE"/>
                     <ForeignKeyLink dimension="Do you have a common Facebook page for the UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE"/>
                     <ForeignKeyLink dimension="Do you have a common Twitter account for the UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT"/>

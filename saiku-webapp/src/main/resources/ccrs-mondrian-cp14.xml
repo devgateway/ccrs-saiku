@@ -55,11 +55,23 @@
         </Query>
         <InlineTable alias="DAOCP14UNCTPartners"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
+
+
+
+
         <Query alias="CP14GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
-                        select
+                        select                        
+                        	CASE WHEN cp14.DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY = TRUE THEN 1 ELSE 0 END as DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY,
+                        	CASE WHEN cp14.DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS = TRUE THEN 1 ELSE 0 END as DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS,
+                        	CASE WHEN cp14.DOESUNCTPARTICIPATE = TRUE THEN 1 ELSE 0 END as DOESUNCTPARTICIPATE,
+                        	CASE WHEN cp14.INTERAGENCY_EFFORT = TRUE THEN 1 ELSE 0 END as INTERAGENCY_EFFORT,
+                        	CASE WHEN cp14.INTERAGENCY_GROUP = TRUE THEN 1 ELSE 0 END as INTERAGENCY_GROUP,
+                        	CASE WHEN cp14.BUDGET_ACTIVITY = TRUE THEN 1 ELSE 0 END as BUDGET_ACTIVITY,
+                        	CASE WHEN cp14.COMMON_INTERAGENCY_WORKPLAN = TRUE THEN 1 ELSE 0 END as COMMON_INTERAGENCY_WORKPLAN,
+                        	CASE WHEN cp14.USEIATISTANDARDS = TRUE THEN 1 ELSE 0 END as USEIATISTANDARDS,
                             cp14.ID, cp14.DESIGNATION, cp14.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp14.HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY = TRUE THEN 1 ELSE 0 END as HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY,
                             CASE WHEN cp14.HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING = TRUE THEN 1 ELSE 0 END as HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING,
@@ -84,6 +96,16 @@
         <InlineTable alias="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+
+        <InlineTable alias="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>   
+		<InlineTable alias="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>   
+		<InlineTable alias="DOESUNCTPARTICIPATE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="INTERAGENCY_EFFORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>		
+		<InlineTable alias="INTERAGENCY_GROUP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="BUDGET_ACTIVITY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="COMMON_INTERAGENCY_WORKPLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="USEIATISTANDARDS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -276,13 +298,106 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Citizen engagement or other crowd-sourcing" caption="Do you apply innovation, citizen engagement or other crowd-sourcing approaches during UN country programming?" table='HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING' key="Dimension Id">
+
+
+           <Dimension name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" 
+           caption="Does the government have an updated and operational National Strategy for the Development of Statistics?" 
+           table="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" 
+                    caption="Does the government have an updated and operational National Strategy for the Development of Statistics?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" 
+           caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?" 
+           table="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" 
+                    caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            
+            
+			<Dimension name="DOESUNCTPARTICIPATE" 
+           caption="Does the UNCT participate in this mechanism?" 
+           table="DOESUNCTPARTICIPATE" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="DOESUNCTPARTICIPATE" 
+                    caption="Does the UNCT participate in this mechanism?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+ 
+ 
+ 			<Dimension name="INTERAGENCY_EFFORT" 
+           caption="Is this an interagency effort?" 
+           table="INTERAGENCY_EFFORT" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="INTERAGENCY_EFFORT" 
+                    caption="Is this an interagency effort?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+ 			<Dimension name="INTERAGENCY_GROUP" 
+           caption="Is there an interagency group on data and statistics?" 
+           table="INTERAGENCY_GROUP" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="INTERAGENCY_GROUP" 
+                    caption="Is there an interagency group on data and statistics?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            
+          	<Dimension name="BUDGET_ACTIVITY" 
+           caption="Is there a budget for this activity?" 
+           table="BUDGET_ACTIVITY" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="BUDGET_ACTIVITY" 
+                    caption="Is there a budget for this activity?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            
+            
+          	<Dimension name="COMMON_INTERAGENCY_WORKPLAN" 
+           caption="Is there a common interagency workplan for this activity?" 
+           table="COMMON_INTERAGENCY_WORKPLAN" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="COMMON_INTERAGENCY_WORKPLAN" 
+                    caption="Is there a common interagency workplan for this activity?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            
+           <Dimension name="USEIATISTANDARDS" 
+           caption="Do you use IATI standards in the portal?" 
+           table="USEIATISTANDARDS" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="USEIATISTANDARDS" 
+                    caption="Do you use IATI standards in the portal?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+               
+            <Dimension name="Citizen engagement or other crowd-sourcing" caption="Does the UNCT apply innovation during UN country programming?" table='HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Citizen engagement or other crowd-sourcing " caption="Do you apply innovation, citizen engagement or other crowd-sourcing approaches during UN country programming?" keyColumn="answer"
+                    <Attribute name="Citizen engagement or other crowd-sourcing " caption="Does the UNCT apply innovation during UN country programming?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -312,13 +427,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency policies or portals?" table='HAS_OPEN_DATA_TRANSPARENCY_POLICIES' key="Dimension Id">
+            <Dimension name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency portals?" table='HAS_OPEN_DATA_TRANSPARENCY_POLICIES' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency policies or portals?" keyColumn="answer"
+                    <Attribute name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency portals?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -361,6 +476,50 @@
 
                     <Measure name="CrossBorderInitiatives" caption="Count of UNCT participate in cross-border initiatives" column="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                             
+                    <Measure name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" 
+                    caption="Count of 'Does the government have an updated and operational National Strategy for the Development of Statistics?'" 
+                    column="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"
+                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>      
+                             
+            		<Measure name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" 
+                    caption="Count of 'Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?'" 
+                    column="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"
+                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    
+                    <Measure name="DOESUNCTPARTICIPATE" 
+                    caption="Count of 'Does the UNCT participate in this mechanism?'" 
+                    column="DOESUNCTPARTICIPATE"
+                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    
+					<Measure name="INTERAGENCY_EFFORT" 
+                    caption="Count of 'Is this an interagency effort?'" 
+                    column="INTERAGENCY_EFFORT"
+                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    
+                    <Measure name="INTERAGENCY_GROUP" 
+                    caption="Count of 'Is there an interagency group on data and statistics?'" 
+                    column="INTERAGENCY_GROUP"
+                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                                                                            
+                    <Measure name="BUDGET_ACTIVITY" 
+                    caption="Count of 'Is there a budget for this activity?'" 
+                    column="BUDGET_ACTIVITY"
+                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                                        
+                    <Measure name="COMMON_INTERAGENCY_WORKPLAN" 
+                    caption="Count of 'Is there a common interagency workplan for this activity?'" 
+                    column="COMMON_INTERAGENCY_WORKPLAN"
+                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    
+                    <Measure name="USEIATISTANDARDS" 
+                    caption="Count of 'Do you use IATI standards in the portal?'" 
+                    column="USEIATISTANDARDS"
+                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    
+
+                             
+                             
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -375,6 +534,14 @@
                     <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"/>
                     <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"/>
                     <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"/>
+                    <ForeignKeyLink dimension="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" foreignKeyColumn="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"/>
+                    <ForeignKeyLink dimension="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" foreignKeyColumn="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"/>
+                    <ForeignKeyLink dimension="DOESUNCTPARTICIPATE" foreignKeyColumn="DOESUNCTPARTICIPATE"/>
+                    <ForeignKeyLink dimension="INTERAGENCY_EFFORT" foreignKeyColumn="INTERAGENCY_EFFORT"/>
+                    <ForeignKeyLink dimension="INTERAGENCY_GROUP" foreignKeyColumn="INTERAGENCY_GROUP"/>
+                    <ForeignKeyLink dimension="BUDGET_ACTIVITY" foreignKeyColumn="BUDGET_ACTIVITY"/>
+                    <ForeignKeyLink dimension="COMMON_INTERAGENCY_WORKPLAN" foreignKeyColumn="COMMON_INTERAGENCY_WORKPLAN"/>
+                    <ForeignKeyLink dimension="USEIATISTANDARDS" foreignKeyColumn="USEIATISTANDARDS"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

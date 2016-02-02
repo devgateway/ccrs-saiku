@@ -87,7 +87,10 @@
                     <![CDATA[
                         select
                         cp9.ID, cp9.DESIGNATION, cp9.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                        CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = TRUE THEN 1 ELSE 0 END as HASUNPEACE_KEEPING_MISSION,
+                        CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = TRUE THEN 1 ELSE 0 END as HASUNPEACE_KEEPING_MISSION,                        
+                        CASE WHEN cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN 1 ELSE 0 END as GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS,
+                        CASE WHEN cp9.DOESUNCTPARTICIPATE = TRUE AND cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN 1 ELSE 0 END as DOESUNCTPARTICIPATE,
+                        CASE WHEN cp9.DOESUNCTSUPPORTDRREFFORTS = TRUE THEN 1 ELSE 0 END as DOESUNCTSUPPORTDRREFFORTS,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HAS_INTEGRATED_STRATEGIC_FRAMEWORK,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.DATE_OF_SIGNATURE) ELSE null END as DATE_OF_SIGNATURE,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.START_DATE) ELSE null END as START_DATE,
@@ -153,6 +156,14 @@
         <InlineTable alias="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_ACTIVE_COORDINATION_MECHANISMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="DOESUNCTPARTICIPATE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="DOESUNCTSUPPORTDRREFFORTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
+
+
+
+
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -463,6 +474,53 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+            
+
+
+            <Dimension name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
+            caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" table='GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
+                    caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+                        
+
+            <Dimension name="DOESUNCTPARTICIPATE" 
+            caption="If yes, Does the UNCT participate in this mechanism?" table='DOESUNCTPARTICIPATE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="DOESUNCTPARTICIPATE" 
+                    caption="If yes, Does the UNCT participate in this mechanism?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+
+            <Dimension name="DOESUNCTSUPPORTDRREFFORTS" 
+            caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" table='DOESUNCTSUPPORTDRREFFORTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="DOESUNCTSUPPORTDRREFFORTS" 
+                    caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+                        
 
             <Dimension name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" table='HASUNPEACE_KEEPING_MISSION' key="Dimension Id">
                 <Attributes>
@@ -830,6 +888,26 @@
 
                     <Measure name="wbUNCollaborateOnUpstreamPolicy" caption="Count of 'Do the World Bank and UN collaborate on upstream policy processes?'" column="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                
+                
+                    <Measure name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
+                    caption="Count of 'Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?'" 
+                    column="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                
+                               
+                    <Measure name="DOESUNCTPARTICIPATE" 
+                    caption="Count of 'If yes, Does the UNCT participate in this mechanism?'" 
+                    column="DOESUNCTPARTICIPATE"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                             
+                                                          
+                    <Measure name="DOESUNCTSUPPORTDRREFFORTS" 
+                    caption="Count of 'Does the UNCT provide support to national disaster risk reduction (DRR) efforts?'" 
+                    column="DOESUNCTSUPPORTDRREFFORTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                
+                
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -863,6 +941,11 @@
                     <ForeignKeyLink dimension="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" foreignKeyColumn="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"/>
                     <ForeignKeyLink dimension="Are there any active coordination mechanisms in place with key partners such as the World Bank" foreignKeyColumn="HAS_ACTIVE_COORDINATION_MECHANISMS"/>
                     <ForeignKeyLink dimension="Do the World Bank and UN collaborate on upstream policy processes" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
+
+              		<ForeignKeyLink dimension="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
+              		<ForeignKeyLink dimension="DOESUNCTPARTICIPATE" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
+              		<ForeignKeyLink dimension="DOESUNCTSUPPORTDRREFFORTS" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
+             
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
