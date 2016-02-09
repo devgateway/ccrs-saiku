@@ -195,13 +195,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization" caption="Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization?" table='SIGNED_DELEGATION_OF_AUTHORITY_LETTER' key="Dimension Id">
+            <Dimension name="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" table='SIGNED_DELEGATION_OF_AUTHORITY_LETTER' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization" caption="Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization?" keyColumn="answer"
+                    <Attribute name="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" caption="Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -226,7 +226,7 @@
                     <Measure name="hasCountryDirector" caption="Count of 'Does the UNDP have a Country Director?'" column="HAS_COUNTRY_DIRECTOR"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="signedDelegationOfAuthorityLetter" caption="Count of 'Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization?'" column="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"
+                    <Measure name="signedDelegationOfAuthorityLetter" caption="Count of 'Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?'" column="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
@@ -241,7 +241,7 @@
                     <ForeignKeyLink dimension="Does UNDP have a Deputy Representative"  foreignKeyColumn="HASUNDPDEPUTY_REPRESENTATIVE"/>
                     <ForeignKeyLink dimension="Does the UNDP have a Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR"/>
                     <ForeignKeyLink dimension="Is there a signed delegation of authority letter"  foreignKeyColumn="SIGNED_DELEGATION_AUTHORITY"/>                   
-                    <ForeignKeyLink dimension="Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization"  foreignKeyColumn="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"/>
+                    <ForeignKeyLink dimension="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?"  foreignKeyColumn="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

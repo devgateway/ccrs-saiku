@@ -546,17 +546,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Humanitarian to longer-term" caption="Has a UN strategy been developed to adapt coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts?" table='HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Humanitarian to longer-term" caption="Has a UN strategy been developed to adapt coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
 
             <Dimension name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" table='HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY' key="Dimension Id">
                 <Attributes>
@@ -832,9 +821,6 @@
                     <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="HumanitarianToLongerTerm" caption="Count of coordination mechanisms to support the transition from humanitarian to longer-term recovery efforts" column="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -918,7 +904,6 @@
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION"/>
                     <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
-                    <ForeignKeyLink dimension="Humanitarian to longer-term" foreignKeyColumn="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM"/>
                     <ForeignKeyLink dimension="Disaster Risk Reduction" foreignKeyColumn="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"/>
                     <ForeignKeyLink dimension="Key partners" foreignKeyColumn="HAS_AGREEMENTS_WITH_KEY_PARTNERS"/>
                     <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER"/>
