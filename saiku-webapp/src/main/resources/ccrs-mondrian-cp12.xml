@@ -88,7 +88,8 @@
                     <![CDATA[
                         select
                             cp12.ID, cp12.DESIGNATION, cp12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp12.HAS_HUMAN_RIGHTS_ADVISOR = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ADVISOR,
+                            CASE WHEN cp12.HAS_HUMAN_RIGHTS_ADVISOR = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ADVISOR,                            
+                            CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN CASE WHEN cp12hranalysis.HAS_STRATEGY_DEVELOPED_ADDRESSHR = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_STRATEGY_DEVELOPED_ADDRESSHR,                            
                             CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS,                            
                             CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETYUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETYUPR,
                             CASE WHEN cp12.HASUNCTRECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTRECOMMENDATIONS,
@@ -170,6 +171,7 @@
 		<InlineTable alias="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>  
   		<InlineTable alias="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
   
+		<InlineTable alias="HAS_STRATEGY_DEVELOPED_ADDRESSHR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>        
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -256,6 +258,11 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+         
+
+
+
 
             <Dimension name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" table='HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO' key="Dimension Id">
                 <Attributes>
@@ -470,6 +477,19 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+            
+            <Dimension name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" table="HAS_STRATEGY_DEVELOPED_ADDRESSHR" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            
 
             <Dimension name="Year" caption="Year" table="CP12GeneralCube"
                        visible="true">
@@ -1055,15 +1075,15 @@
 			       column="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>           
                                       
-                  
-
-  	
-  	
-  	          				<Measure name="hasUNCTFacilitatedGollowUpSpecialProcedures" caption="Count of 'Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?'" 
+                                      
+               				<Measure name="hasUNCTFacilitatedGollowUpSpecialProcedures" caption="Count of 'Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?'" 
 			       column="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>           
                                       
-  	
+  	                             
+                    <Measure name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Count of 'Has a strategy been developed to address the human rights issues identified in the analysis?'" 
+                    column="HAS_STRATEGY_DEVELOPED_ADDRESSHR" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                             
 
                 </Measures>
                 <DimensionLinks>
@@ -1108,6 +1128,7 @@
 					<ForeignKeyLink dimension="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" 
 					foreignKeyColumn="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"/>            
 
+                    <ForeignKeyLink dimension="HAS_STRATEGY_DEVELOPED_ADDRESSHR" foreignKeyColumn="HAS_STRATEGY_DEVELOPED_ADDRESSHR"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
