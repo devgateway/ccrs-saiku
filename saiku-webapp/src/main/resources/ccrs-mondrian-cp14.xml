@@ -61,6 +61,7 @@
                     <![CDATA[
                         select
                             cp14.ID, cp14.DESIGNATION, cp14.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp14.JOINTUNCTEFFORT = TRUE THEN 1 ELSE 0 END as JOINTUNCTEFFORT,
                             CASE WHEN cp14.HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY = TRUE THEN 1 ELSE 0 END as HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY,
                             CASE WHEN cp14.HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING = TRUE THEN 1 ELSE 0 END as HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING,
                             CASE WHEN cp14.HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES = TRUE THEN 1 ELSE 0 END as HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES,
@@ -84,6 +85,7 @@
         <InlineTable alias="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="JOINTUNCTEFFORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>        
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -158,6 +160,8 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+            
+
 
             <Dimension name="Partner" caption="Partner" table="LocalInstitution"
                        key="Dimension Id" visible="true">
@@ -218,6 +222,19 @@
                     <Attribute name="Region" caption="Region" keyColumn="REGION"
                                hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
                                levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            
+                        
+             <Dimension name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort?" table='JOINTUNCTEFFORT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is it a joint UNCT effort?" caption="Is it a joint UNCT effort?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -361,6 +378,10 @@
 
                     <Measure name="CrossBorderInitiatives" caption="Count of UNCT participate in cross-border initiatives" column="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+					<Measure name="JOINTUNCTEFFORT" caption="Count of 'Is it a joint UNCT effort?'" column="JOINTUNCTEFFORT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
+                             
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -375,6 +396,7 @@
                     <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"/>
                     <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"/>
                     <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"/>
+                    <ForeignKeyLink dimension="JOINTUNCTEFFORT" foreignKeyColumn="JOINTUNCTEFFORT"/>                               
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
