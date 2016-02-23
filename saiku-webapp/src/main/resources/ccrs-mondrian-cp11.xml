@@ -355,18 +355,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Performance on aid effectiveness" caption="Does the UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework?" table='MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Performance on aid effectiveness" caption="Does the UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Is the system supported by the UNCT" caption="Is the system supported by the UNCT?" table='SUPPORTED_BYUN' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -413,8 +401,6 @@
                     <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="PerformanceAidEffectiveness" caption="Count of UNCT monitor its performance on aid effectiveness independently of the Global Partnership for Effective Development Cooperation global monitoring framework" column="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="supportedByUN" caption="Count of 'Is the system supported by the UNCT?'" column="SUPPORTED_BYUN"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
@@ -435,7 +421,6 @@
                     <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA"/>
                     <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES"/>
                     <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS"/>
-                    <ForeignKeyLink dimension="Performance on aid effectiveness" foreignKeyColumn="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"/>
                     <ForeignKeyLink dimension="Is the system supported by the UNCT" foreignKeyColumn="SUPPORTED_BYUN"/>
                     <ForeignKeyLink dimension="Does the UNCT report to the AIMS" foreignKeyColumn="UNCT_REPORT_TOAIMS"/>
                 </DimensionLinks>
