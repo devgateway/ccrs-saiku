@@ -587,7 +587,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP3 General Cube Measures" table="CP3GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="UNDevelopmentAssistanceFramework" caption="Count UNDAF" column="HASUNDAF"

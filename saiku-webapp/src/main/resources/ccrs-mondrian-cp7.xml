@@ -295,7 +295,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP7 General Cube Measures" table="CP7GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasOneFundCountryLevel" caption="Count of 'Do you have a One Fund at the country level?'" column="HAS_ONE_FUND_COUNTRY_LEVEL"

@@ -366,7 +366,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP13 General Cube Measures" table="CP13GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="UNCTGenderAdvisor" caption="Count of UNCT gender advisor" column="HASUNCTGENDER_ADVISOR"

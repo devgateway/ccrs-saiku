@@ -211,7 +211,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP8 General Cube Measures" table="CP8GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCodeOfConduct" caption="Count of 'Does the UNCT have a code of conduct?'" column="HAS_CODE_OF_CONDUCT"
