@@ -38,7 +38,7 @@
         <maven.compiler.target>1.5</maven.compiler.target>
         <top.dir>${project.basedir}</top.dir>
         <spring.version>3.2.13.RELEASE</spring.version>
-        <spring.security.version>3.2.7.RELEASE</spring.security.version>
+        <spring.security.version>4.0.3.RELEASE</spring.security.version>
         <slf4j.version>1.6.4</slf4j.version>
         <jersey.version>1.19</jersey.version>
         <tomcat.version>apache-tomcat-7.0.62</tomcat.version>
