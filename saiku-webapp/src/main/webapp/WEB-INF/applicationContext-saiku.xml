@@ -39,7 +39,7 @@
         <security:csrf disabled="true"/>
 
         <!-- This key is secret and unique, same key between the two applications, IMS and Saiku, it is probably used as a salt to cookie hashing -->
-        <security:remember-me key="ImsCCRSSaikuUniqueSecretKeyDG" user-service-ref="remoteUserDetailsService"/>
+        <security:remember-me key="#{systemProperties['rememberme.key']}" user-service-ref="remoteUserDetailsService"/>
 
         <security:form-login login-page="/login" default-target-url="/" />
         <security:access-denied-handler error-page="/login" />
