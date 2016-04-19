@@ -198,7 +198,7 @@
         </init-param>-->
         <init-param>
             <param-name>com.sun.jersey.config.feature.Trace</param-name>
-            <param-value>true</param-value>
+            <param-value>false</param-value>
         </init-param>
         <init-param>
             <param-name>jaxrs.providers</param-name>
