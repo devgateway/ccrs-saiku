@@ -180,6 +180,18 @@
     <Cube name="CP12 Human Rights Treaty Bodies" caption="CP12 Human Rights Treaty Bodies" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -192,15 +204,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP12HumanRightsTreatyBodies' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -235,18 +247,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="UNHRTreatyBody" caption="UN HR Treaty Body" table="UNHRTreatyBody"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="UN HR Treaty Body" caption="UN HR Treaty Body" keyColumn="LABEL"
-                               hierarchyAllMemberName="All UNHRTreatyBody" hierarchyCaption="All UNHRTreatyBody"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" table='HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_YES_NO' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -258,11 +258,6 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
-
-         
-
-
-
 
             <Dimension name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" table='HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_YES_NO' key="Dimension Id">
                 <Attributes>
@@ -276,15 +271,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP12HumanRightsTreatyBodies' key="Dimension Id">
+            <Dimension name="UNHRTreatyBody" caption="UN HR Treaty Body" table="UNHRTreatyBody"
+                       key="Dimension Id" visible="true">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="UN HR Treaty Body" caption="UN HR Treaty Body" keyColumn="LABEL"
+                               hierarchyAllMemberName="All UNHRTreatyBody" hierarchyCaption="All UNHRTreatyBody"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
         </Dimensions>
@@ -322,6 +317,18 @@
     <Cube name="CP12 Special Procedure of Human Rights Council" caption="CP12 Special Procedure of Human Rights Council" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -334,15 +341,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP12SpecialProcedureHumanRightsCouncil' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -408,19 +415,6 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP12SpecialProcedureHumanRightsCouncil' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
         </Dimensions>
 
         <MeasureGroups>
@@ -454,6 +448,18 @@
     <Cube name="CP12GeneralCube" caption="CP12 General Cube" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -466,30 +472,17 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            
-            <Dimension name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" table="HAS_STRATEGY_DEVELOPED_ADDRESSHR" key="Dimension Id">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP12GeneralCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" keyColumn="answer"
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
-            
 
             <Dimension name="Year" caption="Year" table="CP12GeneralCube"
                        visible="true">
@@ -522,18 +515,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP12GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="UNCT Human Rights Advisor" caption="Is there a UNCT Human Rights Advisor?" table='HAS_HUMAN_RIGHTS_ADVISOR' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -558,6 +539,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Was it undertaken as part of the UNDAF rollout process" caption="Was it undertaken as part of the UNDAF rollout process?" table='PART_OF_ROLLOUT_PROCESS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Was it undertaken as part of the UNDAF rollout process" caption="Was it undertaken as part of the UNDAF rollout process?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" table='HAS_HUMAN_RIGHTS_ANALYSIS' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -565,6 +558,30 @@
                                levelType="Regular" datatype="Integer"/>
 
                     <Attribute name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" table="HAS_STRATEGY_DEVELOPED_ADDRESSHR" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has action been taken to address the human rights issues identified in the human rights analysis" caption="Has action been taken to address the human rights issues identified in the human rights analysis?" table='HAS_ADDRESSEDHRISSUES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has action been taken to address the human rights issues identified in the human rights analysis" caption="Has action been taken to address the human rights issues identified in the human rights analysis?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -594,351 +611,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" table='HASUNHRTREATY_BODIES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" table='HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" table='HASHRI' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Was it undertaken as part of the UNDAF rollout process" caption="Was it undertaken as part of the UNDAF rollout process?" table='PART_OF_ROLLOUT_PROCESS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Was it undertaken as part of the UNDAF rollout process" caption="Was it undertaken as part of the UNDAF rollout process?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Has action been taken to address the human rights issues identified in the human rights analysis" caption="Has action been taken to address the human rights issues identified in the human rights analysis?" table='HAS_ADDRESSEDHRISSUES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has action been taken to address the human rights issues identified in the human rights analysis" caption="Has action been taken to address the human rights issues identified in the human rights analysis?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Has the UNCT supported the government to develop a report for the UPR" caption="Has the UNCT supported the government to develop a report for the UPR?" table='HASUNCTSUPPORTED_GOVERNMENTUPR' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported national capacity to develop a report for the UPR" caption="Has the UNCT supported national capacity to develop a report for the UPR?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-
-            <Dimension name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society develop inputs or reports for the UPR?" table='HASUNCTSUPPORTED_CIVIL_SOCIETYUPR' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society develop inputs or reports for the UPR?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-            
-         	<Dimension name="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" caption="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?" table='HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" caption="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-
-            
-         	<Dimension name="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies" 
-         	caption="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?" 
-         	table='HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies"
-                     caption="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-
-            
-                            
-                            
-         	<Dimension name="Has the UNCT supported civil society interact with the Special Procedure" 
-         	caption="Has the UNCT supported civil society interact with the Special Procedure?" 
-         	table='HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported civil society interact with the Special Procedure" 
-         	caption="Has the UNCT supported civil society interact with the Special Procedure?"  keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-                                        
-                            
-            
-                            
-      	<Dimension name="Has the UNCT supported National Human Rights Institution interact with the Special Procedures" 
-         	caption="Has the UNCT supported National Human Rights Institution interact with the Special Procedures?" 
-         	table='HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported National Human Rights Institution interact with the Special Procedures" 
-         	caption="Has the UNCT supported National Human Rights Institution interact with the Special Procedures?"   keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-                                        
-                            
-            
-                            
-      	<Dimension name="Has the UNCT provided inputs to the visit of the Special Procedures" 
-         	caption="Has the UNCT provided inputs to the visit of the Special Procedures?" 
-         	table='HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT provided inputs to the visit of the Special Procedures" 
-         	caption="Has the UNCT provided inputs to the visit of the Special Procedures?"   keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-                                        
-                                                        
-                
-            
-            <Dimension name="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" 
-         	caption="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?" 
-         	table='HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" 
-         	caption="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?"  keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-                                        
-                              
-            
-            
-         	<Dimension name="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies" 
-         	caption="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?" 
-         	table='HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies" 
-         	caption="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-                                              
-         	<Dimension name="Has the UNCT supported the government in preparing for the visits of Special Procedures" 
-         	caption="Has the UNCT supported the government in preparing for the visits of Special Procedures?" 
-         	table='HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported the government in preparing for the visits of Special Procedures" 
-         	caption="Has the UNCT supported the government in preparing for the visits of Special Procedures?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-         	<Dimension name="Has the UNCT submitted inputs/reports to human rights treaty bodies" 
-         	caption="Has the UNCT submitted inputs/reports to human rights treaty bodies?" 
-         	table='HASUNCTSUBMITTED_INPUTS_REPORTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT submitted inputs/reports to human rights treaty bodies"
-                     caption="Has the UNCT submitted inputs/reports to human rights treaty bodies?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-           <Dimension name="Was the country reviewed by a treaty body this year" 
-         	caption="Was the country reviewed by a treaty body this year?" 
-         	table='WAS_COUNTRY_REVIEWED_BY_TREATY_BODY' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Was the country reviewed by a treaty body this year" 
-         	caption="Was the country reviewed by a treaty body this year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-            
-           	<Dimension name="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies" 
-         	caption="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?" 
-         	table='HASUNCTRECOMMENDATIONS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies" 
-         	caption="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?"  keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            
-         	<Dimension name="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government" 
-         	caption="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?" 
-         	table='HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government" 
-         	caption="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-         
-          	<Dimension name="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)" 
-         	caption="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?" 
-         	table='HASUNCTENGAGE_WITH_GOVERNMEN' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)" 
-         	caption="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>                 
-                        
-         	<Dimension name="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies" 
-         	caption="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies?" 
-         	table='HASUNCTDRAWN_ON_RECOMMENDATIONS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies" 
-         	caption="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-            
-            <Dimension name="Did the UNCT facilitate follow up of the recommendations by the Government" 
-         	caption="Did the UNCT facilitate follow up of the recommendations by the Government?" 
-         	table='HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Did the UNCT facilitate follow up of the recommendations by the Government" 
-         	caption="Did the UNCT facilitate follow up of the recommendations by the Government?"  keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-
-            <Dimension name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?" table='HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-
-
             <Dimension name="Has the UNCT submitted a UNCT report to the UPR" caption="Has the UNCT submitted a UNCT report to the UPR?" table='HASUNCTREPORTUPRSUBMITTED' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -963,6 +635,299 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies"
+                       caption="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies?"
+                       table='HASUNCTDRAWN_ON_RECOMMENDATIONS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies"
+                               caption="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT supported the government to develop a report for the UPR" caption="Has the UNCT supported the government to develop a report for the UPR?" table='HASUNCTSUPPORTED_GOVERNMENTUPR' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported national capacity to develop a report for the UPR" caption="Has the UNCT supported national capacity to develop a report for the UPR?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society develop inputs or reports for the UPR?" table='HASUNCTSUPPORTED_CIVIL_SOCIETYUPR' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society develop inputs or reports for the UPR?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?" table='HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" table='HASUNHRTREATY_BODIES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government"
+                       caption="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?"
+                       table='HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government"
+                               caption="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies"
+                       caption="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?"
+                       table='HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies"
+                               caption="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" caption="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?" table='HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" caption="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies"
+                       caption="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?"
+                       table='HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies"
+                               caption="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT submitted inputs/reports to human rights treaty bodies"
+                       caption="Has the UNCT submitted inputs/reports to human rights treaty bodies?"
+                       table='HASUNCTSUBMITTED_INPUTS_REPORTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT submitted inputs/reports to human rights treaty bodies"
+                               caption="Has the UNCT submitted inputs/reports to human rights treaty bodies?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Was the country reviewed by a treaty body this year"
+                       caption="Was the country reviewed by a treaty body this year?"
+                       table='WAS_COUNTRY_REVIEWED_BY_TREATY_BODY' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Was the country reviewed by a treaty body this year"
+                               caption="Was the country reviewed by a treaty body this year?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies"
+                       caption="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?"
+                       table='HASUNCTRECOMMENDATIONS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies"
+                               caption="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?"  keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Did the UNCT facilitate follow up of the recommendations by the Government"
+                       caption="Did the UNCT facilitate follow up of the recommendations by the Government?"
+                       table='HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Did the UNCT facilitate follow up of the recommendations by the Government"
+                               caption="Did the UNCT facilitate follow up of the recommendations by the Government?"  keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" table='HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)"
+                       caption="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?"
+                       table='HASUNCTENGAGE_WITH_GOVERNMEN' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)"
+                               caption="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT supported the government in preparing for the visits of Special Procedures"
+                       caption="Has the UNCT supported the government in preparing for the visits of Special Procedures?"
+                       table='HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported the government in preparing for the visits of Special Procedures"
+                               caption="Has the UNCT supported the government in preparing for the visits of Special Procedures?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT supported civil society interact with the Special Procedure"
+                       caption="Has the UNCT supported civil society interact with the Special Procedure?"
+                       table='HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported civil society interact with the Special Procedure"
+                               caption="Has the UNCT supported civil society interact with the Special Procedure?"  keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT supported National Human Rights Institution interact with the Special Procedures"
+                       caption="Has the UNCT supported National Human Rights Institution interact with the Special Procedures?"
+                       table='HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT supported National Human Rights Institution interact with the Special Procedures"
+                               caption="Has the UNCT supported National Human Rights Institution interact with the Special Procedures?"   keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+      	    <Dimension name="Has the UNCT provided inputs to the visit of the Special Procedures"
+         	caption="Has the UNCT provided inputs to the visit of the Special Procedures?" 
+         	table='HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT provided inputs to the visit of the Special Procedures" 
+         	caption="Has the UNCT provided inputs to the visit of the Special Procedures?"   keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" 
+         	caption="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?" 
+         	table='HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" 
+         	caption="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?"  keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" table='HASHRI' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>

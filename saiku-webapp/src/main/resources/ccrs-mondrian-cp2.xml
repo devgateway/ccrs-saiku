@@ -148,6 +148,18 @@
     *************************************************************************-->
     <Cube name="CP2RCOStaffMember" caption="CP2 RCO Staff Member" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -160,15 +172,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP2RcoStaffMemberDetail' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -190,56 +202,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="FundingOrganization" caption="Funding Organization" table="FundingOrganization"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="FundingOrganization" caption="Funding Organization" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Funding Organizations" hierarchyCaption="All Funding Organizations"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="FinancingSource" caption="Financing Source" table="FinancingSource"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="FinancingSource" caption="Financing Source" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Financing Sources" hierarchyCaption="All Financing Sources"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-
-            <Dimension name="Start Date" caption="Start Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Start Date" caption="Start Date" keyColumn="START_DATE_DATE"
-                               hierarchyHasAll="true"
-                               levelType="TimeYears" datatype="Date"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="End Date" caption="End Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="End Date" caption="End Date" keyColumn="END_DATE_DATE"
-                               hierarchyHasAll="true"
-                               levelType="TimeYears" datatype="Date"/>
-                </Attributes>
-            </Dimension>
-
-
             <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -249,6 +211,30 @@
                     <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
                                hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="StaffMemberTitle" caption="Staff Member Title" table="StaffMemberTitle"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="StaffMemberTitle" caption="Staff Member Title" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Staff Member Titles" hierarchyCaption="All Staff Member Titles"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Head of RCO" caption="Head of RCO" table='HEAD_RCO_TABLE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Head of RCO" caption="Head of RCO" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -275,20 +261,18 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            
-            
-            <Dimension name="StaffMemberTitle" caption="Staff Member Title" table="StaffMemberTitle"
+
+            <Dimension name="FundingOrganization" caption="Funding Organization" table="FundingOrganization"
                        key="Dimension Id" visible="true">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
-                               levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="StaffMemberTitle" caption="Staff Member Title" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Staff Member Titles" hierarchyCaption="All Staff Member Titles"
+                    <Attribute name="FundingOrganization" caption="Funding Organization" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Funding Organizations" hierarchyCaption="All Funding Organizations"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            
 
             <Dimension name="Level" caption="Level" table="Level" key="Dimension Id" visible="true">
                 <Attributes>
@@ -301,31 +285,41 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP2RcoStaffMemberDetail' key="Dimension Id">
+            <Dimension name="FinancingSource" caption="Financing Source" table="FinancingSource"
+                       key="Dimension Id" visible="true">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-            
-              <Dimension name="Head of RCO" caption="Head of RCO" table='HEAD_RCO_TABLE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Head of RCO" caption="Head of RCO" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="FinancingSource" caption="Financing Source" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Financing Sources" hierarchyCaption="All Financing Sources"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Start Date" caption="Start Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Start Date" caption="Start Date" keyColumn="START_DATE_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeYears" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="End Date" caption="End Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="End Date" caption="End Date" keyColumn="END_DATE_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeYears" datatype="Date"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -366,6 +360,18 @@
     <Cube name="CP2GeneralCube" caption="CP2 General Cube" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -378,15 +384,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP2GeneralCube' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -418,18 +424,6 @@
                     <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
                                hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP2GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 

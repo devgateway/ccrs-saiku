@@ -183,6 +183,18 @@
     <Cube name="CP9CountryMechanisms" caption="CP9 Country Mechanisms" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -195,15 +207,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9CountryMechanisms' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -235,18 +247,6 @@
                     <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
                                hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
                                levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9CountryMechanisms' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -301,6 +301,18 @@
     <Cube name="CP9KeyPartners" caption="CP9 Key Partners" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -313,15 +325,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9KeyPartners' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -356,15 +368,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9KeyPartners' key="Dimension Id">
+            <Dimension name="Describe the agreements/arrangements/initiatives for crisis" caption="Describe the agreements/arrangements/initiatives for crisis" table="CP9KeyPartners"
+                       key="Dimension Id" visible="true">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="Describe the agreements/arrangements/initiatives for crisis" caption="Describe the agreements/arrangements/initiatives for crisis" keyColumn="DESCRIBE_AGREEMENTS"
+                               hierarchyAllMemberName="All Agreements" hierarchyCaption="All Agreements"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -376,18 +388,6 @@
 
                     <Attribute name="Key Partner" caption="Key Partner" keyColumn="KEY_PARTNER"
                                hierarchyAllMemberName="All Partners" hierarchyCaption="All Partners"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Describe the agreements/arrangements/initiatives for crisis" caption="Describe the agreements/arrangements/initiatives for crisis" table="CP9KeyPartners"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Describe the agreements/arrangements/initiatives for crisis" caption="Describe the agreements/arrangements/initiatives for crisis" keyColumn="DESCRIBE_AGREEMENTS"
-                               hierarchyAllMemberName="All Agreements" hierarchyCaption="All Agreements"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -419,6 +419,18 @@
     <Cube name="CP9GeneralCube" caption="CP9 General Cube" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -431,15 +443,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9GeneralCube' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -474,65 +486,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-
-
-            <Dimension name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
-            caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" table='GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
-                    caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-                        
-
-            <Dimension name="DOESUNCTPARTICIPATE" 
-            caption="If yes, Does the UNCT participate in this mechanism?" table='DOESUNCTPARTICIPATE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="DOESUNCTPARTICIPATE" 
-                    caption="If yes, Does the UNCT participate in this mechanism?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-
-            <Dimension name="DOESUNCTSUPPORTDRREFFORTS" 
-            caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" table='DOESUNCTSUPPORTDRREFFORTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="DOESUNCTSUPPORTDRREFFORTS" 
-                    caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-                        
-
             <Dimension name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" table='HASUNPEACE_KEEPING_MISSION' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -545,88 +498,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" table="HasNewConflictAnalysis"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            
-			<Dimension name="DevelopmentPlanningAligned" 
-			caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?" 
-			table="DevelopmentPlanningAligned"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="DevelopmentPlanningAligned" caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-
-            <Dimension name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" table='HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY' key="Dimension Id">
+            <Dimension name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" table='HAS_INTEGRATED_STRATEGIC_FRAMEWORK' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" table='HAS_AGREEMENTS_WITH_KEY_PARTNERS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" keyColumn="answer"
-                               orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" table='HAS_INTERACTIONWBDIRECTORUNLEADER' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" table='HAS_JOINT_RISK_ASESSMENTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" table='HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" keyColumn="answer"
+                    <Attribute name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -668,30 +546,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" table="isNewMonitoredAndReported"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" table='HAS_INTEGRATED_STRATEGIC_FRAMEWORK' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Are there joint structures in place between the UNCT and the UN Mission" caption="Are there joint structures in place between the UNCT and the UN Mission?" table='HAS_JOINT_STRUCTURESUNCTUN' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -725,6 +579,18 @@
                     <Attribute name="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" caption="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" table="isNewMonitoredAndReported"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" keyColumn="LABEL"
+                               approxRowCount="3" hierarchyHasAll="true"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -788,6 +654,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" table="HasNewConflictAnalysis"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" keyColumn="LABEL"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Has the conflict analysis been undertaken together with the UN Mission" caption="Has the conflict analysis been undertaken together with the UN Mission?" table='HAS_ANALYSIS_BEEN_TAKEN_WITHUN' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -812,6 +690,74 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="DevelopmentPlanningAligned"
+                       caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?"
+                       table="DevelopmentPlanningAligned"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="DevelopmentPlanningAligned" caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?" keyColumn="LABEL"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" table='HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+            caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" table='GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
+                    caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+                        
+            <Dimension name="DOESUNCTPARTICIPATE"
+            caption="If yes, Does the UNCT participate in this mechanism?" table='DOESUNCTPARTICIPATE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="DOESUNCTPARTICIPATE" 
+                    caption="If yes, Does the UNCT participate in this mechanism?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="DOESUNCTSUPPORTDRREFFORTS"
+            caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" table='DOESUNCTSUPPORTDRREFFORTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="DOESUNCTSUPPORTDRREFFORTS"
+                    caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Are there any active coordination mechanisms in place with key partners such as the World Bank" caption="Are there any active coordination mechanisms in place with key partners such as the World Bank?" table='HAS_ACTIVE_COORDINATION_MECHANISMS' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -824,6 +770,30 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" table='HAS_AGREEMENTS_WITH_KEY_PARTNERS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" keyColumn="answer"
+                               orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" table='HAS_INTERACTIONWBDIRECTORUNLEADER' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes??" table='WBUNCOLLABORATE_ON_UPSTREAM_POLICY' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -831,6 +801,30 @@
                                levelType="Regular" datatype="Integer"/>
 
                     <Attribute name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes??" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" table='HAS_JOINT_RISK_ASESSMENTS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" table='HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>

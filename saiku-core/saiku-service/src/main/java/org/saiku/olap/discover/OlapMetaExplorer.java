@@ -211,7 +211,7 @@ public class OlapMetaExplorer {
 				break;
 			}
 		}
-		Collections.sort(dimensions, new SaikuDimensionCaptionComparator());
+		//Collections.sort(dimensions, new SaikuDimensionCaptionComparator());
 		return dimensions;
 	}
 
