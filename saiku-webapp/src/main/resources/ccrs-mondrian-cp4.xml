@@ -354,7 +354,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP4 General Cube Measures" table="CP4GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="countryLevelHACT" caption="Count of 'Is a HACT being implemented at the country level?'" column="COUNTRY_LEVELHACT"

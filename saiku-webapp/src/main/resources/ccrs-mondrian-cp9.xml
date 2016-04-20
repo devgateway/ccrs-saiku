@@ -834,7 +834,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP9 General Cube Measures" table="CP9GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION"

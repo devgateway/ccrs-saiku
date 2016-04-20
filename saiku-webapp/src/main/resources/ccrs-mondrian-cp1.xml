@@ -1196,7 +1196,7 @@
 
             <MeasureGroup name="CP1 General Cube" table="CP1GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="countDaOVision" caption="Count DaO Vision, Concept Note, or Roadmap" column="DAO_VISION_NOTE_ROADMAP_COUNT"

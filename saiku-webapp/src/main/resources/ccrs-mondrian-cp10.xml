@@ -167,7 +167,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP10 General Cube Measures" table="CP10GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="UNCTToR" caption="Count of agreed upon UNCT ToR" column="HAS_AGREEDUNCTTOR"

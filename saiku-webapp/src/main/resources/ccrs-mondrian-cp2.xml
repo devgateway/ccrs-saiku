@@ -443,7 +443,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP2 General Cube Measures" table="CP2GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="subnationalOffices" caption="Count of 'Does the RCO have Subnational offices?'" column="SUBNATIONAL_OFFICES"
