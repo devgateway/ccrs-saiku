@@ -678,18 +678,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" table='HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="DevelopmentPlanningAligned"
                        caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?"
                        table="DevelopmentPlanningAligned"
@@ -701,6 +689,18 @@
                     <Attribute name="DevelopmentPlanningAligned" caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?" keyColumn="LABEL"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" table='HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
