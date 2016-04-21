@@ -155,13 +155,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="For which issues" caption="For which issues?" table="CP6JointAdvocacyStrategies"
+            <Dimension name="For which issues" caption="Which issue does the strategy primarily address?" table="CP6JointAdvocacyStrategies"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="For which issues" caption="For which issues?" keyColumn="FOR_WHICH_ISSUES"
+                    <Attribute name="For which issues" caption="Which issue does the strategy primarily address?" keyColumn="FOR_WHICH_ISSUES"
                                hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
                                levelType="Regular" datatype="String" />
                 </Attributes>

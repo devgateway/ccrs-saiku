@@ -599,13 +599,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="UPR" caption="Has the UNCT engaged with the Universal Periodic Review (UPR) process this year?" table='HASUPRPROCESS' key="Dimension Id">
+            <Dimension name="UPR" caption="Has the UNCT engaged in the preparation, reporting or follow-up of the Universal Periodic Review (UPR) this year?" table='HASUPRPROCESS' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="UPR" caption="Has the UNCT engaged with the Universal Periodic Review (UPR) process this year?" keyColumn="answer"
+                    <Attribute name="UPR" caption="Has the UNCT engaged in the preparation, reporting or follow-up of the Universal Periodic Review (UPR) this year?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -800,6 +800,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" table='HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Did the UNCT facilitate follow up of the recommendations by the Government"
                        caption="Did the UNCT facilitate follow up of the recommendations by the Government?"
                        table='HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT' key="Dimension Id">
@@ -810,18 +822,6 @@
 
                     <Attribute name="Did the UNCT facilitate follow up of the recommendations by the Government"
                                caption="Did the UNCT facilitate follow up of the recommendations by the Government?"  keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" table='HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
