@@ -401,7 +401,6 @@
                     <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-
                     <Measure name="supportedByUN" caption="Count of 'Is the system supported by the UNCT?'" column="SUPPORTED_BYUN"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 

@@ -840,21 +840,6 @@
                     <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="hasIntegratedStrategicFramework" caption="Count of 'Is there an Integrated Strategic Framework (ISF)?'" column="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -888,31 +873,41 @@
                     <Measure name="hasCountryMechanismsCoordinateIntlSupport" caption="Count of 'Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?'" column="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+                             caption="Count of 'Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?'"
+                             column="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="DOESUNCTPARTICIPATE"
+                             caption="Count of 'If yes, Does the UNCT participate in this mechanism?'"
+                             column="DOESUNCTPARTICIPATE"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="DOESUNCTSUPPORTDRREFFORTS"
+                             caption="Count of 'Does the UNCT provide support to national disaster risk reduction (DRR) efforts?'"
+                             column="DOESUNCTSUPPORTDRREFFORTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
                     <Measure name="hasActiveCoordinationMechanisms" caption="Count of 'Are there any active coordination mechanisms in place with key partners such as the World Bank?'" column="HAS_ACTIVE_COORDINATION_MECHANISMS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="wbUNCollaborateOnUpstreamPolicy" caption="Count of 'Do the World Bank and UN collaborate on upstream policy processes?'" column="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                
-                
-                    <Measure name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
-                    caption="Count of 'Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?'" 
-                    column="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+
+                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                
-                               
-                    <Measure name="DOESUNCTPARTICIPATE" 
-                    caption="Count of 'If yes, Does the UNCT participate in this mechanism?'" 
-                    column="DOESUNCTPARTICIPATE"
+
+                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                             
-                                                          
-                    <Measure name="DOESUNCTSUPPORTDRREFFORTS" 
-                    caption="Count of 'Does the UNCT provide support to national disaster risk reduction (DRR) efforts?'" 
-                    column="DOESUNCTSUPPORTDRREFFORTS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                
-                
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

@@ -936,120 +936,138 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
+                    <!--12.1-->
                     <Measure name="UNCTHumanRightsAdvisor" caption="Count of UNCT Human Rights Advisor" column="HAS_HUMAN_RIGHTS_ADVISOR"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.2-->
                     <Measure name="HumanRightsBasedApproach" caption="Count of training on Human Rights-Based Approach been conducted in the current programme cycle" column="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="HumanRightsAnalysis" caption="Count of human rights analysis taken place over the past year" column="HAS_HUMAN_RIGHTS_ANALYSIS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="UNCTSupported" caption="Count of UNCT supported the government in mainstreaming human rights into national development policies and programmes" column="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="UPR" caption="Count of UNCT engaged with the Universal Periodic Review (UPR) process this year" column="HASUPRPROCESS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="UNHumanRightsTreatyBodies" caption="Count of UNCT engaged with one or more UN human rights treaty bodies in the past year" column="HASUNHRTREATY_BODIES"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="ReceiveVisitSpecialProcedure" caption="Count of country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year" column="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="NHRI" caption="Count of National Human Rights Institution (NHRI)" column="HASHRI"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
+                    <!--12.2.1-->
                     <Measure name="partOfRolloutProcess" caption="Count of 'Was it undertaken as part of the UNDAF rollout process?'" column="PART_OF_ROLLOUT_PROCESS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.3-->
+                    <Measure name="HumanRightsAnalysis" caption="Count of human rights analysis taken place over the past year" column="HAS_HUMAN_RIGHTS_ANALYSIS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.3.2-->
+                    <Measure name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Count of 'Has a strategy been developed to address the human rights issues identified in the analysis?'"
+                             column="HAS_STRATEGY_DEVELOPED_ADDRESSHR" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.3.3-->
                     <Measure name="hasAddressedHRIssues" caption="Count of 'Has action been taken to address the human rights issues identified in the human rights analysis?'" column="HAS_ADDRESSEDHRISSUES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.5-->
+                    <Measure name="UNCTSupported" caption="Count of UNCT supported the government in mainstreaming human rights into national development policies and programmes" column="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.6-->
+                    <Measure name="UPR" caption="Count of UNCT engaged with the Universal Periodic Review (UPR) process this year" column="HASUPRPROCESS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.6.2-->
                     <Measure name="hasUNCTReportUPRSubmitted" caption="Count of 'Has the UNCT submitted a UNCT report to the UPR?'" column="HASUNCTREPORTUPRSUBMITTED"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.6.3-->
                     <Measure name="hasFacilitatedFolloupGovRecommendations" caption="Count of 'Has the UNCT facilitated follow up of the UPR recommendations by the Government?'" column="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.6.A-->
                     <Measure name="hasUNCTSupportedGovernmentUPR" caption="Count of 'Has the UNCT supported the government to develop a report for the UPR?'" column="HASUNCTSUPPORTED_GOVERNMENTUPR"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-				   <Measure name="hasUNCTSupportedCivilSocietyUPR" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
-                   
-                   <Measure name="hasUNCTSupportedNationalHumanRightsInstitutionUPR" caption="Count of 'Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
-			
-			       <Measure name="hasUNCTSupportedCivilSocietyDevelopInputs" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
-			
-			       <Measure name="hasUNCTSupportedNationalHumaRightsInstitution" caption="Count of 'Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?'" 
-			       column="HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
+                    <!--12.6.B-->
+                    <Measure name="hasUNCTSupportedCivilSocietyUPR" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-			       <Measure name="hasUNCTSubmittedInputsReports" caption="Count of 'Has the UNCT submitted inputs/reports to human rights treaty bodies?'" 
-			       column="HASUNCTSUBMITTED_INPUTS_REPORTS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
-	
-				   <Measure name="hasUNCTFacilitatedFollowUpRecommendations" caption="Count of 'Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?'" 
-			       column="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>          
+                    <!--12.6.C-->
+                    <Measure name="hasUNCTSupportedNationalHumanRightsInstitutionUPR" caption="Count of 'Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.7-->
+                    <Measure name="UNHumanRightsTreatyBodies" caption="Count of UNCT engaged with one or more UN human rights treaty bodies in the past year" column="HASUNHRTREATY_BODIES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.B-->
+			        <Measure name="hasUNCTSupportedCivilSocietyDevelopInputs" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.C-->
+			        <Measure name="hasUNCTSupportedNationalHumaRightsInstitution" caption="Count of 'Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?'"
+			                 column="HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.D-->
+			        <Measure name="hasUNCTSubmittedInputsReports" caption="Count of 'Has the UNCT submitted inputs/reports to human rights treaty bodies?'"
+			                 column="HASUNCTSUBMITTED_INPUTS_REPORTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.E-->
+				    <Measure name="hasUNCTFacilitatedFollowUpRecommendations" caption="Count of 'Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?'"
+                             column="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.F-->
 					<Measure name="hasUNCTDrawnOnRecommendations" caption="Count of 'Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?'" 
-			       column="HASUNCTDRAWN_ON_RECOMMENDATIONS"
+                             column="HASUNCTDRAWN_ON_RECOMMENDATIONS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.G-->
 					<Measure name="wasCountryReviewedByTreatyBody" caption="Count of 'Was the country reviewed by a treaty body this year?'" 
-			       column="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY"
+			                 column="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-				<Measure name="hasUNCTRecommendations" caption="Count of 'Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?'" 
-			       column="HASUNCTRECOMMENDATIONS"
+                    <!--12.H-->
+				    <Measure name="hasUNCTRecommendations" caption="Count of 'Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?'"
+                             column="HASUNCTRECOMMENDATIONS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-				<Measure name="hasUNCTFacilitateFollowUpGovernment" caption="Count of 'Did the UNCT facilitate follow up of the recommendations by the Government?'" 
-			       column="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT"
+                    <!--12.I-->
+				    <Measure name="hasUNCTFacilitateFollowUpGovernment" caption="Count of 'Did the UNCT facilitate follow up of the recommendations by the Government?'"
+			                 column="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                             
 
-				<Measure name="hasUNCTEngageWithGovernmen" caption="Count of 'Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?'" 
-			       column="HASUNCTENGAGE_WITH_GOVERNMEN"
+                    <!--12.8-->
+                    <Measure name="ReceiveVisitSpecialProcedure" caption="Count of country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year" column="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.K-->
+				    <Measure name="hasUNCTEngageWithGovernmen" caption="Count of 'Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?'"
+			                 column="HASUNCTENGAGE_WITH_GOVERNMEN"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>     
-				
-				<Measure name="hasUNCTSupportedGovernmentSpecialProcedures" caption="Count of 'Has the UNCT supported the government in preparing for the visits of Special Procedures?'" 
-			       column="HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                                                           
 
+                    <!--12.L-->
+                    <Measure name="hasUNCTSupportedGovernmentSpecialProcedures" caption="Count of 'Has the UNCT supported the government in preparing for the visits of Special Procedures?'"
+			                 column="HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-				<Measure name="hasUNCTSupportedCivilSocietySpecialProcedures" caption="Count of 'Has the UNCT supported civil society interact with the Special Procedure?'" 
-			       column="HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                                                           
+                    <!--12.M-->
+				    <Measure name="hasUNCTSupportedCivilSocietySpecialProcedures" caption="Count of 'Has the UNCT supported civil society interact with the Special Procedure?'"
+			                 column="HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-  
-                            
-                                            
-                   		<Measure name="hasUNCTDSupportedNationalHumanRightsInstitution" caption="Count of 'Has the UNCT supported National Human Rights Institution interact with the Special Procedures?'" 
-			       column="HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>           
-                                                                        
-    
-                            
-               				<Measure name="hasUNCTProvidedInputsSpecialProcedures" caption="Count of 'Has the UNCT provided inputs to the visit of the Special Procedures?'" 
-			       column="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>           
-                                      
-                                      
-               				<Measure name="hasUNCTFacilitatedGollowUpSpecialProcedures" caption="Count of 'Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?'" 
-			       column="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>           
-                                      
-  	                             
-                    <Measure name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Count of 'Has a strategy been developed to address the human rights issues identified in the analysis?'" 
-                    column="HAS_STRATEGY_DEVELOPED_ADDRESSHR" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                             
+                    <!--12.N-->
+                    <Measure name="hasUNCTDSupportedNationalHumanRightsInstitution" caption="Count of 'Has the UNCT supported National Human Rights Institution interact with the Special Procedures?'"
+			                 column="HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--12.O-->
+                    <Measure name="hasUNCTProvidedInputsSpecialProcedures" caption="Count of 'Has the UNCT provided inputs to the visit of the Special Procedures?'"
+			                 column="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.P-->
+                    <Measure name="hasUNCTFacilitatedGollowUpSpecialProcedures" caption="Count of 'Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?'"
+			                 column="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--12.9-->
+                    <Measure name="NHRI" caption="Count of National Human Rights Institution (NHRI)" column="HASHRI"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

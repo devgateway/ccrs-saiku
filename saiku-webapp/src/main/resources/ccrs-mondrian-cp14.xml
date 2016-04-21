@@ -465,69 +465,65 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
+                    <!--14.A-->
+                    <Measure name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" caption="Count of 'Does the government have an updated and operational National Strategy for the Development of Statistics?'" column="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.B-->
+                    <Measure name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" caption="Count of 'Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?'" column="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.B.1-->
+                    <Measure name="DOESUNCTPARTICIPATE" caption="Count of 'Does the UNCT participate in this mechanism?'" column="DOESUNCTPARTICIPATE"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.1-->
                     <Measure name="SupportNationalstatisticalcapacity" caption="Count of UNCT provide support to national statistical capacity" column="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--14.1.1.A-->
+                    <Measure name="INTERAGENCY_EFFORT" caption="Count of 'Is this an interagency effort?'" column="INTERAGENCY_EFFORT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.1.1.A.1-->
+                    <Measure name="INTERAGENCY_GROUP" caption="Count of 'Is there an interagency group on data and statistics?'" column="INTERAGENCY_GROUP"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.1.1.A.2-->
+                    <Measure name="BUDGET_ACTIVITY" caption="Count of 'Is there a budget for this activity?'" column="BUDGET_ACTIVITY"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.1.1.A.3-->
+                    <Measure name="COMMON_INTERAGENCY_WORKPLAN" caption="Count of 'Is there a common interagency workplan for this activity?'" column="COMMON_INTERAGENCY_WORKPLAN"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.2-->
                     <Measure name="CitizenEngagementCrowdSourcing" caption="Count of citizen engagement or other crowd-sourcing approaches during UN country programming" column="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--14.2.A-->
+                    <Measure name="JOINTUNCTEFFORT" caption="Count of 'Is it a joint UNCT effort?'" column="JOINTUNCTEFFORT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.3-->
                     <Measure name="UNCTConvenePartnersBeyondUN" caption="Count of UNCT convene partners beyond the UN for specific policy activities" column="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--14.4-->
                     <Measure name="SustainableDevelopmentGoals" caption="Count of government requested support on their national response to Sustainable Development Goals" column="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--14.5-->
                     <Measure name="DataRransparencyPoliciesPortals" caption="Count of UNCT have open data/transparency policies or portals" column="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <!--14.5.A-->
+                    <Measure name="USEIATISTANDARDS" caption="Count of 'Do you use IATI standards in the portal?'" column="USEIATISTANDARDS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--14.6-->
                     <Measure name="CrossBorderInitiatives" caption="Count of UNCT participate in cross-border initiatives" column="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                             
-                    <Measure name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" 
-                    caption="Count of 'Does the government have an updated and operational National Strategy for the Development of Statistics?'" 
-                    column="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"
-                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>      
-                             
-            		<Measure name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" 
-                    caption="Count of 'Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?'" 
-                    column="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"
-                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                    
-                    <Measure name="DOESUNCTPARTICIPATE" 
-                    caption="Count of 'Does the UNCT participate in this mechanism?'" 
-                    column="DOESUNCTPARTICIPATE"
-                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                    
-					<Measure name="INTERAGENCY_EFFORT" 
-                    caption="Count of 'Is this an interagency effort?'" 
-                    column="INTERAGENCY_EFFORT"
-                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                    
-                    <Measure name="INTERAGENCY_GROUP" 
-                    caption="Count of 'Is there an interagency group on data and statistics?'" 
-                    column="INTERAGENCY_GROUP"
-                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                                                                            
-                    <Measure name="BUDGET_ACTIVITY" 
-                    caption="Count of 'Is there a budget for this activity?'" 
-                    column="BUDGET_ACTIVITY"
-                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                                        
-                    <Measure name="COMMON_INTERAGENCY_WORKPLAN" 
-                    caption="Count of 'Is there a common interagency workplan for this activity?'" 
-                    column="COMMON_INTERAGENCY_WORKPLAN"
-                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                    
-                    <Measure name="USEIATISTANDARDS" 
-                    caption="Count of 'Do you use IATI standards in the portal?'" 
-                    column="USEIATISTANDARDS"
-                    datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                    
-
-                 <Measure name="JOINTUNCTEFFORT" caption="Count of 'Is it a joint UNCT effort?'" column="JOINTUNCTEFFORT"
-                      datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
-                             
-                             
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
