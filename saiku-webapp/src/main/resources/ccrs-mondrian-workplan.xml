@@ -253,7 +253,6 @@
             <MeasureGroup name="Workplan Measures" table="WorkplanCube">
                 <Measures>
                     <Measure name="Count" caption="Number of Activities" column="ACTIVITY_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
-                    <Measure name="Output Count" caption="Number of Outputs" column="OUTPUTS_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="Expected Budget" caption="Expected Budget" column="BUDGET_EXPECTED" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                     <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
