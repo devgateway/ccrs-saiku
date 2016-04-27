@@ -599,13 +599,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="UPR" caption="Has the UNCT engaged with the Universal Periodic Review (UPR) process this year?" table='HASUPRPROCESS' key="Dimension Id">
+            <Dimension name="UPR" caption="Has the UNCT engaged in the preparation, reporting or follow-up of the Universal Periodic Review (UPR) this year?" table='HASUPRPROCESS' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="UPR" caption="Has the UNCT engaged with the Universal Periodic Review (UPR) process this year?" keyColumn="answer"
+                    <Attribute name="UPR" caption="Has the UNCT engaged in the preparation, reporting or follow-up of the Universal Periodic Review (UPR) this year?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>

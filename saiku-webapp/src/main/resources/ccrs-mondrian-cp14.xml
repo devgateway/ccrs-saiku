@@ -498,7 +498,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--14.2-->
-                    <Measure name="CitizenEngagementCrowdSourcing" caption="Count of citizen engagement or other crowd-sourcing approaches during UN country programming" column="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"
+                    <Measure name="CitizenEngagementCrowdSourcing" caption="Count of 'Does the UNCT apply innovation during UN country programming?'" column="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--14.2.A-->
@@ -514,7 +514,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--14.5-->
-                    <Measure name="DataRransparencyPoliciesPortals" caption="Count of UNCT have open data/transparency policies or portals" column="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"
+                    <Measure name="DataRransparencyPoliciesPortals" caption="Count of 'Does the UNCT have open data/transparency portals?'" column="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--14.5.A-->
