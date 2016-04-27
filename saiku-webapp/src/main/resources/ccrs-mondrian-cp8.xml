@@ -66,6 +66,18 @@
     <Cube name="CP8GeneralCube" caption="CP8 General Cube" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -78,15 +90,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP8GeneralCube' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -121,13 +133,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP8GeneralCube' key="Dimension Id">
+            <Dimension name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" table='HAS_CODE_OF_CONDUCT' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                    <Attribute name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -145,43 +157,6 @@
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
-
-            <Dimension name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" table='HAS_CODE_OF_CONDUCT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-             <Dimension name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" table='HAS_CODE_OF_CONDUCT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" table='HAS_UNDPDEPUTY_REPRESENTATIVE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
 
             <Dimension name="Does the UNDP have a Country Director" caption="Does the UNDP have a Country Director?" table='HAS_COUNTRY_DIRECTOR' key="Dimension Id">
                 <Attributes>
@@ -206,12 +181,36 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" table='HAS_UNDPDEPUTY_REPRESENTATIVE' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" table='HAS_CODE_OF_CONDUCT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
             <MeasureGroup name="CP8 General Cube Measures" table="CP8GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCodeOfConduct" caption="Count of 'Does the UNCT have a code of conduct?'" column="HAS_CODE_OF_CONDUCT"

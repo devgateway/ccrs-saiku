@@ -114,6 +114,18 @@
     <Cube name="CP14UNCTPartners" caption="CP14 UNCT Partners" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -126,15 +138,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP14UNCTPartners' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -168,20 +180,6 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP14UNCTPartners' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-
 
             <Dimension name="Partner" caption="Partner" table="LocalInstitution"
                        key="Dimension Id" visible="true">
@@ -221,6 +219,18 @@
     <Cube name="CP14GeneralCube" caption="CP14 General Cube" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -233,26 +243,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            
-                        
-             <Dimension name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort?" table='JOINTUNCTEFFORT' key="Dimension Id">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP14GeneralCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Is it a joint UNCT effort?" caption="Is it a joint UNCT effort?" keyColumn="answer"
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -289,15 +286,36 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP14GeneralCube' key="Dimension Id">
+            <Dimension name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"
+                       caption="Does the government have an updated and operational National Strategy for the Development of Statistics?"
+                       table="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"
+                               caption="Does the government have an updated and operational National Strategy for the Development of Statistics?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
 
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+            <Dimension name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"
+                       caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?"
+                       table="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"
+                               caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="DOESUNCTPARTICIPATE"
+                       caption="Does the UNCT participate in this mechanism?"
+                       table="DOESUNCTPARTICIPATE" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="DOESUNCTPARTICIPATE"
+                               caption="Does the UNCT participate in this mechanism?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -313,99 +331,50 @@
                 </Attributes>
             </Dimension>
 
-
-
-           <Dimension name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" 
-           caption="Does the government have an updated and operational National Strategy for the Development of Statistics?" 
-           table="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" key="Dimension Id">
+            <Dimension name="INTERAGENCY_EFFORT"
+                       caption="Is this an interagency effort?"
+                       table="INTERAGENCY_EFFORT" key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" 
-                    caption="Does the government have an updated and operational National Strategy for the Development of Statistics?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="INTERAGENCY_EFFORT"
+                               caption="Is this an interagency effort?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" 
-           caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?" 
-           table="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" key="Dimension Id">
+            <Dimension name="INTERAGENCY_GROUP"
+                       caption="Is there an interagency group on data and statistics?"
+                       table="INTERAGENCY_GROUP" key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" 
-                    caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-            
-			<Dimension name="DOESUNCTPARTICIPATE" 
-           caption="Does the UNCT participate in this mechanism?" 
-           table="DOESUNCTPARTICIPATE" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="DOESUNCTPARTICIPATE" 
-                    caption="Does the UNCT participate in this mechanism?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
- 
- 
- 			<Dimension name="INTERAGENCY_EFFORT" 
-           caption="Is this an interagency effort?" 
-           table="INTERAGENCY_EFFORT" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="INTERAGENCY_EFFORT" 
-                    caption="Is this an interagency effort?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="INTERAGENCY_GROUP"
+                               caption="Is there an interagency group on data and statistics?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
- 			<Dimension name="INTERAGENCY_GROUP" 
-           caption="Is there an interagency group on data and statistics?" 
-           table="INTERAGENCY_GROUP" key="Dimension Id">
+            <Dimension name="BUDGET_ACTIVITY"
+                       caption="Is there a budget for this activity?"
+                       table="BUDGET_ACTIVITY" key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="INTERAGENCY_GROUP" 
-                    caption="Is there an interagency group on data and statistics?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="BUDGET_ACTIVITY"
+                               caption="Is there a budget for this activity?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
-            
-          	<Dimension name="BUDGET_ACTIVITY" 
-           caption="Is there a budget for this activity?" 
-           table="BUDGET_ACTIVITY" key="Dimension Id">
+
+            <Dimension name="COMMON_INTERAGENCY_WORKPLAN"
+                       caption="Is there a common interagency workplan for this activity?"
+                       table="COMMON_INTERAGENCY_WORKPLAN" key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="BUDGET_ACTIVITY" 
-                    caption="Is there a budget for this activity?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="COMMON_INTERAGENCY_WORKPLAN"
+                               caption="Is there a common interagency workplan for this activity?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
-            
-            
-          	<Dimension name="COMMON_INTERAGENCY_WORKPLAN" 
-           caption="Is there a common interagency workplan for this activity?" 
-           table="COMMON_INTERAGENCY_WORKPLAN" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="COMMON_INTERAGENCY_WORKPLAN" 
-                    caption="Is there a common interagency workplan for this activity?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-            
-           <Dimension name="USEIATISTANDARDS" 
-           caption="Do you use IATI standards in the portal?" 
-           table="USEIATISTANDARDS" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="USEIATISTANDARDS" 
-                    caption="Do you use IATI standards in the portal?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-               
+
             <Dimension name="Citizen engagement or other crowd-sourcing" caption="Does the UNCT apply innovation during UN country programming?" table='HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -413,6 +382,18 @@
                                levelType="Regular" datatype="Integer"/>
 
                     <Attribute name="Citizen engagement or other crowd-sourcing " caption="Does the UNCT apply innovation during UN country programming?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort?" table='JOINTUNCTEFFORT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is it a joint UNCT effort?" caption="Is it a joint UNCT effort?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -454,6 +435,16 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="USEIATISTANDARDS"
+           caption="Do you use IATI standards in the portal?" 
+           table="USEIATISTANDARDS" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="USEIATISTANDARDS" 
+                    caption="Do you use IATI standards in the portal?" 
+                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
 
             <Dimension name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives? " table='PARTICIPATES_IN_CROSS_BORDER_INITIATIVES' key="Dimension Id">
                 <Attributes>
@@ -471,7 +462,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP14 General Cube Measures" table="CP14GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="SupportNationalstatisticalcapacity" caption="Count of UNCT provide support to national statistical capacity" column="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"

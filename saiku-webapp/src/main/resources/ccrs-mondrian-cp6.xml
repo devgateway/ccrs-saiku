@@ -88,6 +88,18 @@
     <Cube name="CP6JointAdvocacyStrategies" caption="CP6 Joint Advocacy Strategies" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -100,15 +112,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP6JointAdvocacyStrategies' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -143,25 +155,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP6JointAdvocacyStrategies' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="For which issues" caption="For which issues?" table="CP6JointAdvocacyStrategies"
+            <Dimension name="For which issues" caption="Which issue does the strategy primarily address?" table="CP6JointAdvocacyStrategies"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="For which issues" caption="For which issues?" keyColumn="FOR_WHICH_ISSUES"
+                    <Attribute name="For which issues" caption="Which issue does the strategy primarily address?" keyColumn="FOR_WHICH_ISSUES"
                                hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -193,6 +193,18 @@
     <Cube name="CP6GeneralCube" caption="CP6 General Cube" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -205,15 +217,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP6GeneralCube' key="Dimension Id">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
 
@@ -248,13 +260,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP6GeneralCube' key="Dimension Id">
+            <Dimension name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" table='HAS_COMMONUNCTWEBSITE' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                    <Attribute name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -272,56 +284,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Facebook URL" caption="Facebook URL" table="CP6GeneralCube"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Facebook URL" caption="Facebook URL" keyColumn="COMMON_FACEBOOKURL"
-                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Twitter account" caption="Twitter account" table="CP6GeneralCube"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Twitter account" caption="Twitter account" keyColumn="TWITTER_HANDLE"
-                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-
-			<Dimension name="Coordinator Twitter Account" caption="Coordinator Twitter account" table="CP6GeneralCube"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Coordinator Twitter Account" caption="Coordinator Twitter Account" keyColumn="COORDINATOR_TWITTER_HANDLE"
-                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-
-            <Dimension name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" table='HAS_COMMONUNCTWEBSITE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Do you have a common Facebook page for the UNCT" caption="Do you have a common Facebook page for the UNCT?" table='HAS_COMMON_FACEBOOK_PAGE' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -331,6 +293,18 @@
                     <Attribute name="Do you have a common Facebook page for the UNCT" caption="Do you have a common Facebook page for the UNCT?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Facebook URL" caption="Facebook URL" table="CP6GeneralCube"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Facebook URL" caption="Facebook URL" keyColumn="COMMON_FACEBOOKURL"
+                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
@@ -346,21 +320,20 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Do you have agreed guiding principles for common messaging from the UN" caption="Do you have agreed guiding principles for common messaging from the UN?" table='HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING' key="Dimension Id">
+            <Dimension name="Twitter account" caption="Twitter account" table="CP6GeneralCube"
+                       key="Dimension Id" visible="true">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Do you have agreed guiding principles for common messaging from the UN" caption="Do you have agreed guiding principles for common messaging from the UN?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="Twitter account" caption="Twitter account" keyColumn="TWITTER_HANDLE"
+                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
+                               levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
-
-            <Dimension name="HAS_COORDINATOR_TWITTER_ACCOUNT" 
-            caption="Does the Resident Coordinator have a Twitter account?" table="HAS_COORDINATOR_TWITTER_ACCOUNT" key="Dimension Id">
+            <Dimension name="HAS_COORDINATOR_TWITTER_ACCOUNT"
+                       caption="Does the Resident Coordinator have a Twitter account?" table="HAS_COORDINATOR_TWITTER_ACCOUNT" key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
@@ -372,7 +345,29 @@
                 </Attributes>
             </Dimension>
 
+			<Dimension name="Coordinator Twitter Account" caption="Coordinator Twitter account" table="CP6GeneralCube"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="Coordinator Twitter Account" caption="Coordinator Twitter Account" keyColumn="COORDINATOR_TWITTER_HANDLE"
+                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Do you have agreed guiding principles for common messaging from the UN" caption="Do you have agreed guiding principles for common messaging from the UN?" table='HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Do you have agreed guiding principles for common messaging from the UN" caption="Do you have agreed guiding principles for common messaging from the UN?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
 
             <Dimension name="Do you have any joint advocacy strategies to communicate on human rights or other normative issues" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" table='HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES' key="Dimension Id">
                 <Attributes>
@@ -390,7 +385,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP6 General Cube Measures" table="CP6GeneralCube">
                 <Measures>
-                    <Measure name="Count" caption="Number of forms" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasCommonUNCTWebsite" caption="Count of 'o you have a common website for the UNCT?'" column="HAS_COMMONUNCTWEBSITE"
