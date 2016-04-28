@@ -216,17 +216,17 @@
                     <Measure name="hasCodeOfConduct" caption="Count of 'Does the UNCT have a code of conduct?'" column="HAS_CODE_OF_CONDUCT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasUNDPDeputyRepresentative" caption="Count of 'Does UNDP have a Deputy Representative?'" column="HASUNDPDEPUTY_REPRESENTATIVE"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                             
-                    <Measure name="signedDelegationAuthority" caption="Count of 'Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?'" column="SIGNED_DELEGATION_AUTHORITY"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
-
                     <Measure name="hasCountryDirector" caption="Count of 'Does the UNDP have a Country Director?'" column="HAS_COUNTRY_DIRECTOR"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="signedDelegationOfAuthorityLetter" caption="Count of 'Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?'" column="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasUNDPDeputyRepresentative" caption="Count of 'Does UNDP have a Deputy Representative?'" column="HASUNDPDEPUTY_REPRESENTATIVE"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                             
+                    <Measure name="signedDelegationAuthority" caption="Count of 'Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?'" column="SIGNED_DELEGATION_AUTHORITY"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>

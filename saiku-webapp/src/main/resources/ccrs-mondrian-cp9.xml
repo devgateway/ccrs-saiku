@@ -55,6 +55,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="TypeJointCollaboration">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='TypeJointCollaboration']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP9CountryMechanisms">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -110,7 +118,8 @@
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_MECHANISMS_FOR_MONITORING = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_MECHANISMS_FOR_MONITORING,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN cp9integrated.IS_NEW_MONITORED_AND_REPORTED_ID ELSE null END as IS_NEW_MONITORED_AND_REPORTED_ID,
                         CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN 1 ELSE 0 END as HASUNUNCTCOLABORATION,
-                        CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN CASE WHEN cp9ununctcolaboration.IS_JOINT_PROGRAMME = TRUE THEN 1 ELSE 0 END ELSE null END as IS_JOINT_PROGRAMME,
+                        CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN CASE WHEN cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID = 15988 THEN 1 ELSE 0 END ELSE null END as IS_JOINT_PROGRAMME,
+                        cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID,
                         CASE WHEN cp9unpeace.HAS_COMMON_SERVICES_TOUNCTMEMBERS = TRUE THEN 1 ELSE 0 END as HAS_COMMON_SERVICES_TOUNCTMEMBERS,
                         CASE WHEN cp9unpeace.IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP = TRUE THEN 1 ELSE 0 END as IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP,
                         CASE WHEN cp9unpeace.IS_DRAWDOWN_WITHDRAWALUNMISSION = TRUE THEN 1 ELSE 0 END as IS_DRAWDOWN_WITHDRAWALUNMISSION,
@@ -606,15 +615,15 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is this in the form of a Joint Programme/Joint Programming" caption="Is this in the form of a Joint Programme/Joint Programming?" table='IS_JOINT_PROGRAMME' key="Dimension Id">
+            <Dimension name="What type of programmatic collaboration" caption="What type of programmatic collaboration?" table='TypeJointCollaboration' key="Dimension Id" visible="true">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
+                    <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Is this in the form of a Joint Programme/Joint Programming" caption="Is this in the form of a Joint Programme/Joint Programming?" keyColumn="answer"
+                    <Attribute name="What type of programmatic collaboration" caption="What type of programmatic collaboration?" keyColumn="LABEL"
                                approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+                               levelType="Regular" datatype="String"/>
                 </Attributes>
             </Dimension>
 
@@ -840,21 +849,6 @@
                     <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="hasIntegratedStrategicFramework" caption="Count of 'Is there an Integrated Strategic Framework (ISF)?'" column="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -888,31 +882,41 @@
                     <Measure name="hasCountryMechanismsCoordinateIntlSupport" caption="Count of 'Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?'" column="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+                             caption="Count of 'Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?'"
+                             column="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="DOESUNCTPARTICIPATE"
+                             caption="Count of 'If yes, Does the UNCT participate in this mechanism?'"
+                             column="DOESUNCTPARTICIPATE"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="DOESUNCTSUPPORTDRREFFORTS"
+                             caption="Count of 'Does the UNCT provide support to national disaster risk reduction (DRR) efforts?'"
+                             column="DOESUNCTSUPPORTDRREFFORTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
                     <Measure name="hasActiveCoordinationMechanisms" caption="Count of 'Are there any active coordination mechanisms in place with key partners such as the World Bank?'" column="HAS_ACTIVE_COORDINATION_MECHANISMS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="wbUNCollaborateOnUpstreamPolicy" caption="Count of 'Do the World Bank and UN collaborate on upstream policy processes?'" column="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                
-                
-                    <Measure name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
-                    caption="Count of 'Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?'" 
-                    column="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+
+                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                
-                               
-                    <Measure name="DOESUNCTPARTICIPATE" 
-                    caption="Count of 'If yes, Does the UNCT participate in this mechanism?'" 
-                    column="DOESUNCTPARTICIPATE"
+
+                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                             
-                                                          
-                    <Measure name="DOESUNCTSUPPORTDRREFFORTS" 
-                    caption="Count of 'Does the UNCT provide support to national disaster risk reduction (DRR) efforts?'" 
-                    column="DOESUNCTSUPPORTDRREFFORTS"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                
-                
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -938,7 +942,7 @@
                     <ForeignKeyLink dimension="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" foreignKeyColumn="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"/>
                     <ForeignKeyLink dimension="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" foreignKeyColumn="HAS_MECHANISMS_FOR_MONITORING"/>
                     <ForeignKeyLink dimension="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" foreignKeyColumn="HASUNUNCTCOLABORATION"/>
-                    <ForeignKeyLink dimension="Is this in the form of a Joint Programme/Joint Programming" foreignKeyColumn="IS_JOINT_PROGRAMME"/>
+                    <ForeignKeyLink dimension="What type of programmatic collaboration" foreignKeyColumn="TYPE_JOINT_COLLABORATION_ID"/>
                     <ForeignKeyLink dimension="Does the UN Mission provide common services to UNCT members or vice versa" foreignKeyColumn="HAS_COMMON_SERVICES_TOUNCTMEMBERS"/>
                     <ForeignKeyLink dimension="Is the mission a member of the Joint UNCT Communications Group" foreignKeyColumn="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP"/>
                     <ForeignKeyLink dimension="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission" foreignKeyColumn="IS_DRAWDOWN_WITHDRAWALUNMISSION"/>
