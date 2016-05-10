@@ -78,6 +78,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="UNAgency">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNAgency']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP2RcoStaffMemberDetail">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -297,6 +305,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="UNAgency" caption="Office Type"  table="UNAgency"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="UNAgency" caption="UN Agency" keyColumn="LABEL"
+                               hierarchyAllMemberName="All UN Agencies" hierarchyCaption="All UN Agencies"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Start Date" caption="Start Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -346,6 +366,7 @@
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="FundingOrganization" foreignKeyColumn="FUNDING_ORGANIZATION_ID" />
                     <ForeignKeyLink dimension="FinancingSource" foreignKeyColumn="FINANCING_SOURCE_ID" />
+                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="WHICH_AGENCY_ID" />
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="Head of RCO"  foreignKeyColumn="HEAD_OF_RCO"/>
