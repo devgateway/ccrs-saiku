@@ -305,7 +305,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="UNAgency" caption="Office Type"  table="UNAgency"
+            <Dimension name="UNAgency" caption="UN Agency"  table="UNAgency"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
