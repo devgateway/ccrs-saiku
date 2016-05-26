@@ -502,7 +502,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--14.2.A-->
-                    <Measure name="JOINTUNCTEFFORT" caption="Count of 'Is it a joint UNCT effort?'" column="JOINTUNCTEFFORT"
+                    <Measure name="JOINTUNCTEFFORT" caption="Count of 'Is it a joint UNCT effort?' (applying innovation)" column="JOINTUNCTEFFORT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--14.3-->

@@ -211,13 +211,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="JointProgrammeModality" caption="Which Modality?" table="JointProgrammeModality"
+            <Dimension name="JointProgrammeModality" caption="Which Funding Modality?" table="JointProgrammeModality"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="JointProgrammeModality" caption="Which Modality?" keyColumn="LABEL"
+                    <Attribute name="JointProgrammeModality" caption="Which Funding Modality?" keyColumn="LABEL"
                                hierarchyAllMemberName="All Joint Programme Modalities" hierarchyCaption="All Joint Programme Modalities"
                                levelType="Regular" datatype="String" />
                 </Attributes>
