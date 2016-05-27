@@ -502,6 +502,29 @@ var WorkspaceToolbar = Backbone.View.extend({
 
 
     export_pdf: function(event) {
+		var rowToNumChars = function(row) {
+			return row
+				.map(function(cell) { return cell.value.length; })
+				.reduce(function (a, b) { return a + b; }, 0);
+		};
+		var cs = this.workspace.query.result.result.cellset;
+		var numChars = Math.max.apply(null, cs.map(rowToNumChars));
+		console.log("numChars=" + numChars);
+		if (!window.prevNumChars) {
+			window.prevNumChars = [];
+		}
+		if (window.prevNumChars[numChars] != 5 && numChars > 200) {
+			if (!window.prevNumChars[numChars]) {
+				window.prevNumChars[numChars] = 1;
+			} else {
+				window.prevNumChars[numChars]++;
+			}
+			(new PDFWarningModal({
+				title: "Export PDF", message: "This report is too wide to fit properly in PDF format.\nIf possible try swapping axis.\nAlso consider using Excel or CSV exports.",
+			})).render().open();
+			return;
+		}
+
 		if(this.workspace.query.name!=undefined){
 			var filename = this.workspace.query.name.substring(this.workspace.query.name.lastIndexOf('/')+1).slice(0, -6);
 			window.location = Settings.REST_URL +
@@ -747,4 +770,22 @@ var WorkspaceToolbar = Backbone.View.extend({
         return false;
 
     }
+});
+
+var PDFWarningModal = Modal.extend({
+	type: 'info',
+
+	buttons: [
+		{ text: 'Okay', method: 'okay' }
+	],
+
+	initialize: function(args) {
+		this.options.title = args.title;
+		this.message = args.message;
+	},
+
+	okay: function(event) {
+		event.preventDefault();
+		this.$el.dialog('destroy').remove();
+	}
 });
