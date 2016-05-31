@@ -343,13 +343,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Start Date" caption="Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+            <Dimension name="Start Date" caption="UNDAF Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Start Date" caption="Start Date" keyColumn="START_DATE"
+                    <Attribute name="Start Date" caption="UNDAF Start Date" keyColumn="START_DATE"
                                hierarchyHasAll="true"
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
@@ -571,13 +571,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Did the UN assist" caption="Did the UN assist?" table='UN_ASSISTANCE' key="Dimension Id">
+            <Dimension name="Did the UN assist" caption="Did the UN assist with MDG Country Report?" table='UN_ASSISTANCE' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Did the UN assist" caption="Did the UN assist?" keyColumn="answer"
+                    <Attribute name="Did the UN assist" caption="Did the UN assist with MDG Country Report?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -635,7 +635,7 @@
                     <Measure name="MDGCountryReport" caption="Count of country published an MDG Country Report this year" column="HASMDGCOUNTRY_REPORT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="unAssistance" caption="Count of 'Did the UN assist?'" column="UN_ASSISTANCE"
+                    <Measure name="unAssistance" caption="Count of 'Did the UN assist with MDG Country Report?'" column="UN_ASSISTANCE"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
