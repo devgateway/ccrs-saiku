@@ -194,7 +194,7 @@
                     <Measure name="Count" caption="Number of Budget Supports" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="Budget Support" caption="Budget Support" column="BUDGETED_AMOUNT"
+                    <Measure name="Budget Support" caption="Direct Budget Support" column="BUDGETED_AMOUNT"
                              datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>

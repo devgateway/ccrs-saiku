@@ -282,24 +282,24 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Level" caption="Level" table="Level" key="Dimension Id" visible="true">
+            <Dimension name="Level" caption="Post Level" table="Level" key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
                                levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Level" caption="Level" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Levels" hierarchyCaption="All Levels"
+                    <Attribute name="Level" caption="Post Level" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Post Levels" hierarchyCaption="All Post Levels"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
 
-            <Dimension name="FinancingSource" caption="Financing Source" table="FinancingSource"
+            <Dimension name="FinancingSource" caption="Post Financing Source" table="FinancingSource"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="FinancingSource" caption="Financing Source" keyColumn="LABEL"
+                    <Attribute name="FinancingSource" caption="Post Financing Source" keyColumn="LABEL"
                                hierarchyAllMemberName="All Financing Sources" hierarchyCaption="All Financing Sources"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -317,25 +317,25 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Start Date" caption="Start Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
+            <Dimension name="Start Date" caption="Contract Start Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Start Date" caption="Start Date" keyColumn="START_DATE_DATE"
+                    <Attribute name="Start Date" caption="Contract Start Date" keyColumn="START_DATE_DATE"
                                hierarchyHasAll="true"
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension name="End Date" caption="End Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
+            <Dimension name="End Date" caption="Contract End Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="End Date" caption="End Date" keyColumn="END_DATE_DATE"
+                    <Attribute name="End Date" caption="Contract End Date" keyColumn="END_DATE_DATE"
                                hierarchyHasAll="true"
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>

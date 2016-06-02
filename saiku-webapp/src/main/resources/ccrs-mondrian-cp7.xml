@@ -148,13 +148,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Name" caption="Name" table="CP7MDTF"
+            <Dimension name="Name" caption="Name of MDTF" table="CP7MDTF"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Name" caption="Name" keyColumn="NAME"
+                    <Attribute name="Name" caption="Name of MDTF" keyColumn="NAME"
                                hierarchyAllMemberName="All Locations" hierarchyCaption="All Locations"
                                levelType="Regular" datatype="String" />
                 </Attributes>

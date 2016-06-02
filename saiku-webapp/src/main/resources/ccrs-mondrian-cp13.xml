@@ -167,13 +167,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Scorecard" caption="Scorecard" table="Scorecard"
+            <Dimension name="Scorecard" caption="Gender Scorecard" table="Scorecard"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Scorecard" caption="Scorecard" keyColumn="LABEL"
+                    <Attribute name="Scorecard" caption="Gender Scorecard" keyColumn="LABEL"
                                hierarchyAllMemberName="All Scorecards" hierarchyCaption="All Scorecards"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -191,13 +191,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" table='HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO' key="Dimension Id">
+            <Dimension name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the scorecard recommendations?" table='HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the recommendations?" keyColumn="answer"
+                    <Attribute name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the scorecard recommendations?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -210,7 +210,7 @@
                     <Measure name="Count" caption="Number of Gender Equality Scorecard" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of UNCT that addressed the recommendations" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
+                    <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of UNCT that addressed the scorecard recommendations" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>

@@ -735,7 +735,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="SoP1question" caption="SoP1 Question" table="SOP1q"
+            <Dimension name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" table="SOP1q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -746,7 +746,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP2question" caption="SoP2 Question" table="SOP2q"
+            <Dimension name="SoP2question" caption="SoP2 Annual Report on Joint Results" table="SOP2q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -757,7 +757,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP3question" caption="SoP3 Question" table="SOP3q"
+            <Dimension name="SoP3question" caption="SoP3 Signed UNDAF" table="SOP3q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -768,7 +768,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP4question" caption="SoP4 Question" table="SOP4q"
+            <Dimension name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" table="SOP4q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -779,7 +779,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP5question" caption="SoP5 Question" table="SOP5q"
+            <Dimension name="SoP5question" caption="SoP5 Results Groups Established" table="SOP5q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -790,7 +790,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP6question" caption="SoP6 Question" table="SOP6q"
+            <Dimension name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework" table="SOP6q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -801,7 +801,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP7question" caption="SoP7 Question" table="SOP7q"
+            <Dimension name="SoP7question" caption="SoP7 Annual Common Budgetary Framework" table="SOP7q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -812,7 +812,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP8question" caption="SoP8 Question" table="SOP8q"
+            <Dimension name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy" table="SOP8q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -823,7 +823,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP9question" caption="SoP9 Question" table="SOP9q"
+            <Dimension name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" table="SOP9q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -834,7 +834,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP10question" caption="SoP10 Question" table="SOP10q"
+            <Dimension name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT" table="SOP10q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -845,7 +845,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP11question" caption="SoP11 Question" table="SOP11q"
+            <Dimension name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT" table="SOP11q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -856,7 +856,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP12question" caption="SoP12 Question" table="SOP12q"
+            <Dimension name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency" table="SOP12q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -867,7 +867,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP13question" caption="SoP13 Question" table="SOP13q"
+            <Dimension name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" table="SOP13q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -878,7 +878,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP14question" caption="SoP14 Question" table="SOP14q"
+            <Dimension name="SoP14question" caption="SoP14 Joint Communication Strategy" table="SOP14q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -889,7 +889,7 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP15question" caption="SoP15 Question" table="SOP15q"
+            <Dimension name="SoP15question" caption="SoP15 Country Communications Group" table="SOP15q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
