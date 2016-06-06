@@ -121,13 +121,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is good practice?" table='WorkplanCube' key="Dimension Id">
+            <Dimension name="Is good practice?" caption="Is activity good practice?" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Is good practice?" caption="Is good practice?" keyColumn="ACTIVITY_SELECT_AS_GOOD_PRACTICE"
+                    <Attribute name="Is good practice?" caption="Is activity good practice?" keyColumn="ACTIVITY_SELECT_AS_GOOD_PRACTICE"
                                hierarchyAllMemberName="All good practice" hierarchyCaption="All good practice"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -224,13 +224,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is good practice?" table='WorkplanCube' key="Dimension Id">
+            <Dimension name="Is good practice?" caption="Is activity good practice?" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Is good practice?" caption="Is good practice?" keyColumn="ACTIVITY_SELECT_AS_GOOD_PRACTICE"
+                    <Attribute name="Is good practice?" caption="Is activity good practice?" keyColumn="ACTIVITY_SELECT_AS_GOOD_PRACTICE"
                                hierarchyAllMemberName="All good practice" hierarchyCaption="All good practice"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>

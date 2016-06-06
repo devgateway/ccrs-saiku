@@ -387,13 +387,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort?" table='JOINTUNCTEFFORT' key="Dimension Id">
+            <Dimension name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort? (applying innovation)" table='JOINTUNCTEFFORT' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Is it a joint UNCT effort?" caption="Is it a joint UNCT effort?" keyColumn="answer"
+                    <Attribute name="Is it a joint UNCT effort?" caption="Is it a joint UNCT effort? (applying innovation)" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -502,7 +502,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--14.2.A-->
-                    <Measure name="JOINTUNCTEFFORT" caption="Count of 'Is it a joint UNCT effort?'" column="JOINTUNCTEFFORT"
+                    <Measure name="JOINTUNCTEFFORT" caption="Count of 'Is it a joint UNCT effort?' (applying innovation)" column="JOINTUNCTEFFORT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--14.3-->

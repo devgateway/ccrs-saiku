@@ -345,13 +345,13 @@
                 </Attributes>
             </Dimension>
 
-			<Dimension name="Coordinator Twitter Account" caption="Coordinator Twitter account" table="CP6GeneralCube"
+			<Dimension name="Coordinator Twitter Account" caption="Resident Coordinator Twitter account" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Coordinator Twitter Account" caption="Coordinator Twitter Account" keyColumn="COORDINATOR_TWITTER_HANDLE"
+                    <Attribute name="Coordinator Twitter Account" caption="Resident Coordinator Twitter account" keyColumn="COORDINATOR_TWITTER_HANDLE"
                                hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
                                levelType="Regular" datatype="String" />
                 </Attributes>
