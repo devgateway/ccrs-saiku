@@ -72,6 +72,33 @@
                 </SQL>
             </ExpressionView>
         </Query>
+
+        <Query alias="WorkplanOutputsCube">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                    SELECT
+                        WORKPLAN.ID as WORKPLAN_ID,
+                        WORKPLAN.DESIGNATION as WORKPLAN_DESIGNATION,
+                        WORKPLAN.ENTITY_YEAR as WORKPLAN_ENTITY_YEAR,
+                        WORKPLAN.WORKFLOW as WORKPLAN_WORKFLOW,
+                        WORKSTREAM.ID as WORKSTREAM_ID,
+                        WORKSTREAM.SECTION_ID WORKSTREAM_SECTION_ID,
+                        OUTPUTS.ID as OUTPUTS_ID,
+                        OUTPUTS.LEAD_UNIT_ID as OUTPUTS_LEAD_UNIT_ID,
+                        CASE WHEN OUTPUTS.OUTPUT_ACHIEVED_ID=(SELECT ID FROM CATEGORY WHERE DTYPE='OutputAchieved' AND LABEL='Yes') THEN 1 ELSE 0 END AS OUTPUT_ACHIEVED_YES,
+                        CASE WHEN OUTPUTS.OUTPUT_ACHIEVED_ID=(SELECT ID FROM CATEGORY WHERE DTYPE='OutputAchieved' AND LABEL='No') THEN 1 ELSE 0 END AS OUTPUT_ACHIEVED_NO,
+                        CASE WHEN OUTPUTS.OUTPUT_ACHIEVED_ID=(SELECT ID FROM CATEGORY WHERE DTYPE='OutputAchieved' AND LABEL='Partially') THEN 1 ELSE 0 END AS OUTPUT_ACHIEVED_PARTIALLY
+                    FROM WORKPLAN workplan
+                        LEFT OUTER JOIN WORKSTREAM workstream ON workstream.WORKPLAN_ID = workplan.ID
+                        LEFT OUTER JOIN OUTPUTS outputs ON outputs.WORKSTREAM_ID = workstream.ID
+                    WHERE
+                        workplan.WORKFLOW = 'VALIDATED' AND
+                        workplan.DESIGNATION != 'AQ' AND workplan.DESIGNATION != 'DOCO' AND workplan.DESIGNATION in (select iso2 from BASE_COUNTRY)
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -110,13 +137,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="WorkstreamSection" caption="Workstream Section" table="WorkstreamSection"
+            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="WorkstreamSection" caption="Section name" keyColumn="LABEL"
+                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -213,13 +240,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="WorkstreamSection" caption="Workstream Section" table="WorkstreamSection"
+            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="WorkstreamSection" caption="Section name" keyColumn="LABEL"
+                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -264,6 +291,69 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                     <ForeignKeyLink dimension="Budget Source" foreignKeyColumn="BUDGET_SOURCE_ID"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <Cube name="Workplan3" caption="Workplan (Outputs)" visible="true" cache="true" enabled="true" defaultMeasure="Output Achieved: Yes">
+        <Dimensions>
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="WorkplanOutputsCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="WORKPLAN_ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="Workplan Measures" table="WorkplanOutputsCube">
+                <Measures>
+                    <Measure name="Output Count" caption="Number of Outputs" column="OUTPUTS_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Output Achieved: Yes" caption="Output Achieved: Yes" column="OUTPUT_ACHIEVED_YES" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <Measure name="Output Achieved: No" caption="Output Achieved: No" column="OUTPUT_ACHIEVED_NO" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <Measure name="Output Achieved: Partially" caption="Output Achieved: Partially" column="OUTPUT_ACHIEVED_PARTIALLY" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
+                    <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
