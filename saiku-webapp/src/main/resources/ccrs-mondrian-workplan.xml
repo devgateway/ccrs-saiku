@@ -137,13 +137,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="WorkstreamSection" caption="Workstream Section" table="WorkstreamSection"
+            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="WorkstreamSection" caption="Section name" keyColumn="LABEL"
+                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -240,13 +240,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="WorkstreamSection" caption="Workstream Section" table="WorkstreamSection"
+            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="WorkstreamSection" caption="Section name" keyColumn="LABEL"
+                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
@@ -329,13 +329,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="WorkstreamSection" caption="Workstream Section" table="WorkstreamSection"
+            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="WorkstreamSection" caption="Section name" keyColumn="LABEL"
+                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
