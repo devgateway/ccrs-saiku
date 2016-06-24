@@ -29,6 +29,14 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="BudgetType">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='BudgetType']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
 
         <Query alias="WorkstreamSection">
             <ExpressionView>
@@ -57,6 +65,7 @@
                         CASE WHEN ACTIVITY.SELECT_AS_GOOD_PRACTICE IS NULL THEN 'No' ELSE CASE WHEN ACTIVITY.SELECT_AS_GOOD_PRACTICE = FALSE THEN 'No' ELSE 'Yes' END END as ACTIVITY_SELECT_AS_GOOD_PRACTICE,
                         BUDGET.ID as BUDGET_ID,
                         BUDGET.SOURCE_ID as BUDGET_SOURCE_ID,
+                        BUDGET.TYPE_ID as BUDGET_TYPE_ID,
                         BUDGET.REQUIRED_AMOUNT as BUDGET_EXPECTED,
                         BUDGET.SPENT_AMOUNT as BUDGET_ACTUAL
                     FROM WORKPLAN workplan
@@ -172,6 +181,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Budget Type" caption="Budget Type" table='BudgetType' key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Budget Type" caption="Budget Type" keyColumn="LABEL"
+                               hierarchyAllMemberName="All budget types" hierarchyCaption="All budget types"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
+
             <!--<Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">-->
             <!--<Attributes>-->
             <!--<Attribute name="Dimension Id" keyColumn="id"-->
@@ -199,6 +220,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                     <ForeignKeyLink dimension="Budget Source" foreignKeyColumn="BUDGET_SOURCE_ID"/>
+                    <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
                     <!--<ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>-->
                 </DimensionLinks>
             </MeasureGroup>
@@ -274,6 +296,18 @@
                                levelType="Regular" datatype="String"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Budget Type" caption="Budget Type" table='BudgetType' key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Budget Type" caption="Budget Type" keyColumn="LABEL"
+                               hierarchyAllMemberName="All budget types" hierarchyCaption="All budget types"
+                               levelType="Regular" datatype="String"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -291,6 +325,7 @@
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                     <ForeignKeyLink dimension="Budget Source" foreignKeyColumn="BUDGET_SOURCE_ID"/>
+                    <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
