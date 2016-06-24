@@ -234,13 +234,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Head of RCO" caption="Head of RCO" table='HEAD_RCO_TABLE' key="Dimension Id">
+            <Dimension name="Head of RCO or Main RCO Contact" caption="Head of RCO or Main RCO Contact" table='HEAD_RCO_TABLE' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Head of RCO" caption="Head of RCO" keyColumn="answer"
+                    <Attribute name="Head of RCO or Main RCO Contact" caption="Head of RCO or Main RCO Contact" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
@@ -369,7 +369,7 @@
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="WHICH_AGENCY_ID" />
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
-                    <ForeignKeyLink dimension="Head of RCO"  foreignKeyColumn="HEAD_OF_RCO"/>
+                    <ForeignKeyLink dimension="Head of RCO or Main RCO Contact"  foreignKeyColumn="HEAD_OF_RCO"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
