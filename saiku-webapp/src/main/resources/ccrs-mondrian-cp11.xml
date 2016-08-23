@@ -52,12 +52,12 @@
                         select
                             D.*, CP11.DESIGNATION, CP11.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE CP11, CP11DIRECT_BUDGET_SUPPORT D, CP1GENERAL_PROFILE CP1
+                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE CP11, CP11DIRECT_BUDGET_SUPPORT D, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             CP11.DESIGNATION = CP1.DESIGNATION AND CP11.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP11.ID = D.PARENT_ID AND
-                            CP11.DESIGNATION != 'AQ' AND CP11.DESIGNATION != 'DOCO' AND CP11.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
-                            CP11.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP11.ENTITY_YEAR) AND
+                            CP11.DESIGNATION != 'AQ' AND CP11.DESIGNATION != 'DOCO' AND CP11.DESIGNATION = bc.iso2 AND
+                            CP11.designation = v.designation and v.entity_year = CP11.ENTITY_YEAR AND
                             CP11.HAS_DIRECT_BUDGET_SUPPORT = true
                     ]]>
                 </SQL>
@@ -81,12 +81,12 @@
                             CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.UNCT_REPORT_TOAIMS = TRUE THEN 1 ELSE 0 END ELSE null END as UNCT_REPORT_TOAIMS,
                             CASE WHEN cp11.MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP = TRUE THEN 1 ELSE 0 END as MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11, CP1GENERAL_PROFILE cp1, CP11AIMS cp11aims
+                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11, CP1GENERAL_PROFILE cp1, CP11AIMS cp11aims, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp11.DESIGNATION = cp1.DESIGNATION AND cp11.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             CP11AIMS.PARENT_ID = cp11.id AND
-                            cp11.DESIGNATION != 'AQ' AND cp11.DESIGNATION != 'DOCO' AND cp11.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            cp11.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp11.ENTITY_YEAR)
+                            cp11.DESIGNATION != 'AQ' AND cp11.DESIGNATION != 'DOCO' AND cp11.DESIGNATION = bc.iso2 and
+                            cp11.designation = v.designation and v.entity_year = cp11.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>

@@ -42,12 +42,12 @@
                             CASE WHEN cp8.HAS_COUNTRY_DIRECTOR = TRUE THEN CASE WHEN cp8.SIGNED_DELEGATION_OF_AUTHORITY_LETTER = TRUE THEN 1 ELSE 0 END ELSE null END as SIGNED_DELEGATION_OF_AUTHORITY_LETTER,
                             CASE WHEN cp8.HASUNDPDEPUTY_REPRESENTATIVE = TRUE THEN CASE WHEN cp8.SIGNED_DELEGATION_AUTHORITY = TRUE THEN 1 ELSE 0 END ELSE null END as SIGNED_DELEGATION_AUTHORITY,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP8JOINT_LEADERSHIP_MANAGEMENT cp8, CP1GENERAL_PROFILE cp1, CP8CODE_OF_CONDUCT cp8code
+                        from CP8JOINT_LEADERSHIP_MANAGEMENT cp8, CP1GENERAL_PROFILE cp1, CP8CODE_OF_CONDUCT cp8code, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp8.DESIGNATION = cp1.DESIGNATION AND cp8.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             cp8code.PARENT_ID = cp8.ID AND
-                            cp8.DESIGNATION != 'AQ' AND cp8.DESIGNATION != 'DOCO' AND cp8.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            cp8.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp8.ENTITY_YEAR)
+                            cp8.DESIGNATION != 'AQ' AND cp8.DESIGNATION != 'DOCO' AND cp8.DESIGNATION = bc.iso2 and
+                            cp8.designation = v.designation and v.entity_year = cp8.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>

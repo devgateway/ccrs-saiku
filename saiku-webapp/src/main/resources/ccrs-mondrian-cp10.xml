@@ -39,11 +39,11 @@
                             CASE WHEN cp10.HAS_AGREEDMAF = TRUE THEN 1 ELSE 0 END as HAS_AGREEDMAF,
                             CASE WHEN cp10.HAS_AGREED_CONFLICT_RESOLUTION = TRUE THEN 1 ELSE 0 END as HAS_AGREED_CONFLICT_RESOLUTION,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP10DELIVERING_AS_ONE_PROFILE cp10, CP1GENERAL_PROFILE cp1
+                        from CP10DELIVERING_AS_ONE_PROFILE cp10, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp10.DESIGNATION = cp1.DESIGNATION AND cp10.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp10.DESIGNATION != 'AQ' AND cp10.DESIGNATION != 'DOCO' AND cp10.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            cp10.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp10.ENTITY_YEAR)
+                            cp10.DESIGNATION != 'AQ' AND cp10.DESIGNATION != 'DOCO' AND cp10.DESIGNATION = bc.iso2 and
+                            cp10.designation = v.designation and v.entity_year = cp10.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
