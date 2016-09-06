@@ -44,11 +44,11 @@
                         select
                             M.ID, M.PARTNER_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP1GENERAL_PROFILE CP1
+                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             M.PARENT_ID = CP1.ID AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
+                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -81,11 +81,11 @@
                             CASE WHEN cp14.HAS_OPEN_DATA_TRANSPARENCY_POLICIES = TRUE THEN 1 ELSE 0 END as HAS_OPEN_DATA_TRANSPARENCY_POLICIES,
                             CASE WHEN cp14.PARTICIPATES_IN_CROSS_BORDER_INITIATIVES = TRUE THEN 1 ELSE 0 END as PARTICIPATES_IN_CROSS_BORDER_INITIATIVES,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP14EMERGING_ISSUES cp14, CP1GENERAL_PROFILE cp1
+                        from CP14EMERGING_ISSUES cp14, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp14.DESIGNATION != 'AQ' AND cp14.DESIGNATION != 'DOCO' AND cp14.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            cp14.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp14.ENTITY_YEAR)
+                            cp14.DESIGNATION != 'AQ' AND cp14.DESIGNATION != 'DOCO' AND cp14.DESIGNATION = bc.iso2 and
+                            cp14.designation = v.designation and v.entity_year = cp14.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>

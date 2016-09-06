@@ -52,12 +52,12 @@
                         select
                             D.*, CP3.DESIGNATION, CP3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM CP3JOINT_PROGRAMMES D, CP3COMMON_COUNTRY_PROGRAMMING CP3, CP1GENERAL_PROFILE CP1
+                        FROM CP3JOINT_PROGRAMMES D, CP3COMMON_COUNTRY_PROGRAMMING CP3, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
                             CP3.DESIGNATION = CP1.DESIGNATION AND CP3.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP3.ID = D.PARENT_ID AND
-                            CP3.DESIGNATION != 'AQ' AND CP3.DESIGNATION != 'DOCO' AND CP3.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
-                            CP3.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP3.ENTITY_YEAR)
+                            CP3.DESIGNATION != 'AQ' AND CP3.DESIGNATION != 'DOCO' AND CP3.DESIGNATION = bc.ISO2 AND
+                            CP3.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP3.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
