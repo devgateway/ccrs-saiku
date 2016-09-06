@@ -53,12 +53,12 @@
                             D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1
+                        FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             CP13.ID = D.PARENT_ID AND
-                            CP13.DESIGNATION != 'AQ' AND CP13.DESIGNATION != 'DOCO' AND CP13.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
-                            CP13.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP13.ENTITY_YEAR)
+                            CP13.DESIGNATION != 'AQ' AND CP13.DESIGNATION != 'DOCO' AND CP13.DESIGNATION = bc.iso2 AND
+                            CP13.designation = v.designation and v.entity_year = CP13.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -78,11 +78,11 @@
                             CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_BUILDINGUNSTAFF_GENDER,
                             CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = TRUE THEN date(cp13.DATE_CAPACITY_BUILDINGUNSTAFF_GENDER) ELSE null END as DATE_CAPACITY_BUILDINGUNSTAFF_GENDER,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP13GENDER_PROFILE cp13, CP1GENERAL_PROFILE cp1
+                        from CP13GENDER_PROFILE cp13, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp13.DESIGNATION = cp1.DESIGNATION AND cp13.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp13.DESIGNATION != 'AQ' AND cp13.DESIGNATION != 'DOCO' AND cp13.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            cp13.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp13.ENTITY_YEAR)
+                            cp13.DESIGNATION != 'AQ' AND cp13.DESIGNATION != 'DOCO' AND cp13.DESIGNATION = bc.iso2 and
+                            cp13.designation = v.designation and v.entity_year = cp13.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>

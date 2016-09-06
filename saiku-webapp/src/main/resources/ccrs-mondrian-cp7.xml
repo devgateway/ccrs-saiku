@@ -36,13 +36,13 @@
                         select
                             D.ID, D.NAME, D.TOTAL_BUDGET, CP7.DESIGNATION, CP7.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM CP7MTDF D, CP7JOINT_FUNDING_PROFILE CP7, CP1GENERAL_PROFILE CP1
+                        FROM CP7MTDF D, CP7JOINT_FUNDING_PROFILE CP7, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             CP7.DESIGNATION = CP1.DESIGNATION AND CP7.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             cp7.HASMTDFS = TRUE AND
                             CP7.ID = D.PARENT_ID AND
-                            CP7.DESIGNATION != 'AQ' AND CP7.DESIGNATION != 'DOCO' AND CP7.DESIGNATION in (select iso2 from BASE_COUNTRY) AND
-                            CP7.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP7.ENTITY_YEAR)
+                            CP7.DESIGNATION != 'AQ' AND CP7.DESIGNATION != 'DOCO' AND CP7.DESIGNATION = bc.iso2 AND
+                            CP7.designation = v.designation and v.entity_year = CP7.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -59,12 +59,12 @@
                             CASE WHEN cp7.HAS_ONE_FUND_COUNTRY_LEVEL = TRUE THEN CASE WHEN cp7onefund.ALLOCATION_CRITERIA_AGREED = TRUE THEN 1 ELSE 0 END ELSE null END as ALLOCATION_CRITERIA_AGREED,
                             CASE WHEN cp7.HASMTDFS = TRUE THEN 1 ELSE 0 END as HASMTDFS,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP7JOINT_FUNDING_PROFILE cp7, CP1GENERAL_PROFILE cp1, CP7ONE_FUND_COUNTRY_LEVEL cp7onefund
+                        from CP7JOINT_FUNDING_PROFILE cp7, CP1GENERAL_PROFILE cp1, CP7ONE_FUND_COUNTRY_LEVEL cp7onefund, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp7.DESIGNATION = cp1.DESIGNATION AND cp7.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             cp7onefund.PARENT_ID = cp7.id AND
-                            cp7.DESIGNATION != 'AQ' AND cp7.DESIGNATION != 'DOCO' AND cp7.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            cp7.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp7.ENTITY_YEAR)
+                            cp7.DESIGNATION != 'AQ' AND cp7.DESIGNATION != 'DOCO' AND cp7.DESIGNATION = bc.iso2 and
+                            cp7.designation = v.designation and v.entity_year = cp7.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>

@@ -44,11 +44,11 @@
                         select
                             M.ID, M.LOCATION, M.COMMON_PREMISES_TYPE_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP5SHARED_SUB_NATIONAL_OFFICES M, CP1GENERAL_PROFILE CP1
+                        from CP5SHARED_SUB_NATIONAL_OFFICES M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             M.PARENT_ID = CP1.ID AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
+                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -69,13 +69,13 @@
                             CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN CASE WHEN cp5study.TTCP_REVIEW_AND_FEEDBACK = TRUE THEN 1 ELSE 0 END ELSE null END as TTCP_REVIEW_AND_FEEDBACK,
                             CASE WHEN cp5.HAS_SHARED_SUB_NATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as HAS_SHARED_SUB_NATIONAL_OFFICES,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP5COMMON_PREMISES_PROFILE CP5, CP1GENERAL_PROFILE CP1, CP5UNCOMMON_PREMISES cp5uncommon, CP5COMMON_PREMISES_FEASIBILITY_STUDY cp5study
+                        from CP5COMMON_PREMISES_PROFILE CP5, CP1GENERAL_PROFILE CP1, CP5UNCOMMON_PREMISES cp5uncommon, CP5COMMON_PREMISES_FEASIBILITY_STUDY cp5study, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             CP5.DESIGNATION = CP1.DESIGNATION AND CP5.ENTITY_YEAR = CP1.ENTITY_YEAR AND
                             cp5uncommon.PARENT_ID = cp5.id AND
                             cp5study.PARENT_ID = cp5.id AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            CP1.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = CP1.ENTITY_YEAR)
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
+                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
