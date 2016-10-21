@@ -126,7 +126,9 @@
                             CASE WHEN cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC = TRUE THEN 1 ELSE 0 END as HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC,
                             CASE WHEN cp12.HASHRI = TRUE THEN 1 ELSE 0 END as HASHRI,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP12HUMAN_RIGHTS_PROFILE cp12, CP1GENERAL_PROFILE cp1, CP12TRAINING_ONHRAPPROACH cp12training,
+                        from
+                            -- DERBY-PROPERTIES joinOrder = FIXED
+                            CP12HUMAN_RIGHTS_PROFILE cp12, CP1GENERAL_PROFILE cp1, CP12TRAINING_ONHRAPPROACH cp12training,
                             CP12HRANALYSIS cp12hranalysis, CP12UPRPROCESS cp12uprprocess, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp12.DESIGNATION = cp1.DESIGNATION AND cp12.ENTITY_YEAR = cp1.ENTITY_YEAR AND

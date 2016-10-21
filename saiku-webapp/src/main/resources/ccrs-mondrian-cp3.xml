@@ -95,7 +95,9 @@
                             CASE WHEN cp3.HASMDGCOUNTRY_REPORT = TRUE THEN 1 ELSE 0 END as HASMDGCOUNTRY_REPORT,
                             CASE WHEN cp3.HASMDGCOUNTRY_REPORT = TRUE THEN CASE WHEN cp3mdgcountryreport.UN_ASSISTANCE = TRUE THEN 1 ELSE 0 END ELSE null END as UN_ASSISTANCE,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
+                        from
+                            -- DERBY-PROPERTIES joinOrder = FIXED
+                            CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
                             CP3UNDAF cp3undaf, CP3COMMON_COUNTRY_ASSESSMENT cp3assessment, CP3NATIONAL_DEVELOPMENT_PLAN cp3plan,
                             CP3UNDAFEVALUATION cp3undafevaluation, CP3MDGCOUNTRY_REPORT cp3mdgcountryreport, CP3UNDAFMID_TERM_REVIEW cp3undafmid, CP3UNDAFANNUAL_REVIEW cp3undafannual
                         WHERE
