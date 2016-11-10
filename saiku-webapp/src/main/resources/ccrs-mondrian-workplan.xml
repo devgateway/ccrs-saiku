@@ -1,7 +1,7 @@
 <Schema name="IMS" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - Workplan</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - Annual Coordination Framework</Annotation>
     </Annotations>
 
     <PhysicalSchema>
@@ -113,7 +113,7 @@
     <!--*************************************************************************
     ***** Workplan Cube
     *************************************************************************-->
-    <Cube name="Workplan1" caption="Workplan (Budget)" visible="true" cache="true" enabled="true" defaultMeasure="Actual Budget">
+    <Cube name="Workplan1" caption="Annual Coordination Framework (Budget)" visible="true" cache="true" enabled="true" defaultMeasure="Actual Budget">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -229,7 +229,7 @@
 
 
 
-    <Cube name="Workplan2" caption="Workplan (Activity count)" visible="true" cache="true" enabled="true" defaultMeasure="Count">
+    <Cube name="Workplan2" caption="Annual Coordination Framework (Activity count)" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -331,7 +331,7 @@
         </MeasureGroups>
     </Cube>
 
-    <Cube name="Workplan3" caption="Workplan (Outputs)" visible="true" cache="true" enabled="true" defaultMeasure="Output Achieved: Yes">
+    <Cube name="Workplan3" caption="Annual Coordination Framework (Outputs)" visible="true" cache="true" enabled="true" defaultMeasure="Output Achieved: Yes">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
