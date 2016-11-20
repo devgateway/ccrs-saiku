@@ -28,9 +28,9 @@
 
     </properties>
     <repositories>
-        <repository>
-            <id>atlassian2</id>
-            <url>http://repository.opencastproject.org/nexus/content/repositories/atlassian/</url>
+         <repository>
+            <id>jcenter</id>
+            <url>http://jcenter.bintray.com/</url>
         </repository>
 
     </repositories>
