@@ -781,13 +781,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" table='HAS_AGREEMENTS_WITH_KEY_PARTNERS' key="Dimension Id">
+            <Dimension name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank and regional and sub-regional organizations like the African Union, IGAD, etc.) for crisis response?" table='HAS_AGREEMENTS_WITH_KEY_PARTNERS' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank) for crisis response?" keyColumn="answer"
+                    <Attribute name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank and regional and sub-regional organizations like the African Union, IGAD, etc.) for crisis response?" keyColumn="answer"
                                orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
