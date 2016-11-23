@@ -127,13 +127,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="UNCT ToR" caption="Are there an agreed upon UNCT ToR?" table='HAS_AGREEDUNCTTOR' key="Dimension Id">
+            <Dimension name="UNCT ToR" caption="Is there an agreed upon UNCT TOR?" table='HAS_AGREEDUNCTTOR' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="UNCT ToR" caption="Are there an agreed upon UNCT ToR?" keyColumn="answer"
+                    <Attribute name="UNCT ToR" caption="Is there an agreed upon UNCT TOR?" keyColumn="answer"
                                orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
