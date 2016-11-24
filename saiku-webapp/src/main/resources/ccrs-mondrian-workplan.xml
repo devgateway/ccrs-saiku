@@ -1,7 +1,7 @@
 <Schema name="IMS" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - Workplan</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - Annual Coordination Framework</Annotation>
     </Annotations>
 
     <PhysicalSchema>
@@ -113,7 +113,7 @@
     <!--*************************************************************************
     ***** Workplan Cube
     *************************************************************************-->
-    <Cube name="Workplan1" caption="Workplan (Budget)" visible="true" cache="true" enabled="true" defaultMeasure="Actual Budget">
+    <Cube name="Workplan1" caption="Annual Coordination Framework (Budget)" visible="true" cache="true" enabled="true" defaultMeasure="Actual Budget">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -208,7 +208,7 @@
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="Workplan Measures" table="WorkplanCube">
+            <MeasureGroup name="Annual Coordination Framework Measures" table="WorkplanCube">
                 <Measures>
                     <Measure name="Expected Budget" caption="Expected Budget" column="BUDGET_EXPECTED" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                     <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
@@ -229,7 +229,7 @@
 
 
 
-    <Cube name="Workplan2" caption="Workplan (Activity count)" visible="true" cache="true" enabled="true" defaultMeasure="Count">
+    <Cube name="Workplan2" caption="Annual Coordination Framework (Activity count)" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -311,7 +311,7 @@
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="Workplan Measures" table="WorkplanCube">
+            <MeasureGroup name="Annual Coordination Framework Measures" table="WorkplanCube">
                 <Measures>
                     <Measure name="Count" caption="Number of Activities" column="ACTIVITY_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="Output Count" caption="Number of Outputs" column="OUTPUTS_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
@@ -331,7 +331,7 @@
         </MeasureGroups>
     </Cube>
 
-    <Cube name="Workplan3" caption="Workplan (Outputs)" visible="true" cache="true" enabled="true" defaultMeasure="Output Achieved: Yes">
+    <Cube name="Workplan3" caption="Annual Coordination Framework (Outputs)" visible="true" cache="true" enabled="true" defaultMeasure="Output Achieved: Yes">
         <Dimensions>
             <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -377,7 +377,7 @@
         </Dimensions>
 
         <MeasureGroups>
-            <MeasureGroup name="Workplan Measures" table="WorkplanOutputsCube">
+            <MeasureGroup name="Annual Coordination Framework Measures" table="WorkplanOutputsCube">
                 <Measures>
                     <Measure name="Output Count" caption="Number of Outputs" column="OUTPUTS_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="Output Achieved: Yes" caption="Output Achieved: Yes" column="OUTPUT_ACHIEVED_YES" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>

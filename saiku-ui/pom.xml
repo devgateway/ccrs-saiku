@@ -19,7 +19,7 @@
 				<plugin>
 					<groupId>com.samaxes.maven</groupId>
 					<artifactId>minify-maven-plugin</artifactId>
-					<version>1.7.4-modify</version>
+					<version>1.7.5</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -27,7 +27,7 @@
 			<plugin>
 				<groupId>com.samaxes.maven</groupId>
 				<artifactId>minify-maven-plugin</artifactId>
-				<version>1.7.4-modify</version>
+				<version>1.7.5</version>
 				<executions>
 					<execution>
 						<id>default-minify</id>
@@ -279,21 +279,18 @@
 
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>jsdoctk1</id>
-			<url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
-		</repository>
-	</repositories>
+
 	<pluginRepositories>
 		<pluginRepository>
-			<id>jsdoctk2</id>
-			<url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
+			<name>jcenter</name>
+			<id>jcenter</id>
+			<url>http://jcenter.bintray.com</url>
 		</pluginRepository>
-		<pluginRepository>
-			<name>oss.sonatype.org</name>
-			<id>oss.sonatype.org</id>
-			<url>http://oss.sonatype.org/content/groups/public</url>
-		</pluginRepository>
+        
+           <pluginRepository>
+            <id>ccrs-extras</id>
+            <url>http://artifactory.ampdev.net/artifactory/ccrs-extras/</url>
+        </pluginRepository>
+        
 	</pluginRepositories>
 </project>
