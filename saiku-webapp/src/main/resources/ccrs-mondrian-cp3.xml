@@ -58,6 +58,7 @@
                             CP3.ID = D.PARENT_ID AND
                             CP3.DESIGNATION != 'AQ' AND CP3.DESIGNATION != 'DOCO' AND CP3.DESIGNATION = bc.ISO2 AND
                             CP3.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP3.ENTITY_YEAR
+                            and CP3.HAS_JOINT_PROGRAMMES=true
                     ]]>
                 </SQL>
             </ExpressionView>
