@@ -96,7 +96,8 @@
                             CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES,                            
                             CASE WHEN cp12.HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT = TRUE THEN 1 ELSE 0 END as HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT,                                       
                             CASE WHEN cp12.HASUNCTDRAWN_ON_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTDRAWN_ON_RECOMMENDATIONS,                            
-                            CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES,                            
+                            CASE WHEN cp12.HASUNCTSDRAWN_ON_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTSDRAWN_ON_RECOMMENDATIONS,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES,
                             CASE WHEN cp12.HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION = TRUE THEN 1 ELSE 0 END as HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION,                            
                             CASE WHEN cp12.HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES,                            
                             CASE WHEN cp12.HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES,
@@ -163,6 +164,7 @@
 		<InlineTable alias="HASUNCTSUBMITTED_INPUTS_REPORTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>    
 		<InlineTable alias="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>    
   		<InlineTable alias="HASUNCTDRAWN_ON_RECOMMENDATIONS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>    
+  		<InlineTable alias="HASUNCTSDRAWN_ON_RECOMMENDATIONS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="HASUNCTRECOMMENDATIONS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>      
@@ -1014,8 +1016,8 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.F-->
-					<Measure name="hasUNCTDrawnOnRecommendations" caption="Count of 'Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?'" 
-                             column="HASUNCTDRAWN_ON_RECOMMENDATIONS"
+					<Measure name="hasUNCTSDrawnOnRecommendations" caption="Count of 'Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?'"
+                             column="HASUNCTSDRAWN_ON_RECOMMENDATIONS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.G-->
@@ -1097,7 +1099,7 @@
 					<ForeignKeyLink dimension="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies" foreignKeyColumn="HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION"/>            	
 	            	<ForeignKeyLink dimension="Has the UNCT submitted inputs/reports to human rights treaty bodies" foreignKeyColumn="HASUNCTSUBMITTED_INPUTS_REPORTS"/>            	       
         			<ForeignKeyLink dimension="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government" foreignKeyColumn="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS"/>
-			        <ForeignKeyLink dimension="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies" foreignKeyColumn="HASUNCTDRAWN_ON_RECOMMENDATIONS"/>
+			        <ForeignKeyLink dimension="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies" foreignKeyColumn="HASUNCTSDRAWN_ON_RECOMMENDATIONS"/>
 					<ForeignKeyLink dimension="Was the country reviewed by a treaty body this year" foreignKeyColumn="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY"/>
 					<ForeignKeyLink dimension="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies" foreignKeyColumn="HASUNCTRECOMMENDATIONS"/>                           
 					<ForeignKeyLink dimension="Did the UNCT facilitate follow up of the recommendations by the Government" foreignKeyColumn="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT"/>                                                
