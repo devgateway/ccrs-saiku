@@ -111,7 +111,7 @@
     <!--*************************************************************************
     ***** CP14 UNCT Partners
     *************************************************************************-->
-    <Cube name="CP14UNCTPartners" caption="CP14 UNCT Partners" visible="true"
+    <Cube name="UNCTPartners" caption="UNCT Partners" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -216,7 +216,7 @@
     <!--*************************************************************************
     ***** CP14 General Cube
     *************************************************************************-->
-    <Cube name="CP14GeneralCube" caption="CP14 General Cube" visible="true"
+    <Cube name="SDGs and Beyond" caption="SDGs and Beyond" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

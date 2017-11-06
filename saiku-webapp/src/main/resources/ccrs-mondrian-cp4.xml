@@ -96,7 +96,7 @@
     <!--*************************************************************************
     ***** CP4 Business Operation Areas
     *************************************************************************-->
-    <Cube name="CP4BOSAreas" caption="CP4 Business Operation Areas" visible="true" cache="true" enabled="true" defaultMeasure="Count">
+    <Cube name="BOSAreas" caption="Business Operation Areas" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -268,7 +268,7 @@
     <!--*************************************************************************
     ***** CP4 General Cube
     *************************************************************************-->
-    <Cube name="CP4GeneralCube" caption="CP4 General Cube" visible="true"
+    <Cube name="Common Services" caption="Common Services Harmonized Business Practices" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

@@ -63,7 +63,7 @@
     <!--*************************************************************************
     ***** CP8 General Cube
     *************************************************************************-->
-    <Cube name="CP8GeneralCube" caption="CP8 General Cube" visible="true"
+    <Cube name="Joint Leadership" caption="Joint Leadership and Management Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

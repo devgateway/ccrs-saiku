@@ -78,7 +78,7 @@
     <!--*************************************************************************
     ***** CP7 MDTF
     *************************************************************************-->
-    <Cube name="CP7MDTF" caption="CP7 MDTF" visible="true"
+    <Cube name="MDTF" caption="MDTF" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -185,7 +185,7 @@
     <!--*************************************************************************
     ***** CP7 General Cube
     *************************************************************************-->
-    <Cube name="CP7GeneralCube" caption="CP7 General Cube" visible="true"
+    <Cube name="Join Funding Profile" caption="Join Funding Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
