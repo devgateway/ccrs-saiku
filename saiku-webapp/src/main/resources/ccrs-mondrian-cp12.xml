@@ -181,7 +181,7 @@
     <!--*************************************************************************
     ***** CP12 Human Rights Treaty Bodies
     *************************************************************************-->
-    <Cube name="CP12 Human Rights Treaty Bodies" caption="CP12 Human Rights Treaty Bodies" visible="true"
+    <Cube name="Human Rights Treaty Bodies" caption="Human Rights Treaty Bodies" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -318,7 +318,7 @@
     <!--*************************************************************************
     ***** CP12 Special Procedure of Human Rights Council
     *************************************************************************-->
-    <Cube name="CP12 Special Procedure of Human Rights Council" caption="CP12 Special Procedure of Human Rights Council" visible="true"
+    <Cube name="Special Procedure of Human Rights Council" caption="Special Procedure of Human Rights Council" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -449,7 +449,7 @@
     <!--*************************************************************************
     ***** CP12 General Cube
     *************************************************************************-->
-    <Cube name="CP12GeneralCube" caption="CP12 General Cube" visible="true"
+    <Cube name="Human Rights" caption="Human Rights Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

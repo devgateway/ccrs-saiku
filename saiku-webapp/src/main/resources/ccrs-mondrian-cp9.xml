@@ -191,7 +191,7 @@
     <!--*************************************************************************
     ***** CP9 Country Mechanisms
     *************************************************************************-->
-    <Cube name="CP9CountryMechanisms" caption="CP9 Country Mechanisms" visible="true"
+    <Cube name="CountryMechanisms" caption="Country Mechanisms" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -309,7 +309,7 @@
     <!--*************************************************************************
     ***** CP9 Key Partners
     *************************************************************************-->
-    <Cube name="CP9KeyPartners" caption="CP9 Key Partners" visible="true"
+    <Cube name="KeyPartners" caption="Key Partners" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -427,7 +427,7 @@
     <!--*************************************************************************
     ***** CP9 General Cube
     *************************************************************************-->
-    <Cube name="CP9GeneralCube" caption="CP9 General Cube" visible="true"
+    <Cube name="Crisis Prevention Profile" caption="Crisis Prevention Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
