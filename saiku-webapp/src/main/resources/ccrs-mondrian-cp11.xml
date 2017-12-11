@@ -105,7 +105,7 @@
     <!--*************************************************************************
     ***** CP11 Budget Support
     *************************************************************************-->
-    <Cube name="CP11 Budget Support" caption="CP11 Budget Support" visible="true"
+    <Cube name="Budget Support" caption="Budget Support" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -213,7 +213,7 @@
     <!--*************************************************************************
     ***** CP11 General Cube
     *************************************************************************-->
-    <Cube name="CP11GeneralCube" caption="CP11 General Cube" visible="true"
+    <Cube name="Development Effectiveness" caption="Development Effectiveness Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

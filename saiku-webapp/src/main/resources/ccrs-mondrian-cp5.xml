@@ -91,7 +91,7 @@
     <!--*************************************************************************
     ***** CP5 UNCT Members Shared Offices
     *************************************************************************-->
-    <Cube name="CP5UNCTMembersSharedOffices" caption="CP5 UNCT Members Shared Offices" visible="true"
+    <Cube name="UNCTMembersSharedOffices" caption="UNCT Members Shared Offices" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -209,7 +209,7 @@
     <!--*************************************************************************
     ***** CP5 General Cube
     *************************************************************************-->
-    <Cube name="CP5GeneralCube" caption="CP5 General Cube" visible="true"
+    <Cube name="Common Premises Profile" caption="Common Premises Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

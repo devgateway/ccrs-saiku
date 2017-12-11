@@ -133,7 +133,7 @@ var Workspace = Backbone.View.extend({
                     '<% _.each(connection.catalogs, function(catalog) { %>' +
                         '<% _.each(catalog.schemas, function(schema) { %>' +
                             '<% if (schema.cubes.length > 0) { %>' +
-                                '<optgroup label="<%= (schema.name !== "" ? schema.name : catalog.name) %> <%= (connection.name) %>">' +
+                                '<optgroup label="<%= (schema.name !== "" ? schema.name : catalog.name) %> ' +
                                     '<% _.each(schema.cubes, function(cube) { %>' +
                                         '<% if ((typeof cube["visible"] === "undefined" || cube["visible"]) && selected !== cube.caption) { %>' +
                                             '<option value="<%= connection.name %>/<%= catalog.name %>/<%= ((schema.name === "" || schema.name === null) ? "null" : schema.name) %>/<%= encodeURIComponent(cube.name) %>"><%= ((cube.caption === "" || cube.caption === null) ? cube.name : cube.caption) %></option>' +
