@@ -85,7 +85,7 @@
     <!--*************************************************************************
     ***** CP6 Joint Advocacy Strategies
     *************************************************************************-->
-    <Cube name="CP6JointAdvocacyStrategies" caption="CP6 Joint Advocacy Strategies" visible="true"
+    <Cube name="JointAdvocacyStrategies" caption="Joint Advocacy Strategies" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -190,7 +190,7 @@
     <!--*************************************************************************
     ***** CP6 General Cube
     *************************************************************************-->
-    <Cube name="CP6GeneralCube" caption="CP6 General Cube" visible="true"
+    <Cube name="Joint Communication" caption="Joint Communication &amp; Advocacy Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

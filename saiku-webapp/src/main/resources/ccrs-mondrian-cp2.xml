@@ -154,7 +154,7 @@
     <!--*************************************************************************
     ***** CP2 RCO Staff Member Details
     *************************************************************************-->
-    <Cube name="CP2RCOStaffMember" caption="CP2 RCO Staff Member" visible="true" cache="true" enabled="true" defaultMeasure="Count">
+    <Cube name="RCO Staff Member" caption="RCO Staff Member" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -378,7 +378,7 @@
     <!--*************************************************************************
     ***** CP2 General Cube
     *************************************************************************-->
-    <Cube name="CP2GeneralCube" caption="CP2 General Cube" visible="true"
+    <Cube name="Coordination Capacity" caption="Coordination Capacity" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

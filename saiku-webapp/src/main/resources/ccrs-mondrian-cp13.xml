@@ -97,7 +97,7 @@
     <!--*************************************************************************
     ***** CP13 Gender Equality Scorecard
     *************************************************************************-->
-    <Cube name="CP13 Gender Equality Scorecard" caption="CP13 Gender Equality Scorecard" visible="true"
+    <Cube name="Gender Equality Scorecard" caption="Gender Equality Scorecard" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -231,7 +231,7 @@
     <!--*************************************************************************
     ***** CP13 General Cube
     *************************************************************************-->
-    <Cube name="CP13GeneralCube" caption="CP13 General Cube" visible="true"
+    <Cube name="Gender Profile" caption="Gender Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

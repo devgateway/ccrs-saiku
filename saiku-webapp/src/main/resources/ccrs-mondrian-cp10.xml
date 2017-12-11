@@ -57,7 +57,7 @@
     <!--*************************************************************************
     ***** CP10 General Cube
     *************************************************************************-->
-    <Cube name="CP10GeneralCube" caption="CP10 General Cube" visible="true"
+    <Cube name="One Profile" caption="Delivering as One Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

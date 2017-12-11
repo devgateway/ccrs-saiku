@@ -363,7 +363,7 @@
     <!--*************************************************************************
     ***** CP1 UNCT Members
     *************************************************************************-->
-    <Cube name="CP1 UNCT Members" caption="CP1 UNCT Members" visible="true"
+    <Cube name="UNCT Members" caption="UNCT Members" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -516,7 +516,7 @@
     ***** CP1 Interagency Groups
     *************************************************************************-->
 
-    <Cube name="CP1UNCTInteragency Groups" caption="CP1 UNCT Interagency Groups" visible="true"
+    <Cube name="UNCTInteragency Groups" caption="UNCT Interagency Groups" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"

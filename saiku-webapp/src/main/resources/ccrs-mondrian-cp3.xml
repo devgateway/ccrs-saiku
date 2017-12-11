@@ -136,7 +136,7 @@
     <!--*************************************************************************
     ***** CP3 Joint Programmes
     *************************************************************************-->
-    <Cube name="CP3 Joint Programmes" caption="CP3 Joint Programmes" visible="true"
+    <Cube name="Joint Programmes" caption="Joint Programmes" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -252,7 +252,7 @@
     <!--*************************************************************************
     ***** CP3 General Cube
     *************************************************************************-->
-    <Cube name="CP3GeneralCube" caption="CP3 General Cube" visible="true"
+    <Cube name="Common Country Programing" caption="Common Country Programing" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
