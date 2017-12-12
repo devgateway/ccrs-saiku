@@ -59,6 +59,13 @@
             <id>ccrs-extras</id>
             <url>http://artifactory.ampdev.net/artifactory/ccrs-extras/</url>
         </repository>
+
+        <repository>
+            <id>jboss</id>
+            <url>https://repository.jboss.org/</url>
+        </repository>
+
+
     </repositories>
     <build>
         <plugins>
