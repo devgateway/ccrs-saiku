@@ -146,7 +146,17 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="BusinessOperationArea" caption="Business Operation Area" table="BusinessOperationArea"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
 
+                    <Attribute name="BusinessOperationArea" caption="Business Operation Area" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Business Operation Area" hierarchyCaption="Business Operation Areas"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
             <Dimension name="ManagementModality" caption="Management Modality" table="ManagementModality"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -162,7 +172,7 @@
 
         <MeasureGroups>
             <MeasureGroup name="CP4 BOS Areas Measures" table="CP4BusinessOperationAreasDetails">
-				<Measures>
+                <Measures>
                     <Measure name="Count" caption="Number of Business Operation Areas" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                 </Measures>
