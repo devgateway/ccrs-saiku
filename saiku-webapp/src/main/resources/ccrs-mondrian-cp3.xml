@@ -87,14 +87,11 @@
                             CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HASMDGACCELERATION_FRAMEWORK,
                             CASE WHEN cp3.HAS_JOINT_PROGRAMMES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_PROGRAMMES,
                             CASE WHEN cp3.HASUNDAFMID_TERM_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFMID_TERM_REVIEW,
-                            CASE WHEN cp3.HASUNDAFMID_TERM_REVIEW = TRUE THEN date(cp3undafmid.DATE_COMPLETED) ELSE null END as HASUNDAFMID_DATE_COMPLETED,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFANNUAL_REVIEW,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN date(cp3undafannual.DATE_COMPLETED) ELSE null END as HASUNDAFANNUAL_DATE_COMPLETED,
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN 1 ELSE 0 END as HASUNDAFEVALUATION,
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN CASE WHEN cp3undafevaluation.MANAGEMENT_RESPONSE_PREPARED = TRUE THEN 1 ELSE 0 END ELSE null END as MANAGEMENT_RESPONSE_PREPARED,
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN date(cp3undafevaluation.DATE_COMPLETED) ELSE null END as HASUNDAFEVALUATION_DATE_COMPLETED,
-                            CASE WHEN cp3.HASMDGCOUNTRY_REPORT = TRUE THEN 1 ELSE 0 END as HASMDGCOUNTRY_REPORT,
-                            CASE WHEN cp3.HASMDGCOUNTRY_REPORT = TRUE THEN CASE WHEN cp3mdgcountryreport.UN_ASSISTANCE = TRUE THEN 1 ELSE 0 END ELSE null END as UN_ASSISTANCE,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from
                             -- DERBY-PROPERTIES joinOrder = FIXED
@@ -125,12 +122,10 @@
         <InlineTable alias="HASUNDAFMID_TERM_REVIEW"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HASUNDAFANNUAL_REVIEW"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HASUNDAFEVALUATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASMDGCOUNTRY_REPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="IS_DEVELOPING_NEWUNDAF"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_DISAGGREGATED_DATA"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HASUNSUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="MANAGEMENT_RESPONSE_PREPARED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="UN_ASSISTANCE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -490,18 +485,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" caption="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Date Completed" caption="Date Completed" keyColumn="HASUNDAFMID_DATE_COMPLETED"
-                               hierarchyHasAll="true"
-                               levelType="TimeUndefined" datatype="Date"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" table='HASUNDAFANNUAL_REVIEW' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
@@ -562,29 +545,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="MDG Country Report" caption="Has your country published an MDG Country Report this year?" table='HASMDGCOUNTRY_REPORT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="MDG Country Report" caption="Has your country published an MDG Country Report this year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Did the UN assist" caption="Did the UN assist with MDG Country Report?" table='UN_ASSISTANCE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Did the UN assist" caption="Did the UN assist with MDG Country Report?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -634,12 +594,6 @@
 
                     <Measure name="managementResponsePrepared" caption="Count of 'Was a management response prepared'" column="MANAGEMENT_RESPONSE_PREPARED"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="MDGCountryReport" caption="Count of country published an MDG Country Report this year" column="HASMDGCOUNTRY_REPORT"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="unAssistance" caption="Count of 'Did the UN assist with MDG Country Report?'" column="UN_ASSISTANCE"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -656,17 +610,14 @@
                     <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW"/>
                     <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION"/>
-                    <ForeignKeyLink dimension="MDG Country Report"  foreignKeyColumn="HASMDGCOUNTRY_REPORT"/>
                     <ForeignKeyLink dimension="Is your UNCT in the process of developing a new UNDAF"  foreignKeyColumn="IS_DEVELOPING_NEWUNDAF"/>
                     <FactLink dimension="Year CCA was conducted" />
                     <ForeignKeyLink dimension="Is official disaggregated data available"  foreignKeyColumn="HAS_DISAGGREGATED_DATA"/>
                     <ForeignKeyLink dimension="Did the UN support the development of the National Plan"  foreignKeyColumn="HASUNSUPPORT"/>
                     <ForeignKeyLink dimension="Was a management response prepared"  foreignKeyColumn="MANAGEMENT_RESPONSE_PREPARED"/>
-                    <ForeignKeyLink dimension="Did the UN assist"  foreignKeyColumn="UN_ASSISTANCE"/>
                     <FactLink dimension="Date of Signature" />
                     <FactLink dimension="Start Date" />
                     <FactLink dimension="End Date" />
-                    <FactLink dimension="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" />
                     <FactLink dimension="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" />
                     <FactLink dimension="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" />
                     <ForeignKeyLink dimension="AlternativeAnalysis"  foreignKeyColumn="OTHER_ANALYSIS_SOURCE_ID"/>
