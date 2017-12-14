@@ -28,6 +28,14 @@
                 </SQL>
             </ExpressionView>
         </Query>
+		
+        <Query alias="BusinessOperationArea">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='BusinessOperationArea']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="ManagementModality">
             <ExpressionView>
@@ -41,7 +49,7 @@
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
-                        select CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                        select BOS.ID, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CP4.DESIGNATION, CP4.ENTITY_YEAR, LTA.DISCOUNT_RATE_APPLIED, LTA.MANAGEMENT_MODALITY_ID
                         from CP4BUSINESS_OPERATION_AREAS_DETAILS BOS, CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES CP4, CP4LTADETAILS LTA, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
@@ -154,7 +162,12 @@
 
         <MeasureGroups>
             <MeasureGroup name="CP4 BOS Areas Measures" table="CP4BusinessOperationAreasDetails">
+				<Measures>
+                    <Measure name="Count" caption="Number of Business Operation Areas" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
                 <DimensionLinks>
+					<ForeignKeyLink dimension="BusinessOperationArea" foreignKeyColumn="BUSINESS_OPERATION_AREA_ID" />
                     <ForeignKeyLink dimension="ManagementModality" foreignKeyColumn="MANAGEMENT_MODALITY_ID" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
