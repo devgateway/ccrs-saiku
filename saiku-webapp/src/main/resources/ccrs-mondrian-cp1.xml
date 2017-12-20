@@ -9,7 +9,7 @@
         <Query alias="BASE_COUNTRY">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
+                    <![CDATA[select b.ISO2 as ISO2, c.REGION as REGION, b.NAME as NAME, b.ID as BASE_COUNTRY_ID from BASE_COUNTRY b, CATEGORY c where b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion' and c.REGION <> 'Uncategorized']]>
                 </SQL>
             </ExpressionView>
         </Query>
@@ -756,6 +756,30 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+			
+			<Dimension name="Covered Country" caption="Covered Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="BASE_COUNTRY_ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CoveredCountryIncomeStatus" caption="Covered Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
 
             <Dimension name="DAOCountry" caption="Is it a DAO Country?" table='DAO' key="Dimension Id">
                 <Attributes>
@@ -780,10 +804,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP1 Covered Countries" table="CP1CoveredCountries">
                 <Measures>
-                    <Measure name="Count" caption="Number of Covered Countries" column="ID" datatype="Integer"
-                             aggregator="distinct-count" visible="true" formatString="#,###"/>
-
-                    <Measure name="daoCount" caption="Count of 'Is it a DAO Country'" column="DAO_COUNT"
+                    <Measure name="Count" caption="Count of 'Is it a DAO Country'" column="DAO_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                 </Measures>
@@ -794,6 +815,8 @@
                     <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+					<ForeignKeyLink dimension="Covered Country" foreignKeyColumn="COUNTRY_ID"/>
+                    <ForeignKeyLink dimension="CoveredCountryIncomeStatus" foreignKeyColumn="INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="DAOCountry"  foreignKeyColumn="DAO_COUNT"/>
 					<FactLink dimension="YearDAOCountry" />
                 </DimensionLinks>
