@@ -36,13 +36,31 @@
                 </SQL>
             </ExpressionView>
         </Query>
+        
+        <Query alias="PartnershipType">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='PartnershipType']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        
+        <Query alias="AgreementType">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='AgreementType']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="CP14UNCTPartners">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.PARTNER_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            M.ID, M.PARTNER_ID, M.PARTNERSHIP_TYPE_ID, M.AGREEMENT_TYPE_ID,
+                            CASE WHEN M.MULTINATIONAL_BUSINESS_NAME IS NULL THEN '' ELSE MULTINATIONAL_BUSINESS_NAME END as MULTINATIONAL_BUSINESS_NAME,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
@@ -192,6 +210,42 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+            
+            <Dimension name="Multinational business name" caption="Name of the Multinational business"
+                       table="CP14UNCTPartners" visible="true">
+                 <Attributes>
+                    <Attribute name="Multinational business name" caption="Name of the Multinational business"
+                               keyColumn="MULTINATIONAL_BUSINESS_NAME"
+                               hierarchyAllMemberName="All Multinational business names"
+                               hierarchyCaption="All Multinational business names" 
+                               levelType="Regular" datatype="String" >
+                    </Attribute>
+                </Attributes>
+            </Dimension>
+            
+            <Dimension name="Partnership Type" caption="Partnership Type" table="PartnershipType"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Partnership Type" caption="Partnership Type" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Partnership Types" hierarchyCaption="All Partnership Types"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            
+            <Dimension name="Agreement Type" caption="Agreement Type" table="AgreementType"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Agreement Type" caption="Agreement Type" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Agreement Types" hierarchyCaption="All Agreement Types"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -208,6 +262,9 @@
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                     <ForeignKeyLink dimension="Partner"  foreignKeyColumn="PARTNER_ID"/>
+                    <FactLink dimension="Multinational business name" />
+                    <ForeignKeyLink dimension="Partnership Type"  foreignKeyColumn="PARTNERSHIP_TYPE_ID"/>
+                    <ForeignKeyLink dimension="Agreement Type"  foreignKeyColumn="AGREEMENT_TYPE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
