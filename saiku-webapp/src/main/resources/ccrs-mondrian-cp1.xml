@@ -248,6 +248,46 @@
 		</Rows>
 	</InlineTable>
 
+        <Query alias="CP1OMTMember">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            M.ID, M.PARENT_ID, M.AGENCY_ID,
+                            CASE WHEN M.NAME IS NULL THEN '' ELSE M.NAME END as NAME,
+                            CASE WHEN M.EMAIL IS NULL THEN '' ELSE M.EMAIL END as EMAIL,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from
+                            CP1OMTMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND
+                            CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP1OMTMember">
+	        <ColumnDefs>
+	            <ColumnDef name="id" type="Numeric" />
+	            <ColumnDef name="answer" type="String" />
+	        </ColumnDefs>
+	        <Key>
+	            <Column name="id" />
+	        </Key>
+	        <Rows>
+	            <Row>
+	                <Value column="id">0</Value>
+	                <Value column="answer">No</Value>
+	            </Row>
+	            <Row>
+	                <Value column="id">1</Value>
+	                <Value column="answer">Yes</Value>
+	            </Row>
+	        </Rows>
+	    </InlineTable>
+        
         <Query alias="CP1InteragencyGroups">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -512,6 +552,131 @@
         </MeasureGroups>
     </Cube>
 
+    <!--*************************************************************************
+    ***** CP1 OMT Members
+    *************************************************************************-->
+    
+    <Cube name="OMT Members" caption="OMT Members" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1UnctMember' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP1OMTMember" visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <!-- N.1.36 -->
+            <Dimension name="Name" caption="OMT Member Name" table="CP1OMTMember" visible="true">
+                <Attributes>
+                    <Attribute name="Name" keyColumn="NAME"
+                               hierarchyAllMemberName="All OMT Member Names" hierarchyCaption="All OMT Member Names"
+                               datatype="String" levelType="Regular" />
+                </Attributes>
+            </Dimension>
+            
+            <!-- N.1.37 -->
+            <Dimension name="Email" caption="Email" table="CP1OMTMember" visible="true">
+                <Attributes>
+                    <Attribute name="Email" keyColumn="EMAIL"
+                               hierarchyAllMemberName="All Emails" hierarchyCaption="All Emails"
+                               datatype="String" levelType="Regular" />
+                </Attributes>
+            </Dimension>
+            
+            <Dimension name="UNAgency" caption="UNAgency" table="UNAgency"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Agency" caption="Agency" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Agencies" hierarchyCaption="All Agencies"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>            
+        </Dimensions>
+        
+        <MeasureGroups>
+            <MeasureGroup name="CP1 OMT Measures" table="CP1OMTMember">
+                <Measures>
+                    <Measure name="Count" caption="Number of OMT Members" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="Name" />
+                    <FactLink dimension="Email" />
+                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+    
     <!--*************************************************************************
     ***** CP1 Interagency Groups
     *************************************************************************-->
