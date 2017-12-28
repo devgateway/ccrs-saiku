@@ -36,6 +36,14 @@
                 </SQL>
             </ExpressionView>
         </Query>
+        
+        <Query alias="YesNoNAQuestion">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='YesNoNAQuestion']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="CP14UNCTPartners">
             <ExpressionView>
@@ -80,9 +88,27 @@
                             CASE WHEN cp14.HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG = TRUE THEN 1 ELSE 0 END as HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG,
                             CASE WHEN cp14.HAS_OPEN_DATA_TRANSPARENCY_POLICIES = TRUE THEN 1 ELSE 0 END as HAS_OPEN_DATA_TRANSPARENCY_POLICIES,
                             CASE WHEN cp14.PARTICIPATES_IN_CROSS_BORDER_INITIATIVES = TRUE THEN 1 ELSE 0 END as PARTICIPATES_IN_CROSS_BORDER_INITIATIVES,
+                            CASE WHEN cp14.JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT = TRUE THEN 1 ELSE 0 END as JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT,
+                            CASE WHEN cp14.GOVERNMENTSDGREPORT_PUBLISHED = TRUE THEN 1 ELSE 0 END as GOVERNMENTSDGREPORT_PUBLISHED,
+                            CASE WHEN c.DATA_ACTIVITY_WITH_PRIVATE_SECTOR = TRUE THEN 1 ELSE 0 END as DATA_ACTIVITY_WITH_PRIVATE_SECTOR,
+                            CASE WHEN c.DATA_ACTIVITY_WITH_CIVIL_SOCIETY = TRUE THEN 1 ELSE 0 END as DATA_ACTIVITY_WITH_CIVIL_SOCIETY,
+                            CASE WHEN s.MEASUREMENT_AND_REPORTING = TRUE THEN 1 ELSE 0 END as MEASUREMENT_AND_REPORTING,
+                            CASE WHEN s.UN_PROVIDED_MEASUREMENT_AND_REPORTING = TRUE THEN 1 ELSE 0 END as UN_PROVIDED_MEASUREMENT_AND_REPORTING,
+                            CASE WHEN s.MAINSTREAMING = TRUE THEN 1 ELSE 0 END as MAINSTREAMING,
+                            CASE WHEN s.UN_PROVIDED_MAINSTREAMING = TRUE THEN 1 ELSE 0 END as UN_PROVIDED_MAINSTREAMING,
+                            CASE WHEN s.GENERAL_ORIENTATION = TRUE THEN 1 ELSE 0 END as GENERAL_ORIENTATION,
+                            CASE WHEN s.UN_PROVIDED_GENERAL_ORIENTATION = TRUE THEN 1 ELSE 0 END as UN_PROVIDED_GENERAL_ORIENTATION,
+                            CASE WHEN s.REQUESTS_ON_SPECIFICSDGS = TRUE THEN 1 ELSE 0 END as REQUESTS_ON_SPECIFICSDGS,
+                            CASE WHEN s.UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS = TRUE THEN 1 ELSE 0 END as UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS,
+                            CASE WHEN r.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END as HASUNSUPPORT,
+                            CASE WHEN r.INTERAGENCY_EFFORT = TRUE THEN 1 ELSE 0 END as REPORT_INTERAGENCY_EFFORT,
+                            r.USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP14EMERGING_ISSUES cp14, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
+                        FROM
+                            CP14EMERGING_ISSUES cp14, CP14COMMONUNDATA_STRATEGY c, CP14SDGSUPPORT s, CP14GOVERNMENTSDGREPORT r,
+                            CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
+                            cp14.ID = c.PARENT_ID AND cp14.ID = s.PARENT_ID AND cp14.ID = r.PARENT_ID AND
                             cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             cp14.DESIGNATION != 'AQ' AND cp14.DESIGNATION != 'DOCO' AND cp14.DESIGNATION = bc.iso2 and
                             cp14.designation = v.designation and v.entity_year = cp14.ENTITY_YEAR
@@ -106,6 +132,19 @@
 		<InlineTable alias="BUDGET_ACTIVITY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="COMMON_INTERAGENCY_WORKPLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="USEIATISTANDARDS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="DATA_ACTIVITY_WITH_PRIVATE_SECTOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="DATA_ACTIVITY_WITH_CIVIL_SOCIETY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="MEASUREMENT_AND_REPORTING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="UN_PROVIDED_MEASUREMENT_AND_REPORTING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="MAINSTREAMING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="UN_PROVIDED_MAINSTREAMING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="GENERAL_ORIENTATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="UN_PROVIDED_GENERAL_ORIENTATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="REQUESTS_ON_SPECIFICSDGS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="GOVERNMENTSDGREPORT_PUBLISHED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="HASUNSUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -457,6 +496,172 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+            <!-- N.14.1 -->
+            <Dimension name="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT"
+                       caption="Does the UNCT have a joint UN initiative on data or statistics?"
+                       table="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT"
+                               caption="Does the UNCT have a joint UN initiative on data or statistics?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.3 -->
+            <Dimension name="DATA_ACTIVITY_WITH_PRIVATE_SECTOR"
+                       caption="Does this include data activity with private sector?"
+                       table="DATA_ACTIVITY_WITH_PRIVATE_SECTOR" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="DATA_ACTIVITY_WITH_PRIVATE_SECTOR"
+                               caption="Does this include data activity with private sector?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.5 -->
+            <Dimension name="DATA_ACTIVITY_WITH_CIVIL_SOCIETY"
+                       caption="Does this include data activity with civil society?"
+                       table="DATA_ACTIVITY_WITH_CIVIL_SOCIETY" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="DATA_ACTIVITY_WITH_CIVIL_SOCIETY"
+                               caption="Does this include data activity with civil society?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.21.q1 -->
+            <Dimension name="MEASUREMENT_AND_REPORTING"
+                       caption="Did the government request support for SDG Measurement and Reporting?"
+                       table="MEASUREMENT_AND_REPORTING" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="MEASUREMENT_AND_REPORTING"
+                               caption="Did the government request support for SDG Measurement and Reporting?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.20.q1 -->
+            <Dimension name="UN_PROVIDED_MEASUREMENT_AND_REPORTING"
+                       caption="Did the UN provide support for SDG Measurement and Reporting?"
+                       table="UN_PROVIDED_MEASUREMENT_AND_REPORTING" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="UN_PROVIDED_MEASUREMENT_AND_REPORTING"
+                               caption="Did the UN provide support for SDG Measurement and Reporting?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.21.q2 -->
+            <Dimension name="MAINSTREAMING"
+                       caption="Did the government request support for Mainstreaming SDG in National Development Plans?"
+                       table="MAINSTREAMING" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="MAINSTREAMING"
+                               caption="Did the government request support for Mainstreaming SDG in National Development Plans?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.20.q2 -->
+            <Dimension name="UN_PROVIDED_MAINSTREAMING"
+                       caption="Did the UN provide support for Mainstreaming SDG in National Development Plans?"
+                       table="UN_PROVIDED_MAINSTREAMING" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="UN_PROVIDED_MAINSTREAMING"
+                               caption="Did the UN provide support for Mainstreaming SDG in National Development Plans?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.21.q3 -->
+            <Dimension name="GENERAL_ORIENTATION"
+                       caption="Did the government request support for General Orientation on SDGs?"
+                       table="GENERAL_ORIENTATION" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="GENERAL_ORIENTATION"
+                               caption="Did the government request support for General Orientation on SDGs?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.20.q3 -->
+            <Dimension name="UN_PROVIDED_GENERAL_ORIENTATION"
+                       caption="Did the UN provide support for General Orientation on SDGs?"
+                       table="UN_PROVIDED_GENERAL_ORIENTATION" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="UN_PROVIDED_GENERAL_ORIENTATION"
+                               caption="Did the UN provide support for General Orientation on SDGs?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.21.q4 -->
+            <Dimension name="REQUESTS_ON_SPECIFICSDGS"
+                       caption="Did the government request support on specific SDGs?"
+                       table="REQUESTS_ON_SPECIFICSDGS" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="REQUESTS_ON_SPECIFICSDGS"
+                               caption="Did the government request support on specific SDGs?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.20.q4 -->
+            <Dimension name="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS"
+                       caption="Did the UN provide support on specific SDGs?"
+                       table="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS"
+                               caption="Did the UN provide support on specific SDGs?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.8 -->
+            <Dimension name="GOVERNMENTSDGREPORT_PUBLISHED"
+                       caption="Has your partner government published a Country-led SDG Report this year?"
+                       table="GOVERNMENTSDGREPORT_PUBLISHED" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="GOVERNMENTSDGREPORT_PUBLISHED"
+                               caption="Has your partner government published a Country-led SDG Report this year?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.9 -->
+            <Dimension name="HASUNSUPPORT"
+                       caption="Has the UN supported the Government in producing the report?"
+                       table="HASUNSUPPORT" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="HASUNSUPPORT"
+                               caption="Has the UN supported the Government in producing the report?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.11 -->
+            <Dimension name="REPORT_INTERAGENCY_EFFORT"
+                       caption="Was the support provided as an interagency effort?"
+                       table="INTERAGENCY_EFFORT" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
+                    <Attribute name="REPORT_INTERAGENCY_EFFORT"
+                               caption="Was the support provided as an interagency effort?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.14.13 -->
+            <Dimension name="usedForVoluntaryNationalReview" caption="Was the support provided as an interagency effort?"
+                       table="YesNoNAQuestion" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+                    <Attribute name="usedForVoluntaryNationalReview" caption="Was the support provided as an interagency effort?"
+                               keyColumn="LABEL" approxRowCount="3" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -524,6 +729,63 @@
                     <!--14.6-->
                     <Measure name="CrossBorderInitiatives" caption="Count of UNCT participate in cross-border initiatives" column="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    
+                    <!--N.14.1-->
+                    <Measure name="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT" caption="Count of UNCT that have a joint UN initiative on data or statistics"
+                             column="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.3-->
+                    <Measure name="DATA_ACTIVITY_WITH_PRIVATE_SECTOR" caption="Count of data activity with private sector"
+                             column="DATA_ACTIVITY_WITH_PRIVATE_SECTOR"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.5-->
+                    <Measure name="DATA_ACTIVITY_WITH_CIVIL_SOCIETY" caption="Count of data activity with civil society"
+                             column="DATA_ACTIVITY_WITH_CIVIL_SOCIETY"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                
+                    <!--N.14.21.q1-->
+                    <Measure name="MEASUREMENT_AND_REPORTING" caption="Count of government requests to support for SDG Measurement and Reporting"
+                             column="MEASUREMENT_AND_REPORTING"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.20.q1-->
+                    <Measure name="UN_PROVIDED_MEASUREMENT_AND_REPORTING" caption="Count of UN provided support for SDG Measurement and Reporting"
+                             column="UN_PROVIDED_MEASUREMENT_AND_REPORTING"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.21.q2-->
+                    <Measure name="MAINSTREAMING" caption="Count of government requests to support for Mainstreaming SDG in National Development Plans"
+                             column="MAINSTREAMING"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.20.q2-->
+                    <Measure name="UN_PROVIDED_MAINSTREAMING" caption="Count of UN provided support for Mainstreaming SDG in National Development Plans"
+                             column="UN_PROVIDED_MAINSTREAMING"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.21.q3-->
+                    <Measure name="GENERAL_ORIENTATION" caption="Count of government requests to support for General Orientation on SDGs"
+                             column="GENERAL_ORIENTATION"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.20.q3-->
+                    <Measure name="UN_PROVIDED_GENERAL_ORIENTATION" caption="Count of UN provided support for General Orientation on SDGs"
+                             column="UN_PROVIDED_GENERAL_ORIENTATION"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.21.q4-->
+                    <Measure name="REQUESTS_ON_SPECIFICSDGS" caption="Count of government requests to support on specific SDGs"
+                             column="REQUESTS_ON_SPECIFICSDGS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.20.q4-->
+                    <Measure name="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS" caption="Count of UN provided support on specific SDGs"
+                             column="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.8-->
+                    <Measure name="GOVERNMENTSDGREPORT_PUBLISHED" caption="Count of partner governments that published a Country-led SDG Report this year"
+                             column="GOVERNMENTSDGREPORT_PUBLISHED"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.9-->
+                    <Measure name="HASUNSUPPORT" caption="Count of UN supported the Government in producing the report"
+                             column="HASUNSUPPORT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!--N.14.11-->
+                    <Measure name="REPORT_INTERAGENCY_EFFORT" caption="Count of UN supported the Government in producing the report as an interagency effort"
+                             column="REPORT_INTERAGENCY_EFFORT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -546,7 +808,22 @@
                     <ForeignKeyLink dimension="BUDGET_ACTIVITY" foreignKeyColumn="BUDGET_ACTIVITY"/>
                     <ForeignKeyLink dimension="COMMON_INTERAGENCY_WORKPLAN" foreignKeyColumn="COMMON_INTERAGENCY_WORKPLAN"/>	
                     <ForeignKeyLink dimension="USEIATISTANDARDS" foreignKeyColumn="USEIATISTANDARDS"/>
-					<ForeignKeyLink dimension="JOINTUNCTEFFORT" foreignKeyColumn="JOINTUNCTEFFORT"/>                               
+					<ForeignKeyLink dimension="JOINTUNCTEFFORT" foreignKeyColumn="JOINTUNCTEFFORT"/>
+					<ForeignKeyLink dimension="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT" foreignKeyColumn="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT"/>
+					<ForeignKeyLink dimension="DATA_ACTIVITY_WITH_PRIVATE_SECTOR" foreignKeyColumn="DATA_ACTIVITY_WITH_PRIVATE_SECTOR"/>
+					<ForeignKeyLink dimension="DATA_ACTIVITY_WITH_CIVIL_SOCIETY" foreignKeyColumn="DATA_ACTIVITY_WITH_CIVIL_SOCIETY"/>
+					<ForeignKeyLink dimension="MEASUREMENT_AND_REPORTING" foreignKeyColumn="MEASUREMENT_AND_REPORTING"/>
+					<ForeignKeyLink dimension="UN_PROVIDED_MEASUREMENT_AND_REPORTING" foreignKeyColumn="UN_PROVIDED_MEASUREMENT_AND_REPORTING"/>
+					<ForeignKeyLink dimension="MAINSTREAMING" foreignKeyColumn="MAINSTREAMING"/>
+					<ForeignKeyLink dimension="UN_PROVIDED_MAINSTREAMING" foreignKeyColumn="UN_PROVIDED_MAINSTREAMING"/>
+					<ForeignKeyLink dimension="GENERAL_ORIENTATION" foreignKeyColumn="GENERAL_ORIENTATION"/>
+					<ForeignKeyLink dimension="UN_PROVIDED_GENERAL_ORIENTATION" foreignKeyColumn="UN_PROVIDED_GENERAL_ORIENTATION"/>
+					<ForeignKeyLink dimension="REQUESTS_ON_SPECIFICSDGS" foreignKeyColumn="REQUESTS_ON_SPECIFICSDGS"/>
+					<ForeignKeyLink dimension="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS" foreignKeyColumn="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS"/>
+					<ForeignKeyLink dimension="GOVERNMENTSDGREPORT_PUBLISHED" foreignKeyColumn="GOVERNMENTSDGREPORT_PUBLISHED"/>
+					<ForeignKeyLink dimension="HASUNSUPPORT" foreignKeyColumn="HASUNSUPPORT"/>
+					<ForeignKeyLink dimension="REPORT_INTERAGENCY_EFFORT" foreignKeyColumn="REPORT_INTERAGENCY_EFFORT"/>
+					<ForeignKeyLink dimension="usedForVoluntaryNationalReview" foreignKeyColumn="USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
