@@ -4,6 +4,17 @@
         <Annotation name="desc">Cube Schema for CCRS - Annual Coordination Framework</Annotation>
     </Annotations>
 
+    <Role name="ROLE_VIEWER">
+        <SchemaGrant access="all">
+            <CubeGrant cube="Workplan1" access="none" />
+            <CubeGrant cube="Workplan2" access="none" />
+        </SchemaGrant>
+    </Role>
+
+    <Role name="ROLE_EDITOR">
+        <SchemaGrant access="all" />
+    </Role>
+
     <PhysicalSchema>
         <Query alias="BASE_COUNTRY">
             <ExpressionView>
