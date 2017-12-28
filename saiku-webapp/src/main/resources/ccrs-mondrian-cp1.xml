@@ -584,7 +584,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1UnctMember' key="Dimension Id">
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1OMTMember' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
