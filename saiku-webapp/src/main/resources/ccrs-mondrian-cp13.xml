@@ -66,6 +66,44 @@
         <InlineTable alias="DAOCP13GenderEqualityScorecard"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
+        <Query alias="UNSwapScorecard">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNSwapScorecard']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+
+        <Query alias="UNSwapGenderEqualityRating">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNSwapGenderEqualityRating']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        
+        <Query alias="CP13UNCTUNSWAPScorecard">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        SELECT
+                            S.ID, S.PARENT_ID, S.SCORECARD_ID, S.GENDER_EQUALITY_RATING_ID,
+                            CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN,
+                            CP13.DESIGNATION, CP13.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM
+                            CP13UNSWAP_SCORECARD_AREA_SCORE S, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
+                        WHERE
+                            S.PARENT_ID = CP13.ID AND
+                            CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR AND
+                            CP13.DESIGNATION != 'AQ' AND CP13.DESIGNATION != 'DOCO' AND CP13.DESIGNATION = bc.iso2 AND
+                            CP13.designation = v.designation and v.entity_year = CP13.ENTITY_YEAR
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        <InlineTable alias="DAOCP13UNCTUNSWAPScorecard"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+
         <Query alias="CP13GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -223,6 +261,144 @@
                     <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT" />
                     <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+    
+    <!--*************************************************************************
+    ***** CP13 UNCT UN-SWAP Scorecard
+    *************************************************************************-->
+    <Cube name="UNCT UN-SWAP Scorecard" caption="UNCT UN-SWAP Scorecard" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Region" caption="Region" keyColumn="REGION"
+                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ISO2"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP13UNCTUNSWAPScorecard'
+                       key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="Year" caption="Year" table="CP13UNCTUNSWAPScorecard"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
+                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <!-- 13.4.C.2.1 -->
+            <Dimension name="UNSwapScorecard" caption="UNCT UN-SWAP Scorecard Performance Areas" table="UNSwapScorecard"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="UNSwapScorecard" caption="UNCT UN-SWAP Scorecard" keyColumn="LABEL"
+                               hierarchyAllMemberName="All UNCT UN-SWAP Scorecards"
+                               hierarchyCaption="All UNCT UN-SWAP Scorecards"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <!-- 13.4.C.2.2 -->
+            <Dimension name="UNSwapGenderEqualityRating" caption="Rating" table="UNSwapGenderEqualityRating"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="UNSwapGenderEqualityRating" caption="Rating" keyColumn="LABEL"
+                               hierarchyAllMemberName="All Ratings" hierarchyCaption="All Ratings"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <!-- 13.4.C.2.3 -->
+            <Dimension name="hasUNCTDevelopedManagementPlan" caption="Has the UNCT developed a management response/action plan to address the recommendations for the scorecard?"
+                       table='HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="hasUNCTDevelopedManagementPlan" caption="Has the UNCT developed a management response/action plan to address the recommendations?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Gender Equality Scorecard" table="CP13UNCTUNSWAPScorecard">
+                <Measures>
+                    <Measure name="Count" caption="Number of UNCT UN-SWAP Scorecard" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasUNCTDevelopedManagementPlanCount" caption="Count of UNCT that developed a management response/action plan to address the recommendations"
+                             column="HASUNCTDEVELOPED_MANAGEMENT_PLAN"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <FactLink dimension="Year" />
+                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="UNSwapScorecard" foreignKeyColumn="SCORECARD_ID" />
+                    <ForeignKeyLink dimension="UNSwapGenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
+                    <ForeignKeyLink dimension="hasUNCTDevelopedManagementPlan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
