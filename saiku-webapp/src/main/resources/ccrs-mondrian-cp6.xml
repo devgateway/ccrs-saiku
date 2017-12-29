@@ -28,6 +28,14 @@
                 </SQL>
             </ExpressionView>
         </Query>
+        
+        <Query alias="UNCTAdvocacyModel">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNCTAdvocacyModel']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="CP6JointAdvocacyStrategies">
             <ExpressionView>
@@ -52,7 +60,8 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR, cp6.UNCT_ADVOCACY_MODEL_ID,
+                            CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE 0 END as HAS_COMMONUNCTWEBSITE,
                             CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN cp6.COMMONUNCTURL ELSE null END as COMMONUNCTURL,                                                       
                             CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN 1 ELSE 0 END as HAS_COMMON_FACEBOOK_PAGE,
@@ -63,6 +72,9 @@
                             CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COORDINATOR_TWITTER_ACCOUNT,
                             CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = TRUE THEN 1 ELSE 0 END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING,
                             CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES,
+                            CASE WHEN cp6.IS_COMMUNICATIONS_PART_OFUNDAF = TRUE THEN 1 ELSE 0 END as IS_COMMUNICATIONS_PART_OFUNDAF,
+                            CASE WHEN cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS = TRUE THEN 1 ELSE 0 END as HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS,
+                            CASE WHEN cp6.HAS_VISUAL_IDENTITY_ESTABLISHED = TRUE THEN 1 ELSE 0 END as HAS_VISUAL_IDENTITY_ESTABLISHED,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP6JOINT_COMMUNICATION_ADVOCACY cp6, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
@@ -80,6 +92,9 @@
         <InlineTable alias="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="HAS_COORDINATOR_TWITTER_ACCOUNT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="IS_COMMUNICATIONS_PART_OFUNDAF"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+		<InlineTable alias="HAS_VISUAL_IDENTITY_ESTABLISHED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -380,6 +395,57 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+            <!-- N.6.1 -->
+            <Dimension name="UNCTAdvocacyModel" caption="The model that best describes the UNCT's work on advocacy"
+                       table="UNCTAdvocacyModel" key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="UNCTAdvocacyModel" caption="The model that best describes the UNCT's work on advocacy" keyColumn="LABEL"
+                               hierarchyAllMemberName="All UNCT Advocacy Models" hierarchyCaption="All UNCT Advocacy Models"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            <!-- N.6.3 -->
+            <Dimension name="IS_COMMUNICATIONS_PART_OFUNDAF" caption="Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?"
+                       table="IS_COMMUNICATIONS_PART_OFUNDAF" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="IS_COMMUNICATIONS_PART_OFUNDAF" caption="Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.6.4 -->
+            <Dimension name="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" caption="Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?"
+                       table="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" caption="Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+            <!-- N.6.5 -->
+            <Dimension name="HAS_VISUAL_IDENTITY_ESTABLISHED" caption="Does the UNCT have an established visual identity for joint UN communications?"
+                       table="HAS_VISUAL_IDENTITY_ESTABLISHED" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="HAS_VISUAL_IDENTITY_ESTABLISHED" caption="Does the UNCT have an established visual identity for joint UN communications?"
+                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -405,6 +471,18 @@
 
                     <Measure name="hasJointAdvocacyStrategiesOnNormativeIssues" caption="Count of 'Do you have any joint advocacy strategies to communicate on human rights or other normative issues?'" column="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!-- N.6.3 -->
+                    <Measure name="isCommunicationsPartOfUNDAF" caption="Count of 'Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?'"
+                             column="IS_COMMUNICATIONS_PART_OFUNDAF"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!-- N.6.4 -->
+                    <Measure name="hasCommunicationTogetherInTimeCrisis" caption="Count of 'Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?'"
+                             column="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!-- N.6.5 -->
+                    <Measure name="hasVisualIdentityEstablished" caption="Count of 'Does the UNCT have an established visual identity for joint UN communications?'"
+                             column="HAS_VISUAL_IDENTITY_ESTABLISHED"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -422,7 +500,11 @@
                     <ForeignKeyLink dimension="Do you have a common Twitter account for the UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT"/>
                     <ForeignKeyLink dimension="Has the UNCT agreed on common messaging on any topic"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"/>
                     <ForeignKeyLink dimension="Do you have any joint advocacy strategies to communicate on human rights or other normative issues"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"/>
-					<ForeignKeyLink dimension="HAS_COORDINATOR_TWITTER_ACCOUNT"  foreignKeyColumn="HAS_COORDINATOR_TWITTER_ACCOUNT"/>                    
+					<ForeignKeyLink dimension="HAS_COORDINATOR_TWITTER_ACCOUNT"  foreignKeyColumn="HAS_COORDINATOR_TWITTER_ACCOUNT"/>
+					<ForeignKeyLink dimension="UNCTAdvocacyModel" foreignKeyColumn="UNCT_ADVOCACY_MODEL_ID" />
+					<ForeignKeyLink dimension="IS_COMMUNICATIONS_PART_OFUNDAF"  foreignKeyColumn="IS_COMMUNICATIONS_PART_OFUNDAF"/>
+					<ForeignKeyLink dimension="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"  foreignKeyColumn="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"/>
+					<ForeignKeyLink dimension="HAS_VISUAL_IDENTITY_ESTABLISHED"  foreignKeyColumn="HAS_VISUAL_IDENTITY_ESTABLISHED"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
