@@ -44,6 +44,22 @@
                 </SQL>
             </ExpressionView>
         </Query>
+        
+        <Query alias="SSSupportRole">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SSSupportRole']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        
+        <Query alias="CollectiveApproachToSSCooperation">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CollectiveApproachToSSCooperation']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="CP11BudgetSupport">
             <ExpressionView>
@@ -70,7 +86,7 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp11.ID, cp11.DESIGNATION, cp11.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp11.ID, cp11.DESIGNATION, cp11.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 
                             CASE WHEN cp11.HAS_SUPPORTSSCOOPERATION = TRUE THEN 1 ELSE 0 END as HAS_SUPPORTSSCOOPERATION,
                             HASSWAPS_ID,
                             CASE WHEN cp11.HAS_DIRECT_BUDGET_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_DIRECT_BUDGET_SUPPORT,
@@ -80,11 +96,16 @@
                             CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.SUPPORTED_BYUN = TRUE THEN 1 ELSE 0 END ELSE null END as SUPPORTED_BYUN,
                             CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.UNCT_REPORT_TOAIMS = TRUE THEN 1 ELSE 0 END ELSE null END as UNCT_REPORT_TOAIMS,
                             CASE WHEN cp11.MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP = TRUE THEN 1 ELSE 0 END as MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11, CP1GENERAL_PROFILE cp1, CP11AIMS cp11aims, BASE_COUNTRY bc, v_cp_validated_designations v
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN cp11.HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT,
+                            cp11supportsscooperation.ROLE_ID,
+                            cp11supportsscooperation.COLLECTIVE_APPROACH_ID 
+                        from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11, CP1GENERAL_PROFILE cp1, CP11AIMS cp11aims, BASE_COUNTRY bc, v_cp_validated_designations v,
+                            CP11SUPPORTSSCOOPERATION cp11supportsscooperation
                         WHERE
                             cp11.DESIGNATION = cp1.DESIGNATION AND cp11.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             CP11AIMS.PARENT_ID = cp11.id AND
+                            CP11.ID = cp11supportsscooperation.PARENT_ID AND
                             cp11.DESIGNATION != 'AQ' AND cp11.DESIGNATION != 'DOCO' AND cp11.DESIGNATION = bc.iso2 and
                             cp11.designation = v.designation and v.entity_year = cp11.ENTITY_YEAR
                     ]]>
@@ -100,6 +121,7 @@
         <InlineTable alias="MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="SUPPORTED_BYUN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
         <InlineTable alias="UNCT_REPORT_TOAIMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
+        <InlineTable alias="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -378,6 +400,42 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="Did UN Requested Cooperation" caption="Has the government requested the UN system to support its cooperation with other developing countries?" table='HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Did UN Requested Cooperation" caption="Has the government requested the UN system to support its cooperation with other developing countries?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="supportRole" caption="South-South Support Role" table="SSSupportRole"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="supportRole" caption="South-South Support Role" keyColumn="LABEL"
+                               hierarchyAllMemberName="All supportRole" hierarchyCaption="All South-South Support Roles"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension name="collectiveApproach" caption="Is the UNCT taking a collective approach to South-South cooperation?" table="CollectiveApproachToSSCooperation"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="collectiveApproach" caption="Is the UNCT taking a collective approach to South-South cooperation?" keyColumn="LABEL"
+                               hierarchyAllMemberName="All collectiveApproach" hierarchyCaption="All options for 'Is the UNCT taking a collective approach to South-South cooperation?'"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -406,6 +464,9 @@
 
                     <Measure name="unctReportToAIMS" caption="Count of 'Does the UNCT report to the AIMS?'" column="UNCT_REPORT_TOAIMS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="unRequestedCooperation" caption="Count of 'Has the government requested the UN system to support its cooperation with other developing countries?'" column="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
@@ -422,6 +483,9 @@
                     <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS"/>
                     <ForeignKeyLink dimension="Is the system supported by the UNCT" foreignKeyColumn="SUPPORTED_BYUN"/>
                     <ForeignKeyLink dimension="Does the UNCT report to the AIMS" foreignKeyColumn="UNCT_REPORT_TOAIMS"/>
+                    <ForeignKeyLink dimension="Did UN Requested Cooperation" foreignKeyColumn="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT"/>
+                    <ForeignKeyLink dimension="supportRole" foreignKeyColumn="ROLE_ID"/>
+                    <ForeignKeyLink dimension="collectiveApproach" foreignKeyColumn="COLLECTIVE_APPROACH_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
