@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Root>
+    <Query alias="BASE_COUNTRY">
+        <ExpressionView>
+            <SQL dialect="generic">
+                <![CDATA[
+                    select
+                        ISO2, REGION, NAME
+                    from
+                        BASE_COUNTRY, CATEGORY
+                    where
+                        BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY and DTYPE = 'CountryRegion' and REGION <> 'Uncategorized'
+                ]]>
+            </SQL>
+        </ExpressionView>
+    </Query>
+    
+    <Query alias="DUMMY_YEAR">
+        <ExpressionView>
+            <SQL dialect="generic">
+                <![CDATA[SELECT ENTITY_YEAR FROM V_CP_VALIDATED_DESIGNATIONS]]>
+            </SQL>
+        </ExpressionView>
+    </Query>
+    
+    <InlineTable alias="YesNoTable">
+        <ColumnDefs>
+            <ColumnDef name="id" type="Numeric" />
+            <ColumnDef name="answer" type="String" />
+        </ColumnDefs>
+        <Key>
+            <Column name="id" />
+        </Key>
+        <Rows>
+            <Row>
+                <Value column="id">0</Value>
+                <Value column="answer">No</Value>
+            </Row>
+            <Row>
+                <Value column="id">1</Value>
+                <Value column="answer">Yes</Value>
+            </Row>
+        </Rows>
+    </InlineTable>
+</Root>
