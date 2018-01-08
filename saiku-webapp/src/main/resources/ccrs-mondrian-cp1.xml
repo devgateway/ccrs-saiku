@@ -6,190 +6,9 @@
 
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select b.ISO2 as ISO2, c.REGION as REGION, b.NAME as NAME, b.ID as BASE_COUNTRY_ID from BASE_COUNTRY b, CATEGORY c where b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion' and c.REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="UNAgency">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNAgency']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SecondaryCountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="YesNoNAQuestion">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='YesNoNAQuestion']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="RepresentativePostLevelCategory">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='RepresentativePostLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-         <Query alias="AgencyRepresentativeTitleCategory">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNAgencyRepresentativeTitle']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-        
-
-        <Query alias="GovernmentRole">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='GovernmentRole']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP1q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP2q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP3q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP4q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP5q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP6q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP7q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP8q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP9q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP10q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP11q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP12q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP13q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP14q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP15q">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
 
         <Query alias="CP1UnctMember">
             <ExpressionView>
@@ -209,44 +28,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-	<InlineTable alias="NON_RESIDENT_AGENCY_TABLE">
-		<ColumnDefs>
-			<ColumnDef name="id" type="Numeric" />
-			<ColumnDef name="answer" type="String" />
-		</ColumnDefs>
-		<Key>
-			<Column name="id" />
-		</Key>
-		<Rows>
-			<Row>
-				<Value column="id">0</Value>
-				<Value column="answer">No</Value>
-			</Row>
-			<Row>
-				<Value column="id">1</Value>
-				<Value column="answer">Yes</Value>
-			</Row>
-		</Rows>
-	</InlineTable>
-	<InlineTable alias="DAOCP1UnctMember">
-		<ColumnDefs>
-			<ColumnDef name="id" type="Numeric" />
-			<ColumnDef name="answer" type="String" />
-		</ColumnDefs>
-		<Key>
-			<Column name="id" />
-		</Key>
-		<Rows>
-			<Row>
-				<Value column="id">0</Value>
-				<Value column="answer">No</Value>
-			</Row>
-			<Row>
-				<Value column="id">1</Value>
-				<Value column="answer">Yes</Value>
-			</Row>
-		</Rows>
-	</InlineTable>
 
         <Query alias="CP1InteragencyGroups">
             <ExpressionView>
@@ -266,9 +47,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP1InteragencyGroups"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="RESULTS_GROUP_DEFINED_BYSOP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="JOINT_WORKPLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP1CoveredCountries">
             <ExpressionView>
@@ -374,12 +152,12 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP1GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="DAO_VISION_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_ANNUAL_REVIEW"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="REPORT_SUBMITTED_TO_GOV"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="BUDGETED_WORKPLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
+    
+    <!--*************************************************************************
+    ***** Shared Dimensions
+    *************************************************************************-->
+    <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
 
     <!--*************************************************************************
     ***** CP1 UNCT Members
@@ -387,123 +165,22 @@
     <Cube name="UNCT Members" caption="UNCT Members" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP1UnctMember" visible="true">
+		        <Attributes>
+		            <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+		        </Attributes>
             </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
+            
+            <Dimension source="CATEGORY" table="UNAgency" caption="UNAgency" />
+            <Dimension source="CATEGORY" table="UNAgencyRepresentativeTitle" caption="Agency Representative Title" />
+            <Dimension source="CATEGORY" table="RepresentativePostLevel" caption="Representative Post Level" />
 
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1UnctMember' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP1UnctMember"
-                       visible="true">
-                <Attributes>
-                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNAgency" caption="UNAgency" table="UNAgency"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Agency" caption="Agency" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Agencies" hierarchyCaption="All Agencies"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="AgencyRepresentativeTitle" caption="Agency Representative Title"
-                       table="AgencyRepresentativeTitleCategory" key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Agency RepresentativeTitle" caption="Agency Representative Title"
-                               keyColumn="LABEL" hierarchyAllMemberName="All Agency Representative Titles"
-                               hierarchyCaption="All Agency Representative Titles" levelType="Regular"
-                               datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="RepresentativePostLevel" caption="Representative Post Level"
-                       table="RepresentativePostLevelCategory" key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="RepresentativePostLevel" caption="Representative Post Level"
-                               keyColumn="LABEL" hierarchyAllMemberName="All Representative Post Levels"
-                               hierarchyCaption="All Representative Post Levels" levelType="Regular"
-                               datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" table='NON_RESIDENT_AGENCY_TABLE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -515,19 +192,13 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->                        
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
-                    <ForeignKeyLink dimension="AgencyRepresentativeTitle"
+                    <ForeignKeyLink dimension="UNAgencyRepresentativeTitle"
                                     foreignKeyColumn="AGENCY_REPRESENTATIVE_TITLE_ID" />
-                                    
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_COUNT"/>
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -540,72 +211,16 @@
     <Cube name="UNCTInteragency Groups" caption="UNCT Interagency Groups" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1InteragencyGroups' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP1InteragencyGroups"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP1InteragencyGroups" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
             <Dimension name="Interagency Group Name" caption="Interagency Group Name" table="CP1InteragencyGroups"
                        key="Dimension Id" visible="true">
@@ -618,41 +233,9 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)" caption="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)?" table='RESULTS_GROUP_DEFINED_BYSOP' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="resultsGroupDefinedBySOP" caption="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Does the Results Group have a Joint Workplan" caption="Does the Results Group have a Joint Workplan?" table='JOINT_WORKPLAN' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="jointWorkplan" caption="Does the Results Group have a Joint Workplan?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is the results group aligned to nationally led sector working groups or theme groups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" table='YesNoNAQuestion' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)" caption="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)?" />
+            <Dimension table="YesNoTable" name="Does the Results Group have a Joint Workplan" caption="Does the Results Group have a Joint Workplan?" />
+            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -668,15 +251,10 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)"  foreignKeyColumn="RESULTS_GROUP_DEFINED_BYSOP_COUNT"/>
                     <ForeignKeyLink dimension="Does the Results Group have a Joint Workplan"  foreignKeyColumn="JOINT_WORKPLAN_COUNT"/>
-                    <ForeignKeyLink dimension="Is the results group aligned to nationally led sector working groups or theme groups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="resultsGroupAlignedToSectorGroups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID"/>
                     <FactLink dimension="Interagency Group Name" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -830,298 +408,37 @@
     <Cube name="CP1GeneralCube" caption="SoPs for Delivering as One" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP1GeneralCube"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP1GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" table="SOP1q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP2question" caption="SoP2 Annual Report on Joint Results" table="SOP2q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP2question" caption="SoP2 Annual Report on Joint Results" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP3question" caption="SoP3 Signed UNDAF" table="SOP3q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP3question" caption="SoP3 Signed UNDAF" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" table="SOP4q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP5question" caption="SoP5 Results Groups Established" table="SOP5q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP5question" caption="SoP5 Results Groups Established" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework" table="SOP6q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP7question" caption="SoP7 Annual Common Budgetary Framework" table="SOP7q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP7question" caption="SoP7 Annual Common Budgetary Framework" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy" table="SOP8q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" table="SOP9q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT" table="SOP10q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT" table="SOP11q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency" table="SOP12q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" table="SOP13q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP14question" caption="SoP14 Joint Communication Strategy" table="SOP14q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP14question" caption="SoP14 Joint Communication Strategy" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            <Dimension name="SoP15question" caption="SoP15 Country Communications Group" table="SOP15q"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SoP15question" caption="SoP15 Country Communications Group" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="DaO Vision" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" table='DAO_VISION_YES_NO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="DaO Vision" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="GovernmentRole" caption="Government Role" table="GovernmentRole"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="GovernmentRole" caption="Government Role" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Has the Joint National/UN Steering Committee conducted an annual review" caption="Has the Joint National/UN Steering Committee conducted an annual review?" table='HAS_ANNUAL_REVIEW' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the Joint National/UN Steering Committee conducted an annual review" caption="Has the Joint National/UN Steering Committee conducted an annual review?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Was the report submitted to the National Government" caption="Was the report submitted to the National Government?" table='REPORT_SUBMITTED_TO_GOV' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Was the report submitted to the National Government" caption="Was the report submitted to the National Government?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" table='BUDGETED_WORKPLAN' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
+            
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP2question" caption="SoP2 Annual Report on Joint Results" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP3question" caption="SoP3 Signed UNDAF" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP5question" caption="SoP5 Results Groups Established." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP7question" caption="SoP7 Annual Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP14question" caption="SoP14 Joint Communication Strategy." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP15question" caption="SoP15 Country Communications Group." />
+            <Dimension table="YesNoTable" name="DaO Vision" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" />
+            <Dimension source="CATEGORY" table="GovernmentRole" caption="Government Role" />
+            <Dimension table="YesNoTable" name="Has the Joint National/UN Steering Committee conducted an annual review" caption="Has the Joint National/UN Steering Committee conducted an annual review?" />
+            <Dimension table="YesNoTable" name="Was the report submitted to the National Government" caption="Was the report submitted to the National Government?" />
+            <Dimension table="YesNoTable" name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -1173,12 +490,7 @@
                              aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
                     <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
@@ -1250,12 +562,7 @@
                              aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
                     <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
@@ -1327,12 +634,7 @@
                              aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
                     <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
@@ -1374,12 +676,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="SoP1question" foreignKeyColumn="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID"/>
                     <ForeignKeyLink dimension="SoP2question" foreignKeyColumn="HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID"/>
                     <ForeignKeyLink dimension="SoP3question" foreignKeyColumn="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
