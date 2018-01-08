@@ -19,6 +19,8 @@ import mondrian.spi.DynamicSchemaProcessor;
  * Generates the schema files based on reusable data and automatic configurations.
  * First it does string based data injections based on TAGs. Then it customizes @@references@@.
  * 
+ * @see <a href="../../../resources/readme.md">readme.md</a> for more details
+ * 
  * @author Nadejda Mandrescu
  */
 public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
@@ -47,6 +49,10 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
+    /**
+     * Name is optional. Explicitly define it when reusing the same category within the same cube
+     * or simplifying an existing dimension that may be already referred in a saved query. Check readme.md for more.
+     */
     private static final Pattern CATEGORY_DIM_PATTERN = Pattern.compile(
             "<Dimension *source=[\"|']CATEGORY[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
     private static final String CATEGORY_DIM_TEMPLATE =
@@ -61,6 +67,11 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                 "</Attributes>\n" +
             "</Dimension>";
     
+    /**
+     * Mondrian loads / refreshes schema one by one under the same thread
+     * (see {@link AbstractConnectionManager#getAllConnections} {@link AbstractConnectionManager#refreshAllConnections})
+     * This is a simple way to share loaded data for other schema definitions to process.
+     */
     private static ThreadLocal<String> sharedPhysicalSchema = new ThreadLocal<>();
     private static ThreadLocal<String> sharedDimensions = new ThreadLocal<>();
     private static ThreadLocal<String> sharedDimensionsLinks = new ThreadLocal<>();
