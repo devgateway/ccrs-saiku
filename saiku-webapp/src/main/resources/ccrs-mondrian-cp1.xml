@@ -8,79 +8,7 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-
-        <Query alias="SOP1PartialImplementationDetails">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SOP1PartialImplementationDetails']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP2PartialImplementationDetails">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SOP2PartialImplementationDetails']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="ReportPublishingModality">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='ReportPublishingModality']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP3PartialImplementationDetails">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SOP3PartialImplementationDetails']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP5PartialImplementationDetails">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SOP5PartialImplementationDetails']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP6PartialImplementationDetails">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SOP6PartialImplementationDetails']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP7PartialImplementationDetails">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SOP7PartialImplementationDetails']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP8PartialImplementationDetails">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SOP8PartialImplementationDetails']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SOP14PartialImplementationDetails">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SOP14PartialImplementationDetails']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->        
 
         <Query alias="CP1UnctMember">
             <ExpressionView>
@@ -214,10 +142,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="COVER_MORE_THAN_ONE_COUNTRY_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="UNDAF_BASED_OR_EQUIVALENT_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="REPORT_INUNCOUNTRY_RESULTS_REPORT_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="REPORT_PUBLICLY_AVAILABLE_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
     
     <!--*************************************************************************
@@ -364,42 +288,9 @@
             <Dimension table="YesNoTable" name="Has the Joint National/UN Steering Committee conducted an annual review" caption="Has the Joint National/UN Steering Committee conducted an annual review?" />
             <Dimension table="YesNoTable" name="Was the report submitted to the National Government" caption="Was the report submitted to the National Government?" />
             <Dimension table="YesNoTable" name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" />
-
-            <Dimension name="Cover More Than One Country" caption="Does your UNCT cover more than one country?" table='COVER_MORE_THAN_ONE_COUNTRY_YES_NO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Cover More Than One Country" caption="Does your UNCT cover more than one country?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint communication strategy based on the UNDAF" caption="Is the joint communication strategy based on the UNDAF or equivalent?" table='UNDAF_BASED_OR_EQUIVALENT_YES_NO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint communication strategy based on the UNDAF" caption="Is the joint communication strategy based on the UNDAF or equivalent?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Report on communication results" caption="Do you report on communication results in the UN Country Results Report?" table='REPORT_INUNCOUNTRY_RESULTS_REPORT_YES_NO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Report on communication results" caption="Do you report on communication results in the UN Country Results Report?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Cover More Than One Country" caption="Does your UNCT cover more than one country?" />
+            <Dimension table="YesNoTable" name="Joint communication strategy based on the UNDAF" caption="Is the joint communication strategy based on the UNDAF or equivalent?" />
+            <Dimension table="YesNoTable" name="Report on communication results" caption="Do you report on communication results in the UN Country Results Report?" />
 
             <Dimension name="Year of Official Request" caption="Year of Official Request" table="CP1GeneralCube"
                        visible="true">
@@ -407,133 +298,25 @@
                     <Attribute name="Year of Official Request" keyColumn="YEAR_OF_OFFICIAL_REQUEST" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="SOP1PartialImplementationDetails" caption="SOP1 Details on partial implementation" table="SOP1PartialImplementationDetails"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SOP1PartialImplementationDetails" caption="SOP1 Details on partial implementation" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SOP2PartialImplementationDetails" caption="SOP2 Details on partial implementation" table="SOP2PartialImplementationDetails"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SOP2PartialImplementationDetails" caption="SOP2 Details on partial implementation" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="ReportPubliclyAvailable" caption="Has the UN country team made their most recent annual results report publicly available?" table='REPORT_PUBLICLY_AVAILABLE_YES_NO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="ReportPubliclyAvailable" caption="Has the UN country team made their most recent annual results report publicly available??" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="ReportPublishingModality" caption="Report Publishing Modality" table="ReportPublishingModality"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="ReportPublishingModality" caption="Report Publishing Modality" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SOP3PartialImplementationDetails" caption="SOP3 Details on partial implementation" table="SOP3PartialImplementationDetails"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SOP3PartialImplementationDetails" caption="SOP3 Details on partial implementation" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SOP5PartialImplementationDetails" caption="SOP5 Details on partial implementation" table="SOP5PartialImplementationDetails"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SOP5PartialImplementationDetails" caption="SOP5 Details on partial implementation" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SOP6PartialImplementationDetails" caption="SOP6 Details on partial implementation" table="SOP6PartialImplementationDetails"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SOP6PartialImplementationDetails" caption="SOP6 Details on partial implementation" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SOP7PartialImplementationDetails" caption="SOP7 Details on partial implementation" table="SOP7PartialImplementationDetails"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SOP7PartialImplementationDetails" caption="SOP7 Details on partial implementation" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SOP8PartialImplementationDetails" caption="SOP8 Details on partial implementation" table="SOP8PartialImplementationDetails"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SOP8PartialImplementationDetails" caption="SOP8 Details on partial implementation" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
+            
+            <Dimension source="CATEGORY" table="SOP1PartialImplementationDetails" caption="SOP1 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP2PartialImplementationDetails" caption="SOP2 Details on partial implementation." />
+            <Dimension table="YesNoTable" name="ReportPubliclyAvailable" caption="Has the UN country team made their most recent annual results report publicly available?" />
+            <Dimension source="CATEGORY" table="ReportPublishingModality" caption="Report Publishing Modality" />
+            <Dimension source="CATEGORY" table="SOP3PartialImplementationDetails" caption="SOP3 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP5PartialImplementationDetails" caption="SOP5 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP6PartialImplementationDetails" caption="SOP6 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP7PartialImplementationDetails" caption="SOP7 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP8PartialImplementationDetails" caption="SOP8 Details on partial implementation." />
+            
             <Dimension name="Total BOS annual savings" caption="What is the projected total BOS annual savings this year? (US Dollars)" table="CP1GeneralCube"
                        visible="true">
                 <Attributes>
                     <Attribute name="Total BOS annual savings" keyColumn="PROJECTED_TOTALBOSSAVINGS_THIS_YEAR" datatype="Numeric" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="SOP14PartialImplementationDetails" caption="SOP14 Details on partial implementation" table="SOP14PartialImplementationDetails"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SOP14PartialImplementationDetails" caption="SOP14 Details on partial implementation" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            
+            <Dimension source="CATEGORY" table="SOP14PartialImplementationDetails" caption="SOP14 Details on partial implementation." />
         </Dimensions>
 
         <MeasureGroups>
