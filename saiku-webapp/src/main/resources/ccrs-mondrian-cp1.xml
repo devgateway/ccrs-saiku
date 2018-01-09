@@ -155,6 +155,8 @@
     ***** Shared Dimensions
     *************************************************************************-->
     <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
+    
+    <Dimension source="CATEGORY" table="UNAgency" caption="UN Agency" />
 
     <!--*************************************************************************
     ***** CP1 UNCT Members
@@ -172,8 +174,8 @@
             </Dimension>
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="UNAgency" />
             
-            <Dimension source="CATEGORY" table="UNAgency" caption="UNAgency" />
             <Dimension source="CATEGORY" table="UNAgencyRepresentativeTitle" caption="Agency Representative Title" />
             <Dimension source="CATEGORY" table="RepresentativePostLevel" caption="Representative Post Level" />
 
@@ -245,7 +247,7 @@
             </Dimension>
             
             <!-- N.1.31 -->
-            <Dimension source="CATEGORY" table="UNAgency" caption="UNAgency" />
+            <Dimension source="UNAgency" />
         </Dimensions>
 
         <MeasureGroups>
