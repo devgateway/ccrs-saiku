@@ -2,8 +2,6 @@ package org.saiku;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -72,9 +70,9 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
      * (see {@link AbstractConnectionManager#getAllConnections} {@link AbstractConnectionManager#refreshAllConnections})
      * This is a simple way to share loaded data for other schema definitions to process.
      */
-    private static ThreadLocal<String> sharedPhysicalSchema = new ThreadLocal<>();
-    private static ThreadLocal<String> sharedDimensions = new ThreadLocal<>();
-    private static ThreadLocal<String> sharedDimensionsLinks = new ThreadLocal<>();
+    private static ThreadLocal<String> sharedPhysicalSchema = new ThreadLocal<String>();
+    private static ThreadLocal<String> sharedDimensions = new ThreadLocal<String>();
+    private static ThreadLocal<String> sharedDimensionsLinks = new ThreadLocal<String>();
     
 
     @Override
@@ -122,7 +120,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private String processCategories(String content) {
         Matcher m = CATEGORY_DIM_PATTERN.matcher(content);
         StringBuilder categorySB = new StringBuilder();
-        Set<String> categoryQueries = new HashSet<>();
+        Set<String> categoryQueries = new HashSet<String>();
         while(m.find()) {
             String categoryDimension = m.group();
             String table = m.group(1).trim();
@@ -167,11 +165,6 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
         return caption;
     }
     
-    private String generateNameBasedOnCaption(String caption) {
-        String normalized = Normalizer.normalize(caption, Form.NFD);
-        return normalized.replaceAll("[^A-Za-z0-9]", "");
-    }
-    
     private String readRootElements(String resourceName) throws Exception {
         String contents = readContent(resourceName);
         contents = contents.replaceAll("(<(\\077xml.*\\077|/?Root)>)", "");
@@ -180,13 +173,26 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     
     private String readContent(String resourceName) throws Exception {
         String content;
-        try(InputStreamReader isr = new InputStreamReader(this.getResourceAsStream(resourceName), "utf-8")) { 
-            try(Scanner scanner = new Scanner(isr)) {
+        InputStreamReader isr = null;
+        try {
+            isr = new InputStreamReader(this.getResourceAsStream(resourceName), "utf-8");
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(isr);
                 content = scanner.useDelimiter("\\Z").next();
-            }}
-        if (content == null) {
-            throw new RuntimeException("Could not read '" + resourceName + "'");
-        }
+                if (content == null) {
+                    throw new RuntimeException("Could not read '" + resourceName + "'");
+                }
+            } finally {
+                if (scanner != null) {
+                    scanner.close();
+                }
+            }
+        } finally {
+            if (isr != null) {
+                isr.close();
+            }
+        }   
         return content;
     }
     
