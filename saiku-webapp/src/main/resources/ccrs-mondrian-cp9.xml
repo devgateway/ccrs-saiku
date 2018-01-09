@@ -508,6 +508,18 @@
                 </Attributes>
             </Dimension>
 
+            <Dimension name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" table='HAS_INTEGRATED_STRATEGIC_FRAMEWORK' key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="id"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" keyColumn="answer"
+                               approxRowCount="2" hierarchyHasAll="true"
+                               levelType="Regular" datatype="Boolean"/>
+                </Attributes>
+            </Dimension>
+
             <Dimension name="Start Date" caption="Start Date of ISF" table='CP9GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -826,6 +838,9 @@
                     <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <Measure name="hasIntegratedStrategicFramework" caption="Count of 'Is there an Integrated Strategic Framework (ISF)?'" column="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
                     <Measure name="hasJointStructuresUNCTUN" caption="Count of 'Are there joint structures in place between the UNCT and the UN Mission?'" column="HAS_JOINT_STRUCTURESUNCTUN"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -910,6 +925,7 @@
                     <FactLink dimension="Start Date" />
                     <FactLink dimension="End Date" />
                     <ForeignKeyLink dimension="Is the ISF regularly monitored and reported on" foreignKeyColumn="IS_NEW_MONITORED_AND_REPORTED_ID"/>
+                    <ForeignKeyLink dimension="Is there an Integrated Strategic Framework (ISF)" foreignKeyColumn="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"/>
                     <ForeignKeyLink dimension="Are there joint structures in place between the UNCT and the UN Mission" foreignKeyColumn="HAS_JOINT_STRUCTURESUNCTUN"/>
                     <ForeignKeyLink dimension="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" foreignKeyColumn="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"/>
                     <ForeignKeyLink dimension="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" foreignKeyColumn="HAS_MECHANISMS_FOR_MONITORING"/>
