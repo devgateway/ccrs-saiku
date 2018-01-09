@@ -240,7 +240,7 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension source="CATEGORY" table="UNAgency" caption="UNAgency" />            
+            <Dimension source="UNAgency" />            
         </Dimensions>
         
         <MeasureGroups>
