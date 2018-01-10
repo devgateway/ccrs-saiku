@@ -290,18 +290,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="CoveredCountryIncomeStatus" caption="Covered Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            
+            <Dimension source="CATEGORY" table="CountryIncomeStatus" name="CoveredCountryIncomeStatus" caption="Covered Country Income Status" />
             <Dimension table="YesNoTable" name="DAOCountry" caption="Is it a DAO Country?" />            
 
             <Dimension name="YearDAOCountry" caption="Year of becoming a DAO country" table="CP1CoveredCountries"
