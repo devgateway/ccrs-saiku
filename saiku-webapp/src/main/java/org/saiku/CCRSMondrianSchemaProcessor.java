@@ -69,7 +69,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
             "<Query alias='@@table@@'>\n" +
                 "<ExpressionView>\n" +
                     "<SQL dialect='generic'>\n" +
-                        "<![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='@@table@@']]>\n" +
+                        "<![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='@@dtype@@']]>\n" +
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
@@ -153,25 +153,26 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private String processCategories(String content) {
         Matcher m = CATEGORY_DIM_PATTERN.matcher(content);
         StringBuilder categorySB = new StringBuilder();
-        Set<String> categoryQueries = new HashSet<String>();
+        int count = 0;
         while(m.find()) {
             String categoryDimension = m.group();
-            String table = m.group(1).trim();
+            String dtype = m.group(1).trim();
+            String table = dtype + count;
             String name = m.group(3);
             String caption = m.group(4).trim();
             String captions = this.getPluralCaption(caption);
             String query = CATEGORY_QUERY_TEMPLATE.replace("@@table@@", table);
+            query = query.replace("@@dtype@@", dtype);
             String result = CATEGORY_DIM_TEMPLATE.replace("@@table@@", table);
             result = result.replace("@@caption@@", this.getActualCaption(caption));
             result = result.replace("@@captions@@", captions);
             if (name == null) {
-                name = table;
+                name = dtype;
             }
             result = result.replace("@@name@@", name);
             content = content.replace(categoryDimension, result);
-            if (categoryQueries.add(query)) {
-                categorySB.append(query);
-            }
+            categorySB.append(query);
+            count++;
         }
         content = content.replace("<!-- ## _CATEGORY_QUERIES_TAG_ ## -->", categorySB.toString());
         return content;
