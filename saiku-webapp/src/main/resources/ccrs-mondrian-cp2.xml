@@ -9,6 +9,8 @@
         
         <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
         
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
+        
         <Query alias="CP2RcoStaffMemberDetail">
             <ExpressionView>
                 <SQL dialect="generic">
