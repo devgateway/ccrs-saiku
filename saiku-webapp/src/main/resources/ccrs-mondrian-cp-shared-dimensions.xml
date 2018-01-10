@@ -24,17 +24,7 @@
 	
 	<Dimension source="CATEGORY" table="CountryIncomeStatus" caption="Country Income Status" />
     <Dimension source="CATEGORY" table="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" />
-	
-	<Dimension name="Delivering as One" caption="Delivering as One" table="YesNoTable" key="Dimension Id">
-         <Attributes>
-             <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false"
-                        levelType="Regular" datatype="Integer"/>
-
-             <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                        approxRowCount="2" hierarchyHasAll="true"
-                        levelType="Regular" datatype="Boolean"/>
-         </Attributes>
-     </Dimension>
+    <Dimension table="YesNoTable" name="Delivering as One" caption="Delivering as One" />
      
      <!-- Table should be customized with cube table. Using some existing table to allow shared import. -->
      <Dimension name="Year" caption="Year" table="DUMMY_YEAR" visible="true">
