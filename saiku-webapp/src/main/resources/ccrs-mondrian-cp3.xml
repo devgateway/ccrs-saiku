@@ -9,38 +9,6 @@
         
         <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
 
-        <Query alias="YesPartiallyNoNAQuestion">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='YesPartiallyNoNAQuestion']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="UNDAFPeriodAlignedWithGov">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNDAFPeriodAlignedWithGov']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="DaoSOPsImplementingLevel">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="YesNoNAQuestion">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='YesNoNAQuestion']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
         <Query alias="CP3JointProgrammes">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -127,12 +95,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-		<InlineTable alias="UNDAF_EXTENSION_PRESENT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="THEORY_OF_CHANGE_INCLUDED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="COSTEDMEPLAN_PRESENT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="UN_VISION2030PRESENT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="NRA_CONTRIBUTOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="NEWUNDAFROADMAP_PREPARED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>	
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -290,68 +252,12 @@
             </Dimension>
 
             <Dimension table="YesNoTable" name="Was a management response prepared" caption="Was a management response prepared?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did NRAs participate in the UNDAF Annual Review?" />
+            <Dimension table="YesNoTable" name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF (approved by the Regional UNDG)?" />
+            <Dimension table="YesNoTable" name="Does the UNDAF include a theory of change" caption="Does the UNDAF include a theory of change?" />
+            <Dimension table="YesNoTable" name="Do you have a costed monitoring and evaluation plan for the UNDAF" caption="Do you have a costed monitoring and evaluation plan for the UNDAF?" />
+            <Dimension table="YesNoTable" name="Is there a UN Vision 2030 paper" caption="Is there a UN Vision 2030 paper?" />
             
-
-            <Dimension name="NRAUndafAnnualReview" caption="Did NRAs participate in the UNDAF Annual Review?" table="YesPartiallyNoNAQuestion"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="YesPartiallyNoNAQuestion" caption="Did NRAs participate in the UNDAF Annual Review?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All options" hierarchyCaption="All options"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF (approved by the Regional UNDG)?" table='UNDAF_EXTENSION_PRESENT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF (approved by the Regional UNDG)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Does the UNDAF include a theory of change" caption="Does the UNDAF include a theory of change?" table='THEORY_OF_CHANGE_INCLUDED' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does the UNDAF include a theory of change" caption="Does the UNDAF include a theory of change?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Do you have a costed monitoring and evaluation plan for the UNDAF" caption="Do you have a costed monitoring and evaluation plan for the UNDAF?" table='COSTEDMEPLAN_PRESENT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Do you have a costed monitoring and evaluation plan for the UNDAF" caption="Do you have a costed monitoring and evaluation plan for the UNDAF?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is there a UN Vision 2030 paper" caption="Is there a UN Vision 2030 paper?" table='UN_VISION2030PRESENT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is there a UN Vision 2030 paper" caption="Is there a UN Vision 2030 paper?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension> 
-
             <Dimension name="Year UNDAF completed" caption="Year UNDAF M&amp;E plan was completed" table='CP3GeneralCube' visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="YEAR_COMPLETED" datatype="Integer" />
@@ -363,30 +269,9 @@
                     <Attribute name="Year" keyColumn="YEAR_PREPARED" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="Did NRA contribute to the UN Vision 2030 paper" caption="Did NRA contribute to the UN Vision 2030 paper?" table='NRA_CONTRIBUTOR' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Did NRA contribute to the UN Vision 2030 paper" caption="Did NRA contribute to the UN Vision 2030 paper?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Has your UNCT prepared a roadmap for its new UNDAF" caption="Has your UNCT prepared a roadmap for its new UNDAF?" table='NEWUNDAFROADMAP_PREPARED' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has your UNCT prepared a roadmap for its new UNDAF" caption="Has your UNCT prepared a roadmap for its new UNDAF?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            
+            <Dimension table="YesNoTable" name="Did NRA contribute to the UN Vision 2030 paper" caption="Did NRA contribute to the UN Vision 2030 paper?" />
+            <Dimension table="YesNoTable" name="Has your UNCT prepared a roadmap for its new UNDAF" caption="Has your UNCT prepared a roadmap for its new UNDAF?" />
 
             <Dimension name="Date UNDAF Roadmap was developed" caption="Date UNDAF Roadmap was developed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
@@ -399,18 +284,8 @@
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
-
-            <Dimension name="UNDAFPeriodAlignedWithGov" caption="Is the period of the UN Development Assistance Framework (or equivalent instrument) aligned with the Government's planning and budgeting cycle?" table="UNDAFPeriodAlignedWithGov"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="UNDAFPeriodAlignedWithGov" caption="Is the period of the UN Development Assistance Framework (or equivalent instrument) aligned with the Government's planning and budgeting cycle?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Alternatives" hierarchyCaption="All Alternatives"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            
+            <Dimension source="CATEGORY" table="UNDAFPeriodAlignedWithGov" caption="Is the period of the UN Development Assistance Framework (or equivalent instrument) aligned with the Government's planning and budgeting cycle?" />
 
             <Dimension name="National Development Plan Start Date" caption="National Development Plan Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
@@ -435,54 +310,11 @@
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
-
-            <Dimension name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" table="DaoSOPsImplementingLevel"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="DaoSOPsImplementingLevel" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All options" hierarchyCaption="All options"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="NRAParticipatedInNationalDevelopmentPlan" caption="Did NRAs participate in supporting development of the National Development Plan?" table="YesNoNAQuestion"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="YesNoNAQuestion" caption="Did NRAs participate in supporting development of the National Development Plan?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All options" hierarchyCaption="All options"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="NRAParticipated" caption="Did NRAs participate in the UNDAF Evaluation Planning?" table="YesPartiallyNoNAQuestion"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="YesPartiallyNoNAQuestion" caption="Did NRAs participate in the UNDAF Evaluation Planning?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All options" hierarchyCaption="All options"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="NRAContributeToEvaluationMgmtResponse" caption="Did NRA contribute to the evaluation management response?" table="YesPartiallyNoNAQuestion"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="YesPartiallyNoNAQuestion" caption="Did NRA contribute to the evaluation management response?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All options" hierarchyCaption="All options"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" />
+            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did NRAs participate in supporting development of the National Development Plan?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAParticipated" caption="Did NRAs participate in the UNDAF Evaluation Planning?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAContributeToEvaluationMgmtResponse" caption="Did NRA contribute to the evaluation management response?" />
         </Dimensions>
 
         <MeasureGroups>
