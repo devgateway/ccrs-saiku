@@ -31,11 +31,11 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private static final Pattern YES_NO_DIM_PATTERN = Pattern.compile(
             "<Dimension table=\"YesNoTable\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
     private static final String YES_NO_DIM_TEMPLATE =
-            "<Dimension name='@@name@@' caption='@@caption@@' table='YesNoTable' key='Dimension Id'>\n" +
+            "<Dimension name='@@name@@' caption=\"@@caption@@\" table='YesNoTable' key='Dimension Id'>\n" +
                 "<Attributes>\n" +
                     "<Attribute name='Dimension Id' keyColumn='id' hasHierarchy='false' \n" +
                                 "levelType='Regular' datatype='Integer'/>\n" +
-                    "<Attribute name='@@name@@' caption='@@caption@@' keyColumn='answer' \n" +
+                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='answer' \n" +
                                 "approxRowCount='2' hierarchyHasAll='true' levelType='Regular' datatype='Boolean'/>\n" +
                 "</Attributes>\n" +
             "</Dimension>";
@@ -54,13 +54,13 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private static final Pattern CATEGORY_DIM_PATTERN = Pattern.compile(
             "<Dimension *source=[\"|']CATEGORY[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
     private static final String CATEGORY_DIM_TEMPLATE =
-            "<Dimension name='@@name@@' caption='@@caption@@' table='@@table@@'\n" +
+            "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@'\n" +
                         "key='Dimension Id' visible='true'>\n" +
                 "<Attributes>\n" +
                     "<Attribute name='Dimension Id' keyColumn='ID'\n" +
                                 "hasHierarchy='false' levelType='Regular' datatype='Integer' />\n" +
-                    "<Attribute name='@@name@@' caption='@@caption@@' keyColumn='LABEL'\n" +
-                                "hierarchyAllMemberName='All @@captions@@' hierarchyCaption='All @@captions@@'\n" +
+                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='LABEL'\n" +
+                                "hierarchyAllMemberName=\"All @@captions@@\" hierarchyCaption=\"All @@captions@@\"\n" +
                                 "levelType='Regular' datatype='String' />\n" +
                 "</Attributes>\n" +
             "</Dimension>";
@@ -150,7 +150,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
             if (last == '.') {
                 caption = caption.substring(0, caption.length() - 1);
             }
-            return "\"" + caption + "\"";
+            return "'" + caption + "'";
         }
         if (caption.endsWith("s")) {
             return caption;
