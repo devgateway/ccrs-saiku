@@ -11,22 +11,6 @@
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
         
-        <Query alias="SSSupportRole">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SSSupportRole']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-        
-        <Query alias="CollectiveApproachToSSCooperation">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CollectiveApproachToSSCooperation']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
         <Query alias="CP11BudgetSupport">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -77,7 +61,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -147,42 +130,10 @@
             <Dimension table="YesNoTable" name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" />
             <Dimension table="YesNoTable" name="Is the system supported by the UNCT" caption="Is the system supported by the UNCT?" />
             <Dimension table="YesNoTable" name="Does the UNCT report to the AIMS" caption="Does the UNCT report to the AIMS?" />
+            <Dimension table="YesNoTable" name="Did UN Requested Cooperation" caption="Has the government requested the UN system to support its cooperation with other developing countries?" />
+            <Dimension source="CATEGORY" table="SSSupportRole" name="supportRole" caption="South-South Support Role" />
+            <Dimension source="CATEGORY" table="CollectiveApproachToSSCooperation" name="collectiveApproach" caption="Is the UNCT taking a collective approach to South-South cooperation?" />
 
-            <Dimension name="Did UN Requested Cooperation" caption="Has the government requested the UN system to support its cooperation with other developing countries?" table='HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Did UN Requested Cooperation" caption="Has the government requested the UN system to support its cooperation with other developing countries?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="supportRole" caption="South-South Support Role" table="SSSupportRole"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="supportRole" caption="South-South Support Role" keyColumn="LABEL"
-                               hierarchyAllMemberName="All supportRole" hierarchyCaption="All South-South Support Roles"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="collectiveApproach" caption="Is the UNCT taking a collective approach to South-South cooperation?" table="CollectiveApproachToSSCooperation"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="collectiveApproach" caption="Is the UNCT taking a collective approach to South-South cooperation?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All collectiveApproach" hierarchyCaption="All options for 'Is the UNCT taking a collective approach to South-South cooperation?'"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
