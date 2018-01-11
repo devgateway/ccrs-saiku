@@ -31,7 +31,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private static final Pattern YES_NO_DIM_PATTERN = Pattern.compile(
             "<Dimension table=\"YesNoTable\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
     private static final String YES_NO_DIM_TEMPLATE =
-            "<Dimension name='@@name@@' caption='@@caption@@' table='YesNoTable' key='Dimension Id'>\n" +
+            "<Dimension name='@@name@@' caption='@@caption@@' table='@@table@@' key='Dimension Id'>\n" +
                 "<Attributes>\n" +
                     "<Attribute name='Dimension Id' keyColumn='id' hasHierarchy='false' \n" +
                                 "levelType='Regular' datatype='Integer'/>\n" +
@@ -39,11 +39,37 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                                 "approxRowCount='2' hierarchyHasAll='true' levelType='Regular' datatype='Boolean'/>\n" +
                 "</Attributes>\n" +
             "</Dimension>";
+    /**
+     * A better solution could be to define a single YesNoTable shared dimension and source it with a different name
+     * and caption, but Mondrian doesn't support level name and caption customization for referenced dimensions.
+     * There is an old Mondrian ticket neither prioritized, nor planned http://jira.pentaho.com/browse/MONDRIAN-2294.
+     * Therefore for now we'll be generating the same query with different aliases to avoid clashes. 
+     */
+    private static final String YESNO_QUERY_TEMPLATE =
+            "<InlineTable alias='@@table@@'>" +
+                    "<ColumnDefs>" +
+                        "<ColumnDef name='id' type='Numeric' />" +
+                        "<ColumnDef name='answer' type='String' />" +
+                    "</ColumnDefs>" +
+                    "<Key>" +
+                        "<Column name='id' />" +
+                    "</Key>" +
+                    "<Rows>" +
+                        "<Row>" +
+                            "<Value column='id'>0</Value>" +
+                            "<Value column='answer'>No</Value>" +
+                        "</Row>" +
+                        "<Row>" +
+                            "<Value column='id'>1</Value>" +
+                            "<Value column='answer'>Yes</Value>" +
+                        "</Row>" +
+                    "</Rows>" +
+             "</InlineTable>";
     private static final String CATEGORY_QUERY_TEMPLATE =
             "<Query alias='@@table@@'>\n" +
                 "<ExpressionView>\n" +
                     "<SQL dialect='generic'>\n" +
-                        "<![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='@@table@@']]>\n" +
+                        "<![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='@@dtype@@']]>\n" +
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
@@ -106,39 +132,47 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     
     private String processYesNoTable(String content) {
         Matcher m = YES_NO_DIM_PATTERN.matcher(content);
+        StringBuilder yesNoSB = new StringBuilder();
+        int count = 0;
         while(m.find()) {
             String yesNoDimension = m.group();
             String name = m.group(1);
             String caption = m.group(2);
+            String table = "YesNoTable" + count;
             String result = YES_NO_DIM_TEMPLATE.replace("@@name@@", name);
             result = result.replace("@@caption@@", caption);
+            result = result.replace("@@table@@", table);
             content = content.replace(yesNoDimension, result);
+            yesNoSB.append(YESNO_QUERY_TEMPLATE.replace("@@table@@", table));
+            count++;
         }
+        content = content.replace("<!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->", yesNoSB.toString());
         return content;
     }
     
     private String processCategories(String content) {
         Matcher m = CATEGORY_DIM_PATTERN.matcher(content);
         StringBuilder categorySB = new StringBuilder();
-        Set<String> categoryQueries = new HashSet<String>();
+        int count = 0;
         while(m.find()) {
             String categoryDimension = m.group();
-            String table = m.group(1).trim();
+            String dtype = m.group(1).trim();
+            String table = dtype + count;
             String name = m.group(3);
             String caption = m.group(4).trim();
             String captions = this.getPluralCaption(caption);
             String query = CATEGORY_QUERY_TEMPLATE.replace("@@table@@", table);
+            query = query.replace("@@dtype@@", dtype);
             String result = CATEGORY_DIM_TEMPLATE.replace("@@table@@", table);
             result = result.replace("@@caption@@", this.getActualCaption(caption));
             result = result.replace("@@captions@@", captions);
             if (name == null) {
-                name = table;
+                name = dtype;
             }
             result = result.replace("@@name@@", name);
             content = content.replace(categoryDimension, result);
-            if (categoryQueries.add(query)) {
-                categorySB.append(query);
-            }
+            categorySB.append(query);
+            count++;
         }
         content = content.replace("<!-- ## _CATEGORY_QUERIES_TAG_ ## -->", categorySB.toString());
         return content;
