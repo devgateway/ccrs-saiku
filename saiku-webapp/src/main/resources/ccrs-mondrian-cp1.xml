@@ -9,6 +9,8 @@
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
         <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+        
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP1UnctMember">
             <ExpressionView>
