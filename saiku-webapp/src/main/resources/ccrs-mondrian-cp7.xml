@@ -36,11 +36,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_REVIEW_OF_FINANCING_LANDSCAPE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="GOV_HASSDGFINANCING_GAP_STRATEGY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="UNCT_HASSDGFINANCING_GAP_STRATEGY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
     <!--*************************************************************************
@@ -68,66 +63,11 @@
             <Dimension table="YesNoTable" name="Do you have a One Fund at the country level" caption="Do you have a One Fund at the country level?" />
             <Dimension table="YesNoTable" name="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee" caption="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee?" />
             <Dimension table="YesNoTable" name="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)" caption="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?" />
-
-            <Dimension name="Partner government have an integrated national financing framework" caption="Does your partner government have an integrated national financing framework?" table='GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Partner government have an integrated national financing framework" caption="Does your partner government have an integrated national financing framework?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Review of the full financing landscape" caption="Does it include a review of the full financing landscape?" table='HAS_REVIEW_OF_FINANCING_LANDSCAPE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Review of the full financing landscape" caption="Does it include a review of the full financing landscape?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Partner government developed a strategy to close financing gap" caption="Has your partner government developed a strategy to close the SDG financing gap?" table='GOV_HASSDGFINANCING_GAP_STRATEGY' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Partner government developed a strategy to close financing gap" caption="Has your partner government developed a strategy to close the SDG financing gap?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNCT strategy to close financing gap" caption="Has the UNCT developed a strategy to contribute to closing the SDG financing gap?" table='UNCT_HASSDGFINANCING_GAP_STRATEGY' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT strategy to close financing gap" caption="Has the UNCT developed a strategy to contribute to closing the SDG financing gap?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Does the UNCT jointly manage resource mobilization" caption="Does the UNCT jointly manage resource mobilization?" table='UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does the UNCT jointly manage resource mobilization" caption="Does the UNCT jointly manage resource mobilization?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Partner government have an integrated national financing framework" caption="Does your partner government have an integrated national financing framework?" />
+            <Dimension table="YesNoTable" name="Review of the full financing landscape" caption="Does it include a review of the full financing landscape?" />
+            <Dimension table="YesNoTable" name="Partner government developed a strategy to close financing gap" caption="Has your partner government developed a strategy to close the SDG financing gap?" />
+            <Dimension table="YesNoTable" name="UNCT strategy to close financing gap" caption="Has the UNCT developed a strategy to contribute to closing the SDG financing gap?" />
+            <Dimension table="YesNoTable" name="Does the UNCT jointly manage resource mobilization" caption="Does the UNCT jointly manage resource mobilization?" />
 
             <Dimension name="Other UNCT resource mobilization" caption="Other UNCT resource mobilization" table="CP7GeneralCube" key="Dimension Id" visible="true">
                 <Attributes>
