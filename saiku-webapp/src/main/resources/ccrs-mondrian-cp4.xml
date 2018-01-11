@@ -11,22 +11,6 @@
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
-        <Query alias="UNAgency">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNAgency']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="ClientSatisfactionScore">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='ClientSatisfactionScore']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
         <Query alias="CP4GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -51,8 +35,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="INTEGRATED_SERVICE_CENTER_AVAILABLE_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASBOSCOMMON_SERVICE_LINES_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
     <!--*************************************************************************
     ***** Shared Dimensions
@@ -77,54 +59,10 @@
             <Dimension source="SecondaryCountryIncomeStatus" />
             
             <Dimension table="YesNoTable" name="Is a HACT being implemented at the country level" caption="Is a HACT being implemented at the country level?" />
-
-            <Dimension name="Does the UNCT have an integrated service center" caption="Does the UNCT have an integrated service center?" table='INTEGRATED_SERVICE_CENTER_AVAILABLE_YES_NO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does the UNCT have an integrated service center" caption="Does the UNCT have an integrated service center?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Which UN entity currently hosts the Integrated service center" caption="Which UN entity currently hosts the Integrated service center?" table="UNAgency"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
-                               levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Which UN entity currently hosts the Integrated service center" caption="Which UN entity currently hosts the Integrated service center?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All " hierarchyCaption=""
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" table="ClientSatisfactionScore"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
-                               levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All " hierarchyCaption=""
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Are common service lines part of your Business Operation Strategy" caption="Are common service lines part of your Business Operation Strategy (BOS)?" table='HASBOSCOMMON_SERVICE_LINES_YES_NO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Are common service lines part of your Business Operation Strategy" caption="Are common service lines part of your Business Operation Strategy (BOS)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Does the UNCT have an integrated service center" caption="Does the UNCT have an integrated service center?" />
+            <Dimension source="CATEGORY" table="UNAgency" name="Which UN entity currently hosts the Integrated service center" caption="Which UN entity currently hosts the Integrated service center?" />
+            <Dimension source="CATEGORY" table="ClientSatisfactionScore" name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" />
+            <Dimension table="YesNoTable" name="Are common service lines part of your Business Operation Strategy" caption="Are common service lines part of your Business Operation Strategy (BOS)?" />
         </Dimensions>
 
         <MeasureGroups>
