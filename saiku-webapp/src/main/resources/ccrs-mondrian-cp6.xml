@@ -11,14 +11,6 @@
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
-        <Query alias="UNCTAdvocacyModel">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNCTAdvocacyModel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
         <Query alias="CP6JointAdvocacyStrategies">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -66,9 +58,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-		<InlineTable alias="IS_COMMUNICATIONS_PART_OFUNDAF"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="HAS_VISUAL_IDENTITY_ESTABLISHED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
     
     <!--*************************************************************************
@@ -196,56 +185,13 @@
             <Dimension table="YesNoTable" name="Has the UNCT agreed on common messaging on any topic" caption="Has the UNCT agreed on common messaging on any topic?" />
             <Dimension table="YesNoTable" name="Do you have any joint advocacy strategies to communicate on human rights or other normative issues" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" />
             <!-- N.6.1 -->
-            <Dimension name="UNCTAdvocacyModel" caption="The model that best describes the UNCT's work on advocacy"
-                       table="UNCTAdvocacyModel" key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="UNCTAdvocacyModel" caption="The model that best describes the UNCT's work on advocacy" keyColumn="LABEL"
-                               hierarchyAllMemberName="All UNCT Advocacy Models" hierarchyCaption="All UNCT Advocacy Models"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CATEGORY" table="UNCTAdvocacyModel" caption="The model that best describes the UNCT's work on advocacy" />
             <!-- N.6.3 -->
-            <Dimension name="IS_COMMUNICATIONS_PART_OFUNDAF" caption="Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?"
-                       table="IS_COMMUNICATIONS_PART_OFUNDAF" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="IS_COMMUNICATIONS_PART_OFUNDAF" caption="Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="IS_COMMUNICATIONS_PART_OFUNDAF" caption="Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?" />
             <!-- N.6.4 -->
-            <Dimension name="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" caption="Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?"
-                       table="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" caption="Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" caption="Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?" />
             <!-- N.6.5 -->
-            <Dimension name="HAS_VISUAL_IDENTITY_ESTABLISHED" caption="Does the UNCT have an established visual identity for joint UN communications?"
-                       table="HAS_VISUAL_IDENTITY_ESTABLISHED" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="HAS_VISUAL_IDENTITY_ESTABLISHED" caption="Does the UNCT have an established visual identity for joint UN communications?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="HAS_VISUAL_IDENTITY_ESTABLISHED" caption="Does the UNCT have an established visual identity for joint UN communications?" />
         </Dimensions>
 
         <MeasureGroups>
