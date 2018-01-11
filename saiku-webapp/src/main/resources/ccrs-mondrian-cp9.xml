@@ -120,20 +120,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-		<InlineTable alias="HAS_SUSTAINING_PEACE_ELEMENTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="HAS_OTHER_STRATEGIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="HAS_NATIONAL_MECHANISMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="HAS_HUMANITARIAN_CRISIS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="UN_COORDINATOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="COUNTRY_TEAM"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="RESPONSE_PLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="NEEDS_ANALYSIS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="CONFLICT_ANALYSIS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="PLANNING_FOR_COLLECTIVE_OUTCOMES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="PROGRAMMING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="MONITORING_AND_EVALUATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="COORDINATION_MECHANISMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="HAS_FRAMEWORK_LINK"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
     
     <!--*************************************************************************
@@ -322,91 +308,14 @@
             <Dimension table="YesNoTable" name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes?" />
             <Dimension table="YesNoTable" name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" />
             <Dimension table="YesNoTable" name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" />
-
-            <Dimension name="UNDAF elements to sustaining peace peacebuilding" caption="Does the UNDAF explicitly incorporate elements relating to sustaining peace / peacebuilding?" table='HAS_SUSTAINING_PEACE_ELEMENTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNDAF elements to sustaining peace peacebuilding" caption="Does the UNDAF explicitly incorporate elements relating to sustaining peace / peacebuilding?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNCT strategies or plans in place" caption="Does the UNCT have other strategies or plans in place (e.g. separate strategy on sustaining peace)?" table='HAS_OTHER_STRATEGIES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT strategies or plans in place" caption="Does the UNCT have other strategies or plans in place (e.g. separate strategy on sustaining peace)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="National mechanisms to coordinate development and peacebuilding efforts" caption="Are there national mechanisms to coordinate development and peacebuilding efforts that are supported by the UNCT?" table='HAS_NATIONAL_MECHANISMS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="National mechanisms to coordinate development and peacebuilding efforts" caption="Are there national mechanisms to coordinate development and peacebuilding efforts that are supported by the UNCT?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Ongoing humanitarian crisis" caption="Is/Was there an ongoing humanitarian crisis in your country within the last year?" table='HAS_HUMANITARIAN_CRISIS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Ongoing humanitarian crisis" caption="Is/Was there an ongoing humanitarian crisis in your country within the last year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UN Humanitarian Coordinator" caption="UN Humanitarian Coordinator (HC)" table='UN_COORDINATOR' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UN Humanitarian Coordinator" caption="UN Humanitarian Coordinator (HC)" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Humanitarian Country Team" caption="Humanitarian Country Team (HCT)" table='COUNTRY_TEAM' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Humanitarian Country Team" caption="Humanitarian Country Team (HCT)" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Humanitarian Response Plan" caption="Humanitarian Response Plan (HRP)" table='RESPONSE_PLAN' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Humanitarian Response Plan" caption="Humanitarian Response Plan (HRP)" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
+            <Dimension table="YesNoTable" name="UNDAF elements to sustaining peace peacebuilding" caption="Does the UNDAF explicitly incorporate elements relating to sustaining peace / peacebuilding?" />
+            <Dimension table="YesNoTable" name="UNCT strategies or plans in place" caption="Does the UNCT have other strategies or plans in place (e.g. separate strategy on sustaining peace)?" />
+            <Dimension table="YesNoTable" name="National mechanisms to coordinate development and peacebuilding efforts" caption="Are there national mechanisms to coordinate development and peacebuilding efforts that are supported by the UNCT?" />
+            <Dimension table="YesNoTable" name="Ongoing humanitarian crisis" caption="Is/Was there an ongoing humanitarian crisis in your country within the last year?" />
+            <Dimension table="YesNoTable" name="UN Humanitarian Coordinator" caption="UN Humanitarian Coordinator (HC)" />
+            <Dimension table="YesNoTable" name="Humanitarian Country Team" caption="Humanitarian Country Team (HCT)" />
+            <Dimension table="YesNoTable" name="Humanitarian Response Plan" caption="Humanitarian Response Plan (HRP)" />
+            
             <Dimension name="Other humanitarian structures or mechanisms" caption="Other humanitarian structures or mechanisms" table="CP9GeneralCube" key="Dimension Id" visible="true">
                 <Attributes>
 					<Attribute name="Dimension Id" keyColumn="ID"
@@ -419,89 +328,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Joint needs analysis" caption="Joint needs analysis" table='NEEDS_ANALYSIS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint needs analysis" caption="Joint needs analysis" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint conflict analysis" caption="Joint conflict analysis" table='CONFLICT_ANALYSIS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint conflict analysis" caption="Joint conflict analysis" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint planning for collective outcomes" caption="Joint planning for collective outcomes" table='PLANNING_FOR_COLLECTIVE_OUTCOMES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint planning for collective outcomes" caption="Joint planning for collective outcomes" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint programming" caption="Joint programming" table='PROGRAMMING' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint programming" caption="Joint programming" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint monitoring and evaluation" caption="Joint monitoring and evaluation" table='MONITORING_AND_EVALUATION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint monitoring and evaluation" caption="Joint monitoring and evaluation" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint coordination mechanisms" caption="Joint coordination mechanisms" table='COORDINATION_MECHANISMS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint coordination mechanisms" caption="Joint coordination mechanisms" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Explicit link between ISF and UNDAF" caption="Is there an explicit link between the Integrated Strategic Framework and the UNDAF?" table='HAS_FRAMEWORK_LINK' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Explicit link between ISF and UNDAF" caption="Is there an explicit link between the Integrated Strategic Framework and the UNDAF?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Joint needs analysis" caption="Joint needs analysis" />
+            <Dimension table="YesNoTable" name="Joint conflict analysis" caption="Joint conflict analysis" />
+            <Dimension table="YesNoTable" name="Joint planning for collective outcomes" caption="Joint planning for collective outcomes" />
+            <Dimension table="YesNoTable" name="Joint programming" caption="Joint programming" />
+            <Dimension table="YesNoTable" name="Joint monitoring and evaluation" caption="Joint monitoring and evaluation" />
+            <Dimension table="YesNoTable" name="Joint coordination mechanisms" caption="Joint coordination mechanisms" />
+            <Dimension table="YesNoTable" name="Explicit link between ISF and UNDAF" caption="Is there an explicit link between the Integrated Strategic Framework and the UNDAF?" />
         </Dimensions>
 
         <MeasureGroups>
