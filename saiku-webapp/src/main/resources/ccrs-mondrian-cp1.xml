@@ -30,7 +30,25 @@
                 </SQL>
             </ExpressionView>
         </Query>
-
+	
+        <Query alias="CP1UncgMember">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        SELECT
+                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM
+                            CP1UNCGMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND
+                            CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        
         <Query alias="CP1OMTMember">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -160,6 +178,8 @@
     ***** Shared Dimensions
     *************************************************************************-->
     <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
+    
+    <Dimension source="CATEGORY" table="UNAgency" caption="UN Agency" />
 
     <!--*************************************************************************
     ***** CP1 UNCT Members
@@ -177,8 +197,8 @@
             </Dimension>
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="UNAgency" />
             
-            <Dimension source="CATEGORY" table="UNAgency" caption="UNAgency" />
             <Dimension source="CATEGORY" table="UNAgencyRepresentativeTitle" caption="Agency Representative Title" />
             <Dimension source="CATEGORY" table="RepresentativePostLevel" caption="Representative Post Level" />
 
@@ -201,6 +221,69 @@
                     <ForeignKeyLink dimension="UNAgencyRepresentativeTitle"
                                     foreignKeyColumn="AGENCY_REPRESENTATIVE_TITLE_ID" />
                     <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_COUNT"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+    
+    <!--*************************************************************************
+    ***** CP1 UNCG Members
+    *************************************************************************-->
+    <Cube name="UNCG Members" caption="UNCG Members" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP1UncgMember" visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />            
+
+            <!-- N.1.29 -->
+            <Dimension name="UNCGMemberName" caption="UNCG Member Name" table="CP1UncgMember"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Name" caption="Name" keyColumn="NAME"
+                               hierarchyAllMemberName="All Names" hierarchyCaption="All Names"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            
+            <!-- N.1.30 -->
+            <Dimension name="UNCGMemberEmail" caption="UNCG Member Email" table="CP1UncgMember"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Email" caption="Email" keyColumn="EMAIL"
+                               hierarchyAllMemberName="All Emails" hierarchyCaption="All Emails"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+            
+            <!-- N.1.31 -->
+            <Dimension source="UNAgency" />
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP UNCG Measures" table="CP1UncgMember">
+                <Measures>
+                    <Measure name="Count" caption="Number of UNCG Members" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="UNCGMemberName" />
+                    <FactLink dimension="UNCGMemberEmail" />
+                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
