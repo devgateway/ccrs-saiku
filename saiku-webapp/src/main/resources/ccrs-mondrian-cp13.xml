@@ -5,45 +5,11 @@
     </Annotations>
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SecondaryCountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="Scorecard">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Scorecard']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="GenderEqualityRating">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='GenderEqualityRating']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
+        
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+        
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP13GenderEqualityScorecard">
             <ExpressionView>
@@ -63,9 +29,7 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP13GenderEqualityScorecard"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-
+        
         <Query alias="UNSwapScorecard">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -125,12 +89,12 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP13GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNCTGENDER_ADVISOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNCTGENDER_EQUALITY_SCORECARD"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
+    
+    <!--*************************************************************************
+    ***** Shared Dimensions
+    *************************************************************************-->
+    <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
 
     <!--*************************************************************************
     ***** CP13 Gender Equality Scorecard
@@ -138,108 +102,20 @@
     <Cube name="Gender Equality Scorecard" caption="Gender Equality Scorecard" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP13GenderEqualityScorecard' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP13GenderEqualityScorecard"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP13GenderEqualityScorecard" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Scorecard" caption="Gender Scorecard" table="Scorecard"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Scorecard" caption="Gender Scorecard" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Scorecards" hierarchyCaption="All Scorecards"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="GenderEqualityRating" caption="GenderEqualityRating" table="GenderEqualityRating"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="GenderEqualityRating" caption="GenderEqualityRating" keyColumn="LABEL"
-                               hierarchyAllMemberName="All GenderEqualityRatings" hierarchyCaption="All GenderEqualityRatings"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the scorecard recommendations?" table='HASUNCTDEVELOPED_MANAGEMENT_PLAN_YES_NO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the scorecard recommendations?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension source="CATEGORY" table="Scorecard" caption="Gender Scorecard" />
+            <Dimension source="CATEGORY" table="GenderEqualityRating" caption="Gender Equality Rating" />
+            <Dimension table="YesNoTable" name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the scorecard recommendations?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -252,15 +128,10 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Scorecard" foreignKeyColumn="SCORECARD_ID" />
                     <ForeignKeyLink dimension="GenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -410,120 +281,21 @@
     <Cube name="Gender Profile" caption="Gender Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP13GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP13GeneralCube"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP13GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNCT gender advisor" caption="Is there a UNCT gender advisor?" table='HASUNCTGENDER_ADVISOR' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT gender advisor" caption="Is there a UNCT gender advisor?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNDAF specific gender results" caption="If you have an UNDAF (or equivalent), does it have specific gender results at the outcome level?" table='HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNDAF specific gender results" caption="If you have an UNDAF (or equivalent), does it have specific gender results at the outcome level?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Gender Equality Scorecard" caption="Has your UNCT implemented a Gender Equality Scorecard in the past FOUR years?" table='HASUNCTGENDER_EQUALITY_SCORECARD' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Gender Equality Scorecard" caption="Has your UNCT implemented a Gender Equality Scorecard in the past FOUR years?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" table='HAS_CAPACITY_BUILDINGUNSTAFF_GENDER' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="UNCT gender advisor" caption="Is there a UNCT gender advisor?" />
+            <Dimension table="YesNoTable" name="UNDAF specific gender results" caption="If you have an UNDAF (or equivalent), does it have specific gender results at the outcome level?" />
+            <Dimension table="YesNoTable" name="Gender Equality Scorecard" caption="Has your UNCT implemented a Gender Equality Scorecard in the past FOUR years?" />
+            <Dimension table="YesNoTable" name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" />
 
             <Dimension name="Date of capacity building in the past year" caption="Date of capacity building in the past year" table='CP13GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
@@ -557,12 +329,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR"/>
                     <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"/>
                     <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD"/>
