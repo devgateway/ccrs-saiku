@@ -11,14 +11,6 @@
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
-        <Query alias="ScorecardType">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='ScorecardType']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
         <Query alias="CP13GenderEqualityScorecard">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -63,8 +55,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="UNCT_USES_GENDER_EQUALITY_MARKER"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
     
     <!--*************************************************************************
@@ -147,17 +137,7 @@
                 </Attributes>
             </Dimension>
             <!-- 13.A -->
-            <Dimension name="UNCT uses gender equality" caption="Does the UNCT use a gender equality marker?"
-                       table="UNCT_USES_GENDER_EQUALITY_MARKER" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT uses gender equality" caption="Does the UNCT use a gender equality marker?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="UNCT uses gender equality" caption="Does the UNCT use a gender equality marker?" />
             <!-- 13.4.A -->
             <Dimension name="Year when Gender Equality Scorecard was Conducted"
                        caption="Year when Gender Equality Scorecard was Conducted" table="CP13GeneralCube"
@@ -168,29 +148,9 @@
                 </Attributes>
             </Dimension>
             <!-- 13.4.C -->
-            <Dimension name="ScorecardType" caption="Which scorecard has been implemented?" table="ScorecardType"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="ScorecardType" caption="Scorecard Type" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Scorecard Types" hierarchyCaption="All Scorecard Types"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CATEGORY" table="ScorecardType" caption="Which scorecard has been implemented?" />
             <!-- 13.6 -->
-            <Dimension name="Gender Mainstreaming Strategy In Place" caption="Does the UNCT have a gender mainstreaming strategy in place?"
-                       table="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Gender Mainstreaming Strategy In Place" caption="Does the UNCT have a gender mainstreaming strategy in place?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Gender Mainstreaming Strategy In Place" caption="Does the UNCT have a gender mainstreaming strategy in place?" />
         </Dimensions>
 
         <MeasureGroups>
