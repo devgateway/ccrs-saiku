@@ -1,4 +1,4 @@
 type=OLAP
 name=Annual Coordination Framework
 driver=mondrian.olap4j.MondrianOlap4jDriver
-location=jdbc:mondrian:Datasource=mondrianDataSource;Catalog=res:ccrs-mondrian-workplan.xml
+location=jdbc:mondrian:Datasource=mondrianDataSource;Catalog=ccrs-mondrian-workplan.xml;DynamicSchemaProcessor=org.saiku.CCRSMondrianSchemaProcessor
