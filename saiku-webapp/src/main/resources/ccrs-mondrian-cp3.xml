@@ -5,45 +5,11 @@
     </Annotations>
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-          <Query alias="JointProgrammeModality">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='JointProgrammeModality']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SecondaryCountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="AlternativeAnalysis">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='AlternativeAnalysis']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+        
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP3JointProgrammes">
             <ExpressionView>
@@ -63,14 +29,13 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP3JointProgrammes"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP3GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, cp3.UNDAF_PERIOD_ALIGNED_WITH_GOV_ID,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN 1 ELSE 0 END as HASUNDAF,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN date(cp3undaf.DATE_OF_SIGNATURE) ELSE null END as DATE_OF_SIGNATURE,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN year(cp3undaf.START_DATE) ELSE null END as START_DATE,
@@ -86,24 +51,40 @@
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN CASE WHEN cp3plan.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNSUPPORT,
                             CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HASMDGACCELERATION_FRAMEWORK,
                             CASE WHEN cp3.HAS_JOINT_PROGRAMMES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_PROGRAMMES,
-                            CASE WHEN cp3.HASUNDAFMID_TERM_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFMID_TERM_REVIEW,
-                            CASE WHEN cp3.HASUNDAFMID_TERM_REVIEW = TRUE THEN date(cp3undafmid.DATE_COMPLETED) ELSE null END as HASUNDAFMID_DATE_COMPLETED,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFANNUAL_REVIEW,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN date(cp3undafannual.DATE_COMPLETED) ELSE null END as HASUNDAFANNUAL_DATE_COMPLETED,
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN 1 ELSE 0 END as HASUNDAFEVALUATION,
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN CASE WHEN cp3undafevaluation.MANAGEMENT_RESPONSE_PREPARED = TRUE THEN 1 ELSE 0 END ELSE null END as MANAGEMENT_RESPONSE_PREPARED,
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN date(cp3undafevaluation.DATE_COMPLETED) ELSE null END as HASUNDAFEVALUATION_DATE_COMPLETED,
-                            CASE WHEN cp3.HASMDGCOUNTRY_REPORT = TRUE THEN 1 ELSE 0 END as HASMDGCOUNTRY_REPORT,
-                            CASE WHEN cp3.HASMDGCOUNTRY_REPORT = TRUE THEN CASE WHEN cp3mdgcountryreport.UN_ASSISTANCE = TRUE THEN 1 ELSE 0 END ELSE null END as UN_ASSISTANCE,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.UNDAF_EXTENSION_PRESENT = TRUE THEN 1 ELSE 0 END ELSE null END as UNDAF_EXTENSION_PRESENT,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.THEORY_OF_CHANGE_INCLUDED = TRUE THEN 1 ELSE 0 END ELSE null END as THEORY_OF_CHANGE_INCLUDED,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.COSTEDMEPLAN_PRESENT = TRUE THEN 1 ELSE 0 END ELSE null END as COSTEDMEPLAN_PRESENT,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.UN_VISION2030PRESENT = TRUE THEN 1 ELSE 0 END ELSE null END as UN_VISION2030PRESENT,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.UN_VISION2030PRESENT = TRUE THEN CASE WHEN cp3undafunvision2030.NRA_CONTRIBUTOR = TRUE THEN 1 ELSE 0 END ELSE null END ELSE null END as NRA_CONTRIBUTOR,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.COSTEDMEPLAN_PRESENT = TRUE THEN cp3undafcostedmeplan.YEAR_COMPLETED ELSE null END ELSE null END as YEAR_COMPLETED,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.UN_VISION2030PRESENT = TRUE THEN cp3undafunvision2030.YEAR_PREPARED ELSE null END ELSE null END as YEAR_PREPARED,
+                            CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN cp3undafannual.NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID ELSE null END as NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID,
+                            CASE WHEN cp3.IS_DEVELOPING_NEWUNDAF = TRUE THEN CASE WHEN cp3newundaf.NEWUNDAFROADMAP_PREPARED = TRUE THEN 1 ELSE 0 END ELSE null END as NEWUNDAFROADMAP_PREPARED,
+                            CASE WHEN cp3.IS_DEVELOPING_NEWUNDAF = TRUE THEN date(cp3newundaf.NEWUNDAFROADMAP_DATE) ELSE null END as NEWUNDAFROADMAP_DATE,
+                            CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN date(cp3plan.NATIONAL_DEVELOPMENT_PLAN_START_DATE) ELSE null END as NATIONAL_DEVELOPMENT_PLAN_START_DATE,
+                            CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN date(cp3plan.NATIONAL_DEVELOPMENT_PLAN_END_DATE) ELSE null END as NATIONAL_DEVELOPMENT_PLAN_END_DATE,
+                            CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN cp3plan.SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID ELSE null END as SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID,
+                            CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN cp3plan.NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID ELSE null END as NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID,
+                            CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN cp3undafevaluation.NRA_PARTICIPATED_ID ELSE null END as NRA_PARTICIPATED_ID,
+                            CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID ELSE null END as NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID
                         from
                             -- DERBY-PROPERTIES joinOrder = FIXED
                             CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
                             CP3UNDAF cp3undaf, CP3COMMON_COUNTRY_ASSESSMENT cp3assessment, CP3NATIONAL_DEVELOPMENT_PLAN cp3plan,
-                            CP3UNDAFEVALUATION cp3undafevaluation, CP3MDGCOUNTRY_REPORT cp3mdgcountryreport, CP3UNDAFMID_TERM_REVIEW cp3undafmid, CP3UNDAFANNUAL_REVIEW cp3undafannual
+                            CP3UNDAFEVALUATION cp3undafevaluation, CP3MDGCOUNTRY_REPORT cp3mdgcountryreport, CP3UNDAFMID_TERM_REVIEW cp3undafmid, CP3UNDAFANNUAL_REVIEW cp3undafannual,
+                            CP3UNDAFUNVISION2030 cp3undafunvision2030, CP3NEWUNDAF cp3newundaf, CP3UNDAFCOSTEDMEPLAN cp3undafcostedmeplan
                         WHERE
                             cp3.DESIGNATION = cp1.DESIGNATION AND cp3.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             cp3undaf.PARENT_ID = cp3.id AND
+                            cp3undafunvision2030.PARENT_ID = cp3undaf.id AND
+                            cp3undafcostedmeplan.PARENT_ID = cp3undaf.id AND
+                            cp3newundaf.PARENT_ID = cp3.id AND
                             cp3assessment.PARENT_ID = cp3.id AND
                             cp3plan.PARENT_ID = cp3.id AND
                             cp3undafevaluation.PARENT_ID = cp3.id AND
@@ -116,95 +97,29 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP3GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNDAF"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_COMMON_COUNTRY_ASSESSMENT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_NATIONAL_DEVELOPMENT_PLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASMDGACCELERATION_FRAMEWORK"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_JOINT_PROGRAMMES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNDAFMID_TERM_REVIEW"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNDAFANNUAL_REVIEW"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNDAFEVALUATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASMDGCOUNTRY_REPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="IS_DEVELOPING_NEWUNDAF"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_DISAGGREGATED_DATA"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNSUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="MANAGEMENT_RESPONSE_PREPARED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="UN_ASSISTANCE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
+    <!--*************************************************************************
+    ***** Shared Dimensions
+    *************************************************************************-->
+    <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
+    
     <!--*************************************************************************
     ***** CP3 Joint Programmes
     *************************************************************************-->
     <Cube name="Joint Programmes" caption="Joint Programmes" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP3JointProgrammes"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP3JointProgrammes" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
             <Dimension name="Title" caption="Title of Joint Programme" table="CP3JointProgrammes"
                        visible="true">
@@ -213,18 +128,8 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="JointProgrammeModality" caption="Which Funding Modality?" table="JointProgrammeModality"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="JointProgrammeModality" caption="Which Funding Modality?" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Joint Programme Modalities" hierarchyCaption="All Joint Programme Modalities"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            
+            <Dimension source="CATEGORY" table="JointProgrammeModality" caption="Which Funding Modality?" />            
         </Dimensions>
 
         <MeasureGroups>
@@ -236,14 +141,9 @@
                              datatype="Numeric" aggregator="sum" visible="true" />
                 </Measures>
                 <DimensionLinks>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="Title"/>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="JointProgrammeModality" foreignKeyColumn="WHICH_MODALITY_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -255,85 +155,19 @@
     <Cube name="Common Country Programing" caption="Common Country Programing" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP3GeneralCube"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP3GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UN Development Assistance Framework" caption="Is there an UN Development Assistance Framework (UNDAF), or equivalent?" table='HASUNDAF' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UN Development Assistance Framework" caption="Is there an UN Development Assistance Framework (UNDAF), or equivalent?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
+            
+            <Dimension table="YesNoTable" name="UN Development Assistance Framework" caption="Is there an UN Development Assistance Framework (UNDAF), or equivalent?" />
+            
             <Dimension name="Date of Signature" caption="Date of Signature" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -370,30 +204,9 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Is your UNCT in the process of developing a new UNDAF" caption="Is your UNCT in the process of developing a new UNDAF?" table='IS_DEVELOPING_NEWUNDAF' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is your UNCT in the process of developing a new UNDAF" caption="Is your UNCT in the process of developing a new UNDAF?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Common Country Assessment (CCA)" caption="Did the UNCT lead their own Common Country Assessment (CCA) conducted for the present UNDAF?" table='HAS_COMMON_COUNTRY_ASSESSMENT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Common Country Assessment (CCA)" caption="Did the UNCT lead their own Common Country Assessment (CCA) conducted for the present UNDAF?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
+            <Dimension table="YesNoTable" name="Is your UNCT in the process of developing a new UNDAF" caption="Is your UNCT in the process of developing a new UNDAF?" />
+            <Dimension table="YesNoTable" name="Common Country Assessment (CCA)" caption="Did the UNCT lead their own Common Country Assessment (CCA) conducted for the present UNDAF?" />
+            
             <Dimension name="Year CCA was conducted" caption="Year CCA was conducted" table='CP3GeneralCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -405,115 +218,15 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
-
-            <Dimension name="AlternativeAnalysis" caption="Alternative Analysis" table="AlternativeAnalysis"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="AlternativeAnalysis" caption="Alternative Analysis" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Alternatives" hierarchyCaption="All Alternatives"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is official disaggregated data available" caption="Is official disaggregated data available?" table='HAS_DISAGGREGATED_DATA' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is official disaggregated data available" caption="Is official disaggregated data available?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="National Development Plan" caption="Is there a National Development Plan?" table='HAS_NATIONAL_DEVELOPMENT_PLAN' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="National Development Plan" caption="Is there a National Development Plan?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" table='HASUNSUPPORT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="MAPS Guide" caption="Are you using the Mainstreaming, Acceleration, and Policy Support (MAPS) Guide?" table='HASMDGACCELERATION_FRAMEWORK' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="MAPS Guide" caption="Are you using the Mainstreaming, Acceleration, and Policy Support (MAPS) Guide?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint Programmes" caption="Do you have Joint Programmes?" table='HAS_JOINT_PROGRAMMES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint Programmes" caption="Do you have Joint Programmes?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNDAF Mid Term Review" caption="Have you conducted the UNDAF Mid Term Review (MTR)?" table='HASUNDAFMID_TERM_REVIEW' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNDAF Mid Term Review" caption="Have you conducted the UNDAF Mid Term Review (MTR)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" caption="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Date Completed" caption="Date Completed" keyColumn="HASUNDAFMID_DATE_COMPLETED"
-                               hierarchyHasAll="true"
-                               levelType="TimeUndefined" datatype="Date"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" table='HASUNDAFANNUAL_REVIEW' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
+            
+            <Dimension source="CATEGORY" table="AlternativeAnalysis" caption="UN Alternative Analysis." />
+            <Dimension table="YesNoTable" name="Is official disaggregated data available" caption="Is official disaggregated data available?" />
+            <Dimension table="YesNoTable" name="National Development Plan" caption="Is there a National Development Plan?" />
+            <Dimension table="YesNoTable" name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" />
+            <Dimension table="YesNoTable" name="MAPS Guide" caption="Are you using the Mainstreaming, Acceleration, and Policy Support (MAPS) Guide?" />
+            <Dimension table="YesNoTable" name="Joint Programmes" caption="Do you have Joint Programmes?" />
+            <Dimension table="YesNoTable" name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" />
+            
             <Dimension name="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" caption="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -525,19 +238,9 @@
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
-
-            <Dimension name="UNDAF Evaluation" caption="Have you conducted an UNDAF Evaluation within the past five years?" table='HASUNDAFEVALUATION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNDAF Evaluation" caption="Have you conducted an UNDAF Evaluation within the past five years?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
+            
+            <Dimension table="YesNoTable" name="UNDAF Evaluation" caption="Have you conducted an UNDAF Evaluation within the past five years?" />
+            
             <Dimension name="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" caption="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -550,41 +253,70 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Was a management response prepared" caption="Was a management response prepared?" table='MANAGEMENT_RESPONSE_PREPARED' key="Dimension Id">
+            <Dimension table="YesNoTable" name="Was a management response prepared" caption="Was a management response prepared?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did NRAs participate in the UNDAF Annual Review?" />
+            <Dimension table="YesNoTable" name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF (approved by the Regional UNDG)?" />
+            <Dimension table="YesNoTable" name="Does the UNDAF include a theory of change" caption="Does the UNDAF include a theory of change?" />
+            <Dimension table="YesNoTable" name="Do you have a costed monitoring and evaluation plan for the UNDAF" caption="Do you have a costed monitoring and evaluation plan for the UNDAF?" />
+            <Dimension table="YesNoTable" name="Is there a UN Vision 2030 paper" caption="Is there a UN Vision 2030 paper?" />
+            
+            <Dimension name="Year UNDAF completed" caption="Year UNDAF M&amp;E plan was completed" table='CP3GeneralCube' visible="true">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Was a management response prepared" caption="Was a management response prepared?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="Year" keyColumn="YEAR_COMPLETED" datatype="Integer" />
                 </Attributes>
             </Dimension>
 
-            <Dimension name="MDG Country Report" caption="Has your country published an MDG Country Report this year?" table='HASMDGCOUNTRY_REPORT' key="Dimension Id">
+            <Dimension name="Year UN Vision 2030 was prepared" caption="Year UN Vision 2030 was prepared" table='CP3GeneralCube' visible="true">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
+                    <Attribute name="Year" keyColumn="YEAR_PREPARED" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+            
+            <Dimension table="YesNoTable" name="Did NRA contribute to the UN Vision 2030 paper" caption="Did NRA contribute to the UN Vision 2030 paper?" />
+            <Dimension table="YesNoTable" name="Has your UNCT prepared a roadmap for its new UNDAF" caption="Has your UNCT prepared a roadmap for its new UNDAF?" />
+
+            <Dimension name="Date UNDAF Roadmap was developed" caption="Date UNDAF Roadmap was developed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="MDG Country Report" caption="Has your country published an MDG Country Report this year?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="Date UNDAF Roadmap was developed" caption="Date UNDAF Roadmap was developed" keyColumn="NEWUNDAFROADMAP_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
+            
+            <Dimension source="CATEGORY" table="UNDAFPeriodAlignedWithGov" caption="Is the period of the UN Development Assistance Framework (or equivalent instrument) aligned with the Government's planning and budgeting cycle?" />
 
-            <Dimension name="Did the UN assist" caption="Did the UN assist with MDG Country Report?" table='UN_ASSISTANCE' key="Dimension Id">
+            <Dimension name="National Development Plan Start Date" caption="National Development Plan Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
+                    <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Did the UN assist" caption="Did the UN assist with MDG Country Report?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
+                    <Attribute name="National Development Plan Start Date" caption="National Development Plan Start Date" keyColumn="NATIONAL_DEVELOPMENT_PLAN_START_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
+
+            <Dimension name="National Development Plan End Date" caption="National Development Plan End Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+
+                    <Attribute name="National Development Plan End Date" caption="National Development Plan End Date" keyColumn="NATIONAL_DEVELOPMENT_PLAN_END_DATE"
+                               hierarchyHasAll="true"
+                               levelType="TimeUndefined" datatype="Date"/>
+                </Attributes>
+            </Dimension>
+            
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" />
+            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did NRAs participate in supporting development of the National Development Plan?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAParticipated" caption="Did NRAs participate in the UNDAF Evaluation Planning?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAContributeToEvaluationMgmtResponse" caption="Did NRA contribute to the evaluation management response?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -623,9 +355,6 @@
                     <Measure name="JointProgrammes" caption="Count of Joint Programmes" column="HAS_JOINT_PROGRAMMES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="UNDAFMidTermReview" caption="Count of Have you conducted the UNDAF Mid Term Review (MTR)?" column="HASUNDAFMID_TERM_REVIEW"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="UNDAFAnnualReview" caption="Count of conducted an UNDAF Annual Review in the last 12 months" column="HASUNDAFANNUAL_REVIEW"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -635,41 +364,61 @@
                     <Measure name="managementResponsePrepared" caption="Count of 'Was a management response prepared'" column="MANAGEMENT_RESPONSE_PREPARED"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="MDGCountryReport" caption="Count of country published an MDG Country Report this year" column="HASMDGCOUNTRY_REPORT"
+                    <Measure name="undafExtensionPresent" caption="Count of 'Was there an extension of the UNDAF (approved by the Regional UNDG)'" column="UNDAF_EXTENSION_PRESENT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="unAssistance" caption="Count of 'Did the UN assist with MDG Country Report?'" column="UN_ASSISTANCE"
+                    <Measure name="theoryOfChangeIncluded" caption="Count of 'Does the UNDAF include a theory of change'" column="THEORY_OF_CHANGE_INCLUDED"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="costedMePlanPresent" caption="Count of 'Do you have a costed monitoring and evaluation plan for the UNDAF'" column="COSTEDMEPLAN_PRESENT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="unVision2030Present" caption="Count of 'Is there a UN Vision 2030 paper'" column="UN_VISION2030PRESENT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="nraContributor" caption="Count of 'Did NRA contribute to the UN Vision 2030 paper'" column="NRA_CONTRIBUTOR"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="newUndafRoadmapPrepared" caption="Count of 'Has your UNCT prepared a roadmap for its new UNDAF'" column="NEWUNDAFROADMAP_PREPARED"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF"/>
                     <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT"/>
                     <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN"/>
                     <ForeignKeyLink dimension="MAPS Guide" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK"/>
                     <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES"/>
-                    <ForeignKeyLink dimension="UNDAF Mid Term Review" foreignKeyColumn="HASUNDAFMID_TERM_REVIEW"/>
                     <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION"/>
-                    <ForeignKeyLink dimension="MDG Country Report"  foreignKeyColumn="HASMDGCOUNTRY_REPORT"/>
                     <ForeignKeyLink dimension="Is your UNCT in the process of developing a new UNDAF"  foreignKeyColumn="IS_DEVELOPING_NEWUNDAF"/>
                     <FactLink dimension="Year CCA was conducted" />
                     <ForeignKeyLink dimension="Is official disaggregated data available"  foreignKeyColumn="HAS_DISAGGREGATED_DATA"/>
                     <ForeignKeyLink dimension="Did the UN support the development of the National Plan"  foreignKeyColumn="HASUNSUPPORT"/>
                     <ForeignKeyLink dimension="Was a management response prepared"  foreignKeyColumn="MANAGEMENT_RESPONSE_PREPARED"/>
-                    <ForeignKeyLink dimension="Did the UN assist"  foreignKeyColumn="UN_ASSISTANCE"/>
                     <FactLink dimension="Date of Signature" />
                     <FactLink dimension="Start Date" />
                     <FactLink dimension="End Date" />
-                    <FactLink dimension="Have you conducted the UNDAF Mid Term Review (MTR) - Date Completed" />
                     <FactLink dimension="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" />
                     <FactLink dimension="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" />
                     <ForeignKeyLink dimension="AlternativeAnalysis"  foreignKeyColumn="OTHER_ANALYSIS_SOURCE_ID"/>
+                    <ForeignKeyLink dimension="NRAUndafAnnualReview"  foreignKeyColumn="NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID"/>
+                    <ForeignKeyLink dimension="Was there an extension of the UNDAF"  foreignKeyColumn="UNDAF_EXTENSION_PRESENT"/>
+                    <ForeignKeyLink dimension="Does the UNDAF include a theory of change"  foreignKeyColumn="THEORY_OF_CHANGE_INCLUDED"/>
+                    <ForeignKeyLink dimension="Do you have a costed monitoring and evaluation plan for the UNDAF"  foreignKeyColumn="COSTEDMEPLAN_PRESENT"/>
+                    <ForeignKeyLink dimension="Is there a UN Vision 2030 paper"  foreignKeyColumn="UN_VISION2030PRESENT"/>
+                    <FactLink dimension="Year UNDAF completed" />
+                    <FactLink dimension="Year UN Vision 2030 was prepared" />
+                    <ForeignKeyLink dimension="Did NRA contribute to the UN Vision 2030 paper"  foreignKeyColumn="NRA_CONTRIBUTOR"/>
+                    <ForeignKeyLink dimension="Has your UNCT prepared a roadmap for its new UNDAF"  foreignKeyColumn="NEWUNDAFROADMAP_PREPARED"/>
+                    <FactLink dimension="Date UNDAF Roadmap was developed" />
+                    <ForeignKeyLink dimension="UNDAFPeriodAlignedWithGov"  foreignKeyColumn="UNDAF_PERIOD_ALIGNED_WITH_GOV_ID"/>
+                    <FactLink dimension="National Development Plan Start Date" />
+                    <FactLink dimension="National Development Plan End Date" />
+                    <ForeignKeyLink dimension="SdgsAndAgenda2030"  foreignKeyColumn="SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID"/>
+                    <ForeignKeyLink dimension="NRAParticipatedInNationalDevelopmentPlan"  foreignKeyColumn="NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID"/>
+                    <ForeignKeyLink dimension="NRAParticipated"  foreignKeyColumn="NRA_PARTICIPATED_ID"/>
+                    <ForeignKeyLink dimension="NRAContributeToEvaluationMgmtResponse"  foreignKeyColumn="NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

@@ -5,38 +5,12 @@
     </Annotations>
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SecondaryCountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="LocalInstitution">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='LocalInstitution']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+        
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
+
         <Query alias="YesNoNAQuestion">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -61,11 +35,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP14UNCTPartners"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-
-
-
-
 
         <Query alias="CP14GeneralCube">
             <ExpressionView>
@@ -116,22 +85,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP14GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="JOINTUNCTEFFORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>        
-        <InlineTable alias="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>   
-		<InlineTable alias="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>   
-		<InlineTable alias="DOESUNCTPARTICIPATE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="INTERAGENCY_EFFORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>		
-		<InlineTable alias="INTERAGENCY_GROUP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="BUDGET_ACTIVITY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="COMMON_INTERAGENCY_WORKPLAN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="USEIATISTANDARDS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="DATA_ACTIVITY_WITH_PRIVATE_SECTOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="DATA_ACTIVITY_WITH_CIVIL_SOCIETY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
@@ -146,6 +99,11 @@
 		<InlineTable alias="GOVERNMENTSDGREPORT_PUBLISHED"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 		<InlineTable alias="HASUNSUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
+    
+    <!--*************************************************************************
+    ***** Shared Dimensions
+    *************************************************************************-->
+    <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
 
     <!--*************************************************************************
     ***** CP14 UNCT Partners
@@ -153,84 +111,18 @@
     <Cube name="UNCTPartners" caption="UNCT Partners" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP14UNCTPartners' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP14UNCTPartners"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP14UNCTPartners" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Partner" caption="Partner" table="LocalInstitution"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Partner" caption="Partner" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Partners" hierarchyCaption="All Partners"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CATEGORY" table="LocalInstitution" name="Partner" caption="Partner" />
         </Dimensions>
 
         <MeasureGroups>
@@ -240,12 +132,7 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Partner"  foreignKeyColumn="PARTNER_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
@@ -258,244 +145,32 @@
     <Cube name="SDGs and Beyond" caption="SDGs and Beyond" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP14GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP14GeneralCube"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP14GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"
-                       caption="Does the government have an updated and operational National Strategy for the Development of Statistics?"
-                       table="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"
-                               caption="Does the government have an updated and operational National Strategy for the Development of Statistics?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"
-                       caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?"
-                       table="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"
-                               caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="DOESUNCTPARTICIPATE"
-                       caption="Does the UNCT participate in this mechanism?"
-                       table="DOESUNCTPARTICIPATE" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="DOESUNCTPARTICIPATE"
-                               caption="Does the UNCT participate in this mechanism?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Support to national statistical capacity" caption="Does the UNCT provide support to national statistical capacity?" table='HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Support to national statistical capacity" caption="Does the UNCT provide support to national statistical capacity?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="INTERAGENCY_EFFORT"
-                       caption="Is this an interagency effort?"
-                       table="INTERAGENCY_EFFORT" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="INTERAGENCY_EFFORT"
-                               caption="Is this an interagency effort?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="INTERAGENCY_GROUP"
-                       caption="Is there an interagency group on data and statistics?"
-                       table="INTERAGENCY_GROUP" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="INTERAGENCY_GROUP"
-                               caption="Is there an interagency group on data and statistics?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="BUDGET_ACTIVITY"
-                       caption="Is there a budget for this activity?"
-                       table="BUDGET_ACTIVITY" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="BUDGET_ACTIVITY"
-                               caption="Is there a budget for this activity?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="COMMON_INTERAGENCY_WORKPLAN"
-                       caption="Is there a common interagency workplan for this activity?"
-                       table="COMMON_INTERAGENCY_WORKPLAN" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="COMMON_INTERAGENCY_WORKPLAN"
-                               caption="Is there a common interagency workplan for this activity?"
-                               keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Citizen engagement or other crowd-sourcing" caption="Does the UNCT apply innovation during UN country programming?" table='HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Citizen engagement or other crowd-sourcing " caption="Does the UNCT apply innovation during UN country programming?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort? (applying innovation)" table='JOINTUNCTEFFORT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is it a joint UNCT effort?" caption="Is it a joint UNCT effort? (applying innovation)" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNCT convene partners beyond the UN" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" table='HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT convene partners beyond the UN" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" table='HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency portals?" table='HAS_OPEN_DATA_TRANSPARENCY_POLICIES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency portals?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="USEIATISTANDARDS"
-           caption="Do you use IATI standards in the portal?" 
-           table="USEIATISTANDARDS" key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id" hasHierarchy="false" levelType="Regular" datatype="Integer"/>
-                    <Attribute name="USEIATISTANDARDS" 
-                    caption="Do you use IATI standards in the portal?" 
-                    keyColumn="answer" approxRowCount="2" hierarchyHasAll="true" levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives? " table='PARTICIPATES_IN_CROSS_BORDER_INITIATIVES' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives? " keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" caption="Does the government have an updated and operational National Strategy for the Development of Statistics?" />
+            <Dimension table="YesNoTable" name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?" />
+            <Dimension table="YesNoTable" name="DOESUNCTPARTICIPATE" caption="Does the UNCT participate in this mechanism?" />
+            <Dimension table="YesNoTable" name="Support to national statistical capacity" caption="Does the UNCT provide support to national statistical capacity?" />
+            <Dimension table="YesNoTable" name="INTERAGENCY_EFFORT" caption="Is this an interagency effort?" />
+            <Dimension table="YesNoTable" name="INTERAGENCY_GROUP" caption="Is there an interagency group on data and statistics?" />
+            <Dimension table="YesNoTable" name="BUDGET_ACTIVITY" caption="Is there a budget for this activity?" />
+            <Dimension table="YesNoTable" name="COMMON_INTERAGENCY_WORKPLAN" caption="Is there a common interagency workplan for this activity?" />
+            <Dimension table="YesNoTable" name="Citizen engagement or other crowd-sourcing" caption="Does the UNCT apply innovation during UN country programming?" />
+            <Dimension table="YesNoTable" name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort? (applying innovation)" />
+            <Dimension table="YesNoTable" name="UNCT convene partners beyond the UN" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" />
+            <Dimension table="YesNoTable" name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" />
+            <Dimension table="YesNoTable" name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency portals?" />
+            <Dimension table="YesNoTable" name="USEIATISTANDARDS" caption="Do you use IATI standards in the portal?" />
+            <Dimension table="YesNoTable" name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives?" />
             <!-- N.14.1 -->
             <Dimension name="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT"
                        caption="Does the UNCT have a joint UN initiative on data or statistics?"
@@ -788,12 +463,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"/>
                     <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"/>
                     <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"/>
