@@ -5,63 +5,11 @@
     </Annotations>
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SecondaryCountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="HasNewConflictAnalysis">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
         
-         <Query alias="DevelopmentPlanningAligned">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-        
-
-        <Query alias="isNewMonitoredAndReported">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='DaoSOPsImplementingLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="TypeJointCollaboration">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='TypeJointCollaboration']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP9CountryMechanisms">
             <ExpressionView>
@@ -79,7 +27,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP9CountryMechanisms"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP9KeyPartners">
             <ExpressionView>
@@ -97,7 +44,6 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP9KeyPartners"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
 
         <Query alias="CP9GeneralCube">
             <ExpressionView>
@@ -156,36 +102,12 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP9GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNPEACE_KEEPING_MISSION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNSTRATEGY_HUMANITARIAM_TO_LONG_TERM"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_AGREEMENTS_WITH_KEY_PARTNERS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_INTERACTIONWBDIRECTORUNLEADER"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_JOINT_RISK_ASESSMENTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_JOINT_STRUCTURESUNCTUN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_MECHANISMS_FOR_MONITORING"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HASUNUNCTCOLABORATION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="IS_JOINT_PROGRAMME"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_COMMON_SERVICES_TOUNCTMEMBERS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="IS_DRAWDOWN_WITHDRAWALUNMISSION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_ANALYSIS_BEEN_TAKEN_WITHUN"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_ACTIVE_COORDINATION_MECHANISMS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="DOESUNCTPARTICIPATE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="DOESUNCTSUPPORTDRREFFORTS"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-
-
-
-
-
     </PhysicalSchema>
+    
+    <!--*************************************************************************
+    ***** Shared Dimensions
+    *************************************************************************-->
+    <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
 
     <!--*************************************************************************
     ***** CP9 Country Mechanisms
@@ -193,72 +115,16 @@
     <Cube name="CountryMechanisms" caption="Country Mechanisms" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9CountryMechanisms' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP9CountryMechanisms"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP9CountryMechanisms" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
             <Dimension name="Mechanism" caption="Mechanism" table="CP9CountryMechanisms"
                        key="Dimension Id" visible="true">
@@ -292,12 +158,7 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="Mechanism" />
                     <FactLink dimension="Partners that support this mechanism" />
                 </DimensionLinks>
@@ -311,72 +172,16 @@
     <Cube name="KeyPartners" caption="Key Partners" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9KeyPartners' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP9KeyPartners"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP9KeyPartners" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
             <Dimension name="Describe the agreements/arrangements/initiatives for crisis" caption="Describe the agreements/arrangements/initiatives for crisis" table="CP9KeyPartners"
                        key="Dimension Id" visible="true">
@@ -410,12 +215,7 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="Key Partner" />
                     <FactLink dimension="Describe the agreements/arrangements/initiatives for crisis" />
                 </DimensionLinks>
@@ -429,97 +229,20 @@
     <Cube name="Crisis Prevention Profile" caption="Crisis Prevention Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP9GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP9GeneralCube"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP9GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" table='HASUNPEACE_KEEPING_MISSION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" table='HAS_INTEGRATED_STRATEGIC_FRAMEWORK' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
+            <Dimension table="YesNoTable" name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" />
+            <Dimension table="YesNoTable" name="Is there an Integrated Strategic Framework (ISF)" caption="Is there an Integrated Strategic Framework (ISF)?" />
+            
             <Dimension name="Start Date" caption="Start Date of ISF" table='CP9GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -544,289 +267,29 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Are there joint structures in place between the UNCT and the UN Mission" caption="Are there joint structures in place between the UNCT and the UN Mission?" table='HAS_JOINT_STRUCTURESUNCTUN' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Are there joint structures in place between the UNCT and the UN Mission" caption="Are there joint structures in place between the UNCT and the UN Mission?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" caption="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?" table='DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" caption="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" caption="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?" table='HAS_MECHANISMS_FOR_MONITORING' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" caption="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" table="isNewMonitoredAndReported"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" keyColumn="LABEL"
-                               approxRowCount="3" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" caption="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?" table='HASUNUNCTCOLABORATION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" caption="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="What type of programmatic collaboration" caption="What type of programmatic collaboration?" table='TypeJointCollaboration' key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="What type of programmatic collaboration" caption="What type of programmatic collaboration?" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Does the UN Mission provide common services to UNCT members or vice versa" caption="Does the UN Mission provide common services to UNCT members or vice versa?" table='HAS_COMMON_SERVICES_TOUNCTMEMBERS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does the UN Mission provide common services to UNCT members or vice versa" caption="Does the UN Mission provide common services to UNCT members or vice versa?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is the mission a member of the Joint UNCT Communications Group" caption="Is the mission a member of the Joint UNCT Communications Group?" table='IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is the mission a member of the Joint UNCT Communications Group" caption="Is the mission a member of the Joint UNCT Communications Group?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission" caption="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?" table='IS_DRAWDOWN_WITHDRAWALUNMISSION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission" caption="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" table="HasNewConflictAnalysis"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="HasNewConflictAnalysis" caption="Has New Conflict Analysis" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Has the conflict analysis been undertaken together with the UN Mission" caption="Has the conflict analysis been undertaken together with the UN Mission?" table='HAS_ANALYSIS_BEEN_TAKEN_WITHUN' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Has the conflict analysis been undertaken together with the UN Mission" caption="Has the conflict analysis been undertaken together with the UN Mission?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="DevelopmentPlanningAligned"
-                       caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?"
-                       table="DevelopmentPlanningAligned"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="DevelopmentPlanningAligned" caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?" keyColumn="LABEL"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" table='HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" table='HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
-            caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" table='GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" 
-                    caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-                        
-            <Dimension name="DOESUNCTPARTICIPATE"
-            caption="If yes, Does the UNCT participate in this mechanism?" table='DOESUNCTPARTICIPATE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="DOESUNCTPARTICIPATE" 
-                    caption="If yes, Does the UNCT participate in this mechanism?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="DOESUNCTSUPPORTDRREFFORTS"
-            caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" table='DOESUNCTSUPPORTDRREFFORTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="DOESUNCTSUPPORTDRREFFORTS"
-                    caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Are there any active coordination mechanisms in place with key partners such as the World Bank" caption="Are there any active coordination mechanisms in place with key partners such as the World Bank?" table='HAS_ACTIVE_COORDINATION_MECHANISMS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Are there any active coordination mechanisms in place with key partners such as the World Bank" caption="Are there any active coordination mechanisms in place with key partners such as the World Bank?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank and regional and sub-regional organizations like the African Union, IGAD, etc.) for crisis response?" table='HAS_AGREEMENTS_WITH_KEY_PARTNERS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank and regional and sub-regional organizations like the African Union, IGAD, etc.) for crisis response?" keyColumn="answer"
-                               orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" table='HAS_INTERACTIONWBDIRECTORUNLEADER' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes??" table='WBUNCOLLABORATE_ON_UPSTREAM_POLICY' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes??" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" table='HAS_JOINT_RISK_ASESSMENTS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" table='HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Are there joint structures in place between the UNCT and the UN Mission" caption="Are there joint structures in place between the UNCT and the UN Mission?" />
+            <Dimension table="YesNoTable" name="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" caption="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?" />
+            <Dimension table="YesNoTable" name="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" caption="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" />
+            <Dimension table="YesNoTable" name="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" caption="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?" />
+            <Dimension source="CATEGORY" table="TypeJointCollaboration" name="What type of programmatic collaboration" caption="What type of programmatic collaboration?" />
+            <Dimension table="YesNoTable" name="Does the UN Mission provide common services to UNCT members or vice versa" caption="Does the UN Mission provide common services to UNCT members or vice versa?" />
+            <Dimension table="YesNoTable" name="Is the mission a member of the Joint UNCT Communications Group" caption="Is the mission a member of the Joint UNCT Communications Group?" />
+            <Dimension table="YesNoTable" name="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission" caption="If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="HasNewConflictAnalysis" caption="Has New Conflict Analysis?" />
+            <Dimension table="YesNoTable" name="Has the conflict analysis been undertaken together with the UN Mission" caption="Has the conflict analysis been undertaken together with the UN Mission?" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="DevelopmentPlanningAligned" caption="Is the development planning framework (UNDAF or equivalent) aligned with the content of the humanitarian response plan (or vice versa)?" />
+            <Dimension table="YesNoTable" name="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" caption="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts?" />
+            <Dimension table="YesNoTable" name="Disaster Risk Reduction" caption="Is there a current, operational Disaster Risk Reduction strategy?" />
+            <Dimension table="YesNoTable" name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" caption="Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?" />
+            <Dimension table="YesNoTable" name="DOESUNCTPARTICIPATE" caption="If yes, Does the UNCT participate in this mechanism?" />
+            <Dimension table="YesNoTable" name="DOESUNCTSUPPORTDRREFFORTS" caption="Does the UNCT provide support to national disaster risk reduction (DRR) efforts?" />
+            <Dimension table="YesNoTable" name="Are there any active coordination mechanisms in place with key partners such as the World Bank" caption="Are there any active coordination mechanisms in place with key partners such as the World Bank?" />
+            <Dimension table="YesNoTable" name="Key partners" caption="Are there agreements/arrangements/initiatives with key partners (such as the World Bank and regional and sub-regional organizations like the African Union, IGAD, etc.) for crisis response?" />
+            <Dimension table="YesNoTable" name="Interaction World Bank" caption="Is there regular interaction between the World Bank Country Director and UN Leadership at the country level?" />
+            <Dimension table="YesNoTable" name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes?" />
+            <Dimension table="YesNoTable" name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" />
+            <Dimension table="YesNoTable" name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -908,12 +371,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION"/>
                     <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="HAS_NEW_CONFLICT_ANALYSIS_ID"/>
                     <ForeignKeyLink dimension="DevelopmentPlanningAligned" foreignKeyColumn="DEVELOPMENT_PLANNING_ALIGNED_ID"/>
@@ -938,11 +396,9 @@
                     <ForeignKeyLink dimension="Are there country led mechanisms to coordinate international support for transition from humanitarian to longer term recovery efforts" foreignKeyColumn="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"/>
                     <ForeignKeyLink dimension="Are there any active coordination mechanisms in place with key partners such as the World Bank" foreignKeyColumn="HAS_ACTIVE_COORDINATION_MECHANISMS"/>
                     <ForeignKeyLink dimension="Do the World Bank and UN collaborate on upstream policy processes" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
-
               		<ForeignKeyLink dimension="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
               		<ForeignKeyLink dimension="DOESUNCTPARTICIPATE" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
               		<ForeignKeyLink dimension="DOESUNCTSUPPORTDRREFFORTS" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
-             
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
