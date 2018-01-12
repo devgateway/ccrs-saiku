@@ -110,7 +110,6 @@
                         CASE WHEN cp9.DOESUNCTPARTICIPATE = TRUE AND cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN 1 ELSE 0 END as DOESUNCTPARTICIPATE,
                         CASE WHEN cp9.DOESUNCTSUPPORTDRREFFORTS = TRUE THEN 1 ELSE 0 END as DOESUNCTSUPPORTDRREFFORTS,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HAS_INTEGRATED_STRATEGIC_FRAMEWORK,
-                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.DATE_OF_SIGNATURE) ELSE null END as DATE_OF_SIGNATURE,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.START_DATE) ELSE null END as START_DATE,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.END_DATE) ELSE null END as END_DATE,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_JOINT_STRUCTURESUNCTUN = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_JOINT_STRUCTURESUNCTUN,
@@ -521,18 +520,6 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Date of Signature" caption="Date of Signature" table='CP9GeneralCube' key="Dimension Id" type="TIME">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Date of Signature" caption="Date of Signature" keyColumn="DATE_OF_SIGNATURE"
-                               hierarchyHasAll="true"
-                               levelType="TimeUndefined" datatype="Date"/>
-                </Attributes>
-            </Dimension>
-
             <Dimension name="Start Date" caption="Start Date of ISF" table='CP9GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -935,7 +922,6 @@
                     <ForeignKeyLink dimension="Interaction World Bank" foreignKeyColumn="HAS_INTERACTIONWBDIRECTORUNLEADER"/>
                     <ForeignKeyLink dimension="Joint risk assessments" foreignKeyColumn="HAS_JOINT_RISK_ASESSMENTS"/>
                     <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"/>
-                    <FactLink dimension="Date of Signature" />
                     <FactLink dimension="Start Date" />
                     <FactLink dimension="End Date" />
                     <ForeignKeyLink dimension="Is the ISF regularly monitored and reported on" foreignKeyColumn="IS_NEW_MONITORED_AND_REPORTED_ID"/>
