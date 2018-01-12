@@ -5,29 +5,11 @@
     </Annotations>
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SecondaryCountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
+        
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+        
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP10GeneralCube">
             <ExpressionView>
@@ -47,107 +29,32 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP10GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_AGREEDUNCTTOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_AGREED_CONFLICT_RESOLUTION"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
     </PhysicalSchema>
 
+    <!--*************************************************************************
+    ***** Shared Dimensions
+    *************************************************************************-->
+    <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
+    
     <!--*************************************************************************
     ***** CP10 General Cube
     *************************************************************************-->
     <Cube name="One Profile" caption="Delivering as One Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP10GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP10GeneralCube"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP10GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="UNCT ToR" caption="Is there an agreed upon UNCT TOR?" table='HAS_AGREEDUNCTTOR' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="UNCT ToR" caption="Is there an agreed upon UNCT TOR?" keyColumn="answer"
-                               orderByColumn="id" approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" table='HAS_AGREED_CONFLICT_RESOLUTION' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
+                        
+            <Dimension table="YesNoTable" name="UNCT ToR" caption="Is there an agreed upon UNCT TOR?" />
+            <Dimension table="YesNoTable" name="Conflict Resolution Mechanism" caption="Is there an agreed Conflict Resolution Mechanism?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -163,12 +70,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="UNCT ToR" foreignKeyColumn="HAS_AGREEDUNCTTOR"/>
                     <ForeignKeyLink dimension="Conflict Resolution Mechanism" foreignKeyColumn="HAS_AGREED_CONFLICT_RESOLUTION"/>
                 </DimensionLinks>
