@@ -11,22 +11,6 @@
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
         
-        <Query alias="PartnershipType">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='PartnershipType']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-        
-        <Query alias="AgreementType">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='AgreementType']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
         <Query alias="CP14UNCTPartners">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -115,29 +99,8 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension name="Partnership Type" caption="Partnership Type" table="PartnershipType"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Partnership Type" caption="Partnership Type" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Partnership Types" hierarchyCaption="All Partnership Types"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-            
-            <Dimension name="Agreement Type" caption="Agreement Type" table="AgreementType"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Agreement Type" caption="Agreement Type" keyColumn="LABEL"
-                               hierarchyAllMemberName="All Agreement Types" hierarchyCaption="All Agreement Types"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CATEGORY" table="PartnershipType" name="Partnership Type" caption="Partnership Type" />
+            <Dimension source="CATEGORY" table="AgreementType" name="Agreement Type" caption="Agreement Type" />
         </Dimensions>
 
         <MeasureGroups>
@@ -149,6 +112,9 @@
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Partner"  foreignKeyColumn="PARTNER_ID"/>
+                    <FactLink dimension="Multinational business name" />
+                    <ForeignKeyLink dimension="Partnership Type"  foreignKeyColumn="PARTNERSHIP_TYPE_ID"/>
+                    <ForeignKeyLink dimension="Agreement Type"  foreignKeyColumn="AGREEMENT_TYPE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
