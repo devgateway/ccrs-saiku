@@ -6,53 +6,6 @@
 
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select b.ISO2 as ISO2, c.REGION as REGION, b.NAME as NAME, b.ID as BASE_COUNTRY_ID from BASE_COUNTRY b, CATEGORY c where b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion' and c.REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="UNAgency">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='UNAgency']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SecondaryCountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="YesNoNAQuestion">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='YesNoNAQuestion']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="RepresentativePostLevelCategory">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='RepresentativePostLevel']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
         <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
@@ -141,7 +94,8 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            M.ID, M.COUNTRY_ID as CC_COUNTRY_ID, M.INCOME_STATUS_ID as CC_INCOME_STATUS_ID, M.YEAR_OF_BECOMINGDAO as CC_YEAR_OF_BECOMINGDAO,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN M.DAO = TRUE THEN 1 ELSE 0 END as DAO_COUNT,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP1COUNTRY M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
@@ -153,10 +107,7 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP1CoveredCountries"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="DAO"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-
-		
+        
         <Query alias="CP1GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -476,72 +427,16 @@
     <Cube name="Covered Countries" caption="Covered Countries" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP1CoveredCountries' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP1CoveredCountries"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP1CoveredCountries" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
 			
 			<Dimension name="Covered Country" caption="Covered Country" table="BASE_COUNTRY"
                        key="Dimension Id" visible="true">
@@ -553,36 +448,16 @@
                                hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
                                levelType="Regular" datatype="String" />
                 </Attributes>
-            </Dimension>
+            </Dimension>			
+			
+            <Dimension source="CountryIncomeStatus" name="CoveredCountryIncomeStatus" caption="Covered Country Income Status" />
 
-            <Dimension name="CoveredCountryIncomeStatus" caption="Covered Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="DAOCountry" caption="Is it a DAO Country?" table='DAO' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="daoCount" caption="Is it a DAO Country?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="DAOCountry" caption="Is it a DAO Country?" />            
 
             <Dimension name="YearDAOCountry" caption="Year of becoming a DAO country" table="CP1CoveredCountries"
                        visible="true">
                 <Attributes>
-                    <Attribute name="Year" keyColumn="YEAR_OF_BECOMINGDAO" datatype="Integer" />
+                    <Attribute name="Year" keyColumn="CC_YEAR_OF_BECOMINGDAO" datatype="Integer" />
                 </Attributes>
             </Dimension>
         </Dimensions>
@@ -590,19 +465,16 @@
         <MeasureGroups>
             <MeasureGroup name="CP1 Covered Countries" table="CP1CoveredCountries">
                 <Measures>
-                    <Measure name="Count" caption="Count of 'Is it a DAO Country'" column="DAO_COUNT"
+                    <Measure name="Count" caption="Number of Covered Countries" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Count of DAO Country" caption="Count of 'Is it a DAO Country'" column="DAO_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
-					<ForeignKeyLink dimension="Covered Country" foreignKeyColumn="COUNTRY_ID"/>
-                    <ForeignKeyLink dimension="CoveredCountryIncomeStatus" foreignKeyColumn="INCOME_STATUS_ID" />
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+					<ForeignKeyLink dimension="Covered Country" foreignKeyColumn="CC_COUNTRY_ID"/>
+                    <ForeignKeyLink dimension="CoveredCountryIncomeStatus" foreignKeyColumn="CC_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="DAOCountry"  foreignKeyColumn="DAO_COUNT"/>
 					<FactLink dimension="YearDAOCountry" />
                 </DimensionLinks>
