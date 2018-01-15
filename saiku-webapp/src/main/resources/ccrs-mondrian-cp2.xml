@@ -33,26 +33,7 @@
                     ]]>
                 </SQL>
             </ExpressionView>
-        </Query>	
-	<InlineTable alias="COMMUNICATION_SPECIALIST">
-			<ColumnDefs>
-				<ColumnDef name="id" type="Numeric" />
-				<ColumnDef name="answer" type="String" />
-			</ColumnDefs>
-			<Key>
-				<Column name="id" />
-			</Key>
-			<Rows>
-				<Row>
-					<Value column="id">0</Value>
-					<Value column="answer">No</Value>
-				</Row>
-				<Row>
-					<Value column="id">1</Value>
-					<Value column="answer">Yes</Value>
-				</Row>
-			</Rows>
-		</InlineTable>
+        </Query>
 
         <Query alias="CP2GeneralCube">
             <ExpressionView>
@@ -128,18 +109,8 @@
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
             </Dimension>
-
-            <Dimension name="Are you the main focal point for communications" caption="Are you the main focal point for communications?" table='COMMUNICATION_SPECIALIST' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Are you the main focal point for communications" caption="Are you the main focal point for communications?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            
+            <Dimension table="YesNoTable" name="Are you the main focal point for communications" caption="Are you the main focal point for communications?" />
         </Dimensions>
 
         <MeasureGroups>
