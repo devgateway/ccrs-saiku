@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<Root>
+    <Query alias="BASE_COUNTRY">
+        <ExpressionView>
+            <SQL dialect="generic">
+                <![CDATA[
+                    select
+                        ISO2, REGION, NAME
+                    from
+                        BASE_COUNTRY, CATEGORY
+                    where
+                        BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY and DTYPE = 'CountryRegion' and REGION <> 'Uncategorized'
+                ]]>
+            </SQL>
+        </ExpressionView>
+    </Query>
+    
+    <Query alias="DUMMY_YEAR">
+        <ExpressionView>
+            <SQL dialect="generic">
+                <![CDATA[SELECT ENTITY_YEAR FROM V_CP_VALIDATED_DESIGNATIONS]]>
+            </SQL>
+        </ExpressionView>
+    </Query>
+    
+</Root>
