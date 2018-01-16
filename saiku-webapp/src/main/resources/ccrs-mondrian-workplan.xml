@@ -16,46 +16,11 @@
     </Role>
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="Agency">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='Agency']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="BudgetSource">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='BudgetSource']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="BudgetType">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='BudgetType']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-
-        <Query alias="WorkstreamSection">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='WorkstreamSection']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
+        
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+        
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="WorkplanCube">
             <ExpressionView>
@@ -120,36 +85,19 @@
             </ExpressionView>
         </Query>
     </PhysicalSchema>
+    
+    <!--*************************************************************************
+    ***** Shared Dimensions
+    *************************************************************************-->
+    <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
 
     <!--*************************************************************************
     ***** Workplan Cube
     *************************************************************************-->
     <Cube name="Workplan1" caption="Annual Coordination Framework (Budget)" visible="true" cache="true" enabled="true" defaultMeasure="Actual Budget">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
+            <Dimension source="Region" />
+            <Dimension source="Country" />
             <Dimension name="Year" caption="Year" table="WorkplanCube"
                        visible="true">
                 <Attributes>
@@ -157,17 +105,8 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
+            <Dimension source="CATEGORY" table="WorkstreamSection" name="WorkstreamSection" caption="Workstream/Normative Area." />
+            
             <Dimension name="Is good practice?" caption="Is activity good practice?" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
@@ -180,42 +119,8 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Budget Source" caption="Budget Source" table='BudgetSource' key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Budget Source" caption="Budget Source" keyColumn="LABEL"
-                               hierarchyAllMemberName="All budget sources" hierarchyCaption="All budget sources"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Budget Type" caption="Budget Type" table='BudgetType' key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Budget Type" caption="Budget Type" keyColumn="LABEL"
-                               hierarchyAllMemberName="All budget types" hierarchyCaption="All budget types"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
-
-            <!--<Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP3JointProgrammes' key="Dimension Id">-->
-            <!--<Attributes>-->
-            <!--<Attribute name="Dimension Id" keyColumn="id"-->
-            <!--hasHierarchy="false"-->
-            <!--levelType="Regular" datatype="Integer"/>-->
-
-            <!--<Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"-->
-            <!--approxRowCount="2" hierarchyHasAll="true"-->
-            <!--levelType="Regular" datatype="Boolean"/>-->
-            <!--</Attributes>-->
-            <!--</Dimension>-->
-
+            <Dimension source="CATEGORY" table="BudgetSource" name="Budget Source" caption="Budget Source" />
+            <Dimension source="CATEGORY" table="BudgetType" name="Budget Type" caption="Budget Type" />
         </Dimensions>
 
         <MeasureGroups>
@@ -232,40 +137,19 @@
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
                     <ForeignKeyLink dimension="Budget Source" foreignKeyColumn="BUDGET_SOURCE_ID"/>
                     <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
-                    <!--<ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>-->
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
     </Cube>
 
 
-
+    <!--*************************************************************************
+    ***** Annual Coordination Framework (Activity count)
+    *************************************************************************-->
     <Cube name="Workplan2" caption="Annual Coordination Framework (Activity count)" visible="true" cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
+            <Dimension source="Region" />
+            <Dimension source="Country" />
             <Dimension name="Year" caption="Year" table="WorkplanCube"
                        visible="true">
                 <Attributes>
@@ -273,17 +157,8 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
+            <Dimension source="CATEGORY" table="WorkstreamSection" name="WorkstreamSection" caption="Workstream/Normative Area." />
+            
             <Dimension name="Is good practice?" caption="Is activity good practice?" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
@@ -296,29 +171,8 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Budget Source" caption="Budget Source" table='BudgetSource' key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Budget Source" caption="Budget Source" keyColumn="LABEL"
-                               hierarchyAllMemberName="All budget sources" hierarchyCaption="All budget sources"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Budget Type" caption="Budget Type" table='BudgetType' key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Budget Type" caption="Budget Type" keyColumn="LABEL"
-                               hierarchyAllMemberName="All budget types" hierarchyCaption="All budget types"
-                               levelType="Regular" datatype="String"/>
-                </Attributes>
-            </Dimension>
+            <Dimension source="CATEGORY" table="BudgetSource" name="Budget Source" caption="Budget Source" />
+            <Dimension source="CATEGORY" table="BudgetType" name="Budget Type" caption="Budget Type" />
         </Dimensions>
 
         <MeasureGroups>
@@ -342,32 +196,13 @@
         </MeasureGroups>
     </Cube>
 
+    <!--*************************************************************************
+    ***** Annual Coordination Framework (Outputs)
+    *************************************************************************-->
     <Cube name="Workplan3" caption="Annual Coordination Framework (Outputs)" visible="true" cache="true" enabled="true" defaultMeasure="Output Achieved: Yes">
         <Dimensions>
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
+            <Dimension source="Region" />
+            <Dimension source="Country" />
             <Dimension name="Year" caption="Year" table="WorkplanOutputsCube"
                        visible="true">
                 <Attributes>
@@ -375,16 +210,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="WorkstreamSection" caption="Workstream/Normative Area" table="WorkstreamSection"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="WorkstreamSection" caption="Workstream/Normative Area" keyColumn="LABEL"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
+            <Dimension source="CATEGORY" table="WorkstreamSection" name="WorkstreamSection" caption="Workstream/Normative Area." />
         </Dimensions>
 
         <MeasureGroups>
