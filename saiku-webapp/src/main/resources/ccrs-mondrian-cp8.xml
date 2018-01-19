@@ -5,29 +5,11 @@
     </Annotations>
 
     <PhysicalSchema>
-        <Query alias="BASE_COUNTRY">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[select ISO2, REGION, NAME from BASE_COUNTRY, CATEGORY where BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY AND DTYPE = 'CountryRegion' and REGION <> 'Uncategorized']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="CountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='CountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
-
-        <Query alias="SecondaryCountryIncomeStatus">
-            <ExpressionView>
-                <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='SecondaryCountryIncomeStatus']]>
-                </SQL>
-            </ExpressionView>
-        </Query>
+        <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
+        
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+        
+        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP8GeneralCube">
             <ExpressionView>
@@ -52,13 +34,12 @@
                 </SQL>
             </ExpressionView>
         </Query>
-        <InlineTable alias="DAOCP8GeneralCube"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_CODE_OF_CONDUCT"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_COUNTRY_DIRECTOR"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-        <InlineTable alias="HAS_UNDPDEPUTY_REPRESENTATIVE"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>       
-        <InlineTable alias="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>
-		<InlineTable alias="SIGNED_DELEGATION_AUTHORITY"><ColumnDefs><ColumnDef name="id" type="Numeric"/><ColumnDef name="answer" type="String"/></ColumnDefs><Key><Column name="id"/></Key><Rows><Row><Value column="id">0</Value><Value column="answer">No</Value></Row><Row><Value column="id">1</Value><Value column="answer">Yes</Value></Row></Rows></InlineTable>       
     </PhysicalSchema>
+    
+    <!--*************************************************************************
+    ***** Shared Dimensions
+    *************************************************************************-->
+    <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
 
     <!--*************************************************************************
     ***** CP8 General Cube
@@ -66,84 +47,18 @@
     <Cube name="Joint Leadership" caption="Joint Leadership and Management Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
-            <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Region" caption="Region" keyColumn="REGION"
-                               hierarchyAllMemberName="All Regions" hierarchyCaption="All Regions"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Country" caption="Country" table="BASE_COUNTRY"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ISO2"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
-                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Delivering as One" caption="Delivering as One" table='DAOCP8GeneralCube' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Delivering as One" caption="Delivering as One" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Year" caption="Year" table="CP8GeneralCube"
-                       visible="true">
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP8GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-
-            <Dimension name="CountryIncomeStatus" caption="Country Income Status" table="CountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="CountryIncomeStatus" caption="Country Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All CountryIncomeStatus" hierarchyCaption="All Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" table="SecondaryCountryIncomeStatus"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="SecondaryCountryIncomeStatus" caption="SecondaryCountry Income Status" keyColumn="LABEL"
-                               hierarchyAllMemberName="All SecondaryCountryIncomeStatus" hierarchyCaption="All Secondary Country Income Statuses"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" table='HAS_CODE_OF_CONDUCT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
+            
+            <Dimension table="YesNoTable" name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" />
 
             <Dimension name="Date code of conduct was implemented" caption="Date code of conduct was implemented" table='CP8GeneralCube'
                        key="Dimension Id" type="TIME">
@@ -158,53 +73,10 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Does the UNDP have a Country Director" caption="Does the UNDP have a Country Director?" table='HAS_COUNTRY_DIRECTOR' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does the UNDP have a Country Director" caption="Does the UNDP have a Country Director?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" table='SIGNED_DELEGATION_OF_AUTHORITY_LETTER' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" caption="Is there a signed delegation of authority letter between the UNDP Resident Representative (RR) and UNDP Country Director including for resource mobilization?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" table='HAS_UNDPDEPUTY_REPRESENTATIVE' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
-
-            <Dimension name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" table='HAS_CODE_OF_CONDUCT' key="Dimension Id">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="id"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" keyColumn="answer"
-                               approxRowCount="2" hierarchyHasAll="true"
-                               levelType="Regular" datatype="Boolean"/>
-                </Attributes>
-            </Dimension>
+            <Dimension table="YesNoTable" name="Does the UNDP have a Country Director" caption="Does the UNDP have a Country Director?" />
+            <Dimension table="YesNoTable" name="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" caption="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" />
+            <Dimension table="YesNoTable" name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" />
+            <Dimension table="YesNoTable" name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -229,12 +101,7 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>                             
                 </Measures>
                 <DimensionLinks>
-                    <ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
-                    <ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
-                    <FactLink dimension="Year" />
-                    <ForeignKeyLink dimension="CountryIncomeStatus" foreignKeyColumn="COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="SecondaryCountryIncomeStatus" foreignKeyColumn="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Delivering as One"  foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="Date code of conduct was implemented" />
                     <ForeignKeyLink dimension="Does the UNCT have a code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT"/>
                     <ForeignKeyLink dimension="Does UNDP have a Deputy Representative"  foreignKeyColumn="HASUNDPDEPUTY_REPRESENTATIVE"/>

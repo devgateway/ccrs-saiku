@@ -1,4 +1,4 @@
 type=OLAP
 name=CP 8
 driver=mondrian.olap4j.MondrianOlap4jDriver
-location=jdbc:mondrian:Datasource=mondrianDataSource;Catalog=res:ccrs-mondrian-cp8.xml
+location=jdbc:mondrian:Datasource=mondrianDataSource;Catalog=ccrs-mondrian-cp8.xml;DynamicSchemaProcessor=org.saiku.CCRSMondrianSchemaProcessor
