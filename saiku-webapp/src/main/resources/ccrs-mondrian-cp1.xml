@@ -444,7 +444,7 @@
                     <Attribute name="Dimension Id" keyColumn="BASE_COUNTRY_ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                    <Attribute name="Covered Country" caption="Covered Country" keyColumn="NAME"
                                hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
                                levelType="Regular" datatype="String" />
                 </Attributes>
