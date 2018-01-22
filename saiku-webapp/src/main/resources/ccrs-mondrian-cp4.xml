@@ -223,7 +223,7 @@
                     <Measure name="UnctHaveIntegratedServiceCenter" caption="Count of 'Does the UNCT have an integrated service center?'" column="INTEGRATED_SERVICE_CENTER_AVAILABLE"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="Budget" caption="Number of 'What is the annual budget of the integrated service center in US dollars?'" column="BUDGET"
+                    <Measure name="Budget" caption="Annual budget of the integrated service center in US dollars" column="BUDGET"
                              datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="CommonServiceLinesPartOfBos" caption="Count of 'Are common service lines part of your Business Operation Strategy (BOS)?'" column="HASBOSCOMMON_SERVICE_LINES"
