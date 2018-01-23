@@ -373,7 +373,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)" caption="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)?" />
+            <Dimension table="YesNoTable" name="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)" caption="Is this a Results Group as defined by the SOPs?" />
             <Dimension table="YesNoTable" name="Does the Results Group have a Joint Workplan" caption="Does the Results Group have a Joint Workplan?" />
             <Dimension source="CATEGORY" table="YesNoNAQuestion" name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" />
         </Dimensions>
@@ -384,7 +384,7 @@
                     <Measure name="Count" caption="Number of Interagency Groups" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="resultsGroupDefinedBySOP" caption="Count of 'Is this a Results Group as defined by the Standard Operating Procedures (SOPs)'" column="RESULTS_GROUP_DEFINED_BYSOP_COUNT"
+                    <Measure name="resultsGroupDefinedBySOP" caption="Count of 'Is this a Results Group as defined by the SOPs'" column="RESULTS_GROUP_DEFINED_BYSOP_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="jointWorkplan" caption="Count of 'Does the Results Group have a Joint Workplan'" column="JOINT_WORKPLAN_COUNT"
