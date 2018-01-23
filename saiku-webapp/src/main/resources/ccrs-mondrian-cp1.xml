@@ -11,6 +11,14 @@
         <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
+		
+		<Query alias="BASE_COUNTRY2">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select b.ISO2 as ISO2, c.REGION as REGION, b.NAME as NAME, b.ID as BASE_COUNTRY_ID from BASE_COUNTRY b, CATEGORY c where b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion' and c.REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="CP1UnctMember">
             <ExpressionView>
@@ -438,13 +446,13 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
 			
-			<Dimension name="Covered Country" caption="Covered Country" table="BASE_COUNTRY"
+			<Dimension name="Covered Country" caption="Covered Country" table="BASE_COUNTRY2"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="BASE_COUNTRY_ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                    <Attribute name="Covered Country" caption="Covered Country" keyColumn="NAME"
                                hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
                                levelType="Regular" datatype="String" />
                 </Attributes>
