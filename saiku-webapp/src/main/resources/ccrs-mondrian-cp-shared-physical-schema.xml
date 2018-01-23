@@ -5,11 +5,11 @@
             <SQL dialect="generic">
                 <![CDATA[
                     select
-                        ISO2, REGION, NAME
+                        b.ISO2, c.REGION, b.NAME, b.ID as BASE_COUNTRY_ID
                     from
-                        BASE_COUNTRY, CATEGORY
+                        BASE_COUNTRY b, CATEGORY c
                     where
-                        BASE_COUNTRY.ISO2 = CATEGORY.COUNTRY and DTYPE = 'CountryRegion' and REGION <> 'Uncategorized'
+                        b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion' and c.REGION <> 'Uncategorized'
                 ]]>
             </SQL>
         </ExpressionView>

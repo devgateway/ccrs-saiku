@@ -11,6 +11,14 @@
         <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
+		
+		<Query alias="BASE_COUNTRY2">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select b.ISO2 as ISO2, c.REGION as REGION, b.NAME as NAME, b.ID as BASE_COUNTRY_ID from BASE_COUNTRY b, CATEGORY c where b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion' and c.REGION <> 'Uncategorized']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="CP1UnctMember">
             <ExpressionView>
@@ -89,6 +97,25 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CP1CoveredCountries">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            M.ID, M.COUNTRY_ID as CC_COUNTRY_ID, M.INCOME_STATUS_ID as CC_INCOME_STATUS_ID, M.YEAR_OF_BECOMINGDAO as CC_YEAR_OF_BECOMINGDAO,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN M.DAO = TRUE THEN 1 ELSE 0 END as DAO_COUNT,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP1COUNTRY M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND
+                            CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        
         <Query alias="CP1GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -402,6 +429,68 @@
     </Cube>
 
     <!--*************************************************************************
+    ***** CP1 Covered Countries
+    *************************************************************************-->
+
+    <Cube name="Covered Countries" caption="Covered Countries" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP1CoveredCountries" visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
+			
+			<Dimension name="Covered Country" caption="Covered Country" table="BASE_COUNTRY2"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="BASE_COUNTRY_ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Covered Country" caption="Covered Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>			
+			
+            <Dimension source="CountryIncomeStatus" name="CoveredCountryIncomeStatus" caption="Covered Country Income Status" />
+
+            <Dimension table="YesNoTable" name="DAOCountry" caption="Is it a DAO Country?" />            
+
+            <Dimension name="YearDAOCountry" caption="Year of becoming a DAO country" table="CP1CoveredCountries"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="CC_YEAR_OF_BECOMINGDAO" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP1 Covered Countries" table="CP1CoveredCountries">
+                <Measures>
+                    <Measure name="Count" caption="Number of Covered Countries" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Count of DAO Country" caption="Count of 'Is it a DAO Country'" column="DAO_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                </Measures>
+                <DimensionLinks>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+					<ForeignKeyLink dimension="Covered Country" foreignKeyColumn="CC_COUNTRY_ID"/>
+                    <ForeignKeyLink dimension="CoveredCountryIncomeStatus" foreignKeyColumn="CC_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="DAOCountry"  foreignKeyColumn="DAO_COUNT"/>
+					<FactLink dimension="YearDAOCountry" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+	
+	<!--*************************************************************************
     ***** CP1 General Cube
     *************************************************************************-->
     <Cube name="CP1GeneralCube" caption="SoPs for Delivering as One" visible="true"
