@@ -752,7 +752,7 @@
     <!--*************************************************************************
     ***** CP1 General Cube
     *************************************************************************-->
-    <Cube name="CP1GeneralCube" caption="SoPs for Delivering as One" visible="true"
+    <Cube name="CP1GeneralCube" caption="SOPs for Delivering as One" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension name="Region" caption="Region" table="BASE_COUNTRY"
@@ -822,167 +822,167 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" table="SOP1q"
+            <Dimension name="SoP1question" caption="SOP1 Joint National/UN Steering Committee" table="SOP1q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" keyColumn="LABEL"
+                    <Attribute name="SoP1question" caption="SOP1 Joint National/UN Steering Committee" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP2question" caption="SoP2 Annual Report on Joint Results" table="SOP2q"
+            <Dimension name="SoP2question" caption="SOP2 Annual Report on Joint Results" table="SOP2q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP2question" caption="SoP2 Annual Report on Joint Results" keyColumn="LABEL"
+                    <Attribute name="SoP2question" caption="SOP2 Annual Report on Joint Results" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP3question" caption="SoP3 Signed UNDAF" table="SOP3q"
+            <Dimension name="SoP3question" caption="SOP3 Signed UNDAF" table="SOP3q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP3question" caption="SoP3 Signed UNDAF" keyColumn="LABEL"
+                    <Attribute name="SoP3question" caption="SOP3 Signed UNDAF" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" table="SOP4q"
+            <Dimension name="SoP4question" caption="SOP4 Joint Workplans (for Results Groups)" table="SOP4q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" keyColumn="LABEL"
+                    <Attribute name="SoP4question" caption="SOP4 Joint Workplans (for Results Groups)" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP5question" caption="SoP5 Results Groups Established" table="SOP5q"
+            <Dimension name="SoP5question" caption="SOP5 Results Groups Established" table="SOP5q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP5question" caption="SoP5 Results Groups Established" keyColumn="LABEL"
+                    <Attribute name="SoP5question" caption="SOP5 Results Groups Established" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework" table="SOP6q"
+            <Dimension name="SoP6question" caption="SOP6 Medium-Term Common Budgetary Framework" table="SOP6q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework" keyColumn="LABEL"
+                    <Attribute name="SoP6question" caption="SOP6 Medium-Term Common Budgetary Framework" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP7question" caption="SoP7 Annual Common Budgetary Framework" table="SOP7q"
+            <Dimension name="SoP7question" caption="SOP7 Annual Common Budgetary Framework" table="SOP7q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP7question" caption="SoP7 Annual Common Budgetary Framework" keyColumn="LABEL"
+                    <Attribute name="SoP7question" caption="SOP7 Annual Common Budgetary Framework" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy" table="SOP8q"
+            <Dimension name="SoP8question" caption="SOP8 Joint Resource Mobilization Strategy" table="SOP8q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy" keyColumn="LABEL"
+                    <Attribute name="SoP8question" caption="SOP8 Joint Resource Mobilization Strategy" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" table="SOP9q"
+            <Dimension name="SoP9question" caption="SOP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" table="SOP9q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" keyColumn="LABEL"
+                    <Attribute name="SoP9question" caption="SOP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT" table="SOP10q"
+            <Dimension name="SoP10question" caption="SOP10 Joint Decision-Making by UNCT" table="SOP10q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT" keyColumn="LABEL"
+                    <Attribute name="SoP10question" caption="SOP10 Joint Decision-Making by UNCT" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT" table="SOP11q"
+            <Dimension name="SoP11question" caption="SOP11 Business Operations Strategy Endorsed by UNCT" table="SOP11q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT" keyColumn="LABEL"
+                    <Attribute name="SoP11question" caption="SOP11 Business Operations Strategy Endorsed by UNCT" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency" table="SOP12q"
+            <Dimension name="SoP12question" caption="SOP12 OMT Chaired by Head of Agency" table="SOP12q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency" keyColumn="LABEL"
+                    <Attribute name="SoP12question" caption="SOP12 OMT Chaired by Head of Agency" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" table="SOP13q"
+            <Dimension name="SoP13question" caption="SOP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" table="SOP13q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" keyColumn="LABEL"
+                    <Attribute name="SoP13question" caption="SOP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP14question" caption="SoP14 Joint Communication Strategy" table="SOP14q"
+            <Dimension name="SoP14question" caption="SOP14 Joint Communication Strategy" table="SOP14q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP14question" caption="SoP14 Joint Communication Strategy" keyColumn="LABEL"
+                    <Attribute name="SoP14question" caption="SOP14 Joint Communication Strategy" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension name="SoP15question" caption="SoP15 Country Communications Group" table="SOP15q"
+            <Dimension name="SoP15question" caption="SOP15 Country Communications Group" table="SOP15q"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false" levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="SoP15question" caption="SoP15 Country Communications Group" keyColumn="LABEL"
+                    <Attribute name="SoP15question" caption="SOP15 Country Communications Group" keyColumn="LABEL"
                                approxRowCount="3" hierarchyHasAll="true"
                                levelType="Regular" datatype="String" />
                 </Attributes>
@@ -1036,13 +1036,13 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" table='BUDGETED_WORKPLAN' key="Dimension Id">
+            <Dimension name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a budgeted workplan to implement the Joint Communication Strategy?" table='BUDGETED_WORKPLAN' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="id"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" keyColumn="answer"
+                    <Attribute name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a budgeted workplan to implement the Joint Communication Strategy?" keyColumn="answer"
                                approxRowCount="2" hierarchyHasAll="true"
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
