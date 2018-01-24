@@ -304,7 +304,7 @@
             <Dimension source="CATEGORY" table="SOP1PartialImplementationDetails" caption="SOP1 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP2PartialImplementationDetails" caption="SOP2 Details on partial implementation." />
             <Dimension table="YesNoTable" name="ReportPubliclyAvailable" caption="Has the UN country team made their most recent annual results report publicly available?" />
-            <Dimension source="CATEGORY" table="ReportPublishingModality" caption="Report Publishing Modality" />
+            <Dimension source="CATEGORY" table="ReportPublishingModality" caption="How UN country team made their most recent annual results report publicly available?" />
             <Dimension source="CATEGORY" table="SOP3PartialImplementationDetails" caption="SOP3 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP5PartialImplementationDetails" caption="SOP5 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP6PartialImplementationDetails" caption="SOP6 Details on partial implementation." />
