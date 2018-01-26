@@ -179,7 +179,7 @@
             <!-- N.14.11 -->
             <Dimension table="YesNoTable" name="Was the support provided as an interagency effort" caption="Was the support provided as an interagency effort?" />
             <!-- N.14.13 -->
-            <Dimension source="CATEGORY" table="UNAgency" name="usedForVoluntaryNationalReview" caption="Was the support provided as an interagency effort?" />
+            <Dimension source="CATEGORY" table="UNAgency" name="usedForVoluntaryNationalReview" caption="Was the report used for a Voluntary National Review presentation at the High-level Political Forum in New York?" />
         </Dimensions>
 
         <MeasureGroups>
