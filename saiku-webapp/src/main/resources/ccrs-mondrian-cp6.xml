@@ -168,7 +168,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="HAS_COORDINATOR_TWITTER_ACCOUNT" caption="Does the Resident Coordinator have a Twitter account?" />
+            <Dimension table="YesNoTable" name="Does the Resident Coordinator have a Twitter account" caption="Does the Resident Coordinator have a Twitter account?" />
             
 			<Dimension name="Coordinator Twitter Account" caption="Resident Coordinator Twitter account" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -183,15 +183,15 @@
             </Dimension>
 
             <Dimension table="YesNoTable" name="Has the UNCT agreed on common messaging on any topic" caption="Has the UNCT agreed on common messaging on any topic?" />
-            <Dimension table="YesNoTable" name="Do you have any joint advocacy strategies to communicate on human rights or other normative issues" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" />
+            <Dimension table="YesNoTable" name="Has joint advocacy strategies to communicate on human rights" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" />
             <!-- N.6.1 -->
             <Dimension source="CATEGORY" table="UNCTAdvocacyModel" caption="The model that best describes the UNCT's work on advocacy" />
             <!-- N.6.3 -->
-            <Dimension table="YesNoTable" name="IS_COMMUNICATIONS_PART_OFUNDAF" caption="Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?" />
+            <Dimension table="YesNoTable" name="Is communications part of UNDAF" caption="Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?" />
             <!-- N.6.4 -->
-            <Dimension table="YesNoTable" name="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" caption="Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?" />
+            <Dimension table="YesNoTable" name="Has communicating together in time of crisis" caption="Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?" />
             <!-- N.6.5 -->
-            <Dimension table="YesNoTable" name="HAS_VISUAL_IDENTITY_ESTABLISHED" caption="Does the UNCT have an established visual identity for joint UN communications?" />
+            <Dimension table="YesNoTable" name="Has UNCT established visual identity" caption="Does the UNCT have an established visual identity for joint UN communications?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -240,12 +240,12 @@
                     <ForeignKeyLink dimension="Do you have a common Facebook page for the UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE"/>
                     <ForeignKeyLink dimension="Do you have a common Twitter account for the UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT"/>
                     <ForeignKeyLink dimension="Has the UNCT agreed on common messaging on any topic"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"/>
-                    <ForeignKeyLink dimension="Do you have any joint advocacy strategies to communicate on human rights or other normative issues"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"/>
-					<ForeignKeyLink dimension="HAS_COORDINATOR_TWITTER_ACCOUNT"  foreignKeyColumn="HAS_COORDINATOR_TWITTER_ACCOUNT"/>
+                    <ForeignKeyLink dimension="Has joint advocacy strategies to communicate on human rights"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"/>
+					<ForeignKeyLink dimension="Does the Resident Coordinator have a Twitter account"  foreignKeyColumn="HAS_COORDINATOR_TWITTER_ACCOUNT"/>
 					<ForeignKeyLink dimension="UNCTAdvocacyModel" foreignKeyColumn="UNCT_ADVOCACY_MODEL_ID" />
-					<ForeignKeyLink dimension="IS_COMMUNICATIONS_PART_OFUNDAF"  foreignKeyColumn="IS_COMMUNICATIONS_PART_OFUNDAF"/>
-					<ForeignKeyLink dimension="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"  foreignKeyColumn="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"/>
-					<ForeignKeyLink dimension="HAS_VISUAL_IDENTITY_ESTABLISHED"  foreignKeyColumn="HAS_VISUAL_IDENTITY_ESTABLISHED"/>
+					<ForeignKeyLink dimension="Is communications part of UNDAF"  foreignKeyColumn="IS_COMMUNICATIONS_PART_OFUNDAF"/>
+					<ForeignKeyLink dimension="Has communicating together in time of crisis"  foreignKeyColumn="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"/>
+					<ForeignKeyLink dimension="Has UNCT established visual identity"  foreignKeyColumn="HAS_VISUAL_IDENTITY_ESTABLISHED"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
