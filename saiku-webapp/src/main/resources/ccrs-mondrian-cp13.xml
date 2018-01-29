@@ -96,8 +96,8 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension source="CATEGORY" table="Scorecard" caption="Gender Scorecard" />
-            <Dimension source="CATEGORY" table="GenderEqualityRating" caption="Gender Equality Rating" />
+            <Dimension source="CATEGORY" table="Scorecard" name="Gender Scorecard" caption="Gender Scorecard" />
+            <Dimension source="CATEGORY" table="GenderEqualityRating" name="Gender Equality Rating" caption="Gender Equality Rating" />
             <Dimension table="YesNoTable" name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the scorecard recommendations?" />
         </Dimensions>
 
@@ -112,8 +112,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="Scorecard" foreignKeyColumn="SCORECARD_ID" />
-                    <ForeignKeyLink dimension="GenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
+                    <ForeignKeyLink dimension="Gender Scorecard" foreignKeyColumn="SCORECARD_ID" />
+                    <ForeignKeyLink dimension="Gender Equality Rating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
                     <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -137,11 +137,11 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
             <!-- 13.4.C.2.1 -->
-            <Dimension source="CATEGORY" table="UNSwapScorecard" caption="UNCT UN-SWAP Scorecard Performance Areas" />
+            <Dimension source="CATEGORY" table="UNSwapScorecard" name="UNSwap Scorecard" caption="UNCT UN-SWAP Scorecard Performance Areas" />
             <!-- 13.4.C.2.2 -->
-            <Dimension source="CATEGORY" table="UNSwapGenderEqualityRating" caption="Rating" />
+            <Dimension source="CATEGORY" table="UNSwapGenderEqualityRating" name="UNSwap Gender Equality Rating" caption="Rating" />
             <!-- 13.4.C.2.3 -->
-            <Dimension table="YesNoTable" name="hasUNCTDevelopedManagementPlan" caption="Has the UNCT developed a management response/action plan to address the recommendations for the scorecard?" />
+            <Dimension table="YesNoTable" name="Has UNCT Developed Management Plan" caption="Has the UNCT developed a management response/action plan to address the recommendations for the scorecard?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -156,9 +156,9 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="UNSwapScorecard" foreignKeyColumn="SCORECARD_ID" />
-                    <ForeignKeyLink dimension="UNSwapGenderEqualityRating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
-                    <ForeignKeyLink dimension="hasUNCTDevelopedManagementPlan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN" />
+                    <ForeignKeyLink dimension="UNSwap Scorecard" foreignKeyColumn="SCORECARD_ID" />
+                    <ForeignKeyLink dimension="UNSwap Gender Equality Rating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
+                    <ForeignKeyLink dimension="Has UNCT Developed Management Plan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
