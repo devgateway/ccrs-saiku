@@ -465,7 +465,7 @@
             <Dimension name="YearDAOCountry" caption="Year of becoming a DAO country" table="CP1CoveredCountries"
                        visible="true">
                 <Attributes>
-                    <Attribute name="Year" keyColumn="CC_YEAR_OF_BECOMINGDAO" datatype="Integer" />
+                    <Attribute name="Year of becoming a DAO country" keyColumn="CC_YEAR_OF_BECOMINGDAO" datatype="Integer" />
                 </Attributes>
             </Dimension>
         </Dimensions>
