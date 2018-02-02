@@ -16,7 +16,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.PARTNER_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            M.ID, M.PARTNER_ID, M.PARTNERSHIP_TYPE_ID, M.AGREEMENT_TYPE_ID,
+                            CASE WHEN M.MULTINATIONAL_BUSINESS_NAME IS NULL THEN '' ELSE MULTINATIONAL_BUSINESS_NAME END as MULTINATIONAL_BUSINESS_NAME,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
@@ -102,6 +104,21 @@
             <Dimension source="SecondaryCountryIncomeStatus" />
 
             <Dimension source="CATEGORY" table="LocalInstitution" name="Partner" caption="Partner" />
+            
+            <Dimension name="Multinational business name" caption="Name of the Multinational business"
+                       table="CP14UNCTPartners" visible="true">
+                 <Attributes>
+                    <Attribute name="Multinational business name" caption="Name of the Multinational business"
+                               keyColumn="MULTINATIONAL_BUSINESS_NAME"
+                               hierarchyAllMemberName="All Multinational business names"
+                               hierarchyCaption="All Multinational business names" 
+                               levelType="Regular" datatype="String" >
+                    </Attribute>
+                </Attributes>
+            </Dimension>
+            
+            <Dimension source="CATEGORY" table="PartnershipType" name="Partnership Type" caption="Partnership Type" />
+            <Dimension source="CATEGORY" table="AgreementType" name="Agreement Type" caption="Agreement Type" />
         </Dimensions>
 
         <MeasureGroups>
@@ -113,6 +130,9 @@
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Partner"  foreignKeyColumn="PARTNER_ID"/>
+                    <FactLink dimension="Multinational business name" />
+                    <ForeignKeyLink dimension="Partnership Type"  foreignKeyColumn="PARTNERSHIP_TYPE_ID"/>
+                    <ForeignKeyLink dimension="Agreement Type"  foreignKeyColumn="AGREEMENT_TYPE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
