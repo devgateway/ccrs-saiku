@@ -15,7 +15,7 @@
 		<Query alias="BASE_COUNTRY2">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[select b.ISO2 as ISO2, c.REGION as REGION, b.NAME as NAME, b.ID as BASE_COUNTRY_ID from BASE_COUNTRY b, CATEGORY c where b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion' and c.REGION <> 'Uncategorized']]>
+                    <![CDATA[select b.ISO2 as ISO2, c.REGION as REGION, b.NAME as NAME, b.ID as BASE_COUNTRY_ID from BASE_COUNTRY b, CATEGORY c where b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion']]>
                 </SQL>
             </ExpressionView>
         </Query>
