@@ -63,7 +63,6 @@
                             CASE WHEN cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL = TRUE THEN 1 ELSE 0 END as HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL,
                             CASE WHEN cp13.HASUNCTGENDER_EQUALITY_SCORECARD = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_EQUALITY_SCORECARD,
                             CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_BUILDINGUNSTAFF_GENDER,
-                            CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = TRUE THEN date(cp13.DATE_CAPACITY_BUILDINGUNSTAFF_GENDER) ELSE null END as DATE_CAPACITY_BUILDINGUNSTAFF_GENDER,
                             CASE WHEN cp13.UNCT_USES_GENDER_EQUALITY_MARKER = TRUE THEN 1 ELSE 0 END as UNCT_USES_GENDER_EQUALITY_MARKER,
                             CASE WHEN cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE = TRUE THEN 1 ELSE 0 END as GENDER_MAINSTREAMING_STRATEGY_IN_PLACE,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
@@ -190,17 +189,6 @@
             <Dimension table="YesNoTable" name="Gender Equality Scorecard" caption="Has your UNCT implemented a Gender Equality Scorecard in the past FOUR years?" />
             <Dimension table="YesNoTable" name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" />
 
-            <Dimension name="Date of capacity building in the past year" caption="Date of capacity building in the past year" table='CP13GeneralCube' key="Dimension Id" type="TIME">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false"
-                               levelType="Regular" datatype="Integer"/>
-
-                    <Attribute name="Date of capacity building in the past year" caption="Date of capacity building in the past year" keyColumn="DATE_CAPACITY_BUILDINGUNSTAFF_GENDER"
-                               hierarchyHasAll="true"
-                               levelType="TimeUndefined" datatype="Date"/>
-                </Attributes>
-            </Dimension>
             <!-- 13.A -->
             <Dimension table="YesNoTable" name="UNCT uses gender equality" caption="Does the UNCT use a gender equality marker?" />
             <!-- 13.4.A -->
@@ -248,7 +236,6 @@
                     <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"/>
                     <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD"/>
                     <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER"/>
-                    <FactLink dimension="Date of capacity building in the past year" />
                     <ForeignKeyLink dimension="UNCT uses gender equality" foreignKeyColumn="UNCT_USES_GENDER_EQUALITY_MARKER"/>
                     <FactLink dimension="Year when Gender Equality Scorecard was Conducted" />
                     <ForeignKeyLink dimension="ScorecardType" foreignKeyColumn="GENDER_SCORECARD_TYPES_ID" />
