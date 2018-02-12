@@ -177,6 +177,30 @@
 <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/jquery.tipsy.js"></script>
 <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/tipsy.js"></script>
 
+<script type="text/javascript" src="js/saiku/plugins/ValidatedCountries/plugin.js"></script>
+<script type="text/template" id="validated-countries-tmpl">
+	<table>
+		<thead>
+			<tr>
+				<th>Country</th>
+				<% data.allYears.forEach(function(year) { %>
+				<th style="padding: 0 6px;"><div><%=year%></div>(<%=data.validated[year].length + ' of ' + data.allCountries.length%>)</th>
+				<% }); %>
+			</tr>
+		</thead>
+		<tbody>
+			<% data.allCountries.forEach(function(country) { %>
+			<tr>
+				<td><%=country%></td>
+				<% data.allYears.forEach(function(year) { %>
+				<th style="color: <%=data.validated[year].includes(country) ? 'green' : 'red'%>;"><%=data.validated[year].includes(country) ? '✔' : '✘'%></th>
+				<% }); %>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+</script>
+
 <link type="text/css" href="js/saiku/plugins/CCC_Chart/tipsy.css" rel="stylesheet"/>
 
 <!-- ACE Editor for MDX -->
@@ -189,6 +213,8 @@
 		<li><a id='new_query' href='#new_query' title='New query' class='new_tab i18n sprite'></a></li>
 		<li class='separator'>&nbsp;</li>
 		<li><a id='open_query' href='#open_query' title='Open query' class='open_query i18n sprite'></a></li>
+		<li class='separator'>&nbsp;</li>
+		<li><a id='display_included_countries' href='#display_included_countries' style='white-space: nowrap; color: white;'>Display included countries</a></li>
 		<!--<li class='separator'>&nbsp;</li>-->
 		<!--<li><a id='logout' href='#logout' title='Logout' class='logout i18n sprite'></a></li>-->
 	</ul>
