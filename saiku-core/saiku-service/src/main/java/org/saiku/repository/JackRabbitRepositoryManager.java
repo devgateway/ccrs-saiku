@@ -178,16 +178,20 @@ public class JackRabbitRepositoryManager implements IRepositoryManager {
             n.addMixin("nt:saikufolders");
 
             HashMap<String, List<AclMethod>> m = new HashMap<String, List<AclMethod>>();
-            ArrayList<AclMethod> lViewer = new ArrayList<AclMethod>();
+            ArrayList<AclMethod> lUser = new ArrayList<AclMethod>();
+            ArrayList<AclMethod> lEditor = new ArrayList<AclMethod>();
             ArrayList<AclMethod> lAdmin = new ArrayList<AclMethod>();
 
-            lViewer.add(AclMethod.READ);
+            lUser.add(AclMethod.READ);
+
+            lEditor.add(AclMethod.READ);
 
             lAdmin.add(AclMethod.READ);
             lAdmin.add(AclMethod.WRITE);
             lAdmin.add(AclMethod.GRANT);
 
-            m.put("ROLE_VIEWER", lViewer);
+            m.put("ROLE_USER", lUser);
+            m.put("ROLE_EDITOR", lEditor);
             m.put("ROLE_ADMIN", lAdmin);
 
             AclEntry e = new AclEntry("admin", AclType.SECURED, m, null);
@@ -443,10 +447,13 @@ System.out.println(e.getLocalizedMessage());
             // keep the newly created file only for the current user
             HashMap<String, List<AclMethod>> m = new HashMap<String, List<AclMethod>>();
             ArrayList<AclMethod> lUser = new ArrayList<AclMethod>();
+            ArrayList<AclMethod> lEditor = new ArrayList<AclMethod>();
 
             lUser.add(AclMethod.READ);
+            lEditor.add(AclMethod.READ);
 
-            m.put("ROLE_VIEWER", lUser);
+            m.put("ROLE_USER", lUser);
+            m.put("ROLE_EDITOR", lEditor);
 
             AclEntry e = new AclEntry(user, AclType.SECURED, m, null);
             acl2 = new Acl2(n);
