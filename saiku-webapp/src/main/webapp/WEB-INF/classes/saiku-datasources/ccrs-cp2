@@ -2,5 +2,3 @@ type=OLAP
 name=CP 2
 driver=mondrian.olap4j.MondrianOlap4jDriver
 location=jdbc:mondrian:Datasource=mondrianDataSource;Catalog=ccrs-mondrian-cp2.xml;DynamicSchemaProcessor=org.saiku.CCRSMondrianSchemaProcessor
-security.enabled=true
-security.type=one2one

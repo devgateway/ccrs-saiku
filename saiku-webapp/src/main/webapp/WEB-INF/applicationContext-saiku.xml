@@ -44,13 +44,13 @@
         <security:form-login login-page="/login" default-target-url="/" />
         <security:access-denied-handler error-page="/login" />
 
-        <!-- Notice we use ROLE_VIEWER, same as in IMS, the roles will be fetched remotely with the authenticated token -->
-        <security:intercept-url pattern="/serverdocs/**" access="ROLE_VIEWER" />
-        <security:intercept-url pattern="/rest/saiku/session*" access="ROLE_VIEWER" />
-        <security:intercept-url pattern="/rest/saiku/session/" access="ROLE_VIEWER" />
-        <security:intercept-url pattern="/rest/**" access="ROLE_VIEWER" />
-        <security:intercept-url pattern="/json/**" access="ROLE_VIEWER" />
-        <security:intercept-url pattern="/WEB-INF/classes/legacy-schema" access="ROLE_VIEWER" />
+        <!-- Notice we use ROLE_EDITOR, same as in IMS, the roles will be fetched remotely with the authenticated token -->
+        <security:intercept-url pattern="/serverdocs/**" access="ROLE_EDITOR" />
+        <security:intercept-url pattern="/rest/saiku/session*" access="ROLE_EDITOR" />
+        <security:intercept-url pattern="/rest/saiku/session/" access="ROLE_EDITOR" />
+        <security:intercept-url pattern="/rest/**" access="ROLE_EDITOR" />
+        <security:intercept-url pattern="/json/**" access="ROLE_EDITOR" />
+        <security:intercept-url pattern="/WEB-INF/classes/legacy-schema" access="ROLE_EDITOR" />
         <security:logout logout-url="/logout"/>
         <security:http-basic/>
     </security:http>
