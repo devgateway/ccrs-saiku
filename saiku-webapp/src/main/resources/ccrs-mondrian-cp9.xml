@@ -62,6 +62,7 @@
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT = TRUE THEN 1 ELSE 0 END ELSE null END as DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_MECHANISMS_FOR_MONITORING = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_MECHANISMS_FOR_MONITORING,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN cp9integrated.IS_NEW_MONITORED_AND_REPORTED_ID ELSE null END as IS_NEW_MONITORED_AND_REPORTED_ID,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_FRAMEWORK_LINK = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_FRAMEWORK_LINK,
                         CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN 1 ELSE 0 END as HASUNUNCTCOLABORATION,
                         CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN CASE WHEN cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID = 15988 THEN 1 ELSE 0 END ELSE null END as IS_JOINT_PROGRAMME,
                         cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID,
@@ -80,13 +81,28 @@
                         CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN CASE WHEN cp9interactionwbdirectorunleader.WBUNCOLLABORATE_ON_UPSTREAM_POLICY = TRUE THEN 1 ELSE 0 END ELSE null END as WBUNCOLLABORATE_ON_UPSTREAM_POLICY,
                         CASE WHEN cp9.HAS_JOINT_RISK_ASESSMENTS = TRUE THEN 1 ELSE 0 END as HAS_JOINT_RISK_ASESSMENTS,
                         CASE WHEN cp9.HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS = TRUE THEN 1 ELSE 0 END as HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS,
-                        CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                        CASE WHEN cp9.HAS_SUSTAINING_PEACE_ELEMENTS = TRUE THEN 1 ELSE 0 END as HAS_SUSTAINING_PEACE_ELEMENTS,
+                        CASE WHEN cp9.HAS_OTHER_STRATEGIES = TRUE THEN 1 ELSE 0 END as HAS_OTHER_STRATEGIES,
+                        CASE WHEN cp9.HAS_NATIONAL_MECHANISMS = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_MECHANISMS,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN 1 ELSE 0 END as HAS_HUMANITARIAN_CRISIS,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.UN_COORDINATOR = TRUE THEN 1 ELSE 0 END ELSE null END as UN_COORDINATOR,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.COUNTRY_TEAM = TRUE THEN 1 ELSE 0 END ELSE null END as COUNTRY_TEAM,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.RESPONSE_PLAN = TRUE THEN 1 ELSE 0 END ELSE null END as RESPONSE_PLAN,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN cp9humanitarianstructures.OTHER ELSE null END as HS_OTHER,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.NEEDS_ANALYSIS = TRUE THEN 1 ELSE 0 END ELSE null END as NEEDS_ANALYSIS,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.CONFLICT_ANALYSIS = TRUE THEN 1 ELSE 0 END ELSE null END as CONFLICT_ANALYSIS,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.PLANNING_FOR_COLLECTIVE_OUTCOMES = TRUE THEN 1 ELSE 0 END ELSE null END as PLANNING_FOR_COLLECTIVE_OUTCOMES,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.PROGRAMMING = TRUE THEN 1 ELSE 0 END ELSE null END as PROGRAMMING,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.MONITORING_AND_EVALUATION = TRUE THEN 1 ELSE 0 END ELSE null END as MONITORING_AND_EVALUATION,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.COORDINATION_MECHANISMS = TRUE THEN 1 ELSE 0 END ELSE null END as COORDINATION_MECHANISMS
                     from
                         -- DERBY-PROPERTIES joinOrder = FIXED
                         CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE cp1, CP9UNPEACE_KEEPING_MISSION cp9unpeace,
                         CP9INTEGRATED_STRATEGIC_FRAMEWORK cp9integrated, CP9UNUNCTCOLABORATION cp9ununctcolaboration,
                         CP9CONFLICT_ANALYSIS cp9conflict, CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy, CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements,
-                        CP9INTERACTIONWBDIRECTORUNLEADER cp9interactionwbdirectorunleader
+                        CP9INTERACTIONWBDIRECTORUNLEADER cp9interactionwbdirectorunleader, CP9HUMANITARIAN_STRUCTURES cp9humanitarianstructures,
+                        CP9HUMANITARIAN_JOINT_WORK cp9humanitarianjointwork
                     WHERE
                         cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                         cp9unpeace.PARENT_ID = cp9.ID AND
@@ -95,6 +111,8 @@
                         cp9conflict.PARENT_ID = cp9.ID AND
                         cp9unstrategy.PARENT_ID = cp9.ID AND
                         cp9agreements.PARENT_ID = cp9.ID AND
+                        cp9humanitarianstructures.PARENT_ID = cp9.ID AND
+                        cp9humanitarianjointwork.PARENT_ID = cp9.ID AND
                         cp9interactionwbdirectorunleader.PARENT_ID = cp9.ID AND
                         cp9.DESIGNATION != 'AQ' AND cp9.DESIGNATION != 'DOCO' AND cp9.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                         cp9.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp9.ENTITY_YEAR)
@@ -290,6 +308,33 @@
             <Dimension table="YesNoTable" name="Do the World Bank and UN collaborate on upstream policy processes" caption="Do the World Bank and UN collaborate on upstream policy processes?" />
             <Dimension table="YesNoTable" name="Joint risk assessments" caption="Are there any joint risk assessments undertaken (other than related to HACT)?" />
             <Dimension table="YesNoTable" name="Joint initiatives to manage risks" caption="Are there any joint initiatives to manage risks?" />
+            <Dimension table="YesNoTable" name="UNDAF elements to sustaining peace peacebuilding" caption="Does the UNDAF explicitly incorporate elements relating to sustaining peace / peacebuilding?" />
+            <Dimension table="YesNoTable" name="UNCT strategies or plans in place" caption="Does the UNCT have other strategies or plans in place (e.g. separate strategy on sustaining peace)?" />
+            <Dimension table="YesNoTable" name="National mechanisms to coordinate development and peacebuilding efforts" caption="Are there national mechanisms to coordinate development and peacebuilding efforts that are supported by the UNCT?" />
+            <Dimension table="YesNoTable" name="Ongoing humanitarian crisis" caption="Is/Was there an ongoing humanitarian crisis in your country within the last year?" />
+            <Dimension table="YesNoTable" name="UN Humanitarian Coordinator" caption="UN Humanitarian Coordinator (HC)" />
+            <Dimension table="YesNoTable" name="Humanitarian Country Team" caption="Humanitarian Country Team (HCT)" />
+            <Dimension table="YesNoTable" name="Humanitarian Response Plan" caption="Humanitarian Response Plan (HRP)" />
+            
+            <Dimension name="Other humanitarian structures or mechanisms" caption="Other humanitarian structures or mechanisms" table="CP9GeneralCube" key="Dimension Id" visible="true">
+                <Attributes>
+					<Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false"
+                               levelType="Regular" datatype="Integer"/>
+                    <Attribute name="Other humanitarian structures or mechanisms" caption="Other humanitarian structures or mechanisms"
+                               keyColumn="HS_OTHER" hierarchyAllMemberName="All Other humanitarian structures or mechanisms"
+                               hierarchyCaption="All Other humanitarian structures or mechanisms" levelType="Regular"
+                               datatype="String" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension table="YesNoTable" name="Joint needs analysis" caption="Joint needs analysis" />
+            <Dimension table="YesNoTable" name="Joint conflict analysis" caption="Joint conflict analysis" />
+            <Dimension table="YesNoTable" name="Joint planning for collective outcomes" caption="Joint planning for collective outcomes" />
+            <Dimension table="YesNoTable" name="Joint programming" caption="Joint programming" />
+            <Dimension table="YesNoTable" name="Joint monitoring and evaluation" caption="Joint monitoring and evaluation" />
+            <Dimension table="YesNoTable" name="Joint coordination mechanisms" caption="Joint coordination mechanisms" />
+            <Dimension table="YesNoTable" name="Explicit link between ISF and UNDAF" caption="Is there an explicit link between the Integrated Strategic Framework and the UNDAF?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -369,6 +414,51 @@
 
                     <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="UndafElementsToSustainingPeacePeacebuilding" caption="Count of 'Does the UNDAF explicitly incorporate elements relating to sustaining peace / peacebuilding?'" column="HAS_SUSTAINING_PEACE_ELEMENTS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="UnctStrategiesOrPlansInPlace" caption="Count of 'Does the UNCT have other strategies or plans in place (e.g. separate strategy on sustaining peace)?'" column="HAS_OTHER_STRATEGIES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="NationalMechanismsToCoordinateDevelopmentAndPeacebuildingEfforts" caption="Count of 'Are there national mechanisms to coordinate development and peacebuilding efforts that are supported by the UNCT?'" column="HAS_NATIONAL_MECHANISMS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="OngoingHumanitarianCrisis" caption="Count of 'Is/Was there an ongoing humanitarian crisis in your country within the last year?'" column="HAS_HUMANITARIAN_CRISIS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="UnHumanitarianCoordinator" caption="Count of 'UN Humanitarian Coordinator (HC)'" column="UN_COORDINATOR"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="HumanitarianCountryTeam" caption="Count of 'Humanitarian Country Team (HCT)'" column="COUNTRY_TEAM"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="HumanitarianResponsePlan" caption="Count of 'Humanitarian Response Plan (HRP)'" column="RESPONSE_PLAN"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="OtherHumanitarianResponsePlan" caption="Count distinct of 'Other humanitarian structures or mechanisms'" column="HS_OTHER"
+                             datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="JointNeedsAnalysis" caption="Count of 'Joint needs analysis'" column="NEEDS_ANALYSIS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="JointConflictAnalysis" caption="Count of 'Joint conflict analysis'" column="CONFLICT_ANALYSIS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="JointPlanningForCollectiveOutcomes" caption="Count of 'Joint planning for collective outcomes'" column="PLANNING_FOR_COLLECTIVE_OUTCOMES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="JointProgramming" caption="Count of 'Joint programming'" column="PROGRAMMING"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="JointMonitoringAndEvaluation" caption="Count of 'Joint monitoring and evaluation'" column="MONITORING_AND_EVALUATION"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="JointCoordinationMechanisms" caption="Count of 'Joint coordination mechanisms'" column="COORDINATION_MECHANISMS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="ExplicitLinkBetweenIsfAndUndaf" caption="Count of 'Is there an explicit link between the Integrated Strategic Framework and the UNDAF?'" column="HAS_FRAMEWORK_LINK"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -399,6 +489,21 @@
               		<ForeignKeyLink dimension="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
               		<ForeignKeyLink dimension="DOESUNCTPARTICIPATE" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
               		<ForeignKeyLink dimension="DOESUNCTSUPPORTDRREFFORTS" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
+                    <ForeignKeyLink dimension="UNDAF elements to sustaining peace peacebuilding" foreignKeyColumn="HAS_SUSTAINING_PEACE_ELEMENTS"/>
+                    <ForeignKeyLink dimension="UNCT strategies or plans in place" foreignKeyColumn="HAS_OTHER_STRATEGIES"/>
+                    <ForeignKeyLink dimension="National mechanisms to coordinate development and peacebuilding efforts" foreignKeyColumn="HAS_NATIONAL_MECHANISMS"/>
+                    <ForeignKeyLink dimension="Ongoing humanitarian crisis" foreignKeyColumn="HAS_HUMANITARIAN_CRISIS"/>
+                    <ForeignKeyLink dimension="UN Humanitarian Coordinator" foreignKeyColumn="UN_COORDINATOR"/>
+                    <ForeignKeyLink dimension="Humanitarian Country Team" foreignKeyColumn="COUNTRY_TEAM"/>
+                    <ForeignKeyLink dimension="Humanitarian Response Plan" foreignKeyColumn="RESPONSE_PLAN"/>
+                    <ForeignKeyLink dimension="Other humanitarian structures or mechanisms" foreignKeyColumn="HS_OTHER"/>
+                    <ForeignKeyLink dimension="Joint needs analysis" foreignKeyColumn="NEEDS_ANALYSIS"/>
+                    <ForeignKeyLink dimension="Joint conflict analysis" foreignKeyColumn="CONFLICT_ANALYSIS"/>
+                    <ForeignKeyLink dimension="Joint planning for collective outcomes" foreignKeyColumn="PLANNING_FOR_COLLECTIVE_OUTCOMES"/>
+                    <ForeignKeyLink dimension="Joint programming" foreignKeyColumn="PROGRAMMING"/>
+                    <ForeignKeyLink dimension="Joint monitoring and evaluation" foreignKeyColumn="MONITORING_AND_EVALUATION"/>
+                    <ForeignKeyLink dimension="Joint coordination mechanisms" foreignKeyColumn="COORDINATION_MECHANISMS"/>
+                    <ForeignKeyLink dimension="Explicit link between ISF and UNDAF" foreignKeyColumn="HAS_FRAMEWORK_LINK"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

@@ -16,10 +16,13 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.*, CP2.DESIGNATION, CP2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            D.ID, D.ANNUAL_SALARY_AMOUNT, D.OFFICE_TYPE_ID, D.CONTRACT_MODALITY_ID, D.STAFF_MEMBER_TITLE_ID, D.LEVEL_ID, D.FUNDING_ORGANIZATION_ID, D.FINANCING_SOURCE_ID,
+                            D.WHICH_AGENCY_ID, D.HEADRCO,  
+                            CP2.DESIGNATION, CP2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             date(d.start_date) as start_date_date,
                             date(d.end_date) as end_date_date,
                             CASE WHEN D.HEADRCO = TRUE THEN 1 ELSE 0 END as HEAD_OF_RCO,
+                            CASE WHEN D.COMMUNICATION_SPECIALIST = TRUE THEN 1 ELSE 0 END as COMMUNICATION_SPECIALIST,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
@@ -30,7 +33,7 @@
                     ]]>
                 </SQL>
             </ExpressionView>
-        </Query>	
+        </Query>
 
         <Query alias="CP2GeneralCube">
             <ExpressionView>
@@ -106,6 +109,8 @@
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
             </Dimension>
+            
+            <Dimension table="YesNoTable" name="Are you the main focal point for communications" caption="Are you the main focal point for communications?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -116,6 +121,9 @@
 
                     <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
                              column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="mainFocalPointForCommunications" caption="Are you the main focal point for communications?'" column="COMMUNICATION_SPECIALIST"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                 </Measures>
 
@@ -131,6 +139,8 @@
                     <ForeignKeyLink dimension="FinancingSource" foreignKeyColumn="FINANCING_SOURCE_ID" />
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="WHICH_AGENCY_ID" />
                     <ForeignKeyLink dimension="Head of RCO or Main RCO Contact"  foreignKeyColumn="HEAD_OF_RCO"/>
+					<ForeignKeyLink dimension="Are you the main focal point for communications"  foreignKeyColumn="COMMUNICATION_SPECIALIST"/>
+					
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

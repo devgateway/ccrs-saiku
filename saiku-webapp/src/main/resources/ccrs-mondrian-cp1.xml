@@ -8,9 +8,17 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->        
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
+		
+		<Query alias="BASE_COUNTRY2">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[select b.ISO2 as ISO2, c.REGION as REGION, b.NAME as NAME, b.ID as BASE_COUNTRY_ID from BASE_COUNTRY b, CATEGORY c where b.ISO2 = c.COUNTRY AND c.DTYPE = 'CountryRegion']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="CP1UnctMember">
             <ExpressionView>
@@ -89,14 +97,37 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CP1CoveredCountries">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[
+                        select
+                            M.ID, M.COUNTRY_ID as CC_COUNTRY_ID, M.INCOME_STATUS_ID as CC_INCOME_STATUS_ID, M.YEAR_OF_BECOMINGDAO as CC_YEAR_OF_BECOMINGDAO,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN M.DAO = TRUE THEN 1 ELSE 0 END as DAO_COUNT,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP1COUNTRY M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
+                        WHERE
+                            M.PARENT_ID = CP1.ID AND
+                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND
+                            CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                    ]]>
+                </SQL>
+            </ExpressionView>
+        </Query>
+        
         <Query alias="CP1GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
                             CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CP1.YEAR_OF_OFFICIAL_REQUEST, CP1.PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID, CP1.PROJECTED_TOTALBOSSAVINGS_THIS_YEAR,
+                            CP1.PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID, CP1.PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID,
+                            CP1.PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID, CP1.PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp1.DAO_VISION_NOTE_ROADMAP = TRUE THEN 1 ELSE 0 END as DAO_VISION_NOTE_ROADMAP_COUNT,
+                            CASE WHEN cp1.COVER_MORE_THAN_ONE_COUNTRY = TRUE THEN 1 ELSE 0 END as COVER_MORE_THAN_ONE_COUNTRY_COUNT,							
                             CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12561 THEN 1 ELSE 0 END as SOP1q_YES_FULLY,
                             CASE WHEN HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID = 12561 THEN 1 ELSE 0 END as SOP2q_YES_FULLY,
                             CASE WHEN HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID = 12561 THEN 1 ELSE 0 END as SOP3q_YES_FULLY,
@@ -158,9 +189,16 @@
                             HAS_JOINT_COMM_STRATEGY_ID,
                             HAS_COUNTRY_COMM_GROUP_ID,
                             cp1joint.GOVERNMENT_ROLE_ID,
+                            cp1joint.PARTIAL_IMPLEMENTATION_DETAILS_ID as SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID,
                             CASE WHEN cp1joint.HAS_ANNUAL_REVIEW = TRUE THEN 1 ELSE 0 END as HAS_ANNUAL_REVIEW,
                             CASE WHEN cp1annual.REPORT_SUBMITTED_TO_GOV = TRUE THEN 1 ELSE 0 END as REPORT_SUBMITTED_TO_GOV,
-                            CASE WHEN cp1jointstrategy.BUDGETED_WORKPLAN = TRUE THEN 1 ELSE 0 END as BUDGETED_WORKPLAN
+                            cp1annual.PARTIAL_IMPLEMENTATION_DETAILS_ID as SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID,
+                            CASE WHEN cp1annual.REPORT_PUBLICLY_AVAILABLE = TRUE THEN 1 ELSE 0 END as REPORT_PUBLICLY_AVAILABLE_COUNT,
+                            cp1annual.REPORT_PUBLISHING_MODALITY_ID,
+                            CASE WHEN cp1jointstrategy.BUDGETED_WORKPLAN = TRUE THEN 1 ELSE 0 END as BUDGETED_WORKPLAN,
+                            CASE WHEN cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT = TRUE THEN 1 ELSE 0 END as UNDAF_BASED_OR_EQUIVALENT_COUNT,
+                            CASE WHEN cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT = TRUE THEN 1 ELSE 0 END as REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT,
+                            cp1jointstrategy.PARTIAL_IMPLEMENTATION_DETAILS_ID as SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID
                         from CP1GENERAL_PROFILE cp1, CP1JOINT_OVERSIGHT_OWNERSHIP_GOVUN cp1joint, CP1ANNUAL_REPORTING_JOINTUNRESULTS cp1annual, CP1JOINT_COMM_STRATEGY cp1jointstrategy, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
                             cp1joint.PARENT_ID = cp1.ID AND
@@ -402,9 +440,71 @@
     </Cube>
 
     <!--*************************************************************************
+    ***** CP1 Covered Countries
+    *************************************************************************-->
+
+    <Cube name="Covered Countries" caption="Covered Countries" visible="true"
+          cache="true" enabled="true" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP1CoveredCountries" visible="true">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
+			
+			<Dimension name="Covered Country" caption="Covered Country" table="BASE_COUNTRY2"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="BASE_COUNTRY_ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="Covered Country" caption="Covered Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>			
+			
+            <Dimension source="CountryIncomeStatus" name="CoveredCountryIncomeStatus" caption="Covered Country Income Status" />
+
+            <Dimension table="YesNoTable" name="DAOCountry" caption="Is it a DAO Country?" />            
+
+            <Dimension name="YearDAOCountry" caption="Year of becoming a DAO country" table="CP1CoveredCountries"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year of becoming a DAO country" keyColumn="CC_YEAR_OF_BECOMINGDAO" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP1 Covered Countries" table="CP1CoveredCountries">
+                <Measures>
+                    <Measure name="Count" caption="Number of Covered Countries" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Count of DAO Country" caption="Count of 'Is it a DAO Country'" column="DAO_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                </Measures>
+                <DimensionLinks>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+					<ForeignKeyLink dimension="Covered Country" foreignKeyColumn="CC_COUNTRY_ID"/>
+                    <ForeignKeyLink dimension="CoveredCountryIncomeStatus" foreignKeyColumn="CC_INCOME_STATUS_ID" />
+                    <ForeignKeyLink dimension="DAOCountry"  foreignKeyColumn="DAO_COUNT"/>
+					<FactLink dimension="YearDAOCountry" />
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+	
+	<!--*************************************************************************
     ***** CP1 General Cube
     *************************************************************************-->
-    <Cube name="CP1GeneralCube" caption="SoPs for Delivering as One" visible="true"
+    <Cube name="CP1GeneralCube" caption="SOPs for Delivering as One" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension source="Region" />
@@ -418,26 +518,55 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
             
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP1question" caption="SoP1 Joint National/UN Steering Committee" />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP2question" caption="SoP2 Annual Report on Joint Results" />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP3question" caption="SoP3 Signed UNDAF" />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP4question" caption="SoP4 Joint Workplans (for Results Groups)" />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP5question" caption="SoP5 Results Groups Established." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP6question" caption="SoP6 Medium-Term Common Budgetary Framework." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP7question" caption="SoP7 Annual Common Budgetary Framework." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP8question" caption="SoP8 Joint Resource Mobilization Strategy." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP9question" caption="SoP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP10question" caption="SoP10 Joint Decision-Making by UNCT." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP11question" caption="SoP11 Business Operations Strategy Endorsed by UNCT." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP12question" caption="SoP12 OMT Chaired by Head of Agency." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP13question" caption="SoP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP14question" caption="SoP14 Joint Communication Strategy." />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP15question" caption="SoP15 Country Communications Group." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP1question" caption="SOP1 Joint National/UN Steering Committee" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP2question" caption="SOP2 Annual Report on Joint Results" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP3question" caption="SOP3 Signed UNDAF" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP4question" caption="SOP4 Joint Workplans (for Results Groups)" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP5question" caption="SOP5 Results Groups Established." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP6question" caption="SOP6 Medium-Term Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP7question" caption="SOP7 Annual Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP8question" caption="SOP8 Joint Resource Mobilization Strategy." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP9question" caption="SOP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP10question" caption="SOP10 Joint Decision-Making by UNCT." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP11question" caption="SOP11 Business Operations Strategy Endorsed by UNCT." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP12question" caption="SOP12 OMT Chaired by Head of Agency." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP13question" caption="SOP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP14question" caption="SOP14 Joint Communication Strategy." />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP15question" caption="SOP15 Country Communications Group." />
             <Dimension table="YesNoTable" name="DaO Vision" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" />
             <Dimension source="CATEGORY" table="GovernmentRole" caption="Government Role" />
             <Dimension table="YesNoTable" name="Has the Joint National/UN Steering Committee conducted an annual review" caption="Has the Joint National/UN Steering Committee conducted an annual review?" />
             <Dimension table="YesNoTable" name="Was the report submitted to the National Government" caption="Was the report submitted to the National Government?" />
             <Dimension table="YesNoTable" name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" />
+            <Dimension table="YesNoTable" name="Cover More Than One Country" caption="Does your UNCT cover more than one country?" />
+            <Dimension table="YesNoTable" name="Joint communication strategy based on the UNDAF" caption="Is the joint communication strategy based on the UNDAF or equivalent?" />
+            <Dimension table="YesNoTable" name="Report on communication results" caption="Do you report on communication results in the UN Country Results Report?" />
+
+            <Dimension name="Year of Official Request" caption="Year of Official Request" table="CP1GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Year of Official Request" keyColumn="YEAR_OF_OFFICIAL_REQUEST" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+            
+            <Dimension source="CATEGORY" table="SOP1PartialImplementationDetails" caption="SOP1 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP2PartialImplementationDetails" caption="SOP2 Details on partial implementation." />
+            <Dimension table="YesNoTable" name="ReportPubliclyAvailable" caption="Has the UN country team made their most recent annual results report publicly available?" />
+            <Dimension source="CATEGORY" table="ReportPublishingModality" caption="How UN country team made their most recent annual results report publicly available?" />
+            <Dimension source="CATEGORY" table="SOP3PartialImplementationDetails" caption="SOP3 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP5PartialImplementationDetails" caption="SOP5 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP6PartialImplementationDetails" caption="SOP6 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP7PartialImplementationDetails" caption="SOP7 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="SOP8PartialImplementationDetails" caption="SOP8 Details on partial implementation." />
+            
+            <Dimension name="Total BOS annual savings" caption="What is the projected total BOS annual savings this year? (US Dollars)" table="CP1GeneralCube"
+                       visible="true">
+                <Attributes>
+                    <Attribute name="Total BOS annual savings" keyColumn="PROJECTED_TOTALBOSSAVINGS_THIS_YEAR" datatype="Numeric" />
+                </Attributes>
+            </Dimension>
+            
+            <Dimension source="CATEGORY" table="SOP14PartialImplementationDetails" caption="SOP14 Details on partial implementation." />
         </Dimensions>
 
         <MeasureGroups>
@@ -506,6 +635,21 @@
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
+					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_COUNT"/>
+					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
+					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
+                    <FactLink dimension="Year of Official Request" />
+                    <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
+                    <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
+					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_COUNT"/>
+					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
+                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+					<FactLink dimension="Total BOS annual savings" />
+                    <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>
@@ -578,6 +722,21 @@
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
+					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_COUNT"/>
+					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
+					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
+                    <FactLink dimension="Year of Official Request" />
+                    <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
+                    <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
+					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_COUNT"/>
+					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
+                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+					<FactLink dimension="Total BOS annual savings" />
+                    <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>
@@ -650,6 +809,21 @@
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
+					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_COUNT"/>
+					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
+					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
+                    <FactLink dimension="Year of Official Request" />
+                    <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
+                    <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
+					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_COUNT"/>
+					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
+                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+					<FactLink dimension="Total BOS annual savings" />
+                    <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>
@@ -671,8 +845,17 @@
                     <Measure name="reportSubmittedToGov" caption="Count 'Was the report submitted to the National Government'" column="REPORT_SUBMITTED_TO_GOV"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="budgetedWorkplan" caption="Count 'Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy'" column="BUDGETED_WORKPLAN"
+                    <Measure name="budgetedWorkplan" caption="Count 'Does the UNCT have a budgeted workplan to implement the Joint Communication Strategy'" column="BUDGETED_WORKPLAN"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="#CoverMoreThanOneCountry" caption="Count 'Does your UNCT cover more than one country?'" column="COVER_MORE_THAN_ONE_COUNTRY_COUNT" datatype="Integer"
+                             aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="#UndafBasedOrEquivalent" caption="Count 'Is the joint communication strategy based on the UNDAF or equivalent?'" column="UNDAF_BASED_OR_EQUIVALENT_COUNT" datatype="Integer"
+                             aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="#ReportOnCommunicationResults" caption="Count 'Do you report on communication results in the UN Country Results Report?'" column="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT" datatype="Integer"
+                             aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -692,6 +875,21 @@
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
+					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_COUNT"/>
+					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
+					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
+                    <FactLink dimension="Year of Official Request" />
+                    <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
+                    <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
+					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_COUNT"/>
+					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
+                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+					<FactLink dimension="Total BOS annual savings" />
+                    <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>

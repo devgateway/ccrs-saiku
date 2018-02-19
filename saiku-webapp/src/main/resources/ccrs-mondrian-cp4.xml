@@ -18,10 +18,17 @@
                         select
                             cp4.ID, cp4.DESIGNATION, cp4.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp4.COUNTRY_LEVELHACT = TRUE THEN 1 ELSE 0 END as COUNTRY_LEVELHACT,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = TRUE THEN 1 ELSE 0 END as INTEGRATED_SERVICE_CENTER_AVAILABLE,
+                            CASE WHEN CP4.HASBOSCOMMON_SERVICE_LINES = TRUE THEN 1 ELSE 0 END as HASBOSCOMMON_SERVICE_LINES,
+							CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = TRUE THEN cp4integratedservicecenter.HOST_ID ELSE null END as HOST_ID,
+							CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = TRUE THEN cp4integratedservicecenter.BUDGET ELSE 0 END as BUDGET,
+							CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = TRUE THEN cp4integratedservicecenter.CLIENT_SATISFACTION_SCORE_ID ELSE null END as CLIENT_SATISFACTION_SCORE_ID
+                        from CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v, 
+                            CP4INTEGRATED_SERVICE_CENTER cp4integratedservicecenter
                         WHERE
                             cp4.DESIGNATION = cp1.DESIGNATION AND cp4.ENTITY_YEAR = cp1.ENTITY_YEAR AND
+                            cp4integratedservicecenter.PARENT_ID = CP4.ID AND
                             cp4.DESIGNATION != 'AQ' AND cp4.DESIGNATION != 'DOCO' AND cp4.DESIGNATION = bc.iso2 and
                             cp4.designation = v.designation and v.entity_year = cp4.ENTITY_YEAR
                     ]]>
@@ -29,7 +36,6 @@
             </ExpressionView>
         </Query>
     </PhysicalSchema>
-    
     <!--*************************************************************************
     ***** Shared Dimensions
     *************************************************************************-->
@@ -53,6 +59,10 @@
             <Dimension source="SecondaryCountryIncomeStatus" />
             
             <Dimension table="YesNoTable" name="Is a HACT being implemented at the country level" caption="Is a HACT being implemented at the country level?" />
+            <Dimension table="YesNoTable" name="Does the UNCT have an integrated service center" caption="Does the UNCT have an integrated service center?" />
+            <Dimension source="CATEGORY" table="UNAgency" name="Which UN entity currently hosts the Integrated service center" caption="Which UN entity currently hosts the Integrated service center?" />
+            <Dimension source="CATEGORY" table="ClientSatisfactionScore" name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" />
+            <Dimension table="YesNoTable" name="Are common service lines part of your Business Operation Strategy" caption="Are common service lines part of your Business Operation Strategy (BOS)?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -63,10 +73,23 @@
 
                     <Measure name="countryLevelHACT" caption="Count of 'Is a HACT being implemented at the country level?'" column="COUNTRY_LEVELHACT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="UnctHaveIntegratedServiceCenter" caption="Count of 'Does the UNCT have an integrated service center?'" column="INTEGRATED_SERVICE_CENTER_AVAILABLE"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="Budget" caption="Annual budget of the integrated service center in US dollars" column="BUDGET"
+                             datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="CommonServiceLinesPartOfBos" caption="Count of 'Are common service lines part of your Business Operation Strategy (BOS)?'" column="HASBOSCOMMON_SERVICE_LINES"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Is a HACT being implemented at the country level"  foreignKeyColumn="COUNTRY_LEVELHACT"/>
+                    <ForeignKeyLink dimension="Does the UNCT have an integrated service center"  foreignKeyColumn="INTEGRATED_SERVICE_CENTER_AVAILABLE"/>
+                    <ForeignKeyLink dimension="Which UN entity currently hosts the Integrated service center"  foreignKeyColumn="HOST_ID"/>
+                    <ForeignKeyLink dimension="What is the average client satisfaction score of the Integrated Service Center"  foreignKeyColumn="CLIENT_SATISFACTION_SCORE_ID"/>
+                    <ForeignKeyLink dimension="Are common service lines part of your Business Operation Strategy"  foreignKeyColumn="HASBOSCOMMON_SERVICE_LINES"/>				
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

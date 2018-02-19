@@ -33,7 +33,8 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR, cp6.UNCT_ADVOCACY_MODEL_ID,
+                            CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE 0 END as HAS_COMMONUNCTWEBSITE,
                             CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN cp6.COMMONUNCTURL ELSE null END as COMMONUNCTURL,                                                       
                             CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN 1 ELSE 0 END as HAS_COMMON_FACEBOOK_PAGE,
@@ -44,6 +45,9 @@
                             CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COORDINATOR_TWITTER_ACCOUNT,
                             CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = TRUE THEN 1 ELSE 0 END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING,
                             CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES,
+                            CASE WHEN cp6.IS_COMMUNICATIONS_PART_OFUNDAF = TRUE THEN 1 ELSE 0 END as IS_COMMUNICATIONS_PART_OFUNDAF,
+                            CASE WHEN cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS = TRUE THEN 1 ELSE 0 END as HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS,
+                            CASE WHEN cp6.HAS_VISUAL_IDENTITY_ESTABLISHED = TRUE THEN 1 ELSE 0 END as HAS_VISUAL_IDENTITY_ESTABLISHED,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP6JOINT_COMMUNICATION_ADVOCACY cp6, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
@@ -164,7 +168,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="HAS_COORDINATOR_TWITTER_ACCOUNT" caption="Does the Resident Coordinator have a Twitter account?" />
+            <Dimension table="YesNoTable" name="Does the Resident Coordinator have a Twitter account" caption="Does the Resident Coordinator have a Twitter account?" />
             
 			<Dimension name="Coordinator Twitter Account" caption="Resident Coordinator Twitter account" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -179,7 +183,15 @@
             </Dimension>
 
             <Dimension table="YesNoTable" name="Has the UNCT agreed on common messaging on any topic" caption="Has the UNCT agreed on common messaging on any topic?" />
-            <Dimension table="YesNoTable" name="Do you have any joint advocacy strategies to communicate on human rights or other normative issues" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" />
+            <Dimension table="YesNoTable" name="Has joint advocacy strategies to communicate on human rights" caption="Do you have any joint advocacy strategies to communicate on human rights or other normative issues?" />
+            <!-- N.6.1 -->
+            <Dimension source="CATEGORY" table="UNCTAdvocacyModel" caption="The model that best describes the UNCT's work on advocacy" />
+            <!-- N.6.3 -->
+            <Dimension table="YesNoTable" name="Is communications part of UNDAF" caption="Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?" />
+            <!-- N.6.4 -->
+            <Dimension table="YesNoTable" name="Has communicating together in time of crisis" caption="Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?" />
+            <!-- N.6.5 -->
+            <Dimension table="YesNoTable" name="Has UNCT established visual identity" caption="Does the UNCT have an established visual identity for joint UN communications?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -205,6 +217,18 @@
 
                     <Measure name="hasJointAdvocacyStrategiesOnNormativeIssues" caption="Count of 'Do you have any joint advocacy strategies to communicate on human rights or other normative issues?'" column="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!-- N.6.3 -->
+                    <Measure name="isCommunicationsPartOfUNDAF" caption="Count of 'Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?'"
+                             column="IS_COMMUNICATIONS_PART_OFUNDAF"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!-- N.6.4 -->
+                    <Measure name="hasCommunicationTogetherInTimeCrisis" caption="Count of 'Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?'"
+                             column="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <!-- N.6.5 -->
+                    <Measure name="hasVisualIdentityEstablished" caption="Count of 'Does the UNCT have an established visual identity for joint UN communications?'"
+                             column="HAS_VISUAL_IDENTITY_ESTABLISHED"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -216,8 +240,12 @@
                     <ForeignKeyLink dimension="Do you have a common Facebook page for the UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE"/>
                     <ForeignKeyLink dimension="Do you have a common Twitter account for the UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT"/>
                     <ForeignKeyLink dimension="Has the UNCT agreed on common messaging on any topic"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"/>
-                    <ForeignKeyLink dimension="Do you have any joint advocacy strategies to communicate on human rights or other normative issues"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"/>
-					<ForeignKeyLink dimension="HAS_COORDINATOR_TWITTER_ACCOUNT"  foreignKeyColumn="HAS_COORDINATOR_TWITTER_ACCOUNT"/>                    
+                    <ForeignKeyLink dimension="Has joint advocacy strategies to communicate on human rights"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"/>
+					<ForeignKeyLink dimension="Does the Resident Coordinator have a Twitter account"  foreignKeyColumn="HAS_COORDINATOR_TWITTER_ACCOUNT"/>
+					<ForeignKeyLink dimension="UNCTAdvocacyModel" foreignKeyColumn="UNCT_ADVOCACY_MODEL_ID" />
+					<ForeignKeyLink dimension="Is communications part of UNDAF"  foreignKeyColumn="IS_COMMUNICATIONS_PART_OFUNDAF"/>
+					<ForeignKeyLink dimension="Has communicating together in time of crisis"  foreignKeyColumn="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"/>
+					<ForeignKeyLink dimension="Has UNCT established visual identity"  foreignKeyColumn="HAS_VISUAL_IDENTITY_ESTABLISHED"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

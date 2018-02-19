@@ -233,7 +233,7 @@
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Date Completed" caption="Date Completed" keyColumn="HASUNDAFANNUAL_DATE_COMPLETED"
+                    <Attribute name="Date Completed (Annual Review)" caption="Date Completed (Annual Review)" keyColumn="HASUNDAFANNUAL_DATE_COMPLETED"
                                hierarchyHasAll="true"
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
@@ -247,7 +247,7 @@
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Date Completed" caption="Date Completed" keyColumn="HASUNDAFEVALUATION_DATE_COMPLETED"
+                    <Attribute name="Date Completed (Evaluation)" caption="Date Completed (Evaluation)" keyColumn="HASUNDAFEVALUATION_DATE_COMPLETED"
                                hierarchyHasAll="true"
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>

@@ -83,7 +83,11 @@ var Toolbar = Backbone.View.extend({
         return false;
     },
 
-    /**
+	display_included_countries: function(event) {
+		(new ValidatedCountriesModal()).render().open();
+	},
+
+	/**
      * Clear the current session and show the login window
      */
     logout: function() {
