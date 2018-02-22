@@ -46,7 +46,7 @@
     <!--*************************************************************************
     ***** CP7 General Cube
     *************************************************************************-->
-    <Cube name="Join Funding Profile" caption="Join Funding Profile" visible="true"
+    <Cube name="Joint Funding Profile" caption="Joint Funding Profile" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension source="Region" />
