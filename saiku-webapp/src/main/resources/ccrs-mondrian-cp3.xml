@@ -75,9 +75,10 @@
                             CASE WHEN cp3.HASUNDAFEVALUATION = TRUE THEN cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID ELSE null END as NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID
                         from
                             -- DERBY-PROPERTIES joinOrder = FIXED
-                            CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
+                            CP3COMMON_COUNTRY_PROGRAMMING cp3 LEFT JOIN CP3MDGCOUNTRY_REPORT cp3mdgcountryreport on cp3.ID=cp3mdgcountryreport.PARENT_ID 
+                            LEFT JOIN CP3UNDAFMID_TERM_REVIEW cp3undafmid on cp3.ID=cp3undafmid.PARENT_ID, CP1GENERAL_PROFILE cp1,
                             CP3UNDAF cp3undaf, CP3COMMON_COUNTRY_ASSESSMENT cp3assessment, CP3NATIONAL_DEVELOPMENT_PLAN cp3plan,
-                            CP3UNDAFEVALUATION cp3undafevaluation, CP3MDGCOUNTRY_REPORT cp3mdgcountryreport, CP3UNDAFMID_TERM_REVIEW cp3undafmid, CP3UNDAFANNUAL_REVIEW cp3undafannual,
+                            CP3UNDAFEVALUATION cp3undafevaluation, CP3UNDAFANNUAL_REVIEW cp3undafannual,
                             CP3UNDAFUNVISION2030 cp3undafunvision2030, CP3NEWUNDAF cp3newundaf, CP3UNDAFCOSTEDMEPLAN cp3undafcostedmeplan
                         WHERE
                             cp3.DESIGNATION = cp1.DESIGNATION AND cp3.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -88,8 +89,6 @@
                             cp3assessment.PARENT_ID = cp3.id AND
                             cp3plan.PARENT_ID = cp3.id AND
                             cp3undafevaluation.PARENT_ID = cp3.id AND
-                            cp3mdgcountryreport.PARENT_ID = cp3.id AND
-                            cp3undafmid.PARENT_ID = cp3.id AND
                             cp3undafannual.PARENT_ID = cp3.id AND
                             cp3.DESIGNATION != 'AQ' AND cp3.DESIGNATION != 'DOCO' AND cp3.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp3.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp3.ENTITY_YEAR)
