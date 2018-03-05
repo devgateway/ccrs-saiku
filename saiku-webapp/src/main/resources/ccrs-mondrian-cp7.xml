@@ -18,7 +18,6 @@
                         select
                             cp7.ID, cp7.DESIGNATION, cp7.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, cp7.OTHERUNCTJOINTLY_MANAGE_RESOURCES, 
                             CASE WHEN cp7.HAS_ONE_FUND_COUNTRY_LEVEL = TRUE THEN 1 ELSE 0 END as HAS_ONE_FUND_COUNTRY_LEVEL,
-                            CASE WHEN cp7.HAS_ONE_FUND_COUNTRY_LEVEL = TRUE THEN CASE WHEN cp7onefund.ALLOCATION_CRITERIA_AGREED = TRUE THEN 1 ELSE 0 END ELSE null END as ALLOCATION_CRITERIA_AGREED,
                             CASE WHEN cp7.HASMTDFS = TRUE THEN 1 ELSE 0 END as HASMTDFS,
                             CASE WHEN cp7.GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK = TRUE THEN 1 ELSE 0 END as GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK,
                             CASE WHEN cp7.HAS_REVIEW_OF_FINANCING_LANDSCAPE = TRUE THEN 1 ELSE 0 END as HAS_REVIEW_OF_FINANCING_LANDSCAPE,
@@ -26,10 +25,9 @@
                             CASE WHEN cp7.UNCT_HASSDGFINANCING_GAP_STRATEGY = TRUE THEN 1 ELSE 0 END as UNCT_HASSDGFINANCING_GAP_STRATEGY,
                             CASE WHEN cp7.UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION = TRUE THEN 1 ELSE 0 END as UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP7JOINT_FUNDING_PROFILE cp7, CP1GENERAL_PROFILE cp1, CP7ONE_FUND_COUNTRY_LEVEL cp7onefund, BASE_COUNTRY bc, v_cp_validated_designations v
+                        from CP7JOINT_FUNDING_PROFILE cp7, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp7.DESIGNATION = cp1.DESIGNATION AND cp7.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp7onefund.PARENT_ID = cp7.id AND
                             cp7.DESIGNATION != 'AQ' AND cp7.DESIGNATION != 'DOCO' AND cp7.DESIGNATION = bc.iso2 and
                             cp7.designation = v.designation and v.entity_year = cp7.ENTITY_YEAR
                     ]]>
@@ -61,7 +59,6 @@
             <Dimension source="SecondaryCountryIncomeStatus" />
 
             <Dimension table="YesNoTable" name="Do you have a One Fund at the country level" caption="Do you have a One Fund at the country level?" />
-            <Dimension table="YesNoTable" name="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee" caption="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee?" />
             <Dimension table="YesNoTable" name="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)" caption="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?" />
             <Dimension table="YesNoTable" name="Partner government have an integrated national financing framework" caption="Does your partner government have an integrated national financing framework?" />
             <Dimension table="YesNoTable" name="Review of the full financing landscape" caption="Does it include a review of the full financing landscape?" />
@@ -91,9 +88,6 @@
                     <Measure name="hasOneFundCountryLevel" caption="Count of 'Do you have a One Fund at the country level?'" column="HAS_ONE_FUND_COUNTRY_LEVEL"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="allocationCriteriaAgreed" caption="Count of 'Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee?'" column="ALLOCATION_CRITERIA_AGREED"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="hasMTDFs" caption="Count of 'Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)?'" column="HASMTDFS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -115,7 +109,6 @@
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Do you have a One Fund at the country level"  foreignKeyColumn="HAS_ONE_FUND_COUNTRY_LEVEL"/>
-                    <ForeignKeyLink dimension="Were allocation criteria for the One Fund agreed upon by a joint UN-Government Steering Committee"  foreignKeyColumn="ALLOCATION_CRITERIA_AGREED"/>
                     <ForeignKeyLink dimension="Other than the One Fund, do you have any Multi-Donor Trust Funds (MDTFs)"  foreignKeyColumn="HASMTDFS"/>
                     <ForeignKeyLink dimension="Partner government have an integrated national financing framework"  foreignKeyColumn="GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK"/>
                     <ForeignKeyLink dimension="Review of the full financing landscape"  foreignKeyColumn="HAS_REVIEW_OF_FINANCING_LANDSCAPE"/>
