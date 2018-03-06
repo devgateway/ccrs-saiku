@@ -16,11 +16,12 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.FOR_WHICH_ISSUES, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            M.ID, M.FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP6JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
+                        from CP6JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES M, CP6JOINT_COMMUNICATION_ADVOCACY CP6, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
-                            M.PARENT_ID = CP1.ID AND
+                            M.PARENT_ID = CP6.ID AND
+                            CP1.DESIGNATION = CP6.DESIGNATION AND CP1.ENTITY_YEAR = CP6.ENTITY_YEAR AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
                             CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
                     ]]>
@@ -81,18 +82,9 @@
             </Dimension>
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
+			
+			<Dimension source="CATEGORY" table="IssuesAddressedStrategy" caption="Which issue does the strategy primarily address?" />
 
-            <Dimension name="For which issues" caption="Which issue does the strategy primarily address?" table="CP6JointAdvocacyStrategies"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
-
-                    <Attribute name="For which issues" caption="Which issue does the strategy primarily address?" keyColumn="FOR_WHICH_ISSUES"
-                               hierarchyAllMemberName="All issues" hierarchyCaption="All issues"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -103,7 +95,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <FactLink dimension="For which issues" />
+                    <ForeignKeyLink dimension="IssuesAddressedStrategy"
+                                    foreignKeyColumn="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
