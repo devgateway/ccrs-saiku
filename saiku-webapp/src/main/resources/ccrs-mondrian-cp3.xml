@@ -38,8 +38,8 @@
                             cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, cp3.UNDAF_PERIOD_ALIGNED_WITH_GOV_ID,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN 1 ELSE 0 END as HASUNDAF,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN date(cp3undaf.DATE_OF_SIGNATURE) ELSE null END as DATE_OF_SIGNATURE,
-                            CASE WHEN cp3.HASUNDAF = TRUE THEN year(cp3undaf.START_DATE) ELSE null END as START_DATE,
-                            CASE WHEN cp3.HASUNDAF = TRUE THEN year(cp3undaf.END_DATE) ELSE null END as END_DATE,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN date(cp3undaf.START_DATE) ELSE null END as START_DATE,
+                            CASE WHEN cp3.HASUNDAF = TRUE THEN date(cp3undaf.END_DATE) ELSE null END as END_DATE,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN cp3undaf.TOTAL_PLANNED_BUDGET ELSE null END as TOTAL_PLANNED_BUDGET,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN cp3undaf.PREPARATION_PROCESS_MONTHS ELSE null END as PREPARATION_PROCESS_MONTHS,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.IS_DEVELOPING_NEWUNDAF = TRUE THEN 1 ELSE 0 END ELSE null END as IS_DEVELOPING_NEWUNDAF,
@@ -77,7 +77,7 @@
                             -- DERBY-PROPERTIES joinOrder = FIXED
                             CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
                             CP3UNDAF cp3undaf, CP3COMMON_COUNTRY_ASSESSMENT cp3assessment, CP3NATIONAL_DEVELOPMENT_PLAN cp3plan,
-                            CP3UNDAFEVALUATION cp3undafevaluation, CP3MDGCOUNTRY_REPORT cp3mdgcountryreport, CP3UNDAFMID_TERM_REVIEW cp3undafmid, CP3UNDAFANNUAL_REVIEW cp3undafannual,
+                            CP3UNDAFEVALUATION cp3undafevaluation, CP3UNDAFANNUAL_REVIEW cp3undafannual,
                             CP3UNDAFUNVISION2030 cp3undafunvision2030, CP3NEWUNDAF cp3newundaf, CP3UNDAFCOSTEDMEPLAN cp3undafcostedmeplan
                         WHERE
                             cp3.DESIGNATION = cp1.DESIGNATION AND cp3.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -88,8 +88,6 @@
                             cp3assessment.PARENT_ID = cp3.id AND
                             cp3plan.PARENT_ID = cp3.id AND
                             cp3undafevaluation.PARENT_ID = cp3.id AND
-                            cp3mdgcountryreport.PARENT_ID = cp3.id AND
-                            cp3undafmid.PARENT_ID = cp3.id AND
                             cp3undafannual.PARENT_ID = cp3.id AND
                             cp3.DESIGNATION != 'AQ' AND cp3.DESIGNATION != 'DOCO' AND cp3.DESIGNATION in (select iso2 from BASE_COUNTRY) and
                             cp3.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp3.ENTITY_YEAR)
