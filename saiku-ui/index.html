@@ -183,8 +183,11 @@
 		<thead>
 			<tr>
 				<th>Country</th>
-				<% data.allYears.forEach(function(year) { %>
-				<th style="padding: 0 6px;"><div><%=year%></div>(<%=data.validated[year].length + ' of ' + data.allCountries.length%>)</th>
+				<% data.allYears.forEach(function(year) {
+				var excluded =  data.excluded[year] != undefined ? data.excluded[year].length : 0;
+				var totalCountries = data.allCountries.length - excluded;
+				%>
+				<th style="padding: 0 6px;"><div><%=year%></div>(<%=data.validated[year].length + ' of ' + totalCountries%>)</th>
 				<% }); %>
 			</tr>
 		</thead>
@@ -193,7 +196,8 @@
 			<tr>
 				<td><%=country%></td>
 				<% data.allYears.forEach(function(year) { %>
-				<th style="color: <%=data.validated[year].includes(country) ? 'green' : 'red'%>;"><%=data.validated[year].includes(country) ? '✔' : '✘'%></th>
+				<th <%=data.validated[year].includes(country) ? 'style="color: green;"' : data.excluded[year] != undefined ? data.excluded[year].includes(country) ? 'class="thCountry"' : 'style="color: red;"' : 'style="color: red;"'%>>
+				<%=data.validated[year].includes(country) ? '✔' : data.excluded[year] != undefined ? data.excluded[year].includes(country) ? '❗<span class="tooltiptext">Not UNCT</span>' : '✘' : '✘'%></th>
 				<% }); %>
 			</tr>
 			<% }); %>
