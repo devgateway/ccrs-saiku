@@ -20,9 +20,10 @@
                             CASE WHEN M.MULTINATIONAL_BUSINESS_NAME IS NULL THEN '' ELSE MULTINATIONAL_BUSINESS_NAME END as MULTINATIONAL_BUSINESS_NAME,
                             CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
+                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP14EMERGING_ISSUES cp14, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
-                            M.PARENT_ID = CP1.ID AND
+                            M.PARENT_ID = cp14.ID AND
+							cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
                             CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
                     ]]>
