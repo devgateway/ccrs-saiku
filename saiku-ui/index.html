@@ -185,9 +185,17 @@
 				<th>Country</th>
 				<% data.allYears.forEach(function(year) {
 				var excluded =  data.excluded[year] != undefined ? data.excluded[year].length : 0;
+				var validatedAndExcluded = 0;
+					if (data.excluded[year] != undefined) {
+					data.excluded[year].forEach(function(excludedCountry) {
+						if (data.validated[year].includes(excludedCountry)) {
+							validatedAndExcluded ++;
+						}
+					});
+				}
 				var totalCountries = data.allCountries.length - excluded;
 				%>
-				<th style="padding: 0 6px;"><div><%=year%></div>(<%=data.validated[year].length + ' of ' + totalCountries%>)</th>
+				<th style="padding: 0 6px;"><div><%=year%></div>(<%=data.validated[year].length - validatedAndExcluded + ' of ' + totalCountries%>)</th>
 				<% }); %>
 			</tr>
 		</thead>
@@ -196,8 +204,8 @@
 			<tr>
 				<td><%=country%></td>
 				<% data.allYears.forEach(function(year) { %>
-				<th <%=data.validated[year].includes(country) ? 'style="color: green;"' : data.excluded[year] != undefined ? data.excluded[year].includes(country) ? 'class="thCountry"' : 'style="color: red;"' : 'style="color: red;"'%>>
-				<%=data.validated[year].includes(country) ? '✔' : data.excluded[year] != undefined ? data.excluded[year].includes(country) ? '❗<span class="tooltiptext">Not UNCT</span>' : '✘' : '✘'%></th>
+				<th <%=data.excluded[year] != undefined && data.excluded[year].includes(country) ? 'class="thCountry"' : data.validated[year].includes(country) ? 'style="color: green;"' : 'style="color: red;"'%>>
+				<%=data.excluded[year] != undefined && data.excluded[year].includes(country) ? '❗<span class="tooltiptext">Not UNCT</span>' : data.validated[year].includes(country) ? '✔' : '✘'%></th>
 				<% }); %>
 			</tr>
 			<% }); %>
