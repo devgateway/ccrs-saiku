@@ -27,8 +27,8 @@
                         select
                             M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY,
-                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT
-                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE CASE WHEN M.NON_RESIDENT_AGENCY = FALSE THEN 0 ELSE -1 END END as NON_RESIDENT_AGENCY_COUNT_DIM
+                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
+                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE CASE WHEN M.NON_RESIDENT_AGENCY = FALSE THEN 0 ELSE -1 END END as NON_RESIDENT_AGENCY_DIM
                         from
                             CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
@@ -264,7 +264,7 @@
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="UNAgencyRepresentativeTitle"
                                     foreignKeyColumn="AGENCY_REPRESENTATIVE_TITLE_ID" />
-                    <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_COUNT_DIM"/>
+                    <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_DIM"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
