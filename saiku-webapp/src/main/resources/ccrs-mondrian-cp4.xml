@@ -17,9 +17,12 @@
                     <![CDATA[
                         select
                             cp4.ID, cp4.DESIGNATION, cp4.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp4.COUNTRY_LEVELHACT = TRUE THEN 1 ELSE 0 END as COUNTRY_LEVELHACT_COUNT,
                             CASE WHEN cp4.COUNTRY_LEVELHACT = TRUE THEN 1 ELSE CASE WHEN cp4.COUNTRY_LEVELHACT = FALSE THEN 0 ELSE -1 END END as COUNTRY_LEVELHACT,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = TRUE THEN 1 ELSE 0 END as INTEGRATED_SERVICE_CENTER_AVAILABLE_COUNT,
                             CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = TRUE THEN 1 ELSE CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = FALSE THEN 0 ELSE -1 END END as INTEGRATED_SERVICE_CENTER_AVAILABLE,
+                            CASE WHEN CP4.HASBOSCOMMON_SERVICE_LINES = TRUE THEN 1 ELSE 0 END as HASBOSCOMMON_SERVICE_LINES_COUNT,
                             CASE WHEN CP4.HASBOSCOMMON_SERVICE_LINES = TRUE THEN 1 ELSE CASE WHEN CP4.HASBOSCOMMON_SERVICE_LINES  = FALSE THEN 0 ELSE -1 END END as HASBOSCOMMON_SERVICE_LINES,
 							CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = TRUE THEN cp4integratedservicecenter.HOST_ID ELSE null END as HOST_ID,
 							CASE WHEN CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE = TRUE THEN cp4integratedservicecenter.BUDGET ELSE 0 END as BUDGET,
@@ -71,16 +74,16 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="countryLevelHACT" caption="Count of 'Is a HACT being implemented at the country level?'" column="COUNTRY_LEVELHACT"
+                    <Measure name="countryLevelHACT" caption="Count of 'Is a HACT being implemented at the country level?'" column="COUNTRY_LEVELHACT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="UnctHaveIntegratedServiceCenter" caption="Count of 'Does the UNCT have an integrated service center?'" column="INTEGRATED_SERVICE_CENTER_AVAILABLE"
+                    <Measure name="UnctHaveIntegratedServiceCenter" caption="Count of 'Does the UNCT have an integrated service center?'" column="INTEGRATED_SERVICE_CENTER_AVAILABLE_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="Budget" caption="Annual budget of the integrated service center in US dollars" column="BUDGET"
                              datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="CommonServiceLinesPartOfBos" caption="Count of 'Are common service lines part of your Business Operation Strategy (BOS)?'" column="HASBOSCOMMON_SERVICE_LINES"
+                    <Measure name="CommonServiceLinesPartOfBos" caption="Count of 'Are common service lines part of your Business Operation Strategy (BOS)?'" column="HASBOSCOMMON_SERVICE_LINES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>

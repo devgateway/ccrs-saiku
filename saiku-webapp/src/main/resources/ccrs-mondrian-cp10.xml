@@ -17,7 +17,9 @@
                     <![CDATA[
                         select
                             cp10.ID, cp10.DESIGNATION, cp10.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp10.HAS_AGREEDUNCTTOR = TRUE THEN 1 ELSE 0 END as HAS_AGREEDUNCTTOR_COUNT,
                             CASE WHEN cp10.HAS_AGREEDUNCTTOR = TRUE THEN 1 ELSE CASE WHEN cp10.HAS_AGREEDUNCTTOR = FALSE THEN 0 ELSE -1 END END as HAS_AGREEDUNCTTOR,
+                            CASE WHEN cp10.HAS_AGREED_CONFLICT_RESOLUTION = TRUE THEN 1 ELSE 0 END as HAS_AGREED_CONFLICT_RESOLUTION_COUNT,
                             CASE WHEN cp10.HAS_AGREED_CONFLICT_RESOLUTION = TRUE THEN 1 ELSE CASE WHEN cp10.HAS_AGREED_CONFLICT_RESOLUTION = FALSE THEN 0 ELSE -1 END END as HAS_AGREED_CONFLICT_RESOLUTION,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP10DELIVERING_AS_ONE_PROFILE cp10, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
@@ -63,10 +65,10 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="UNCTToR" caption="Count of agreed upon UNCT ToR" column="HAS_AGREEDUNCTTOR"
+                    <Measure name="UNCTToR" caption="Count of agreed upon UNCT ToR" column="HAS_AGREEDUNCTTOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="ConflictResolutionMechanism" caption="Count of agreed Conflict Resolution Mechanism" column="HAS_AGREED_CONFLICT_RESOLUTION"
+                    <Measure name="ConflictResolutionMechanism" caption="Count of agreed Conflict Resolution Mechanism" column="HAS_AGREED_CONFLICT_RESOLUTION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>

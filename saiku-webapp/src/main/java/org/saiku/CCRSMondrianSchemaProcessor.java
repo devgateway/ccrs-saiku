@@ -56,16 +56,16 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                     "</Key>" +
                     "<Rows>" +
                         "<Row>" +
-                            "<Value column='id'>-1</Value>" +
-                            "<Value column='answer'>No Data Available</Value>" +
+                            "<Value column='id'>1</Value>" +
+                            "<Value column='answer'>Yes</Value>" +
                         "</Row>" +
                         "<Row>" +
                             "<Value column='id'>0</Value>" +
                             "<Value column='answer'>No</Value>" +
                         "</Row>" +
                         "<Row>" +
-                            "<Value column='id'>1</Value>" +
-                            "<Value column='answer'>Yes</Value>" +
+                            "<Value column='id'>-1</Value>" +
+                            "<Value column='answer'>No Data Available</Value>" +
                         "</Row>" +
                     "</Rows>" +
              "</InlineTable>";

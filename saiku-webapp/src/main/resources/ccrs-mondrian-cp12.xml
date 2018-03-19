@@ -17,8 +17,10 @@
                     <![CDATA[
                         select
                             D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = TRUE THEN 1 ELSE CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = FALSE THEN 0 ELSE -1 END END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT,
-                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
+                            CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = TRUE THEN 1 ELSE 0 END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT,
+                            CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = TRUE THEN 1 ELSE CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = FALSE THEN 0 ELSE -1 END END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY  = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
@@ -37,8 +39,10 @@
                     <![CDATA[
                         select
                             D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN D.UNCT_SUPPORTED = TRUE THEN 1 ELSE CASE WHEN D.UNCT_SUPPORTED = FALSE THEN 0 ELSE -1 END END as UNCT_SUPPORTED_COUNT,
-                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
+                            CASE WHEN D.UNCT_SUPPORTED = TRUE THEN 1 ELSE 0 END as UNCT_SUPPORTED_COUNT,
+							CASE WHEN D.UNCT_SUPPORTED = TRUE THEN 1 ELSE CASE WHEN D.UNCT_SUPPORTED = FALSE THEN 0 ELSE -1 END END as UNCT_SUPPORTED,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
+                            CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D, CP12HUMAN_RIGHTS_PROFILE CP12, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
@@ -57,37 +61,67 @@
                     <![CDATA[
                         select
                             cp12.ID, cp12.DESIGNATION, cp12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp12.HAS_HUMAN_RIGHTS_ADVISOR = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ADVISOR_COUNT,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ADVISOR = TRUE THEN 1 ELSE CASE WHEN cp12.HAS_HUMAN_RIGHTS_ADVISOR = FALSE THEN 0 ELSE -1 END END as HAS_HUMAN_RIGHTS_ADVISOR,
+                            CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN CASE WHEN cp12hranalysis.HAS_STRATEGY_DEVELOPED_ADDRESSHR = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_STRATEGY_DEVELOPED_ADDRESSHR_COUNT,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN CASE WHEN cp12hranalysis.HAS_STRATEGY_DEVELOPED_ADDRESSHR = TRUE THEN 1 ELSE CASE WHEN cp12hranalysis.HAS_STRATEGY_DEVELOPED_ADDRESSHR = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HAS_STRATEGY_DEVELOPED_ADDRESSHR,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS_COUNT,
                             CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS = FALSE THEN 0 ELSE -1 END END as HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETYUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETYUPR_COUNT,
                             CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETYUPR = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETYUPR = FALSE THEN 0 ELSE -1 END END as HASUNCTSUPPORTED_CIVIL_SOCIETYUPR,
+                            CASE WHEN cp12.HASUNCTRECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTRECOMMENDATIONS_COUNT,
                             CASE WHEN cp12.HASUNCTRECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTRECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END as HASUNCTRECOMMENDATIONS,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES_COUNT,
                             CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES = FALSE THEN 0 ELSE -1 END END as HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES,
+                            CASE WHEN cp12.HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT = TRUE THEN 1 ELSE 0 END as HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT_COUNT,
                             CASE WHEN cp12.HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT = FALSE THEN 0 ELSE -1 END END as HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT,
                             CASE WHEN cp12.HASUNCTDRAWN_ON_RECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTDRAWN_ON_RECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END as HASUNCTDRAWN_ON_RECOMMENDATIONS,
+                            CASE WHEN cp12.HASUNCTSDRAWN_ON_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTSDRAWN_ON_RECOMMENDATIONS_COUNT,
                             CASE WHEN cp12.HASUNCTSDRAWN_ON_RECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSDRAWN_ON_RECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END as HASUNCTSDRAWN_ON_RECOMMENDATIONS,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES_COUNT,
                             CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES = FALSE THEN 0 ELSE -1 END END as HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES,
+                            CASE WHEN cp12.HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION = TRUE THEN 1 ELSE 0 END as HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION_COUNT,
                             CASE WHEN cp12.HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION = FALSE THEN 0 ELSE -1 END END as HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION,
+                            CASE WHEN cp12.HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES_COUNT,
                             CASE WHEN cp12.HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES = FALSE THEN 0 ELSE -1 END END as HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES,
+                            CASE WHEN cp12.HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES_COUNT,
                             CASE WHEN cp12.HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES = FALSE THEN 0 ELSE -1 END END as HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES,
+                            CASE WHEN cp12.WAS_COUNTRY_REVIEWED_BY_TREATY_BODY = TRUE THEN 1 ELSE 0 END as WAS_COUNTRY_REVIEWED_BY_TREATY_BODY_COUNT,
                             CASE WHEN cp12.WAS_COUNTRY_REVIEWED_BY_TREATY_BODY = TRUE THEN 1 ELSE CASE WHEN cp12.WAS_COUNTRY_REVIEWED_BY_TREATY_BODY = FALSE THEN 0 ELSE -1 END END as WAS_COUNTRY_REVIEWED_BY_TREATY_BODY,
+                            CASE WHEN cp12.HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS_COUNT,
                             CASE WHEN cp12.HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END as HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION_COUNT,
                             CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION = FALSE THEN 0 ELSE -1 END END as HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR_COUNT,
                             CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR = FALSE THEN 0 ELSE -1 END END as HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR,
+                            CASE WHEN cp12.HASUNCTSUBMITTED_INPUTS_REPORTS = TRUE THEN 1 ELSE 0 END as HASUNCTSUBMITTED_INPUTS_REPORTS_COUNT,
                             CASE WHEN cp12.HASUNCTSUBMITTED_INPUTS_REPORTS = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSUBMITTED_INPUTS_REPORTS = FALSE THEN 0 ELSE -1 END END as HASUNCTSUBMITTED_INPUTS_REPORTS,
+                            CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENTUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_GOVERNMENTUPR_COUNT,
                             CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENTUPR = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENTUPR = FALSE THEN 0 ELSE -1 END END as HASUNCTSUPPORTED_GOVERNMENTUPR,
+                            CASE WHEN cp12.HASUNCTENGAGE_WITH_GOVERNMEN = TRUE THEN 1 ELSE 0 END as HASUNCTENGAGE_WITH_GOVERNMEN_COUNT,
                             CASE WHEN cp12.HASUNCTENGAGE_WITH_GOVERNMEN = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNCTENGAGE_WITH_GOVERNMEN = FALSE THEN 0 ELSE -1 END END as HASUNCTENGAGE_WITH_GOVERNMEN,
+                            CASE WHEN cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH = TRUE THEN 1 ELSE 0 END as HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT,
                             CASE WHEN cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH = TRUE THEN 1 ELSE CASE WHEN cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH = FALSE THEN 0 ELSE -1 END END as HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH,
+                            CASE WHEN cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH = TRUE THEN CASE WHEN cp12training.PART_OF_ROLLOUT_PROCESS = TRUE THEN 1 ELSE 0 END ELSE null END as PART_OF_ROLLOUT_PROCESS_COUNT,
                             CASE WHEN cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH = TRUE THEN CASE WHEN cp12training.PART_OF_ROLLOUT_PROCESS = TRUE THEN 1 ELSE CASE WHEN cp12training.PART_OF_ROLLOUT_PROCESS = FALSE THEN 0 ELSE -1 END END ELSE -1 END as PART_OF_ROLLOUT_PROCESS,
+                            CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ANALYSIS_COUNT,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN 1 ELSE CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = FALSE THEN 0 ELSE -1 END END as HAS_HUMAN_RIGHTS_ANALYSIS,
+                            CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN CASE WHEN cp12hranalysis.HAS_ADDRESSEDHRISSUES = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_ADDRESSEDHRISSUES_COUNT,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN CASE WHEN cp12hranalysis.HAS_ADDRESSEDHRISSUES = TRUE THEN 1 ELSE CASE WHEN cp12hranalysis.HAS_ADDRESSEDHRISSUES = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HAS_ADDRESSEDHRISSUES,
+                            CASE WHEN cp12.HAS_SUPPORTEDHRNATIONAL_PROGRAMMES = TRUE THEN 1 ELSE 0 END as HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT,
                             CASE WHEN cp12.HAS_SUPPORTEDHRNATIONAL_PROGRAMMES = TRUE THEN 1 ELSE CASE WHEN cp12.HAS_SUPPORTEDHRNATIONAL_PROGRAMMES = FALSE THEN 0 ELSE -1 END END as HAS_SUPPORTEDHRNATIONAL_PROGRAMMES,
+                            CASE WHEN cp12.HASUPRPROCESS = TRUE THEN 1 ELSE 0 END as HASUPRPROCESS_COUNT,
                             CASE WHEN cp12.HASUPRPROCESS = TRUE THEN 1 ELSE CASE WHEN cp12.HASUPRPROCESS = FALSE THEN 0 ELSE -1 END END as HASUPRPROCESS,
                             CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT = TRUE THEN 1 ELSE CASE WHEN cp12uprprocess.HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HAS_SUPPORTED_NATIONAL_REPORT_DEVELOPMENT,
+                            CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HASUNCTREPORTUPRSUBMITTED = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNCTREPORTUPRSUBMITTED_COUNT,
                             CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HASUNCTREPORTUPRSUBMITTED = TRUE THEN 1 ELSE CASE WHEN cp12uprprocess.HASUNCTREPORTUPRSUBMITTED = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HASUNCTREPORTUPRSUBMITTED,
+                            CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS_COUNT,
                             CASE WHEN cp12.HASUPRPROCESS = TRUE THEN CASE WHEN cp12uprprocess.HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS = TRUE THEN 1 ELSE CASE WHEN cp12uprprocess.HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS,
+                            CASE WHEN cp12.HASUNHRTREATY_BODIES = TRUE THEN 1 ELSE 0 END as HASUNHRTREATY_BODIES_COUNT,
                             CASE WHEN cp12.HASUNHRTREATY_BODIES = TRUE THEN 1 ELSE CASE WHEN cp12.HASUNHRTREATY_BODIES = FALSE THEN 0 ELSE -1 END END as HASUNHRTREATY_BODIES,
+                            CASE WHEN cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC = TRUE THEN 1 ELSE 0 END as HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT,
                             CASE WHEN cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC = TRUE THEN 1 ELSE CASE WHEN cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC = FALSE THEN 0 ELSE -1 END END as HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC,
+                            CASE WHEN cp12.HASHRI = TRUE THEN 1 ELSE 0 END as HASHRI_COUNT,
                             CASE WHEN cp12.HASHRI = TRUE THEN 1 ELSE CASE WHEN cp12.HASHRI = FALSE THEN 0 ELSE -1 END END as HASHRI,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from
@@ -149,8 +183,8 @@
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="UNHRTreatyBody" foreignKeyColumn="UNHR_TREATY_BODY_TYPE_ID" />
-                    <ForeignKeyLink dimension="Has UNCT engaged in developing national capacity" foreignKeyColumn="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT"/>
-                    <ForeignKeyLink dimension="Has UNCT facilitated recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"/>
+                    <ForeignKeyLink dimension="Has UNCT engaged in developing national capacity" foreignKeyColumn="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT"/>
+                    <ForeignKeyLink dimension="Has UNCT facilitated recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -199,7 +233,7 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="Name" />
                     <ForeignKeyLink dimension="Has UNCT support this visit" foreignKeyColumn="UNCT_SUPPORTED_COUNT"/>
-                    <ForeignKeyLink dimension="Has UNCT facilitate recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT"/>
+                    <ForeignKeyLink dimension="Has UNCT facilitate recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -262,136 +296,136 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <!--12.1-->
-                    <Measure name="UNCTHumanRightsAdvisor" caption="Count of UNCT Human Rights Advisor" column="HAS_HUMAN_RIGHTS_ADVISOR"
+                    <Measure name="UNCTHumanRightsAdvisor" caption="Count of UNCT Human Rights Advisor" column="HAS_HUMAN_RIGHTS_ADVISOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.2-->
-                    <Measure name="HumanRightsBasedApproach" caption="Count of training on Human Rights-Based Approach been conducted in the current programme cycle" column="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH"
+                    <Measure name="HumanRightsBasedApproach" caption="Count of training on Human Rights-Based Approach been conducted in the current programme cycle" column="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.2.1-->
-                    <Measure name="partOfRolloutProcess" caption="Count of 'Was it undertaken as part of the UNDAF rollout process?'" column="PART_OF_ROLLOUT_PROCESS"
+                    <Measure name="partOfRolloutProcess" caption="Count of 'Was it undertaken as part of the UNDAF rollout process?'" column="PART_OF_ROLLOUT_PROCESS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.3-->
-                    <Measure name="HumanRightsAnalysis" caption="Count of human rights analysis taken place over the past year" column="HAS_HUMAN_RIGHTS_ANALYSIS"
+                    <Measure name="HumanRightsAnalysis" caption="Count of human rights analysis taken place over the past year" column="HAS_HUMAN_RIGHTS_ANALYSIS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.3.2-->
                     <Measure name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Count of 'Has a strategy been developed to address the human rights issues identified in the analysis?'"
-                             column="HAS_STRATEGY_DEVELOPED_ADDRESSHR" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                             column="HAS_STRATEGY_DEVELOPED_ADDRESSHR_COUNT" datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.3.3-->
-                    <Measure name="hasAddressedHRIssues" caption="Count of 'Has action been taken to address the human rights issues identified in the human rights analysis?'" column="HAS_ADDRESSEDHRISSUES"
+                    <Measure name="hasAddressedHRIssues" caption="Count of 'Has action been taken to address the human rights issues identified in the human rights analysis?'" column="HAS_ADDRESSEDHRISSUES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.5-->
-                    <Measure name="UNCTSupported" caption="Count of UNCT supported the government in mainstreaming human rights into national development policies and programmes" column="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES"
+                    <Measure name="UNCTSupported" caption="Count of UNCT supported the government in mainstreaming human rights into national development policies and programmes" column="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6-->
-                    <Measure name="UPR" caption="Count of UNCT engaged with the Universal Periodic Review (UPR) process this year" column="HASUPRPROCESS"
+                    <Measure name="UPR" caption="Count of UNCT engaged with the Universal Periodic Review (UPR) process this year" column="HASUPRPROCESS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6.2-->
-                    <Measure name="hasUNCTReportUPRSubmitted" caption="Count of 'Has the UNCT submitted a UNCT report to the UPR?'" column="HASUNCTREPORTUPRSUBMITTED"
+                    <Measure name="hasUNCTReportUPRSubmitted" caption="Count of 'Has the UNCT submitted a UNCT report to the UPR?'" column="HASUNCTREPORTUPRSUBMITTED_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6.3-->
-                    <Measure name="hasFacilitatedFolloupGovRecommendations" caption="Count of 'Has the UNCT facilitated follow up of the UPR recommendations by the Government?'" column="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"
+                    <Measure name="hasFacilitatedFolloupGovRecommendations" caption="Count of 'Has the UNCT facilitated follow up of the UPR recommendations by the Government?'" column="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6.A-->
-                    <Measure name="hasUNCTSupportedGovernmentUPR" caption="Count of 'Has the UNCT supported the government to develop a report for the UPR?'" column="HASUNCTSUPPORTED_GOVERNMENTUPR"
+                    <Measure name="hasUNCTSupportedGovernmentUPR" caption="Count of 'Has the UNCT supported the government to develop a report for the UPR?'" column="HASUNCTSUPPORTED_GOVERNMENTUPR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6.B-->
-                    <Measure name="hasUNCTSupportedCivilSocietyUPR" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR"
+                    <Measure name="hasUNCTSupportedCivilSocietyUPR" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6.C-->
-                    <Measure name="hasUNCTSupportedNationalHumanRightsInstitutionUPR" caption="Count of 'Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR"
+                    <Measure name="hasUNCTSupportedNationalHumanRightsInstitutionUPR" caption="Count of 'Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.7-->
-                    <Measure name="UNHumanRightsTreatyBodies" caption="Count of UNCT engaged with one or more UN human rights treaty bodies in the past year" column="HASUNHRTREATY_BODIES"
+                    <Measure name="UNHumanRightsTreatyBodies" caption="Count of UNCT engaged with one or more UN human rights treaty bodies in the past year" column="HASUNHRTREATY_BODIES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.B-->
-			        <Measure name="hasUNCTSupportedCivilSocietyDevelopInputs" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS"
+			        <Measure name="hasUNCTSupportedCivilSocietyDevelopInputs" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.C-->
 			        <Measure name="hasUNCTSupportedNationalHumaRightsInstitution" caption="Count of 'Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?'"
-			                 column="HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION"
+			                 column="HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.D-->
 			        <Measure name="hasUNCTSubmittedInputsReports" caption="Count of 'Has the UNCT submitted inputs/reports to human rights treaty bodies?'"
-			                 column="HASUNCTSUBMITTED_INPUTS_REPORTS"
+			                 column="HASUNCTSUBMITTED_INPUTS_REPORTS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.E-->
 				    <Measure name="hasUNCTFacilitatedFollowUpRecommendations" caption="Count of 'Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?'"
-                             column="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS"
+                             column="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.F-->
 					<Measure name="hasUNCTSDrawnOnRecommendations" caption="Count of 'Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?'"
-                             column="HASUNCTSDRAWN_ON_RECOMMENDATIONS"
+                             column="HASUNCTSDRAWN_ON_RECOMMENDATIONS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.G-->
 					<Measure name="wasCountryReviewedByTreatyBody" caption="Count of 'Was the country reviewed by a treaty body this year?'" 
-			                 column="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY"
+			                 column="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.H-->
 				    <Measure name="hasUNCTRecommendations" caption="Count of 'Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?'"
-                             column="HASUNCTRECOMMENDATIONS"
+                             column="HASUNCTRECOMMENDATIONS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.I-->
 				    <Measure name="hasUNCTFacilitateFollowUpGovernment" caption="Count of 'Did the UNCT facilitate follow up of the recommendations by the Government?'"
-			                 column="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT"
+			                 column="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.8-->
-                    <Measure name="ReceiveVisitSpecialProcedure" caption="Count of country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year" column="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC"
+                    <Measure name="ReceiveVisitSpecialProcedure" caption="Count of country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year" column="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.K-->
 				    <Measure name="hasUNCTEngageWithGovernmen" caption="Count of 'Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?'"
-			                 column="HASUNCTENGAGE_WITH_GOVERNMEN"
+			                 column="HASUNCTENGAGE_WITH_GOVERNMEN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>     
 
                     <!--12.L-->
                     <Measure name="hasUNCTSupportedGovernmentSpecialProcedures" caption="Count of 'Has the UNCT supported the government in preparing for the visits of Special Procedures?'"
-			                 column="HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES"
+			                 column="HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.M-->
 				    <Measure name="hasUNCTSupportedCivilSocietySpecialProcedures" caption="Count of 'Has the UNCT supported civil society interact with the Special Procedure?'"
-			                 column="HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES"
+			                 column="HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.N-->
                     <Measure name="hasUNCTDSupportedNationalHumanRightsInstitution" caption="Count of 'Has the UNCT supported National Human Rights Institution interact with the Special Procedures?'"
-			                 column="HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION"
+			                 column="HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.O-->
                     <Measure name="hasUNCTProvidedInputsSpecialProcedures" caption="Count of 'Has the UNCT provided inputs to the visit of the Special Procedures?'"
-			                 column="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES"
+			                 column="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.P-->
                     <Measure name="hasUNCTFacilitatedGollowUpSpecialProcedures" caption="Count of 'Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?'"
-			                 column="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"
+			                 column="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.9-->
-                    <Measure name="NHRI" caption="Count of National Human Rights Institution (NHRI)" column="HASHRI"
+                    <Measure name="NHRI" caption="Count of National Human Rights Institution (NHRI)" column="HASHRI_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>

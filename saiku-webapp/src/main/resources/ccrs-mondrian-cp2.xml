@@ -30,6 +30,7 @@
                             date(d.start_date) as start_date_date,
                             date(d.end_date) as end_date_date,
                             CASE WHEN D.HEADRCO = TRUE THEN 1 ELSE CASE WHEN D.HEADRCO = FALSE THEN 0 ELSE -1 END END as HEAD_OF_RCO,
+                            CASE WHEN D.COMMUNICATION_SPECIALIST = TRUE THEN 1 ELSE 0 END as COMMUNICATION_SPECIALIST_COUNT,
                             CASE WHEN D.COMMUNICATION_SPECIALIST = TRUE THEN 1 ELSE CASE WHEN D.COMMUNICATION_SPECIALIST = FALSE THEN 0 ELSE -1 END END as COMMUNICATION_SPECIALIST,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
@@ -49,6 +50,7 @@
                     <![CDATA[
                         select
                             cp2.ID, cp2.DESIGNATION, cp2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN cp2.SUBNATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as SUBNATIONAL_OFFICES_COUNT,
                             CASE WHEN cp2.SUBNATIONAL_OFFICES = TRUE THEN 1 ELSE CASE WHEN cp2.SUBNATIONAL_OFFICES = FALSE THEN 0 ELSE -1 END END as SUBNATIONAL_OFFICES,
                             CASE WHEN cp2.SUBNATIONAL_OFFICES = TRUE THEN cp2.NUMBER_OF_OFFICES ELSE null END as NUMBER_OF_OFFICES,
                             (select count(*) from CP2RCO_STAFF_MEMBER_DETAIL where PARENT_ID = cp2.id) STAFF_MEMEBER_COUNT,
@@ -130,7 +132,7 @@
                     <Measure name="TotalAnnualNetSalaryAmount" caption="Total Annual Net Salary Amount"
                              column="ANNUAL_SALARY_AMOUNT" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="mainFocalPointForCommunications" caption="Are you the main focal point for communications?'" column="COMMUNICATION_SPECIALIST"
+                    <Measure name="mainFocalPointForCommunications" caption="Are you the main focal point for communications?'" column="COMMUNICATION_SPECIALIST_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                 </Measures>
@@ -180,7 +182,7 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="subnationalOffices" caption="Count of 'Does the RCO have Subnational offices?'" column="SUBNATIONAL_OFFICES"
+                    <Measure name="subnationalOffices" caption="Count of 'Does the RCO have Subnational offices?'" column="SUBNATIONAL_OFFICES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="howManyOffices" caption="Count of RCO Subnational offices" column="NUMBER_OF_OFFICES"

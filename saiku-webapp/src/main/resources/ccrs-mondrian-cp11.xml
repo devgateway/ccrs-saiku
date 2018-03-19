@@ -36,16 +36,25 @@
                     <![CDATA[
                         select
                             cp11.ID, cp11.DESIGNATION, cp11.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 
+                            CASE WHEN cp11.HAS_SUPPORTSSCOOPERATION = TRUE THEN 1 ELSE 0 END as HAS_SUPPORTSSCOOPERATION_COUNT,
+                            HASSWAPS_ID, 
                             CASE WHEN cp11.HAS_SUPPORTSSCOOPERATION = TRUE THEN 1 ELSE CASE WHEN cp11.HAS_SUPPORTSSCOOPERATION = FALSE THEN 0 ELSE -1 END END as HAS_SUPPORTSSCOOPERATION,
                             HASSWAPS_ID,
+                            CASE WHEN cp11.HAS_DIRECT_BUDGET_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_DIRECT_BUDGET_SUPPORT_COUNT,
                             CASE WHEN cp11.HAS_DIRECT_BUDGET_SUPPORT = TRUE THEN 1 ELSE CASE WHEN cp11.HAS_DIRECT_BUDGET_SUPPORT = FALSE THEN 0 ELSE -1 END END as HAS_DIRECT_BUDGET_SUPPORT,
+                            CASE WHEN cp11.IS_CHAIR_AID_EFFECTIVENESS_FORA = TRUE THEN 1 ELSE 0 END as IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT,
                             CASE WHEN cp11.IS_CHAIR_AID_EFFECTIVENESS_FORA = TRUE THEN 1 ELSE CASE WHEN cp11.IS_CHAIR_AID_EFFECTIVENESS_FORA = FALSE THEN 0 ELSE -1 END END as IS_CHAIR_AID_EFFECTIVENESS_FORA,
+                            CASE WHEN cp11.HAS_CAPACITY_FOR_AID_MODALITIES = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_FOR_AID_MODALITIES_COUNT,
                             CASE WHEN cp11.HAS_CAPACITY_FOR_AID_MODALITIES = TRUE THEN 1 ELSE CASE WHEN cp11.HAS_CAPACITY_FOR_AID_MODALITIES = FALSE THEN 0 ELSE -1 END END as HAS_CAPACITY_FOR_AID_MODALITIES,
+                            CASE WHEN cp11.HASAIMS = TRUE THEN 1 ELSE 0 END as HASAIMS_COUNT,
                             CASE WHEN cp11.HASAIMS = TRUE THEN 1 ELSE CASE WHEN cp11.HASAIMS = FALSE THEN 0 ELSE -1 END END as HASAIMS,
+                            CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.SUPPORTED_BYUN = TRUE THEN 1 ELSE 0 END ELSE -1 END as SUPPORTED_BYUN_COUNT,
                             CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.SUPPORTED_BYUN = TRUE THEN 1 ELSE CASE WHEN cp11aims.SUPPORTED_BYUN = FALSE THEN 0 ELSE -1 END END ELSE -1 END as SUPPORTED_BYUN,
+                            CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.UNCT_REPORT_TOAIMS = TRUE THEN 1 ELSE 0 END ELSE -1 END as UNCT_REPORT_TOAIMS_COUNT,
                             CASE WHEN cp11.HASAIMS = TRUE THEN CASE WHEN cp11aims.UNCT_REPORT_TOAIMS = TRUE THEN 1 ELSE CASE WHEN cp11aims.UNCT_REPORT_TOAIMS = FALSE THEN 0 ELSE -1 END END ELSE -1 END as UNCT_REPORT_TOAIMS,
                             CASE WHEN cp11.MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP = TRUE THEN 1 ELSE CASE WHEN cp11.MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP = FALSE THEN 0 ELSE -1 END END as MONITOR_PERFORMANCE_ONAEINDEPENDENT_OFGP,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN cp11.HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT_COUNT,
                             CASE WHEN cp11.HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT = TRUE THEN 1 ELSE CASE WHEN cp11.HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT = FALSE THEN 0 ELSE -1 END END as HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT,
                             cp11supportsscooperation.ROLE_ID,
                             cp11supportsscooperation.COLLECTIVE_APPROACH_ID 
@@ -142,28 +151,28 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION"
+                    <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="DirectBudgetSupport" caption="Count of UNCT provide direct budget support" column="HAS_DIRECT_BUDGET_SUPPORT"
+                    <Measure name="DirectBudgetSupport" caption="Count of UNCT provide direct budget support" column="HAS_DIRECT_BUDGET_SUPPORT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="ChairCochairAidEffectiveness" caption="Count of UNCT chair/co-chair aid effectiveness and coordination fora" column="IS_CHAIR_AID_EFFECTIVENESS_FORA"
+                    <Measure name="ChairCochairAidEffectiveness" caption="Count of UNCT chair/co-chair aid effectiveness and coordination fora" column="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="CapacityDevelopment for aid modalities" caption="Count of UNCT provide capacity development for use of aid modalities and aid management" column="HAS_CAPACITY_FOR_AID_MODALITIES"
+                    <Measure name="CapacityDevelopment for aid modalities" caption="Count of UNCT provide capacity development for use of aid modalities and aid management" column="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS"
+                    <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="supportedByUN" caption="Count of 'Is the system supported by the UNCT?'" column="SUPPORTED_BYUN"
+                    <Measure name="supportedByUN" caption="Count of 'Is the system supported by the UNCT?'" column="SUPPORTED_BYUN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="unctReportToAIMS" caption="Count of 'Does the UNCT report to the AIMS?'" column="UNCT_REPORT_TOAIMS"
+                    <Measure name="unctReportToAIMS" caption="Count of 'Does the UNCT report to the AIMS?'" column="UNCT_REPORT_TOAIMS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="unRequestedCooperation" caption="Count of 'Has the government requested the UN system to support its cooperation with other developing countries?'" column="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT"
+                    <Measure name="unRequestedCooperation" caption="Count of 'Has the government requested the UN system to support its cooperation with other developing countries?'" column="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
