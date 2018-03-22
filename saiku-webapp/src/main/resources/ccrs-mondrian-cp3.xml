@@ -49,7 +49,6 @@
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = FALSE THEN cp3assessment.OTHER_ANALYSIS_SOURCE_ID ELSE null END as OTHER_ANALYSIS_SOURCE_ID,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_DEVELOPMENT_PLAN,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN CASE WHEN cp3plan.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNSUPPORT,
-                            CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HASMDGACCELERATION_FRAMEWORK,
                             CASE WHEN cp3.HAS_JOINT_PROGRAMMES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_PROGRAMMES,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFANNUAL_REVIEW,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN date(cp3undafannual.DATE_COMPLETED) ELSE null END as HASUNDAFANNUAL_DATE_COMPLETED,
@@ -221,7 +220,6 @@
             <Dimension table="YesNoTable" name="Is official disaggregated data available" caption="Is official disaggregated data available?" />
             <Dimension table="YesNoTable" name="National Development Plan" caption="Is there a National Development Plan?" />
             <Dimension table="YesNoTable" name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" />
-            <Dimension table="YesNoTable" name="MAPS Guide" caption="Are you using the Mainstreaming, Acceleration, and Policy Support (MAPS) Guide?" />
             <Dimension table="YesNoTable" name="Joint Programmes" caption="Do you have Joint Programmes?" />
             <Dimension table="YesNoTable" name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" />
             
@@ -347,9 +345,6 @@
                     <Measure name="hasUNSupport" caption="Count of 'Did the UN support the development of the National Plan'" column="HASUNSUPPORT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="MDGAccelerationFramework" caption="Count of using the MAPS Guide" column="HASMDGACCELERATION_FRAMEWORK"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="JointProgrammes" caption="Count of Joint Programmes" column="HAS_JOINT_PROGRAMMES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -385,7 +380,6 @@
                     <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF"/>
                     <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT"/>
                     <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN"/>
-                    <ForeignKeyLink dimension="MAPS Guide" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK"/>
                     <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES"/>
                     <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION"/>
