@@ -256,7 +256,7 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension table="YesNoTable" name="UNCT Human Rights Advisor" caption="Is there a UNCT Human Rights Advisor?" />
+            <Dimension table="YesNoTable" name="UNCT Human Rights Advisor" caption="Does the UNCT have a designated person or group to advise it on human rights matters?" />
             <Dimension table="YesNoTable" name="Human Rights-Based Approach" caption="Has a training on Human Rights-Based Approach been conducted in the current programme cycle?" />
             <Dimension table="YesNoTable" name="Was it undertaken as part of the UNDAF rollout process" caption="Was it undertaken as part of the UNDAF rollout process?" />
             <Dimension table="YesNoTable" name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" />

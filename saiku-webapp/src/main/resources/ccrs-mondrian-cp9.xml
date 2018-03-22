@@ -18,9 +18,11 @@
                         select
                             M.ID, M.LIST_MECHANISMS, M.PARTNERS_FOR_MECHANISMS, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP9COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
+                        from CP9COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT M, CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy, CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
-                            M.PARENT_ID = CP1.ID AND
+                            M.PARENT_ID = cp9unstrategy.ID AND
+                            cp9unstrategy.PARENT_ID = cp9.ID AND
+                            cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
                             CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
                     ]]>
@@ -35,9 +37,11 @@
                         select
                             M.ID, M.KEY_PARTNER, M.DESCRIBE_AGREEMENTS, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP9KEY_PARTNERS M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
+                        from CP9KEY_PARTNERS M, CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements, CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
-                            M.PARENT_ID = CP1.ID AND
+                            M.PARENT_ID = cp9agreements.ID AND
+                            cp9agreements.PARENT_ID = cp9.ID AND
+                            cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
                             CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
                     ]]>
