@@ -42,14 +42,13 @@
                             CASE WHEN cp3.HASUNDAF = TRUE THEN date(cp3undaf.END_DATE) ELSE null END as END_DATE,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN cp3undaf.TOTAL_PLANNED_BUDGET ELSE null END as TOTAL_PLANNED_BUDGET,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN cp3undaf.PREPARATION_PROCESS_MONTHS ELSE null END as PREPARATION_PROCESS_MONTHS,
-                            CASE WHEN cp3.HASUNDAF = TRUE THEN CASE WHEN cp3undaf.IS_DEVELOPING_NEWUNDAF = TRUE THEN 1 ELSE 0 END ELSE null END as IS_DEVELOPING_NEWUNDAF,
+                            CASE WHEN cp3.IS_DEVELOPING_NEWUNDAF = TRUE THEN 1 ELSE 0 END as IS_DEVELOPING_NEWUNDAF,
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_COUNTRY_ASSESSMENT,
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = TRUE THEN cp3assessment.ASSESSMENT_YEAR ELSE null END as ASSESSMENT_YEAR,
-                            CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = TRUE THEN CASE WHEN cp3assessment.HAS_DISAGGREGATED_DATA = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_DISAGGREGATED_DATA,
+                            CASE cp3.HAS_DISAGGREGATED_DATA WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE null END as HAS_DISAGGREGATED_DATA,
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = FALSE THEN cp3assessment.OTHER_ANALYSIS_SOURCE_ID ELSE null END as OTHER_ANALYSIS_SOURCE_ID,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_DEVELOPMENT_PLAN,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN CASE WHEN cp3plan.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNSUPPORT,
-                            CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HASMDGACCELERATION_FRAMEWORK,
                             CASE WHEN cp3.HAS_JOINT_PROGRAMMES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_PROGRAMMES,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFANNUAL_REVIEW,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN date(cp3undafannual.DATE_COMPLETED) ELSE null END as HASUNDAFANNUAL_DATE_COMPLETED,
@@ -221,7 +220,6 @@
             <Dimension table="YesNoTable" name="Is official disaggregated data available" caption="Is official disaggregated data available?" />
             <Dimension table="YesNoTable" name="National Development Plan" caption="Is there a National Development Plan?" />
             <Dimension table="YesNoTable" name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" />
-            <Dimension table="YesNoTable" name="MAPS Guide" caption="Are you using the Mainstreaming, Acceleration, and Policy Support (MAPS) Guide?" />
             <Dimension table="YesNoTable" name="Joint Programmes" caption="Do you have Joint Programmes?" />
             <Dimension table="YesNoTable" name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" />
             
@@ -347,9 +345,6 @@
                     <Measure name="hasUNSupport" caption="Count of 'Did the UN support the development of the National Plan'" column="HASUNSUPPORT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="MDGAccelerationFramework" caption="Count of using the MAPS Guide" column="HASMDGACCELERATION_FRAMEWORK"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
                     <Measure name="JointProgrammes" caption="Count of Joint Programmes" column="HAS_JOINT_PROGRAMMES"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
@@ -385,7 +380,6 @@
                     <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF"/>
                     <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT"/>
                     <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN"/>
-                    <ForeignKeyLink dimension="MAPS Guide" foreignKeyColumn="HASMDGACCELERATION_FRAMEWORK"/>
                     <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES"/>
                     <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION"/>
