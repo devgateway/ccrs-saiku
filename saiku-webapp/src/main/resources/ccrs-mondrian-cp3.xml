@@ -55,8 +55,6 @@
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN 1 ELSE CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = FALSE THEN 0 ELSE -1 END END as HAS_NATIONAL_DEVELOPMENT_PLAN,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN CASE WHEN cp3plan.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END ELSE null END as HASUNSUPPORT_COUNT,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN CASE WHEN cp3plan.HASUNSUPPORT = TRUE THEN 1 ELSE CASE WHEN cp3plan.HASUNSUPPORT = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HASUNSUPPORT,
-                            CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HASMDGACCELERATION_FRAMEWORK_COUNT,
-                            CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = TRUE THEN 1 ELSE CASE WHEN cp3.HASMDGACCELERATION_FRAMEWORK = FALSE THEN 0 ELSE -1 END END as HASMDGACCELERATION_FRAMEWORK,
                             CASE WHEN cp3.HAS_JOINT_PROGRAMMES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_PROGRAMMES_COUNT,
                             CASE WHEN cp3.HAS_JOINT_PROGRAMMES = TRUE THEN 1 ELSE CASE WHEN cp3.HAS_JOINT_PROGRAMMES = FALSE THEN 0 ELSE -1 END END as HAS_JOINT_PROGRAMMES,
                             CASE WHEN cp3.HASUNDAFANNUAL_REVIEW = TRUE THEN 1 ELSE 0 END as HASUNDAFANNUAL_REVIEW_COUNT,
@@ -361,9 +359,6 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="hasUNSupport" caption="Count of 'Did the UN support the development of the National Plan'" column="HASUNSUPPORT_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="MDGAccelerationFramework" caption="Count of using the MAPS Guide" column="HASMDGACCELERATION_FRAMEWORK_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="JointProgrammes" caption="Count of Joint Programmes" column="HAS_JOINT_PROGRAMMES_COUNT"
