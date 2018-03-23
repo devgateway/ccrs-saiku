@@ -212,7 +212,7 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="UNCTGenderAdvisor" caption="Count of UNCT gender advisor" column="HASUNCTGENDER_ADVISOR"
+                    <Measure name="UNCTGenderAdvisor" caption="Count of 'Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?'" column="HASUNCTGENDER_ADVISOR"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="UNDAFSpecificGenderResults" caption="Count of UNDAF (or equivalent), does it have specific gender results at the outcome level?" column="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"
