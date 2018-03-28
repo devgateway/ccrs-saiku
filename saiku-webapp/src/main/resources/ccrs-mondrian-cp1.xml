@@ -109,11 +109,15 @@
                       ig.ID,
                       ig.NAME,
                       ig.RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID,
+                      CASE WHEN IG.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_DEFINED_BYSOP_COUNT,
+                      CASE WHEN IG.JOINT_WORKPLAN = TRUE THEN 1 ELSE 0 END as JOINT_WORKPLAN_COUNT,
+                      CASE WHEN IG.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN ig.ID ELSE NULL END as RESULTS_GROUP_DEFINED_BYSOP_IG_ID,
+                      CASE WHEN IG.JOINT_WORKPLAN = TRUE THEN ig.ID ELSE NULL END as JOINT_WORKPLAN_IG_ID,
                       ta.TOPIC_AREAS_ID
                     from CP1GENERAL_PROFILE cp1
                       join CP1INTERAGENCY_GROUP ig on cp1.ID = ig.PARENT_ID
-                      left join CP1INTERAGENCY_GROUP_TOPIC_AREAS ta on ig.ID = ta.CP1INTERAGENCY_GROUP_ID
                       join V_CP_VALIDATED_DESIGNATIONS v on CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                      left join CP1INTERAGENCY_GROUP_TOPIC_AREAS ta on ig.ID = ta.CP1INTERAGENCY_GROUP_ID
                 ]]></SQL>
             </ExpressionView>
         </Query>
@@ -952,6 +956,13 @@
                 <Measures>
                     <Measure name="Count" caption="Number of Interagency Groups" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
+
+                    <Measure name="resultsGroupDefinedBySOP" caption="Count of 'Is this a Results Group as defined by the Standard Operating Procedures (SOPs)'" column="RESULTS_GROUP_DEFINED_BYSOP_IG_ID"
+                             datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###" />
+
+                    <Measure name="jointWorkplan" caption="Count of 'Does the Results Group have a Joint Workplan'" column="JOINT_WORKPLAN_IG_ID"
+                             datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###" />
+
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
