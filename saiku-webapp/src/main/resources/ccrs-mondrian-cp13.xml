@@ -18,7 +18,7 @@
                         select
                             D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
-                            CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN  = FALSE THEN 0 ELSE -1 END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN,
+                            CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN  = FALSE THEN 0 ELSE -1 END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
@@ -38,7 +38,7 @@
                         SELECT
                             S.ID, S.PARENT_ID, S.SCORECARD_ID, S.GENDER_EQUALITY_RATING_ID,
                             CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
-                            CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = FALSE THEN 0 ELSE -1 END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN,
+                            CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = FALSE THEN 0 ELSE -1 END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
                             CP13.DESIGNATION, CP13.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM
@@ -125,7 +125,7 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Gender Scorecard" foreignKeyColumn="SCORECARD_ID" />
                     <ForeignKeyLink dimension="Gender Equality Rating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
-                    <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN" />
+                    <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -169,7 +169,7 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="UNSwap Scorecard" foreignKeyColumn="SCORECARD_ID" />
                     <ForeignKeyLink dimension="UNSwap Gender Equality Rating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
-                    <ForeignKeyLink dimension="Has UNCT Developed Management Plan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN" />
+                    <ForeignKeyLink dimension="Has UNCT Developed Management Plan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
