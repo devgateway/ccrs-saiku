@@ -97,6 +97,27 @@
             </ExpressionView>
         </Query>
 
+        <Query alias="CP1InteragencyGroupTopicAreas">
+            <ExpressionView>
+                <SQL><![CDATA[
+                    select
+                      cp1.DESIGNATION,
+                      cp1.ENTITY_YEAR,
+                      cp1.COUNTRY_INCOME_STATUS_ID,
+                      cp1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                      CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                      ig.ID,
+                      ig.NAME,
+                      ig.RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID,
+                      ta.TOPIC_AREAS_ID
+                    from CP1GENERAL_PROFILE cp1
+                      join CP1INTERAGENCY_GROUP ig on cp1.ID = ig.PARENT_ID
+                      left join CP1INTERAGENCY_GROUP_TOPIC_AREAS ta on ig.ID = ta.CP1INTERAGENCY_GROUP_ID
+                      join V_CP_VALIDATED_DESIGNATIONS v on CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                ]]></SQL>
+            </ExpressionView>
+        </Query>
+
         <Query alias="CP1CoveredCountries">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -894,6 +915,51 @@
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>
                     <ForeignKeyLink dimension="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" foreignKeyColumn="BUDGETED_WORKPLAN"/>
+                </DimensionLinks>
+            </MeasureGroup>
+        </MeasureGroups>
+    </Cube>
+
+    <Cube name="UNCT Interagency Group Topic Areas" caption="UNCT Interagency Group Topic Areas" defaultMeasure="Count">
+        <Dimensions>
+            <Dimension source="Region" />
+            <Dimension source="Country" />
+            <Dimension source="Delivering as One" />
+            <Dimension name="Year" caption="Year" table="CP1InteragencyGroupTopicAreas">
+                <Attributes>
+                    <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
+                </Attributes>
+            </Dimension>
+            <Dimension source="CountryIncomeStatus" />
+            <Dimension source="SecondaryCountryIncomeStatus" />
+
+            <Dimension name="Interagency Group Name" caption="Interagency Group Name" table="CP1InteragencyGroupTopicAreas"
+                       key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false" datatype="Integer" />
+                    <Attribute name="Name" caption="Name" keyColumn="NAME" />
+                </Attributes>
+            </Dimension>
+
+            <Dimension table="YesNoTable" name="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)" caption="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)?" />
+            <Dimension table="YesNoTable" name="Does the Results Group have a Joint Workplan" caption="Does the Results Group have a Joint Workplan?" />
+            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" />
+            <Dimension source="CATEGORY" table="TopicArea" name="Topic Area" caption="Topic Area" />
+        </Dimensions>
+
+        <MeasureGroups>
+            <MeasureGroup name="CP Interagency Group Topic Areas" table="CP1InteragencyGroupTopicAreas">
+                <Measures>
+                    <Measure name="Count" caption="Number of Interagency Groups" column="ID" datatype="Integer"
+                             aggregator="distinct-count" visible="true" formatString="#,###"/>
+                </Measures>
+                <DimensionLinks>
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <ForeignKeyLink dimension="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)" foreignKeyColumn="RESULTS_GROUP_DEFINED_BYSOP_COUNT"/>
+                    <ForeignKeyLink dimension="Does the Results Group have a Joint Workplan"  foreignKeyColumn="JOINT_WORKPLAN_COUNT"/>
+                    <ForeignKeyLink dimension="resultsGroupAlignedToSectorGroups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID"/>
+                    <ForeignKeyLink dimension="Topic Area" foreignKeyColumn="TOPIC_AREAS_ID"/>
+                    <FactLink dimension="Interagency Group Name" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
