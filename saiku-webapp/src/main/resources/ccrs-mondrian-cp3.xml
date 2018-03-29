@@ -216,7 +216,7 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension source="CATEGORY" table="AlternativeAnalysis" caption="UN Alternative Analysis." />
+            <Dimension source="CATEGORY" table="AlternativeAnalysis" caption="If the UNCT relied on other analysis, which alternative option did you use?" />
             <Dimension table="YesNoTable" name="Is official disaggregated data available" caption="Is official disaggregated data available?" />
             <Dimension table="YesNoTable" name="National Development Plan" caption="Is there a National Development Plan?" />
             <Dimension table="YesNoTable" name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" />
