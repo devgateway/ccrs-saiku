@@ -192,7 +192,7 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension table="YesNoTable" name="UNCT gender advisor" caption="Is there a UNCT gender advisor?" />
+            <Dimension table="YesNoTable" name="Does the UNCT have dedicated capacity to support the UNCTs work on gender equality and the empowerment of women" caption="Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?" />
             <Dimension table="YesNoTable" name="UNDAF specific gender results" caption="If you have an UNDAF (or equivalent), does it have specific gender results at the outcome level?" />
             <Dimension table="YesNoTable" name="Gender Equality Scorecard" caption="Has your UNCT implemented a Gender Equality Scorecard in the past FOUR years?" />
             <Dimension table="YesNoTable" name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" />
@@ -240,7 +240,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="UNCT gender advisor" foreignKeyColumn="HASUNCTGENDER_ADVISOR"/>
+                    <ForeignKeyLink dimension="Does the UNCT have dedicated capacity to support the UNCTs work on gender equality and the empowerment of women" foreignKeyColumn="HASUNCTGENDER_ADVISOR"/>
                     <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"/>
                     <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD"/>
                     <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER"/>
