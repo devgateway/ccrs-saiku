@@ -351,7 +351,7 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                         rowContent += '<th class="col_null">&nbsp;</th>';
                     } else {
                         var headerValue = header.value;
-                        if (header.value === 'Yes' || header.value === 'No') {
+                        if (header.value === 'Yes' || header.value === 'No' || header.value === 'No Data Available') {
                             headerValue = header.value + ' - ' + header.properties.dimension;
                         }
 
@@ -374,7 +374,7 @@ SaikuTableRenderer.prototype.internalRender = function(allData, options) {
                             rowContent += '<th class="col_null" colspan="' + colSpan + '">&nbsp;</th>';
                         } else {
                             var headerValue = header.value;
-                            if (header.value === 'Yes' || header.value === 'No') {
+                            if (header.value === 'Yes' || header.value === 'No' || header.value === 'No Data Available') {
                                 headerValue = header.value + ' - ' + header.properties.dimension;
                             }
 

@@ -17,7 +17,7 @@
                     <![CDATA[
                         select
                             M.ID, M.FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP6JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES M, CP6JOINT_COMMUNICATION_ADVOCACY CP6, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             M.PARENT_ID = CP6.ID AND
@@ -36,20 +36,29 @@
                         select
                             cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR, cp6.UNCT_ADVOCACY_MODEL_ID,
                             CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE 0 END as HAS_COMMONUNCTWEBSITE,
-                            CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN cp6.COMMONUNCTURL ELSE null END as COMMONUNCTURL,                                                       
-                            CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN 1 ELSE 0 END as HAS_COMMON_FACEBOOK_PAGE,
+                            CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE 0 END as HAS_COMMONUNCTWEBSITE_COUNT,
+                            CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = FALSE THEN 0 ELSE -1 END END as HAS_COMMONUNCTWEBSITE,
+                            CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN cp6.COMMONUNCTURL ELSE null END as COMMONUNCTURL,
+                            CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN 1 ELSE 0 END as HAS_COMMON_FACEBOOK_PAGE_COUNT,
+                            CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN 1 ELSE CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = FALSE THEN 0 ELSE -1 END END as HAS_COMMON_FACEBOOK_PAGE,
                             CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN cp6.COMMON_FACEBOOKURL ELSE null END as COMMON_FACEBOOKURL,
-                            CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_TWITTER_ACCOUNT,
+                            CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_TWITTER_ACCOUNT_COUNT,
+                            CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN 1 ELSE CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = FALSE THEN 0 ELSE -1 END END as HAS_COMMON_TWITTER_ACCOUNT,
                             CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN cp6.TWITTER_HANDLE ELSE null END as TWITTER_HANDLE,
                             CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN cp6.COORDINATOR_TWITTER_HANDLE ELSE null END as COORDINATOR_TWITTER_HANDLE,
-                            CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COORDINATOR_TWITTER_ACCOUNT,
-                            CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = TRUE THEN 1 ELSE 0 END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING,
-                            CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES,
-                            CASE WHEN cp6.IS_COMMUNICATIONS_PART_OFUNDAF = TRUE THEN 1 ELSE 0 END as IS_COMMUNICATIONS_PART_OFUNDAF,
-                            CASE WHEN cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS = TRUE THEN 1 ELSE 0 END as HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS,
-                            CASE WHEN cp6.HAS_VISUAL_IDENTITY_ESTABLISHED = TRUE THEN 1 ELSE 0 END as HAS_VISUAL_IDENTITY_ESTABLISHED,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COORDINATOR_TWITTER_ACCOUNT_COUNT,
+                            CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN 1 ELSE CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = FALSE THEN 0 ELSE -1 END END as HAS_COORDINATOR_TWITTER_ACCOUNT,
+                            CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = TRUE THEN 1 ELSE 0 END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT,
+                            CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = TRUE THEN 1 ELSE CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = FALSE THEN 0 ELSE -1 END END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING,
+                            CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT,
+                            CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = TRUE THEN 1 ELSE CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = FALSE THEN 0 ELSE -1 END END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES,
+                            CASE WHEN cp6.IS_COMMUNICATIONS_PART_OFUNDAF = TRUE THEN 1 ELSE 0 END as IS_COMMUNICATIONS_PART_OFUNDAF_COUNT,
+                            CASE WHEN cp6.IS_COMMUNICATIONS_PART_OFUNDAF = TRUE THEN 1 ELSE CASE WHEN cp6.IS_COMMUNICATIONS_PART_OFUNDAF = FALSE THEN 0 ELSE -1 END END as IS_COMMUNICATIONS_PART_OFUNDAF,
+                            CASE WHEN cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS = TRUE THEN 1 ELSE 0 END as HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS_COUNT,
+                            CASE WHEN cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS = TRUE THEN 1 ELSE CASE WHEN cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS = FALSE THEN 0 ELSE -1 END END as HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS,
+                            CASE WHEN cp6.HAS_VISUAL_IDENTITY_ESTABLISHED = TRUE THEN 1 ELSE 0 END as HAS_VISUAL_IDENTITY_ESTABLISHED_COUNT,
+                            CASE WHEN cp6.HAS_VISUAL_IDENTITY_ESTABLISHED = TRUE THEN 1 ELSE CASE WHEN cp6.HAS_VISUAL_IDENTITY_ESTABLISHED = FALSE THEN 0 ELSE -1 END END as HAS_VISUAL_IDENTITY_ESTABLISHED,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP6JOINT_COMMUNICATION_ADVOCACY cp6, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp6.DESIGNATION = cp1.DESIGNATION AND cp6.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -193,34 +202,34 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasCommonUNCTWebsite" caption="Count of 'Do you have a common website for the UNCT?'" column="HAS_COMMONUNCTWEBSITE"
+                    <Measure name="hasCommonUNCTWebsite" caption="Count of 'Do you have a common website for the UNCT?'" column="HAS_COMMONUNCTWEBSITE_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasCommonFacebookPage" caption="Count of 'Do you have a common Facebook page for the UNCT?'" column="HAS_COMMON_FACEBOOK_PAGE"
+                    <Measure name="hasCommonFacebookPage" caption="Count of 'Do you have a common Facebook page for the UNCT?'" column="HAS_COMMON_FACEBOOK_PAGE_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasCommonTwitterAccount" caption="Count of 'Do you have a common Twitter account for the UNCT?'" column="HAS_COMMON_TWITTER_ACCOUNT"
+                    <Measure name="hasCommonTwitterAccount" caption="Count of 'Do you have a common Twitter account for the UNCT?'" column="HAS_COMMON_TWITTER_ACCOUNT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-					<Measure name="hasCoordinatorTwitterAccount" caption="Count of 'Does the Resident Coordinator have a Twitter account?'" column="HAS_COORDINATOR_TWITTER_ACCOUNT"
+					<Measure name="hasCoordinatorTwitterAccount" caption="Count of 'Does the Resident Coordinator have a Twitter account?'" column="HAS_COORDINATOR_TWITTER_ACCOUNT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasGuidingPrinciplesCommonMessaging" caption="Count of 'Has the UNCT agreed on common messaging on any topic?'" column="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"
+                    <Measure name="hasGuidingPrinciplesCommonMessaging" caption="Count of 'Has the UNCT agreed on common messaging on any topic?'" column="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasJointAdvocacyStrategiesOnNormativeIssues" caption="Count of 'Do you have a joint advocacy strategy to promote the implementation of the SDGs?'" column="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"
+                    <Measure name="hasJointAdvocacyStrategiesOnNormativeIssues" caption="Count of 'Do you have a joint advocacy strategy to promote the implementation of the SDGs?'" column="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                     <!-- N.6.3 -->
                     <Measure name="isCommunicationsPartOfUNDAF" caption="Count of 'Is communications and advocacy budget part of your UNDAF/Common Budgetary Framework?'"
-                             column="IS_COMMUNICATIONS_PART_OFUNDAF"
+                             column="IS_COMMUNICATIONS_PART_OFUNDAF_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                     <!-- N.6.4 -->
                     <Measure name="hasCommunicationTogetherInTimeCrisis" caption="Count of 'Is the UNCG guided by the UN DPI SOP on communicating together in times of crisis?'"
-                             column="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"
+                             column="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                     <!-- N.6.5 -->
                     <Measure name="hasVisualIdentityEstablished" caption="Count of 'Does the UNCT have an established visual identity for joint UN communications?'"
-                             column="HAS_VISUAL_IDENTITY_ESTABLISHED"
+                             column="HAS_VISUAL_IDENTITY_ESTABLISHED_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>

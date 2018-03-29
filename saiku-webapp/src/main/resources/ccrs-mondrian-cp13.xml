@@ -18,7 +18,8 @@
                         select
                             D.*, CP13.DESIGNATION, CP13.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN  = FALSE THEN 0 ELSE -1 END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR AND
@@ -36,9 +37,10 @@
                     <![CDATA[
                         SELECT
                             S.ID, S.PARENT_ID, S.SCORECARD_ID, S.GENDER_EQUALITY_RATING_ID,
-                            CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN,
+                            CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
+                            CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE CASE WHEN S.HASUNCTDEVELOPED_MANAGEMENT_PLAN = FALSE THEN 0 ELSE -1 END END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
                             CP13.DESIGNATION, CP13.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM
                             CP13UNSWAP_SCORECARD_AREA_SCORE S, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
@@ -59,13 +61,19 @@
                             cp13.ID, cp13.DESIGNATION, cp13.ENTITY_YEAR, cp13.YEAR_CONDUCTED_GENDER_EQUALITY_SCORECARD,
                             cp13.GENDER_SCORECARD_TYPES_ID,
                             CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp13.HASUNCTGENDER_ADVISOR = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_ADVISOR,
-                            CASE WHEN cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL = TRUE THEN 1 ELSE 0 END as HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL,
-                            CASE WHEN cp13.HASUNCTGENDER_EQUALITY_SCORECARD = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_EQUALITY_SCORECARD,
-                            CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_BUILDINGUNSTAFF_GENDER,
-                            CASE WHEN cp13.UNCT_USES_GENDER_EQUALITY_MARKER = TRUE THEN 1 ELSE 0 END as UNCT_USES_GENDER_EQUALITY_MARKER,
-                            CASE WHEN cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE = TRUE THEN 1 ELSE 0 END as GENDER_MAINSTREAMING_STRATEGY_IN_PLACE,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp13.HASUNCTGENDER_ADVISOR = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_ADVISOR_COUNT,
+                            CASE WHEN cp13.HASUNCTGENDER_ADVISOR = TRUE THEN 1 ELSE CASE WHEN cp13.HASUNCTGENDER_ADVISOR = FALSE THEN 0 ELSE -1 END END as HASUNCTGENDER_ADVISOR,
+                            CASE WHEN cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL = TRUE THEN 1 ELSE 0 END as HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT,
+                            CASE WHEN cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL = TRUE THEN 1 ELSE CASE WHEN cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL = FALSE THEN 0 ELSE -1 END END as HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL,
+                            CASE WHEN cp13.HASUNCTGENDER_EQUALITY_SCORECARD = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_EQUALITY_SCORECARD_COUNT,
+                            CASE WHEN cp13.HASUNCTGENDER_EQUALITY_SCORECARD = TRUE THEN 1 ELSE CASE WHEN cp13.HASUNCTGENDER_EQUALITY_SCORECARD = FALSE THEN 0 ELSE -1 END END as HASUNCTGENDER_EQUALITY_SCORECARD,
+                            CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT,
+                            CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = TRUE THEN 1 ELSE CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = FALSE THEN 0 ELSE -1 END END as HAS_CAPACITY_BUILDINGUNSTAFF_GENDER,
+                            CASE WHEN cp13.UNCT_USES_GENDER_EQUALITY_MARKER = TRUE THEN 1 ELSE 0 END as UNCT_USES_GENDER_EQUALITY_MARKER_COUNT,
+                            CASE WHEN cp13.UNCT_USES_GENDER_EQUALITY_MARKER = TRUE THEN 1 ELSE CASE WHEN cp13.UNCT_USES_GENDER_EQUALITY_MARKER = FALSE THEN 0 ELSE -1 END END as UNCT_USES_GENDER_EQUALITY_MARKER,
+                            CASE WHEN cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE = TRUE THEN 1 ELSE 0 END as GENDER_MAINSTREAMING_STRATEGY_IN_PLACE_COUNT,
+                            CASE WHEN cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE = TRUE THEN 1 ELSE CASE WHEN cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE = FALSE THEN 0 ELSE -1 END END as GENDER_MAINSTREAMING_STRATEGY_IN_PLACE,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP13GENDER_PROFILE cp13, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp13.DESIGNATION = cp1.DESIGNATION AND cp13.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -117,7 +125,7 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Gender Scorecard" foreignKeyColumn="SCORECARD_ID" />
                     <ForeignKeyLink dimension="Gender Equality Rating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
-                    <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT" />
+                    <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -154,14 +162,14 @@
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasUNCTDevelopedManagementPlanCount" caption="Count of UNCT that developed a management response/action plan to address the recommendations"
-                             column="HASUNCTDEVELOPED_MANAGEMENT_PLAN"
+                             column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="UNSwap Scorecard" foreignKeyColumn="SCORECARD_ID" />
                     <ForeignKeyLink dimension="UNSwap Gender Equality Rating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
-                    <ForeignKeyLink dimension="Has UNCT Developed Management Plan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN" />
+                    <ForeignKeyLink dimension="Has UNCT Developed Management Plan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -212,22 +220,22 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="UNCTGenderAdvisor" caption="Count of 'Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?'" column="HASUNCTGENDER_ADVISOR"
+                    <Measure name="UNCTGenderAdvisor" caption="Count of 'Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?'" column="HASUNCTGENDER_ADVISOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="UNDAFSpecificGenderResults" caption="Count of UNDAF (or equivalent), does it have specific gender results at the outcome level?" column="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"
+                    <Measure name="UNDAFSpecificGenderResults" caption="Count of UNDAF (or equivalent), does it have specific gender results at the outcome level?" column="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="GenderEqualityScorecard" caption="Count of UNCT implemented a Gender Equality Scorecard in the past FOUR years" column="HASUNCTGENDER_EQUALITY_SCORECARD"
+                    <Measure name="GenderEqualityScorecard" caption="Count of UNCT implemented a Gender Equality Scorecard in the past FOUR years" column="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="CapacityBuildingUNStaff" caption="Count of capacity building for UN staff on the issue of gender mainstreaming in the past year" column="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER"
+                    <Measure name="CapacityBuildingUNStaff" caption="Count of capacity building for UN staff on the issue of gender mainstreaming in the past year" column="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                     
-                    <Measure name="UNCTThatUseGenderEquality" caption="Count of UNCT that use a gender equality marker" column="UNCT_USES_GENDER_EQUALITY_MARKER"
+                    <Measure name="UNCTThatUseGenderEquality" caption="Count of UNCT that use a gender equality marker" column="UNCT_USES_GENDER_EQUALITY_MARKER_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                     
-                    <Measure name="GenderMainstreamingStrategyInPlace" caption="Count of Gender Mainstreaming Strategies In Place" column="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE"
+                    <Measure name="GenderMainstreamingStrategyInPlace" caption="Count of Gender Mainstreaming Strategies In Place" column="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
