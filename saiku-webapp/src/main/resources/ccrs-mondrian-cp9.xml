@@ -17,7 +17,7 @@
                     <![CDATA[
                         select
                             M.ID, M.LIST_MECHANISMS, M.PARTNERS_FOR_MECHANISMS, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP9COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT M, CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy, CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             M.PARENT_ID = cp9unstrategy.ID AND
@@ -36,7 +36,7 @@
                     <![CDATA[
                         select
                             M.ID, M.KEY_PARTNER, M.DESCRIBE_AGREEMENTS, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP9KEY_PARTNERS M, CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements, CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             M.PARENT_ID = cp9agreements.ID AND
@@ -55,50 +55,85 @@
                     <![CDATA[
                         select
                         cp9.ID, cp9.DESIGNATION, cp9.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                        CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = TRUE THEN 1 ELSE 0 END as HASUNPEACE_KEEPING_MISSION,                        
-                        CASE WHEN cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN 1 ELSE 0 END as GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS,
-                        CASE WHEN cp9.DOESUNCTPARTICIPATE = TRUE AND cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN 1 ELSE 0 END as DOESUNCTPARTICIPATE,
-                        CASE WHEN cp9.DOESUNCTSUPPORTDRREFFORTS = TRUE THEN 1 ELSE 0 END as DOESUNCTSUPPORTDRREFFORTS,
-                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HAS_INTEGRATED_STRATEGIC_FRAMEWORK,
+                        CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = TRUE THEN 1 ELSE 0 END as HASUNPEACE_KEEPING_MISSION_COUNT,     
+                        CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = TRUE THEN 1 ELSE CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = FALSE THEN 0 ELSE -1 END END as HASUNPEACE_KEEPING_MISSION,
+                        CASE WHEN cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN 1 ELSE 0 END as GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS_COUNT,
+                        CASE WHEN cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN 1 ELSE CASE WHEN cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = FALSE THEN 0 ELSE -1 END END as GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS,
+                        CASE WHEN cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN CASE WHEN cp9.DOESUNCTPARTICIPATE = TRUE THEN 1 ELSE 0 END ELSE null END as DOESUNCTPARTICIPATE_COUNT,
+                        CASE WHEN cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN CASE WHEN cp9.DOESUNCTPARTICIPATE = TRUE THEN 1 ELSE CASE WHEN cp9.DOESUNCTPARTICIPATE = FALSE THEN 0 ELSE -1 END END ELSE -1 END as DOESUNCTPARTICIPATE,
+                        CASE WHEN cp9.DOESUNCTSUPPORTDRREFFORTS = TRUE THEN 1 ELSE 0 END as DOESUNCTSUPPORTDRREFFORTS_COUNT,
+                        CASE WHEN cp9.DOESUNCTSUPPORTDRREFFORTS = TRUE THEN 1 ELSE CASE WHEN cp9.DOESUNCTSUPPORTDRREFFORTS = FALSE THEN 0 ELSE -1 END END as DOESUNCTSUPPORTDRREFFORTS,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN 1 ELSE 0 END as HAS_INTEGRATED_STRATEGIC_FRAMEWORK_COUNT,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN 1 ELSE CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = FALSE THEN 0 ELSE -1 END END as HAS_INTEGRATED_STRATEGIC_FRAMEWORK,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.START_DATE) ELSE null END as START_DATE,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN date(cp9integrated.END_DATE) ELSE null END as END_DATE,
-                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_JOINT_STRUCTURESUNCTUN = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_JOINT_STRUCTURESUNCTUN,
-                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT = TRUE THEN 1 ELSE 0 END ELSE null END as DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT,
-                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_MECHANISMS_FOR_MONITORING = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_MECHANISMS_FOR_MONITORING,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_JOINT_STRUCTURESUNCTUN = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_JOINT_STRUCTURESUNCTUN_COUNT,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_JOINT_STRUCTURESUNCTUN = TRUE THEN 1 ELSE CASE WHEN cp9integrated.HAS_JOINT_STRUCTURESUNCTUN = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HAS_JOINT_STRUCTURESUNCTUN,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT = TRUE THEN 1 ELSE 0 END ELSE null END as DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT_COUNT,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT = TRUE THEN 1 ELSE CASE WHEN cp9integrated.DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT = FALSE THEN 0 ELSE -1 END END ELSE -1 END as DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_MECHANISMS_FOR_MONITORING = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_MECHANISMS_FOR_MONITORING_COUNT,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_MECHANISMS_FOR_MONITORING = TRUE THEN 1 ELSE CASE WHEN cp9integrated.HAS_MECHANISMS_FOR_MONITORING = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HAS_MECHANISMS_FOR_MONITORING,
                         CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN cp9integrated.IS_NEW_MONITORED_AND_REPORTED_ID ELSE null END as IS_NEW_MONITORED_AND_REPORTED_ID,
-                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_FRAMEWORK_LINK = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_FRAMEWORK_LINK,
-                        CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN 1 ELSE 0 END as HASUNUNCTCOLABORATION,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_FRAMEWORK_LINK = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_FRAMEWORK_LINK_COUNT,
+                        CASE WHEN cp9unpeace.HAS_INTEGRATED_STRATEGIC_FRAMEWORK = TRUE THEN CASE WHEN cp9integrated.HAS_FRAMEWORK_LINK = TRUE THEN 1 ELSE CASE WHEN cp9integrated.HAS_FRAMEWORK_LINK = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HAS_FRAMEWORK_LINK,
+                        CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN 1 ELSE 0 END as HASUNUNCTCOLABORATION_COUNT,
+                        CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN 1 ELSE CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = FALSE THEN 0 ELSE -1 END END as HASUNUNCTCOLABORATION,
                         CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN CASE WHEN cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID = 15988 THEN 1 ELSE 0 END ELSE null END as IS_JOINT_PROGRAMME,
                         cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID,
-                        CASE WHEN cp9unpeace.HAS_COMMON_SERVICES_TOUNCTMEMBERS = TRUE THEN 1 ELSE 0 END as HAS_COMMON_SERVICES_TOUNCTMEMBERS,
-                        CASE WHEN cp9unpeace.IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP = TRUE THEN 1 ELSE 0 END as IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP,
-                        CASE WHEN cp9unpeace.IS_DRAWDOWN_WITHDRAWALUNMISSION = TRUE THEN 1 ELSE 0 END as IS_DRAWDOWN_WITHDRAWALUNMISSION,
+                        CASE WHEN cp9unpeace.HAS_COMMON_SERVICES_TOUNCTMEMBERS = TRUE THEN 1 ELSE 0 END as HAS_COMMON_SERVICES_TOUNCTMEMBERS_COUNT,
+                        CASE WHEN cp9unpeace.HAS_COMMON_SERVICES_TOUNCTMEMBERS = TRUE THEN 1 ELSE CASE WHEN cp9unpeace.HAS_COMMON_SERVICES_TOUNCTMEMBERS = FALSE THEN 0 ELSE -1 END END as HAS_COMMON_SERVICES_TOUNCTMEMBERS,
+                        CASE WHEN cp9unpeace.IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP = TRUE THEN 1 ELSE 0 END as IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP_COUNT,
+                        CASE WHEN cp9unpeace.IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP = TRUE THEN 1 ELSE CASE WHEN cp9unpeace.IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP = FALSE THEN 0 ELSE -1 END END as IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP,
+                        CASE WHEN cp9unpeace.IS_DRAWDOWN_WITHDRAWALUNMISSION = TRUE THEN 1 ELSE 0 END as IS_DRAWDOWN_WITHDRAWALUNMISSION_COUNT,
+                        CASE WHEN cp9unpeace.IS_DRAWDOWN_WITHDRAWALUNMISSION = TRUE THEN 1 ELSE CASE WHEN cp9unpeace.IS_DRAWDOWN_WITHDRAWALUNMISSION = FALSE THEN 0 ELSE -1 END END as IS_DRAWDOWN_WITHDRAWALUNMISSION,
                         cp9.HAS_NEW_CONFLICT_ANALYSIS_ID,
                         cp9.DEVELOPMENT_PLANNING_ALIGNED_ID,
-                        CASE WHEN cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN = TRUE THEN 1 ELSE 0 END as HAS_ANALYSIS_BEEN_TAKEN_WITHUN,
-                        CASE cp9unstrategy.HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE null END as HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT,
-                        CASE WHEN cp9.HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY = TRUE THEN 1 ELSE 0 END as HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY,
-                        CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = TRUE THEN 1 ELSE 0 END as HAS_AGREEMENTS_WITH_KEY_PARTNERS,
-                        CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = TRUE THEN CASE WHEN cp9agreements.HAS_ACTIVE_COORDINATION_MECHANISMS = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_ACTIVE_COORDINATION_MECHANISMS,
-                        CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN 1 ELSE 0 END as HAS_INTERACTIONWBDIRECTORUNLEADER,
-                        CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN CASE WHEN cp9interactionwbdirectorunleader.WBUNCOLLABORATE_ON_UPSTREAM_POLICY = TRUE THEN 1 ELSE 0 END ELSE null END as WBUNCOLLABORATE_ON_UPSTREAM_POLICY,
-                        CASE WHEN cp9.HAS_JOINT_RISK_ASESSMENTS = TRUE THEN 1 ELSE 0 END as HAS_JOINT_RISK_ASESSMENTS,
-                        CASE WHEN cp9.HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS = TRUE THEN 1 ELSE 0 END as HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS,
-                        CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
-                        CASE WHEN cp9.HAS_SUSTAINING_PEACE_ELEMENTS = TRUE THEN 1 ELSE 0 END as HAS_SUSTAINING_PEACE_ELEMENTS,
-                        CASE WHEN cp9.HAS_OTHER_STRATEGIES = TRUE THEN 1 ELSE 0 END as HAS_OTHER_STRATEGIES,
-                        CASE WHEN cp9.HAS_NATIONAL_MECHANISMS = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_MECHANISMS,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN 1 ELSE 0 END as HAS_HUMANITARIAN_CRISIS,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.UN_COORDINATOR = TRUE THEN 1 ELSE 0 END ELSE null END as UN_COORDINATOR,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.COUNTRY_TEAM = TRUE THEN 1 ELSE 0 END ELSE null END as COUNTRY_TEAM,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.RESPONSE_PLAN = TRUE THEN 1 ELSE 0 END ELSE null END as RESPONSE_PLAN,
+                        CASE WHEN cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN = TRUE THEN 1 ELSE 0 END as HAS_ANALYSIS_BEEN_TAKEN_WITHUN_COUNT,
+                        CASE WHEN cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN = TRUE THEN 1 ELSE CASE WHEN cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN = FALSE THEN 0 ELSE -1 END END as HAS_ANALYSIS_BEEN_TAKEN_WITHUN,
+                        CASE cp9unstrategy.HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE null END as HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT_COUNT,
+                        CASE cp9unstrategy.HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT WHEN TRUE THEN 1 ELSE CASE WHEN cp9unstrategy.HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT = FALSE THEN 0 ELSE -1 END END as HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT,
+                        CASE WHEN cp9.HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY = TRUE THEN 1 ELSE 0 END as HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT,
+                        CASE WHEN cp9.HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY = FALSE THEN 0 ELSE -1 END END as HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY,
+                        CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = TRUE THEN 1 ELSE 0 END as HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT,
+                        CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = FALSE THEN 0 ELSE -1 END END as HAS_AGREEMENTS_WITH_KEY_PARTNERS,
+                        CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = TRUE THEN CASE WHEN cp9agreements.HAS_ACTIVE_COORDINATION_MECHANISMS = TRUE THEN 1 ELSE 0 END ELSE null END as HAS_ACTIVE_COORDINATION_MECHANISMS_COUNT,
+                        CASE WHEN cp9.HAS_AGREEMENTS_WITH_KEY_PARTNERS = TRUE THEN CASE WHEN cp9agreements.HAS_ACTIVE_COORDINATION_MECHANISMS = TRUE THEN 1 ELSE CASE WHEN cp9agreements.HAS_ACTIVE_COORDINATION_MECHANISMS = FALSE THEN 0 ELSE -1 END END ELSE -1 END as HAS_ACTIVE_COORDINATION_MECHANISMS,
+                        CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN 1 ELSE 0 END as HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT,
+                        CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = FALSE THEN 0 ELSE -1 END END as HAS_INTERACTIONWBDIRECTORUNLEADER,
+                        CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN CASE WHEN cp9interactionwbdirectorunleader.WBUNCOLLABORATE_ON_UPSTREAM_POLICY = TRUE THEN 1 ELSE 0 END ELSE null END as WBUNCOLLABORATE_ON_UPSTREAM_POLICY_COUNT,
+                        CASE WHEN cp9.HAS_INTERACTIONWBDIRECTORUNLEADER = TRUE THEN CASE WHEN cp9interactionwbdirectorunleader.WBUNCOLLABORATE_ON_UPSTREAM_POLICY = TRUE THEN 1 ELSE CASE WHEN cp9interactionwbdirectorunleader.WBUNCOLLABORATE_ON_UPSTREAM_POLICY = FALSE THEN 0 ELSE -1 END END ELSE -1 END as WBUNCOLLABORATE_ON_UPSTREAM_POLICY,
+                        CASE WHEN cp9.HAS_JOINT_RISK_ASESSMENTS = TRUE THEN 1 ELSE 0 END as HAS_JOINT_RISK_ASESSMENTS_COUNT,
+                        CASE WHEN cp9.HAS_JOINT_RISK_ASESSMENTS = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_JOINT_RISK_ASESSMENTS = FALSE THEN 0 ELSE -1 END END as HAS_JOINT_RISK_ASESSMENTS,
+                        CASE WHEN cp9.HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS = TRUE THEN 1 ELSE 0 END as HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT,
+                        CASE WHEN cp9.HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS = FALSE THEN 0 ELSE -1 END END as HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS,
+                        CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                        CASE WHEN cp9.HAS_SUSTAINING_PEACE_ELEMENTS = TRUE THEN 1 ELSE 0 END as HAS_SUSTAINING_PEACE_ELEMENTS_COUNT,
+                        CASE WHEN cp9.HAS_SUSTAINING_PEACE_ELEMENTS = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_SUSTAINING_PEACE_ELEMENTS = FALSE THEN 0 ELSE -1 END END as HAS_SUSTAINING_PEACE_ELEMENTS,
+                        CASE WHEN cp9.HAS_OTHER_STRATEGIES = TRUE THEN 1 ELSE 0 END as HAS_OTHER_STRATEGIES_COUNT,
+                        CASE WHEN cp9.HAS_OTHER_STRATEGIES = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_OTHER_STRATEGIES = FALSE THEN 0 ELSE -1 END END as HAS_OTHER_STRATEGIES,
+                        CASE WHEN cp9.HAS_NATIONAL_MECHANISMS = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_MECHANISMS_COUNT,
+                        CASE WHEN cp9.HAS_NATIONAL_MECHANISMS = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_NATIONAL_MECHANISMS = FALSE THEN 0 ELSE -1 END END as HAS_NATIONAL_MECHANISMS,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN 1 ELSE 0 END as HAS_HUMANITARIAN_CRISIS_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN 1 ELSE CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = FALSE THEN 0 ELSE -1 END END as HAS_HUMANITARIAN_CRISIS,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.UN_COORDINATOR = TRUE THEN 1 ELSE 0 END ELSE null END as UN_COORDINATOR_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.UN_COORDINATOR = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianstructures.UN_COORDINATOR = FALSE THEN 0 ELSE -1 END END ELSE -1 END as UN_COORDINATOR,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.COUNTRY_TEAM = TRUE THEN 1 ELSE 0 END ELSE null END as COUNTRY_TEAM_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.COUNTRY_TEAM = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianstructures.COUNTRY_TEAM = FALSE THEN 0 ELSE -1 END END ELSE -1 END as COUNTRY_TEAM,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.RESPONSE_PLAN = TRUE THEN 1 ELSE 0 END ELSE null END as RESPONSE_PLAN_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianstructures.RESPONSE_PLAN = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianstructures.RESPONSE_PLAN = FALSE THEN 0 ELSE -1 END END ELSE -1 END as RESPONSE_PLAN,
                         CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN cp9humanitarianstructures.OTHER ELSE null END as HS_OTHER,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.NEEDS_ANALYSIS = TRUE THEN 1 ELSE 0 END ELSE null END as NEEDS_ANALYSIS,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.CONFLICT_ANALYSIS = TRUE THEN 1 ELSE 0 END ELSE null END as CONFLICT_ANALYSIS,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.PLANNING_FOR_COLLECTIVE_OUTCOMES = TRUE THEN 1 ELSE 0 END ELSE null END as PLANNING_FOR_COLLECTIVE_OUTCOMES,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.PROGRAMMING = TRUE THEN 1 ELSE 0 END ELSE null END as PROGRAMMING,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.MONITORING_AND_EVALUATION = TRUE THEN 1 ELSE 0 END ELSE null END as MONITORING_AND_EVALUATION,
-                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.COORDINATION_MECHANISMS = TRUE THEN 1 ELSE 0 END ELSE null END as COORDINATION_MECHANISMS
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.NEEDS_ANALYSIS = TRUE THEN 1 ELSE 0 END ELSE null END as NEEDS_ANALYSIS_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.NEEDS_ANALYSIS = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianjointwork.NEEDS_ANALYSIS = FALSE THEN 0 ELSE -1 END END ELSE -1 END as NEEDS_ANALYSIS,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.CONFLICT_ANALYSIS = TRUE THEN 1 ELSE 0 END ELSE null END as CONFLICT_ANALYSIS_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.CONFLICT_ANALYSIS = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianjointwork.CONFLICT_ANALYSIS = FALSE THEN 0 ELSE -1 END END ELSE -1 END as CONFLICT_ANALYSIS,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.PLANNING_FOR_COLLECTIVE_OUTCOMES = TRUE THEN 1 ELSE 0 END ELSE null END as PLANNING_FOR_COLLECTIVE_OUTCOMES_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.PLANNING_FOR_COLLECTIVE_OUTCOMES = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianjointwork.PLANNING_FOR_COLLECTIVE_OUTCOMES = FALSE THEN 0 ELSE -1 END END ELSE -1 END as PLANNING_FOR_COLLECTIVE_OUTCOMES,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.PROGRAMMING = TRUE THEN 1 ELSE 0 END ELSE -1 END as PROGRAMMING_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.PROGRAMMING = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianjointwork.PROGRAMMING = FALSE THEN 0 ELSE -1 END END ELSE -1 END as PROGRAMMING,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.MONITORING_AND_EVALUATION = TRUE THEN 1 ELSE 0 END ELSE null END as MONITORING_AND_EVALUATION_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.MONITORING_AND_EVALUATION = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianjointwork.MONITORING_AND_EVALUATION = FALSE THEN 0 ELSE -1 END END ELSE -1 END as MONITORING_AND_EVALUATION,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.COORDINATION_MECHANISMS = TRUE THEN 1 ELSE 0 END ELSE null END as COORDINATION_MECHANISMS_COUNT,
+                        CASE WHEN cp9.HAS_HUMANITARIAN_CRISIS = TRUE THEN CASE WHEN cp9humanitarianjointwork.COORDINATION_MECHANISMS = TRUE THEN 1 ELSE CASE WHEN cp9humanitarianjointwork.COORDINATION_MECHANISMS = FALSE THEN 0 ELSE -1 END END ELSE -1 END as COORDINATION_MECHANISMS
                     from
                         -- DERBY-PROPERTIES joinOrder = FIXED
                         CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE cp1, CP9UNPEACE_KEEPING_MISSION cp9unpeace,
@@ -346,121 +381,121 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION"
+                    <Measure name="UNPeacekeeping" caption="Count of UN peacekeeping or special political mission" column="HASUNPEACE_KEEPING_MISSION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasIntegratedStrategicFramework" caption="Count of 'Is there an Integrated Strategic Framework (ISF)?'" column="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"
+                    <Measure name="hasIntegratedStrategicFramework" caption="Count of 'Is there an Integrated Strategic Framework (ISF)?'" column="HAS_INTEGRATED_STRATEGIC_FRAMEWORK_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasJointStructuresUNCTUN" caption="Count of 'Are there joint structures in place between the UNCT and the UN Mission?'" column="HAS_JOINT_STRUCTURESUNCTUN"
+                    <Measure name="hasJointStructuresUNCTUN" caption="Count of 'Are there joint structures in place between the UNCT and the UN Mission?'" column="HAS_JOINT_STRUCTURESUNCTUN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="developmentSupportedByPlanningUnit" caption="Count of 'Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?'" column="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"
+                    <Measure name="developmentSupportedByPlanningUnit" caption="Count of 'Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?'" column="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasMechanismsForMonitoring" caption="Count of 'Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?'" column="HAS_MECHANISMS_FOR_MONITORING"
+                    <Measure name="hasMechanismsForMonitoring" caption="Count of 'Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?'" column="HAS_MECHANISMS_FOR_MONITORING_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasUNUNCTColaboration" caption="Count of 'Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?'" column="HASUNUNCTCOLABORATION"
+                    <Measure name="hasUNUNCTColaboration" caption="Count of 'Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?'" column="HASUNUNCTCOLABORATION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="isJointProgramme" caption="Count of 'Is this in the form of a Joint Programme/Joint Programming?'" column="IS_JOINT_PROGRAMME"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasCommonServicesToUNCTMembers" caption="Count of 'Does the UN Mission provide common services to UNCT members or vice versa?'" column="HAS_COMMON_SERVICES_TOUNCTMEMBERS"
+                    <Measure name="hasCommonServicesToUNCTMembers" caption="Count of 'Does the UN Mission provide common services to UNCT members or vice versa?'" column="HAS_COMMON_SERVICES_TOUNCTMEMBERS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="isMemberOfJointUNCTCommunicationsGroup" caption="Count of 'Is the mission a member of the Joint UNCT Communications Group?'" column="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP"
+                    <Measure name="isMemberOfJointUNCTCommunicationsGroup" caption="Count of 'Is the mission a member of the Joint UNCT Communications Group?'" column="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="isDrawdownWithdrawalUNMission" caption="Count of 'If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?'" column="IS_DRAWDOWN_WITHDRAWALUNMISSION"
+                    <Measure name="isDrawdownWithdrawalUNMission" caption="Count of 'If there is a draw down and/or withdrawal of the UN Mission, has transition planning taken place jointly with the mission?'" column="IS_DRAWDOWN_WITHDRAWALUNMISSION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasAnalysisBeenTakenWithUN" caption="Count of 'Has the conflict analysis been undertaken together with the UN Mission?'" column="HAS_ANALYSIS_BEEN_TAKEN_WITHUN"
+                    <Measure name="hasAnalysisBeenTakenWithUN" caption="Count of 'Has the conflict analysis been undertaken together with the UN Mission?'" column="HAS_ANALYSIS_BEEN_TAKEN_WITHUN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasCountryMechanismsCoordinateIntlSupport" caption="Count of 'Are there mechanisms in place to coordinate UN efforts across the humanitarian, development and peace-building nexus?'" column="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"
+                    <Measure name="hasCountryMechanismsCoordinateIntlSupport" caption="Count of 'Are there mechanisms in place to coordinate UN efforts across the humanitarian, development and peace-building nexus?'" column="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY"
+                    <Measure name="DisasterRiskReduction" caption="Count of operational Disaster Risk Reduction strategy" column="HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
                              caption="Count of 'Does the government have a formal mechanism to coordinate DRR efforts with development partners, including the United Nations?'"
-                             column="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"
+                             column="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="DOESUNCTPARTICIPATE"
                              caption="Count of 'If yes, Does the UNCT participate in this mechanism?'"
-                             column="DOESUNCTPARTICIPATE"
+                             column="DOESUNCTPARTICIPATE_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="DOESUNCTSUPPORTDRREFFORTS"
                              caption="Count of 'Does the UNCT provide support to national disaster risk reduction (DRR) efforts?'"
-                             column="DOESUNCTSUPPORTDRREFFORTS"
+                             column="DOESUNCTSUPPORTDRREFFORTS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS"
+                    <Measure name="KeyPartners" caption="Count of agreements/arrangements/initiatives with key partners (such as the World Bank)" column="HAS_AGREEMENTS_WITH_KEY_PARTNERS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasActiveCoordinationMechanisms" caption="Count of 'Are there any active coordination mechanisms in place with key partners such as the World Bank?'" column="HAS_ACTIVE_COORDINATION_MECHANISMS"
+                    <Measure name="hasActiveCoordinationMechanisms" caption="Count of 'Are there any active coordination mechanisms in place with key partners such as the World Bank?'" column="HAS_ACTIVE_COORDINATION_MECHANISMS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER"
+                    <Measure name="InteractionWorldBank" caption="Count of regular interaction between the World Bank Country Director and UN Leadership at the country level" column="HAS_INTERACTIONWBDIRECTORUNLEADER_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="wbUNCollaborateOnUpstreamPolicy" caption="Count of 'Do the World Bank and UN collaborate on upstream policy processes?'" column="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"
+                    <Measure name="wbUNCollaborateOnUpstreamPolicy" caption="Count of 'Do the World Bank and UN collaborate on upstream policy processes?'" column="WBUNCOLLABORATE_ON_UPSTREAM_POLICY_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS"
+                    <Measure name="JointRiskAssessments" caption="Count of joint risk assessments undertaken (other than related to HACT)" column="HAS_JOINT_RISK_ASESSMENTS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"
+                    <Measure name="JointInitiativesManageRisks" caption="Count of joint initiatives to manage risks" column="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="UndafElementsToSustainingPeacePeacebuilding" caption="Count of 'Does the UNDAF explicitly incorporate elements relating to sustaining peace / peacebuilding?'" column="HAS_SUSTAINING_PEACE_ELEMENTS"
+                    <Measure name="UndafElementsToSustainingPeacePeacebuilding" caption="Count of 'Does the UNDAF explicitly incorporate elements relating to sustaining peace / peacebuilding?'" column="HAS_SUSTAINING_PEACE_ELEMENTS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="UnctStrategiesOrPlansInPlace" caption="Count of 'Does the UNCT have other strategies or plans in place (e.g. separate strategy on sustaining peace)?'" column="HAS_OTHER_STRATEGIES"
+                    <Measure name="UnctStrategiesOrPlansInPlace" caption="Count of 'Does the UNCT have other strategies or plans in place (e.g. separate strategy on sustaining peace)?'" column="HAS_OTHER_STRATEGIES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="NationalMechanismsToCoordinateDevelopmentAndPeacebuildingEfforts" caption="Count of 'Are there national mechanisms to coordinate development and peacebuilding efforts that are supported by the UNCT?'" column="HAS_NATIONAL_MECHANISMS"
+                    <Measure name="NationalMechanismsToCoordinateDevelopmentAndPeacebuildingEfforts" caption="Count of 'Are there national mechanisms to coordinate development and peacebuilding efforts that are supported by the UNCT?'" column="HAS_NATIONAL_MECHANISMS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="OngoingHumanitarianCrisis" caption="Count of 'Is/Was there an ongoing humanitarian crisis in your country within the last year?'" column="HAS_HUMANITARIAN_CRISIS"
+                    <Measure name="OngoingHumanitarianCrisis" caption="Count of 'Is/Was there an ongoing humanitarian crisis in your country within the last year?'" column="HAS_HUMANITARIAN_CRISIS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="UnHumanitarianCoordinator" caption="Count of 'UN Humanitarian Coordinator (HC)'" column="UN_COORDINATOR"
+                    <Measure name="UnHumanitarianCoordinator" caption="Count of 'UN Humanitarian Coordinator (HC)'" column="UN_COORDINATOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="HumanitarianCountryTeam" caption="Count of 'Humanitarian Country Team (HCT)'" column="COUNTRY_TEAM"
+                    <Measure name="HumanitarianCountryTeam" caption="Count of 'Humanitarian Country Team (HCT)'" column="COUNTRY_TEAM_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="HumanitarianResponsePlan" caption="Count of 'Humanitarian Response Plan (HRP)'" column="RESPONSE_PLAN"
+                    <Measure name="HumanitarianResponsePlan" caption="Count of 'Humanitarian Response Plan (HRP)'" column="RESPONSE_PLAN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="OtherHumanitarianResponsePlan" caption="Count distinct of 'Other humanitarian structures or mechanisms'" column="HS_OTHER"
                              datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="JointNeedsAnalysis" caption="Count of 'Joint needs analysis'" column="NEEDS_ANALYSIS"
+                    <Measure name="JointNeedsAnalysis" caption="Count of 'Joint needs analysis'" column="NEEDS_ANALYSIS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="JointConflictAnalysis" caption="Count of 'Joint conflict analysis'" column="CONFLICT_ANALYSIS"
+                    <Measure name="JointConflictAnalysis" caption="Count of 'Joint conflict analysis'" column="CONFLICT_ANALYSIS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="JointPlanningForCollectiveOutcomes" caption="Count of 'Joint planning for collective outcomes'" column="PLANNING_FOR_COLLECTIVE_OUTCOMES"
+                    <Measure name="JointPlanningForCollectiveOutcomes" caption="Count of 'Joint planning for collective outcomes'" column="PLANNING_FOR_COLLECTIVE_OUTCOMES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="JointProgramming" caption="Count of 'Joint programming'" column="PROGRAMMING"
+                    <Measure name="JointProgramming" caption="Count of 'Joint programming'" column="PROGRAMMING_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="JointMonitoringAndEvaluation" caption="Count of 'Joint monitoring and evaluation'" column="MONITORING_AND_EVALUATION"
+                    <Measure name="JointMonitoringAndEvaluation" caption="Count of 'Joint monitoring and evaluation'" column="MONITORING_AND_EVALUATION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="JointCoordinationMechanisms" caption="Count of 'Joint coordination mechanisms'" column="COORDINATION_MECHANISMS"
+                    <Measure name="JointCoordinationMechanisms" caption="Count of 'Joint coordination mechanisms'" column="COORDINATION_MECHANISMS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="ExplicitLinkBetweenIsfAndUndaf" caption="Count of 'Is there an explicit link between the Integrated Strategic Framework and the UNDAF?'" column="HAS_FRAMEWORK_LINK"
+                    <Measure name="ExplicitLinkBetweenIsfAndUndaf" caption="Count of 'Is there an explicit link between the Integrated Strategic Framework and the UNDAF?'" column="HAS_FRAMEWORK_LINK_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
@@ -489,9 +524,9 @@
                     <ForeignKeyLink dimension="Are there mechanisms in place to coordinate UN efforts across the humanitarian, development and peace-building nexus" foreignKeyColumn="HAS_COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT"/>
                     <ForeignKeyLink dimension="Are there any active coordination mechanisms in place with key partners such as the World Bank" foreignKeyColumn="HAS_ACTIVE_COORDINATION_MECHANISMS"/>
                     <ForeignKeyLink dimension="Do the World Bank and UN collaborate on upstream policy processes" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
-              		<ForeignKeyLink dimension="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
-              		<ForeignKeyLink dimension="DOESUNCTPARTICIPATE" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
-              		<ForeignKeyLink dimension="DOESUNCTSUPPORTDRREFFORTS" foreignKeyColumn="WBUNCOLLABORATE_ON_UPSTREAM_POLICY"/>
+              		<ForeignKeyLink dimension="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS" foreignKeyColumn="GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS"/>
+              		<ForeignKeyLink dimension="DOESUNCTPARTICIPATE" foreignKeyColumn="DOESUNCTPARTICIPATE"/>
+              		<ForeignKeyLink dimension="DOESUNCTSUPPORTDRREFFORTS" foreignKeyColumn="DOESUNCTSUPPORTDRREFFORTS"/>
                     <ForeignKeyLink dimension="UNDAF elements to sustaining peace peacebuilding" foreignKeyColumn="HAS_SUSTAINING_PEACE_ELEMENTS"/>
                     <ForeignKeyLink dimension="UNCT strategies or plans in place" foreignKeyColumn="HAS_OTHER_STRATEGIES"/>
                     <ForeignKeyLink dimension="National mechanisms to coordinate development and peacebuilding efforts" foreignKeyColumn="HAS_NATIONAL_MECHANISMS"/>

@@ -17,12 +17,17 @@
                     <![CDATA[
                         select
                             cp7.ID, cp7.DESIGNATION, cp7.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, cp7.OTHERUNCTJOINTLY_MANAGE_RESOURCES, 
-                            CASE WHEN cp7.GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK = TRUE THEN 1 ELSE 0 END as GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK,
-                            CASE WHEN cp7.HAS_REVIEW_OF_FINANCING_LANDSCAPE = TRUE THEN 1 ELSE 0 END as HAS_REVIEW_OF_FINANCING_LANDSCAPE,
-                            CASE WHEN cp7.GOV_HASSDGFINANCING_GAP_STRATEGY = TRUE THEN 1 ELSE 0 END as GOV_HASSDGFINANCING_GAP_STRATEGY,
-                            CASE WHEN cp7.UNCT_HASSDGFINANCING_GAP_STRATEGY = TRUE THEN 1 ELSE 0 END as UNCT_HASSDGFINANCING_GAP_STRATEGY,
-                            CASE WHEN cp7.UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION = TRUE THEN 1 ELSE 0 END as UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp7.GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK = TRUE THEN 1 ELSE 0 END as GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK_COUNT, 
+                            CASE WHEN cp7.GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK = TRUE THEN 1 ELSE CASE WHEN cp7.GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK = FALSE THEN 0 ELSE -1 END END as GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK,
+                            CASE WHEN cp7.HAS_REVIEW_OF_FINANCING_LANDSCAPE = TRUE THEN 1 ELSE 0 END as HAS_REVIEW_OF_FINANCING_LANDSCAPE_COUNT,
+                            CASE WHEN cp7.HAS_REVIEW_OF_FINANCING_LANDSCAPE = TRUE THEN 1 ELSE CASE WHEN cp7.HAS_REVIEW_OF_FINANCING_LANDSCAPE = FALSE THEN 0 ELSE -1 END END as HAS_REVIEW_OF_FINANCING_LANDSCAPE,
+                            CASE WHEN cp7.GOV_HASSDGFINANCING_GAP_STRATEGY = TRUE THEN 1 ELSE 0 END as GOV_HASSDGFINANCING_GAP_STRATEGY_COUNT,
+                            CASE WHEN cp7.GOV_HASSDGFINANCING_GAP_STRATEGY = TRUE THEN 1 ELSE CASE WHEN cp7.GOV_HASSDGFINANCING_GAP_STRATEGY = FALSE THEN 0 ELSE -1 END END as GOV_HASSDGFINANCING_GAP_STRATEGY,
+                            CASE WHEN cp7.UNCT_HASSDGFINANCING_GAP_STRATEGY = TRUE THEN 1 ELSE 0 END as UNCT_HASSDGFINANCING_GAP_STRATEGY_COUNT,
+                            CASE WHEN cp7.UNCT_HASSDGFINANCING_GAP_STRATEGY = TRUE THEN 1 ELSE CASE WHEN cp7.UNCT_HASSDGFINANCING_GAP_STRATEGY = FALSE THEN 0 ELSE -1 END END as UNCT_HASSDGFINANCING_GAP_STRATEGY,
+                            CASE WHEN cp7.UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION = TRUE THEN 1 ELSE 0 END as UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION_COUNT,
+                            CASE WHEN cp7.UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION = TRUE THEN 1 ELSE CASE WHEN cp7.UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION = FALSE THEN 0 ELSE -1 END END as UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP7JOINT_FUNDING_PROFILE cp7, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp7.DESIGNATION = cp1.DESIGNATION AND cp7.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -81,19 +86,19 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="partnerGovernmentHaveIntegratedNationalFinancingFramework" caption="Count of 'Does your partner government have an integrated national financing framework?'" column="GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK"
+                    <Measure name="partnerGovernmentHaveIntegratedNationalFinancingFramework" caption="Count of 'Does your partner government have an integrated national financing framework?'" column="GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="includeReviewOfFinancingLandscape?" caption="Count of 'Does it include a review of the full financing landscape?'" column="HAS_REVIEW_OF_FINANCING_LANDSCAPE"
+                    <Measure name="includeReviewOfFinancingLandscape?" caption="Count of 'Does it include a review of the full financing landscape?'" column="HAS_REVIEW_OF_FINANCING_LANDSCAPE_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="strategyToCloseSdgFinancingGap" caption="Count of 'Has your partner government developed a strategy to close the SDG financing gap?'" column="GOV_HASSDGFINANCING_GAP_STRATEGY"
+                    <Measure name="strategyToCloseSdgFinancingGap" caption="Count of 'Has your partner government developed a strategy to close the SDG financing gap?'" column="GOV_HASSDGFINANCING_GAP_STRATEGY_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasUnctStrategyToCloseFinancingGap" caption="Count of 'Has the UNCT developed a strategy to contribute to closing the SDG financing gap?'" column="UNCT_HASSDGFINANCING_GAP_STRATEGY"
+                    <Measure name="hasUnctStrategyToCloseFinancingGap" caption="Count of 'Has the UNCT developed a strategy to contribute to closing the SDG financing gap?'" column="UNCT_HASSDGFINANCING_GAP_STRATEGY_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="doesUnctManageResourceMobilization" caption="Count of 'Does the UNCT jointly manage resource mobilization?'" column="UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION"
+                    <Measure name="doesUnctManageResourceMobilization" caption="Count of 'Does the UNCT jointly manage resource mobilization?'" column="UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
