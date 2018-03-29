@@ -26,8 +26,9 @@
                     <![CDATA[
                         select
                             M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
-                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
+                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE CASE WHEN M.NON_RESIDENT_AGENCY = FALSE THEN 0 ELSE -1 END END as NON_RESIDENT_AGENCY_DIM
                         from
                             CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
@@ -45,7 +46,7 @@
                     <![CDATA[
                         SELECT
                             M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM
                             CP1UNCGMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
@@ -66,7 +67,7 @@
                             CASE WHEN M.NAME IS NULL THEN '' ELSE M.NAME END as NAME,
                             CASE WHEN M.EMAIL IS NULL THEN '' ELSE M.EMAIL END as EMAIL,
                             CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from
                             CP1OMTMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
@@ -84,9 +85,11 @@
                     <![CDATA[
                         select
                             M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CASE WHEN M.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN 1 ELSE CASE WHEN M.RESULTS_GROUP_DEFINED_BYSOP = FALSE THEN 0 ELSE -1 END END as RESULTS_GROUP_DEFINED_BYSOP_DIM,							
                             CASE WHEN M.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_DEFINED_BYSOP_COUNT,
+                            CASE WHEN M.JOINT_WORKPLAN = TRUE THEN 1 ELSE CASE WHEN M.JOINT_WORKPLAN = FALSE THEN 0 ELSE -1 END END as JOINT_WORKPLAN_DIM,
                             CASE WHEN M.JOINT_WORKPLAN = TRUE THEN 1 ELSE 0 END as JOINT_WORKPLAN_COUNT,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP1INTERAGENCY_GROUP M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
                             M.PARENT_ID = CP1.ID AND
@@ -105,7 +108,8 @@
                             M.ID, M.COUNTRY_ID as CC_COUNTRY_ID, M.INCOME_STATUS_ID as CC_INCOME_STATUS_ID, M.YEAR_OF_BECOMINGDAO as CC_YEAR_OF_BECOMINGDAO,
                             CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN M.DAO = TRUE THEN 1 ELSE 0 END as DAO_COUNT,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE WHEN M.DAO = TRUE THEN 1 ELSE CASE WHEN M.DAO = FALSE THEN 0 ELSE -1 END END as DAO_COUNT_DIM,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP1COUNTRY M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
                             M.PARENT_ID = CP1.ID AND
@@ -125,9 +129,11 @@
                             CP1.YEAR_OF_OFFICIAL_REQUEST, CP1.PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID, CP1.PROJECTED_TOTALBOSSAVINGS_THIS_YEAR,
                             CP1.PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID, CP1.PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID,
                             CP1.PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID, CP1.PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = FALSE THEN 0 ELSE -1 END END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp1.DAO_VISION_NOTE_ROADMAP = TRUE THEN 1 ELSE 0 END as DAO_VISION_NOTE_ROADMAP_COUNT,
-                            CASE WHEN cp1.COVER_MORE_THAN_ONE_COUNTRY = TRUE THEN 1 ELSE 0 END as COVER_MORE_THAN_ONE_COUNTRY_COUNT,							
+							CASE WHEN cp1.DAO_VISION_NOTE_ROADMAP = TRUE THEN 1 ELSE CASE WHEN cp1.DAO_VISION_NOTE_ROADMAP = FALSE THEN 0 ELSE -1 END END as DAO_VISION_NOTE_ROADMAP_DIM,
+                            CASE WHEN cp1.COVER_MORE_THAN_ONE_COUNTRY = TRUE THEN 1 ELSE 0 END as COVER_MORE_THAN_ONE_COUNTRY_COUNT,	
+                            CASE WHEN cp1.COVER_MORE_THAN_ONE_COUNTRY = TRUE THEN 1 ELSE CASE WHEN cp1.COVER_MORE_THAN_ONE_COUNTRY = FALSE THEN 0 ELSE -1 END END as COVER_MORE_THAN_ONE_COUNTRY_DIM,							
                             CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12561 THEN 1 ELSE 0 END as SOP1q_YES_FULLY,
                             CASE WHEN HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID = 12561 THEN 1 ELSE 0 END as SOP2q_YES_FULLY,
                             CASE WHEN HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID = 12561 THEN 1 ELSE 0 END as SOP3q_YES_FULLY,
@@ -190,14 +196,14 @@
                             HAS_COUNTRY_COMM_GROUP_ID,
                             cp1joint.GOVERNMENT_ROLE_ID,
                             cp1joint.PARTIAL_IMPLEMENTATION_DETAILS_ID as SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID,
-                            CASE WHEN cp1joint.HAS_ANNUAL_REVIEW = TRUE THEN 1 ELSE 0 END as HAS_ANNUAL_REVIEW,
-                            CASE WHEN cp1annual.REPORT_SUBMITTED_TO_GOV = TRUE THEN 1 ELSE 0 END as REPORT_SUBMITTED_TO_GOV,
+                            CASE WHEN cp1joint.HAS_ANNUAL_REVIEW = TRUE THEN 1 ELSE CASE WHEN cp1joint.HAS_ANNUAL_REVIEW = FALSE THEN 0 ELSE -1 END END as HAS_ANNUAL_REVIEW,
+                            CASE WHEN cp1annual.REPORT_SUBMITTED_TO_GOV = TRUE THEN 1 ELSE CASE WHEN cp1annual.REPORT_SUBMITTED_TO_GOV = FALSE THEN 0 ELSE -1 END END as REPORT_SUBMITTED_TO_GOV,
                             cp1annual.PARTIAL_IMPLEMENTATION_DETAILS_ID as SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID,
-                            CASE WHEN cp1annual.REPORT_PUBLICLY_AVAILABLE = TRUE THEN 1 ELSE 0 END as REPORT_PUBLICLY_AVAILABLE_COUNT,
+                            CASE WHEN cp1annual.REPORT_PUBLICLY_AVAILABLE = TRUE THEN 1 ELSE CASE WHEN cp1annual.REPORT_PUBLICLY_AVAILABLE = FALSE THEN 0 ELSE -1 END END as REPORT_PUBLICLY_AVAILABLE_DIM,
                             cp1annual.REPORT_PUBLISHING_MODALITY_ID,
-                            CASE WHEN cp1jointstrategy.BUDGETED_WORKPLAN = TRUE THEN 1 ELSE 0 END as BUDGETED_WORKPLAN,
-                            CASE WHEN cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT = TRUE THEN 1 ELSE 0 END as UNDAF_BASED_OR_EQUIVALENT_COUNT,
-                            CASE WHEN cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT = TRUE THEN 1 ELSE 0 END as REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT,
+                            CASE WHEN cp1jointstrategy.BUDGETED_WORKPLAN = TRUE THEN 1 ELSE CASE WHEN cp1jointstrategy.BUDGETED_WORKPLAN = FALSE THEN 0 ELSE -1 END END as BUDGETED_WORKPLAN,
+                            CASE WHEN cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT = TRUE THEN 1 ELSE CASE WHEN cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT = FALSE THEN 0 ELSE -1 END END as UNDAF_BASED_OR_EQUIVALENT_COUNT,
+                            CASE WHEN cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT = TRUE THEN 1 ELSE CASE WHEN cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT = FALSE THEN 0 ELSE -1 END END as REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT,
                             cp1jointstrategy.PARTIAL_IMPLEMENTATION_DETAILS_ID as SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID
                         from CP1GENERAL_PROFILE cp1, CP1JOINT_OVERSIGHT_OWNERSHIP_GOVUN cp1joint, CP1ANNUAL_REPORTING_JOINTUNRESULTS cp1annual, CP1JOINT_COMM_STRATEGY cp1jointstrategy, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
@@ -258,7 +264,7 @@
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="UNAgencyRepresentativeTitle"
                                     foreignKeyColumn="AGENCY_REPRESENTATIVE_TITLE_ID" />
-                    <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_COUNT"/>
+                    <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_DIM"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -430,8 +436,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)"  foreignKeyColumn="RESULTS_GROUP_DEFINED_BYSOP_COUNT"/>
-                    <ForeignKeyLink dimension="Does the Results Group have a Joint Workplan"  foreignKeyColumn="JOINT_WORKPLAN_COUNT"/>
+                    <ForeignKeyLink dimension="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)"  foreignKeyColumn="RESULTS_GROUP_DEFINED_BYSOP_DIM"/>
+                    <ForeignKeyLink dimension="Does the Results Group have a Joint Workplan"  foreignKeyColumn="JOINT_WORKPLAN_DIM"/>
                     <ForeignKeyLink dimension="resultsGroupAlignedToSectorGroups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID"/>
                     <FactLink dimension="Interagency Group Name" />
                 </DimensionLinks>
@@ -494,7 +500,7 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
 					<ForeignKeyLink dimension="Covered Country" foreignKeyColumn="CC_COUNTRY_ID"/>
                     <ForeignKeyLink dimension="CoveredCountryIncomeStatus" foreignKeyColumn="CC_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="DAOCountry"  foreignKeyColumn="DAO_COUNT"/>
+                    <ForeignKeyLink dimension="DAOCountry"  foreignKeyColumn="DAO_COUNT_DIM"/>
 					<FactLink dimension="YearDAOCountry" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -634,14 +640,14 @@
                     <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
-					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_COUNT"/>
+                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_DIM"/>
+					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_DIM"/>
 					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
 					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
                     <FactLink dimension="Year of Official Request" />
                     <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
-					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_COUNT"/>
+					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_DIM"/>
 					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
                     <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
                     <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
@@ -721,14 +727,14 @@
                     <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
-					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_COUNT"/>
+                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_DIM"/>
+					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_DIM"/>
 					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
 					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
                     <FactLink dimension="Year of Official Request" />
                     <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
-					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_COUNT"/>
+					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_DIM"/>
 					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
                     <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
                     <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
@@ -808,14 +814,14 @@
                     <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
-					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_COUNT"/>
+                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_DIM"/>
+					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_DIM"/>
 					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
 					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
                     <FactLink dimension="Year of Official Request" />
                     <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
-					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_COUNT"/>
+					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_DIM"/>
 					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
                     <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
                     <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
@@ -874,14 +880,14 @@
                     <ForeignKeyLink dimension="SoP13question" foreignKeyColumn="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID"/>
                     <ForeignKeyLink dimension="SoP14question" foreignKeyColumn="HAS_JOINT_COMM_STRATEGY_ID"/>
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
-                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_COUNT"/>
-					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_COUNT"/>
+                    <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_DIM"/>
+					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_DIM"/>
 					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
 					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
                     <FactLink dimension="Year of Official Request" />
                     <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
-					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_COUNT"/>
+					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_DIM"/>
 					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
                     <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
                     <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
