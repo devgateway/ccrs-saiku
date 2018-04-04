@@ -202,8 +202,10 @@
                             CASE cp1annual.REPORT_PUBLICLY_AVAILABLE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_PUBLICLY_AVAILABLE_DIM,
                             cp1annual.REPORT_PUBLISHING_MODALITY_ID,
                             CASE cp1jointstrategy.BUDGETED_WORKPLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as BUDGETED_WORKPLAN,
-                            CASE cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNDAF_BASED_OR_EQUIVALENT_COUNT,
-                            CASE cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT,
+                            CASE cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNDAF_BASED_OR_EQUIVALENT,
+                            CASE cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT WHEN TRUE THEN 1 ELSE 0 END as UNDAF_BASED_OR_EQUIVALENT_COUNT,
+                            CASE cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_INUNCOUNTRY_RESULTS_REPORT,
+                            CASE cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT WHEN TRUE THEN 1 ELSE 0 END as REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT,
                             cp1jointstrategy.PARTIAL_IMPLEMENTATION_DETAILS_ID as SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID
                         from CP1GENERAL_PROFILE cp1, CP1JOINT_OVERSIGHT_OWNERSHIP_GOVUN cp1joint, CP1ANNUAL_REPORTING_JOINTUNRESULTS cp1annual, CP1JOINT_COMM_STRATEGY cp1jointstrategy, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
@@ -642,8 +644,8 @@
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_DIM"/>
 					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_DIM"/>
-					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
-					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
+					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT"/>
+					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT"/>
                     <FactLink dimension="Year of Official Request" />
                     <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
@@ -729,8 +731,8 @@
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_DIM"/>
 					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_DIM"/>
-					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
-					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
+					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT"/>
+					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT"/>
                     <FactLink dimension="Year of Official Request" />
                     <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
@@ -816,8 +818,8 @@
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_DIM"/>
 					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_DIM"/>
-					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
-					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
+					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT"/>
+					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT"/>
                     <FactLink dimension="Year of Official Request" />
                     <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
@@ -882,8 +884,8 @@
                     <ForeignKeyLink dimension="SoP15question" foreignKeyColumn="HAS_COUNTRY_COMM_GROUP_ID"/>
                     <ForeignKeyLink dimension="DaO Vision" foreignKeyColumn="DAO_VISION_NOTE_ROADMAP_DIM"/>
 					<ForeignKeyLink dimension="Cover More Than One Country" foreignKeyColumn="COVER_MORE_THAN_ONE_COUNTRY_DIM"/>
-					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT_COUNT"/>
-					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT"/>
+					<ForeignKeyLink dimension="Joint communication strategy based on the UNDAF" foreignKeyColumn="UNDAF_BASED_OR_EQUIVALENT"/>
+					<ForeignKeyLink dimension="Report on communication results" foreignKeyColumn="REPORT_INUNCOUNTRY_RESULTS_REPORT"/>
                     <FactLink dimension="Year of Official Request" />
                     <ForeignKeyLink dimension="SOP1PartialImplementationDetails" foreignKeyColumn="SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
