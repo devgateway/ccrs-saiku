@@ -73,7 +73,9 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
             "<Query alias='@@table@@'>\n" +
                 "<ExpressionView>\n" +
                     "<SQL dialect='generic'>\n" +
-                        "<![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='@@dtype@@']]>\n" +
+                        "<![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
+                        "UNION ALL\n" +
+                        "SELECT x.* FROM (VALUES (999999999, 'No Data Available')) as x(ID,LABEL)]]>\n" +
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
@@ -89,9 +91,9 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                 "<Attributes>\n" +
                     "<Attribute name='Dimension Id' keyColumn='ID'\n" +
                                 "hasHierarchy='false' levelType='Regular' datatype='Integer' />\n" +
-                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='LABEL'\n" +
-                                "hierarchyAllMemberName=\"All @@captions@@\" hierarchyCaption=\"All @@captions@@\"\n" +
-                                "levelType='Regular' datatype='String' />\n" +
+                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='ID' nameColumn='LABEL'\n" +
+                                "hierarchyAllMemberCaption=\"All @@captions@@\" hierarchyAllMemberName=\"All __@@captions@@__\" hierarchyCaption=\"All @@captions@@\"\n" +
+                                "levelType='Regular' datatype='String' orderByColumn=\"ID\" />\n" +
                 "</Attributes>\n" +
             "</Dimension>";
     
