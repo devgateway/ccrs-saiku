@@ -16,7 +16,8 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = TRUE THEN 1 ELSE 0 END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT,
                             CASE D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_DIM,
                             CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
@@ -38,7 +39,8 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.UNCT_SUPPORTED = TRUE THEN 1 ELSE 0 END as UNCT_SUPPORTED_COUNT,
 							CASE D.UNCT_SUPPORTED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNCT_SUPPORTED,
                             CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
@@ -60,7 +62,8 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp12.ID, cp12.DESIGNATION, cp12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp12.ID, cp12.DESIGNATION, cp12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ADVISOR = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ADVISOR_COUNT,
                             CASE cp12.HAS_HUMAN_RIGHTS_ADVISOR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_HUMAN_RIGHTS_ADVISOR,
                             CASE WHEN cp12hranalysis.HAS_STRATEGY_DEVELOPED_ADDRESSHR = TRUE THEN 1 ELSE 0 END as HAS_STRATEGY_DEVELOPED_ADDRESSHR_COUNT,
@@ -170,7 +173,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP Human Rights Treaty Bodies Measures" table="CP12HumanRightsTreatyBodies">
                 <Measures>
-                    <Measure name="Count" caption="Number of Human Rights Measures" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of Human Rights Treaty Bodies" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
                     <Measure name="hasEngagedDevelopNatlCapacityToReport" caption="Count of UNCT engaged in developing national capacity" column="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT"
