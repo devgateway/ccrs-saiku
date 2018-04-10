@@ -2,9 +2,7 @@ package org.saiku;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,8 +33,8 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                 "<Attributes>\n" +
                     "<Attribute name='Dimension Id' keyColumn='id' hasHierarchy='false' \n" +
                                 "levelType='Regular' datatype='Integer'/>\n" +
-                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='answer' \n" +
-                                "approxRowCount='2' hierarchyHasAll='true' levelType='Regular' datatype='Boolean'/>\n" +
+                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='answer' orderByColumn='answer_sort' \n" +
+                                "approxRowCount='3' hierarchyHasAll='true' levelType='Regular' datatype='Boolean'/>\n" +
                 "</Attributes>\n" +
             "</Dimension>";
     /**
@@ -50,6 +48,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                     "<ColumnDefs>" +
                         "<ColumnDef name='id' type='Numeric' />" +
                         "<ColumnDef name='answer' type='String' />" +
+                        "<ColumnDef name='answer_sort' type='Numeric' />" +
                     "</ColumnDefs>" +
                     "<Key>" +
                         "<Column name='id' />" +
@@ -58,14 +57,17 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                         "<Row>" +
                             "<Value column='id'>1</Value>" +
                             "<Value column='answer'>Yes</Value>" +
+                            "<Value column='answer_sort'>0</Value>" +
                         "</Row>" +
                         "<Row>" +
                             "<Value column='id'>0</Value>" +
                             "<Value column='answer'>No</Value>" +
+                            "<Value column='answer_sort'>1</Value>" +
                         "</Row>" +
                         "<Row>" +
                             "<Value column='id'>-1</Value>" +
                             "<Value column='answer'>No Data Available</Value>" +
+                            "<Value column='answer_sort'>2</Value>" +
                         "</Row>" +
                     "</Rows>" +
              "</InlineTable>";
@@ -73,9 +75,9 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
             "<Query alias='@@table@@'>\n" +
                 "<ExpressionView>\n" +
                     "<SQL dialect='generic'>\n" +
-                        "<![CDATA[SELECT ID, LABEL FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
+                        "<![CDATA[SELECT ID, LABEL, 0 AS PRE_SORT, LABEL_SORT FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
                         "UNION ALL\n" +
-                        "SELECT x.* FROM (VALUES (999999999, 'No Data Available')) as x(ID,LABEL)]]>\n" +
+                        "SELECT x.* FROM (VALUES (-1, 'No Data Available', 1, '')) as x(ID,LABEL,PRE_SORT,LABEL_SORT)]]>\n" +
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
@@ -87,16 +89,36 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
             "<Dimension *source=[\"|']CATEGORY[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
     private static final String CATEGORY_DIM_TEMPLATE =
             "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@'\n" +
-                        "key='Dimension Id' visible='true'>\n" +
+                        "key='Dimension Id'>\n" +
                 "<Attributes>\n" +
                     "<Attribute name='Dimension Id' keyColumn='ID'\n" +
                                 "hasHierarchy='false' levelType='Regular' datatype='Integer' />\n" +
                     "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='ID' nameColumn='LABEL'\n" +
-                                "hierarchyAllMemberCaption=\"All @@captions@@\" hierarchyAllMemberName=\"All __@@captions@@__\" hierarchyCaption=\"All @@captions@@\"\n" +
-                                "levelType='Regular' datatype='String' orderByColumn=\"ID\" />\n" +
+                                "hierarchyAllMemberCaption=\"All @@captions@@\" hierarchyAllMemberName=\"All __@@captions@@__\" hierarchyCaption=\"All @@captions@@\">\n" +
+                        "<OrderBy>\n" +
+                            "<Column name='PRE_SORT' />\n" +
+                            "<Column name='LABEL_SORT' />\n" +
+                        "</OrderBy>\n" +
+                    "</Attribute>\n" +
                 "</Attributes>\n" +
             "</Dimension>";
-    
+
+    private static final Pattern CATEGORY_BY_LABEL_DIM_PATTERN = Pattern.compile(
+            "<Dimension *source=[\"|']CATEGORY_BY_LABEL[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
+    private static final String CATEGORY_BY_LABEL_DIM_TEMPLATE =
+            "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@'\n" +
+                    "key='@@name@@'>\n" +
+                "<Attributes>\n" +
+                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='LABEL'\n" +
+                                "hierarchyAllMemberCaption=\"All @@captions@@\" hierarchyAllMemberName=\"All __@@captions@@__\" hierarchyCaption=\"All @@captions@@\">\n" +
+                        "<OrderBy>\n" +
+                            "<Column name='PRE_SORT' />\n" +
+                            "<Column name='LABEL_SORT' />\n" +
+                        "</OrderBy>\n" +
+                    "</Attribute>\n" +
+                "</Attributes>\n" +
+            "</Dimension>";
+
     /**
      * Mondrian loads / refreshes schema one by one under the same thread
      * (see {@link AbstractConnectionManager#getAllConnections} {@link AbstractConnectionManager#refreshAllConnections})
@@ -155,9 +177,18 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
         content = content.replace("<!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->", yesNoSB.toString());
         return content;
     }
-    
+
     private String processCategories(String content) {
-        Matcher m = CATEGORY_DIM_PATTERN.matcher(content);
+        content = processCategories(content, CATEGORY_DIM_PATTERN, CATEGORY_QUERY_TEMPLATE,
+                CATEGORY_DIM_TEMPLATE, "<!-- ## _CATEGORY_QUERIES_TAG_ ## -->");
+        content = processCategories(content, CATEGORY_BY_LABEL_DIM_PATTERN, CATEGORY_QUERY_TEMPLATE,
+                CATEGORY_BY_LABEL_DIM_TEMPLATE, "<!-- ## _CATEGORY_BY_LABEL_QUERIES_TAG_ ## -->");
+        return content;
+    }
+    
+    private String processCategories(String content, Pattern pattern, String queryTemplate, String dimensionTemplate,
+            String queryTag) {
+        Matcher m = pattern.matcher(content);
         StringBuilder categorySB = new StringBuilder();
         int count = 0;
         while(m.find()) {
@@ -167,9 +198,9 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
             String name = m.group(3);
             String caption = m.group(4).trim();
             String captions = this.getPluralCaption(caption);
-            String query = CATEGORY_QUERY_TEMPLATE.replace("@@table@@", table);
+            String query = queryTemplate.replace("@@table@@", table);
             query = query.replace("@@dtype@@", dtype);
-            String result = CATEGORY_DIM_TEMPLATE.replace("@@table@@", table);
+            String result = dimensionTemplate.replace("@@table@@", table);
             result = result.replace("@@caption@@", this.getActualCaption(caption));
             result = result.replace("@@captions@@", captions);
             if (name == null) {
@@ -180,7 +211,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
             categorySB.append(query);
             count++;
         }
-        content = content.replace("<!-- ## _CATEGORY_QUERIES_TAG_ ## -->", categorySB.toString());
+        content = content.replace(queryTag, categorySB.toString());
         return content;
     }
     

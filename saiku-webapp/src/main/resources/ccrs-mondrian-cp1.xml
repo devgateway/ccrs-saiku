@@ -8,7 +8,9 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->        
+        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
+
+        <!-- ## _CATEGORY_BY_LABEL_QUERIES_TAG_ ## -->
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 		
@@ -24,22 +26,22 @@
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
-                        select
-                            M.ID,
-                            M.AGENCY_ID,
-                            COALESCE(M.REPRESENTATIVE_POST_LEVEL_ID, 999999999) AS REPRESENTATIVE_POST_LEVEL_ID,
-                            COALESCE(M.AGENCY_REPRESENTATIVE_TITLE_ID, 999999999) AS AGENCY_REPRESENTATIVE_TITLE_ID,
-                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
-                            CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
-                            CASE M.NON_RESIDENT_AGENCY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NON_RESIDENT_AGENCY_DIM
-                        from
-                            CP1UNCTMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
-                        WHERE
-                            M.PARENT_ID = CP1.ID AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND
-                            CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                        SELECT
+                          M.ID,
+                          AGENCY.LABEL AS AGENCY,
+                          COALESCE(M.REPRESENTATIVE_POST_LEVEL_ID, -1) AS REPRESENTATIVE_POST_LEVEL_ID,
+                          COALESCE(M.AGENCY_REPRESENTATIVE_TITLE_ID, -1) AS AGENCY_REPRESENTATIVE_TITLE_ID,
+                          CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                          COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                          CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                          CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
+                          CASE M.NON_RESIDENT_AGENCY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NON_RESIDENT_AGENCY_DIM
+                        FROM CP1UNCTMEMBER M
+                          JOIN CP1GENERAL_PROFILE CP1 ON M.PARENT_ID = CP1.ID
+                          JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.ISO2
+                          JOIN V_CP_VALIDATED_DESIGNATIONS v ON CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                          JOIN CATEGORY AGENCY ON M.AGENCY_ID=AGENCY.ID
+                        WHERE CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -50,15 +52,19 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         SELECT
-                            M.*, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                          M.ID,
+                          M.EMAIL,
+                          M.NAME,
+                          AGENCY.LABEL AS AGENCY,
+                          CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                          COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                          CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM
-                            CP1UNCGMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
+                          CP1UNCGMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v, CATEGORY AGENCY
                         WHERE
-                            M.PARENT_ID = CP1.ID AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND
-                            CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                          M.PARENT_ID = CP1.ID AND
+                          CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND M.AGENCY_ID=AGENCY.ID AND
+                          CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -69,19 +75,19 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.PARENT_ID,
-                            COALESCE(M.AGENCY_ID, 999999999) AS AGENCY_ID,
-                            CASE WHEN M.NAME IS NULL THEN '' ELSE M.NAME END as NAME,
-                            CASE WHEN M.EMAIL IS NULL THEN '' ELSE M.EMAIL END as EMAIL,
-                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                          M.ID,
+                          AGENCY.LABEL AS AGENCY,
+                          CASE WHEN M.NAME IS NULL THEN '' ELSE M.NAME END as NAME,
+                          CASE WHEN M.EMAIL IS NULL THEN '' ELSE M.EMAIL END as EMAIL,
+                          CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                          COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                          CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         from
-                            CP1OMTMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
+                          CP1OMTMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v, CATEGORY AGENCY
                         WHERE
-                            M.PARENT_ID = CP1.ID AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND
-                            CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                          M.PARENT_ID = CP1.ID AND
+                          CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND M.AGENCY_ID=AGENCY.ID AND
+                          CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -94,10 +100,10 @@
                         select
                             M.ID,
                             M.NAME,
-                            COALESCE(M.RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID, 999999999) AS RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID,
+                            COALESCE(M.RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID, -1) AS RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID,
                             M.OTHER_MEMBER_ORGANIZATIONS,
                             CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE M.RESULTS_GROUP_DEFINED_BYSOP WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as RESULTS_GROUP_DEFINED_BYSOP_DIM,
                             CASE WHEN M.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_DEFINED_BYSOP_COUNT,
                             CASE M.JOINT_WORKPLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as JOINT_WORKPLAN_DIM,
@@ -119,10 +125,10 @@
                     <![CDATA[
                         select
                             M.ID, M.COUNTRY_ID as CC_COUNTRY_ID,
-                            COALESCE(M.INCOME_STATUS_ID, 999999999) as CC_INCOME_STATUS_ID,
+                            COALESCE(M.INCOME_STATUS_ID, -1) as CC_INCOME_STATUS_ID,
                             M.YEAR_OF_BECOMINGDAO as CC_YEAR_OF_BECOMINGDAO,
                             CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN M.DAO = TRUE THEN 1 ELSE 0 END as DAO_COUNT,
                             CASE M.DAO WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DAO_COUNT_DIM,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
@@ -142,14 +148,14 @@
                     <![CDATA[
                         select
                             CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, 999999999) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CP1.YEAR_OF_OFFICIAL_REQUEST,
-                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID, 999999999) AS PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID,
+                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID,
                             CP1.PROJECTED_TOTALBOSSAVINGS_THIS_YEAR,
-                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID, 999999999) AS PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID,
-                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID, 999999999) AS PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID,
-                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID, 999999999) AS PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID,
-                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID, 999999999) AS PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID,
+                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID,
+                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID,
+                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID,
+                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp1.DAO_VISION_NOTE_ROADMAP = TRUE THEN 1 ELSE 0 END as DAO_VISION_NOTE_ROADMAP_COUNT,
 							CASE cp1.DAO_VISION_NOTE_ROADMAP WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DAO_VISION_NOTE_ROADMAP_DIM,
@@ -215,19 +221,19 @@
                             HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID,
                             HAS_JOINT_COMM_STRATEGY_ID,
                             HAS_COUNTRY_COMM_GROUP_ID,
-                            COALESCE(cp1joint.GOVERNMENT_ROLE_ID, 999999999) AS GOVERNMENT_ROLE_ID,
-                            COALESCE(cp1joint.PARTIAL_IMPLEMENTATION_DETAILS_ID, 999999999) AS SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID,
+                            COALESCE(cp1joint.GOVERNMENT_ROLE_ID, -1) AS GOVERNMENT_ROLE_ID,
+                            COALESCE(cp1joint.PARTIAL_IMPLEMENTATION_DETAILS_ID, -1) AS SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID,
                             CASE cp1joint.HAS_ANNUAL_REVIEW WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_ANNUAL_REVIEW,
                             CASE cp1annual.REPORT_SUBMITTED_TO_GOV WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_SUBMITTED_TO_GOV,
-                            COALESCE(cp1annual.PARTIAL_IMPLEMENTATION_DETAILS_ID, 999999999) AS SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID,
+                            COALESCE(cp1annual.PARTIAL_IMPLEMENTATION_DETAILS_ID, -1) AS SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID,
                             CASE cp1annual.REPORT_PUBLICLY_AVAILABLE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_PUBLICLY_AVAILABLE_DIM,
-                            COALESCE(cp1annual.REPORT_PUBLISHING_MODALITY_ID, 999999999) AS REPORT_PUBLISHING_MODALITY_ID,
+                            COALESCE(cp1annual.REPORT_PUBLISHING_MODALITY_ID, -1) AS REPORT_PUBLISHING_MODALITY_ID,
                             CASE cp1jointstrategy.BUDGETED_WORKPLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as BUDGETED_WORKPLAN,
                             CASE cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNDAF_BASED_OR_EQUIVALENT,
                             CASE cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT WHEN TRUE THEN 1 ELSE 0 END as UNDAF_BASED_OR_EQUIVALENT_COUNT,
                             CASE cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_INUNCOUNTRY_RESULTS_REPORT,
                             CASE cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT WHEN TRUE THEN 1 ELSE 0 END as REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT,
-                            COALESCE(cp1jointstrategy.PARTIAL_IMPLEMENTATION_DETAILS_ID, 999999999) AS SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID
+                            COALESCE(cp1jointstrategy.PARTIAL_IMPLEMENTATION_DETAILS_ID, -1) AS SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID
                         from CP1GENERAL_PROFILE cp1, CP1JOINT_OVERSIGHT_OWNERSHIP_GOVUN cp1joint, CP1ANNUAL_REPORTING_JOINTUNRESULTS cp1annual, CP1JOINT_COMM_STRATEGY cp1jointstrategy, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
                             cp1joint.PARENT_ID = cp1.ID AND
@@ -246,7 +252,7 @@
     *************************************************************************-->
     <!-- ## _SHARED_DIMENSIONS_TAG_ ## -->
     
-    <Dimension source="CATEGORY" table="UNAgency" caption="UN Agency" />
+    <Dimension source="CATEGORY_BY_LABEL" table="UNAgency" caption="UN Agency" />
 
     <!--*************************************************************************
     ***** CP1 UNCT Members
@@ -282,7 +288,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->                        
-                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
+                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY" />
                     <ForeignKeyLink dimension="RepresentativePostLevel"
                                     foreignKeyColumn="REPRESENTATIVE_POST_LEVEL_ID" />
                     <ForeignKeyLink dimension="UNAgencyRepresentativeTitle"
@@ -350,7 +356,7 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="UNCGMemberName" />
                     <FactLink dimension="UNCGMemberEmail" />
-                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
+                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -405,7 +411,7 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="Name" />
                     <FactLink dimension="Email" />
-                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY_ID" />
+                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
