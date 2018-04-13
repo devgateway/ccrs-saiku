@@ -81,6 +81,16 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
+    private static final String CATEGORY_BY_LABEL_QUERY_TEMPLATE =
+            "<Query alias='@@table@@'>\n" +
+                "<ExpressionView>\n" +
+                    "<SQL dialect='generic'>\n" +
+                        "<![CDATA[SELECT DISTINCT LABEL, 0 AS PRE_SORT, LABEL_SORT FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
+                        "UNION ALL\n" +
+                        "SELECT x.* FROM (VALUES ('No Data Available', 1, '')) as x(LABEL,PRE_SORT,LABEL_SORT)]]>\n" +
+                    "</SQL>\n" +
+                "</ExpressionView>\n" +
+             "</Query>\n";
     /**
      * Name is optional. Explicitly define it when reusing the same category within the same cube
      * or simplifying an existing dimension that may be already referred in a saved query. Check readme.md for more.
@@ -181,7 +191,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private String processCategories(String content) {
         content = processCategories(content, CATEGORY_DIM_PATTERN, CATEGORY_QUERY_TEMPLATE,
                 CATEGORY_DIM_TEMPLATE, "<!-- ## _CATEGORY_QUERIES_TAG_ ## -->");
-        content = processCategories(content, CATEGORY_BY_LABEL_DIM_PATTERN, CATEGORY_QUERY_TEMPLATE,
+        content = processCategories(content, CATEGORY_BY_LABEL_DIM_PATTERN, CATEGORY_BY_LABEL_QUERY_TEMPLATE,
                 CATEGORY_BY_LABEL_DIM_TEMPLATE, "<!-- ## _CATEGORY_BY_LABEL_QUERIES_TAG_ ## -->");
         return content;
     }
