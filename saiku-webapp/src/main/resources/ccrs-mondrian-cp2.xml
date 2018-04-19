@@ -24,9 +24,15 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.ID, D.ANNUAL_SALARY_AMOUNT, D.OFFICE_TYPE_ID, D.CONTRACT_MODALITY_ID, D.STAFF_MEMBER_TITLE_ID, D.LEVEL_ID, D.FUNDING_ORGANIZATION_ID, D.FINANCING_SOURCE_ID,
-                            D.WHICH_AGENCY_ID, D.HEADRCO,  
-                            CP2.DESIGNATION, CP2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            D.ID, D.ANNUAL_SALARY_AMOUNT, D.OFFICE_TYPE_ID, D.CONTRACT_MODALITY_ID,
+                            COALESCE(D.STAFF_MEMBER_TITLE_ID, -1) AS STAFF_MEMBER_TITLE_ID,
+                            D.LEVEL_ID,
+                            COALESCE(D.FUNDING_ORGANIZATION_ID, -1) AS FUNDING_ORGANIZATION_ID,
+                            D.FINANCING_SOURCE_ID,
+                            COALESCE(D.WHICH_AGENCY_ID, -1) AS WHICH_AGENCY_ID,
+                            D.HEADRCO,
+                            CP2.DESIGNATION, CP2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             date(d.start_date) as start_date_date,
                             date(d.end_date) as end_date_date,
                             CASE D.HEADRCO WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HEAD_OF_RCO,
@@ -49,7 +55,8 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp2.ID, cp2.DESIGNATION, cp2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp2.ID, cp2.DESIGNATION, cp2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp2.SUBNATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as SUBNATIONAL_OFFICES_COUNT,
                             CASE cp2.SUBNATIONAL_OFFICES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as SUBNATIONAL_OFFICES,
                             cp2.NUMBER_OF_OFFICES,
