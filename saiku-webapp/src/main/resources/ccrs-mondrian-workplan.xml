@@ -41,7 +41,7 @@
                         CASE WHEN ACTIVITY.SELECT_AS_GOOD_PRACTICE IS NULL THEN 'No' ELSE CASE WHEN ACTIVITY.SELECT_AS_GOOD_PRACTICE = FALSE THEN 'No' ELSE 'Yes' END END as ACTIVITY_SELECT_AS_GOOD_PRACTICE,
                         BUDGET.ID as BUDGET_ID,
                         BUDGET.SOURCE_ID as BUDGET_SOURCE_ID,
-                        BUDGET.TYPE_ID as BUDGET_TYPE_ID,
+                        COALESCE(BUDGET.TYPE_ID, -1) AS BUDGET_TYPE_ID,
                         BUDGET.REQUIRED_AMOUNT as BUDGET_EXPECTED,
                         BUDGET.SPENT_AMOUNT as BUDGET_ACTUAL
                     FROM WORKPLAN workplan
@@ -52,7 +52,7 @@
                         LEFT OUTER JOIN BUDGET budget ON budget.ACTIVITY_ID = activity.ID
                     WHERE
                         workplan.WORKFLOW = 'VALIDATED' AND
-                        workplan.DESIGNATION != 'AQ' AND workplan.DESIGNATION != 'DOCO' AND workplan.DESIGNATION in (select iso2 from BASE_COUNTRY)
+                        workplan.DESIGNATION in (select c.COUNTRY from CATEGORY c where c.DTYPE='CountryRegion' and c.REGION<>'Uncategorized')
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -79,7 +79,7 @@
                         LEFT OUTER JOIN OUTPUTS outputs ON outputs.WORKSTREAM_ID = workstream.ID
                     WHERE
                         workplan.WORKFLOW = 'VALIDATED' AND
-                        workplan.DESIGNATION != 'AQ' AND workplan.DESIGNATION != 'DOCO' AND workplan.DESIGNATION in (select iso2 from BASE_COUNTRY)
+                        workplan.DESIGNATION in (select c.COUNTRY from CATEGORY c where c.DTYPE='CountryRegion' and c.REGION<>'Uncategorized')
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -170,16 +170,12 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
-
-            <Dimension source="CATEGORY" table="BudgetSource" name="Budget Source" caption="Budget Source" />
-            <Dimension source="CATEGORY" table="BudgetType" name="Budget Type" caption="Budget Type" />
         </Dimensions>
 
         <MeasureGroups>
             <MeasureGroup name="Annual Coordination Framework Measures" table="WorkplanCube">
                 <Measures>
                     <Measure name="Count" caption="Number of Activities" column="ACTIVITY_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
-                    <Measure name="Output Count" caption="Number of Outputs" column="OUTPUTS_ID" datatype="Integer" aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="Expected Budget" caption="Expected Budget" column="BUDGET_EXPECTED" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                     <Measure name="Actual Budget" caption="Actual Budget" column="BUDGET_ACTUAL" datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
@@ -189,8 +185,6 @@
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
-                    <ForeignKeyLink dimension="Budget Source" foreignKeyColumn="BUDGET_SOURCE_ID"/>
-                    <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
