@@ -45,6 +45,11 @@ public class ValidatedCountriesResource {
                 + "FROM V_CP_VALIDATED_DESIGNATIONS",
                 new BeanPropertyRowMapper<ValidatedDesignation>(ValidatedDesignation.class));
 
+        List<ExcludedCountry> excludedCountries = getTemplate().query(
+                "SELECT e.FROM_YEAR, e.UNTIL_YEAR, bc.NAME \n"
+                + "FROM EXCLUDED_COUNTRY e INNER JOIN BASE_COUNTRY bc on e.COUNTRY_ID = bc.ID",
+                new BeanPropertyRowMapper<ExcludedCountry>(ExcludedCountry.class));
+
         List<String> countryNames = new ArrayList<String>();
         Map<String, String> nameByIso = new HashMap<String, String>();
         for (Country c : allCountries) {
@@ -57,11 +62,20 @@ public class ValidatedCountriesResource {
             map.put(vd.getYear(), nameByIso.get(vd.getDesignation()));
         }
 
+        Multimap<Integer, String> mapExcluded = HashMultimap.create();
+        for (Integer year : map.keySet()) {
+            for (ExcludedCountry e : excludedCountries) {
+                if (year >= e.getFromYear() && year <= e.getUntilYear()) {
+                    mapExcluded.put(year, e.getName());
+                }
+            }
+        }
+
         ArrayList<Integer> allYears = new ArrayList<Integer>(map.keySet());
         Collections.sort(allYears);
         Collections.reverse(allYears);
 
-        return new Response(countryNames, allYears, map.asMap());
+        return new Response(countryNames, allYears, map.asMap(), mapExcluded.asMap());
     }
 
     public static class Country {
@@ -108,6 +122,37 @@ public class ValidatedCountriesResource {
         }
     }
 
+    public static class ExcludedCountry {
+
+        private Integer fromYear;
+        private Integer untilYear;
+        private String name;
+
+        public Integer getFromYear() {
+            return fromYear;
+        }
+
+        public void setFromYear(Integer fromYear) {
+            this.fromYear = fromYear;
+        }
+
+        public Integer getUntilYear() {
+            return untilYear;
+        }
+
+        public void setUntilYear(Integer untilYear) {
+            this.untilYear = untilYear;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
     private JdbcTemplate getTemplate() {
         if (template == null) {
             try {
@@ -126,12 +171,15 @@ public class ValidatedCountriesResource {
         private List<String> allCountries;
         private List<Integer> allYears;
         private Map<Integer, Collection<String>> validated;
+        private Map<Integer, Collection<String>> excluded;
 
         public Response(List<String> allCountries, List<Integer> allYears,
-                Map<Integer, Collection<String>> validated) {
+                Map<Integer, Collection<String>> validated,
+                Map<Integer, Collection<String>> excluded) {
             this.allCountries = allCountries;
             this.allYears = allYears;
             this.validated = validated;
+            this.excluded = excluded;
         }
 
         public List<String> getAllCountries() {
@@ -144,6 +192,10 @@ public class ValidatedCountriesResource {
 
         public Map<Integer, Collection<String>> getValidated() {
             return validated;
+        }
+
+        public Map<Integer, Collection<String>> getExcluded() {
+            return excluded;
         }
     }
 }

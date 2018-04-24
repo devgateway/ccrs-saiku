@@ -38,6 +38,26 @@ html, body {
 	border:0;
 }
 
+.thCountry {
+	color:blue;
+}
+.thCountry .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    /* Position the tooltip */
+    position: relative;
+    z-index: 1000;
+}
+  
+.thCountry:hover .tooltiptext {
+    visibility: visible;
+}
+
 .clearfix:before,
 .clearfix:after {
     content: " ";
@@ -1818,7 +1838,7 @@ a.disabled_toolbar:hover {
 	opacity: 0.85;
   }
   #tooltip h3, #tooltip div { margin: 0; }
-
+  
 
 /* OOCSS - reusable classes */
 
