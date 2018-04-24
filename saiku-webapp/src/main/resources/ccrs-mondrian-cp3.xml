@@ -16,7 +16,12 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.*, CP3.DESIGNATION, CP3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            D.ID,
+                            D.TITLE,
+                            D.TOTAL_BUDGET,
+                            COALESCE(D.WHICH_MODALITY_ID, -1) AS WHICH_MODALITY_ID,
+                            CP3.DESIGNATION, CP3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP3JOINT_PROGRAMMES D, CP3COMMON_COUNTRY_PROGRAMMING CP3, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
@@ -35,7 +40,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, cp3.UNDAF_PERIOD_ALIGNED_WITH_GOV_ID,
+                            cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(cp3.UNDAF_PERIOD_ALIGNED_WITH_GOV_ID, -1) AS UNDAF_PERIOD_ALIGNED_WITH_GOV_ID,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN 1 ELSE 0 END as HASUNDAF_COUNT,
                             CASE cp3.HASUNDAF WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNDAF,
                             date(cp3undaf.DATE_OF_SIGNATURE) as DATE_OF_SIGNATURE,
@@ -50,7 +57,7 @@
                             cp3assessment.ASSESSMENT_YEAR,
                             CASE WHEN cp3.HAS_DISAGGREGATED_DATA = TRUE THEN 1 ELSE 0 END as HAS_DISAGGREGATED_DATA_COUNT,
                             CASE cp3.HAS_DISAGGREGATED_DATA WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_DISAGGREGATED_DATA,
-                            cp3assessment.OTHER_ANALYSIS_SOURCE_ID,
+                            COALESCE(cp3assessment.OTHER_ANALYSIS_SOURCE_ID, -1) AS OTHER_ANALYSIS_SOURCE_ID,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT,
                             CASE cp3.HAS_NATIONAL_DEVELOPMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_NATIONAL_DEVELOPMENT_PLAN,
                             CASE WHEN cp3plan.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END as HASUNSUPPORT_COUNT,
@@ -78,16 +85,16 @@
                             CASE cp3undafunvision2030.NRA_CONTRIBUTOR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NRA_CONTRIBUTOR,
                             cp3undafcostedmeplan.YEAR_COMPLETED,
                             cp3undafunvision2030.YEAR_PREPARED,
-                            cp3undafannual.NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID,
+                            COALESCE(cp3undafannual.NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID, -1) AS NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID,
                             CASE WHEN cp3newundaf.NEWUNDAFROADMAP_PREPARED = TRUE THEN 1 ELSE 0 END as NEWUNDAFROADMAP_PREPARED_COUNT,
                             CASE cp3newundaf.NEWUNDAFROADMAP_PREPARED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NEWUNDAFROADMAP_PREPARED,
                             date(cp3newundaf.NEWUNDAFROADMAP_DATE) as NEWUNDAFROADMAP_DATE,
                             date(cp3plan.NATIONAL_DEVELOPMENT_PLAN_START_DATE) as NATIONAL_DEVELOPMENT_PLAN_START_DATE,
                             date(cp3plan.NATIONAL_DEVELOPMENT_PLAN_END_DATE) as NATIONAL_DEVELOPMENT_PLAN_END_DATE,
-                            cp3plan.SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID,
-                            cp3plan.NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID,
-                            cp3undafevaluation.NRA_PARTICIPATED_ID,
-                            cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID
+                            COALESCE(cp3plan.SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID, -1) AS SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID,
+                            COALESCE(cp3plan.NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID, -1) AS NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID,
+                            COALESCE(cp3undafevaluation.NRA_PARTICIPATED_ID, -1) AS NRA_PARTICIPATED_ID,
+                            COALESCE(cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID, -1) AS NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID
                         from
                             -- DERBY-PROPERTIES joinOrder = FIXED
                             CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
@@ -233,7 +240,7 @@
             </Dimension>
             
             <Dimension source="CATEGORY" table="AlternativeAnalysis" caption="If the UNCT relied on other analysis, which alternative option did you use?" />
-            <Dimension table="YesNoTable" name="Is official disaggregated data available" caption="Is official disaggregated data available?" />
+            <Dimension table="YesNoTable" name="Does the UNCT have access to official government data?" caption="Does the UNCT have access to official government data?" />
             <Dimension table="YesNoTable" name="National Development Plan" caption="Is there a National Development Plan?" />
             <Dimension table="YesNoTable" name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" />
             <Dimension table="YesNoTable" name="Joint Programmes" caption="Do you have Joint Programmes?" />
@@ -352,7 +359,7 @@
                     <Measure name="CommonCountryAssessment" caption="Count UNCT lead their own CCA" column="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasDisaggregatedData" caption="Count of 'Is official disaggregated data available'" column="HAS_DISAGGREGATED_DATA_COUNT"
+                    <Measure name="hasDisaggregatedData" caption="Count of 'Does the UNCT have access to official government data?'" column="HAS_DISAGGREGATED_DATA_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="NationalDevelopmentPlan" caption="Count is there a National Development Plan" column="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"
@@ -401,7 +408,7 @@
                     <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION"/>
                     <ForeignKeyLink dimension="Is your UNCT in the process of developing a new UNDAF"  foreignKeyColumn="IS_DEVELOPING_NEWUNDAF"/>
                     <FactLink dimension="Year CCA was conducted" />
-                    <ForeignKeyLink dimension="Is official disaggregated data available"  foreignKeyColumn="HAS_DISAGGREGATED_DATA"/>
+                    <ForeignKeyLink dimension="Does the UNCT have access to official government data?"  foreignKeyColumn="HAS_DISAGGREGATED_DATA"/>
                     <ForeignKeyLink dimension="Did the UN support the development of the National Plan"  foreignKeyColumn="HASUNSUPPORT"/>
                     <ForeignKeyLink dimension="Was a management response prepared"  foreignKeyColumn="MANAGEMENT_RESPONSE_PREPARED"/>
                     <FactLink dimension="Date of Signature" />
