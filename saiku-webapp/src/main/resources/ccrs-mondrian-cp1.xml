@@ -596,14 +596,6 @@
             <Dimension source="CATEGORY" table="SOP6PartialImplementationDetails" caption="SOP6 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP7PartialImplementationDetails" caption="SOP7 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP8PartialImplementationDetails" caption="SOP8 Details on partial implementation." />
-            
-            <Dimension name="Total BOS annual savings" caption="What is the projected total BOS annual savings this year? (US Dollars)" table="CP1GeneralCube"
-                       visible="true">
-                <Attributes>
-                    <Attribute name="Total BOS annual savings" keyColumn="PROJECTED_TOTALBOSSAVINGS_THIS_YEAR" datatype="Numeric" />
-                </Attributes>
-            </Dimension>
-            
             <Dimension source="CATEGORY" table="SOP14PartialImplementationDetails" caption="SOP14 Details on partial implementation." />
         </Dimensions>
 
@@ -686,7 +678,6 @@
                     <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-					<FactLink dimension="Total BOS annual savings" />
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -773,7 +764,6 @@
                     <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-					<FactLink dimension="Total BOS annual savings" />
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -860,7 +850,6 @@
                     <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-					<FactLink dimension="Total BOS annual savings" />
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -894,6 +883,9 @@
 
                     <Measure name="#ReportOnCommunicationResults" caption="Count 'Do you report on communication results in the UN Country Results Report?'" column="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="projectedTotalBOSSavingsThisYear" caption="What is the projected total BOS annual savings this year? (US Dollars)" column="PROJECTED_TOTALBOSSAVINGS_THIS_YEAR" datatype="Numeric"
+                             aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -926,7 +918,6 @@
                     <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-					<FactLink dimension="Total BOS annual savings" />
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
