@@ -246,7 +246,7 @@
             <Dimension table="YesNoTable" name="Joint Programmes" caption="Do you have Joint Programmes?" />
             <Dimension table="YesNoTable" name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" />
             
-            <Dimension name="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" caption="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+            <Dimension name="Date Completed (Annual Review)" caption="Date Completed (Annual Review)" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
@@ -258,15 +258,15 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension table="YesNoTable" name="UNDAF Evaluation" caption="Have you conducted an UNDAF Evaluation within the past five years?" />
+            <Dimension table="YesNoTable" name="UNDAF Evaluation" caption="Have you conducted an UNDAF evaluation for the last UNDAF cycle?" />
             
-            <Dimension name="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" caption="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+            <Dimension name="Date completed (NRAs participate in the UNDAF Evaluation Planning)" caption="Date completed (NRAs participate in the UNDAF Evaluation Planning)" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Date Completed (Evaluation)" caption="Date Completed (Evaluation)" keyColumn="HASUNDAFEVALUATION_DATE_COMPLETED"
+                    <Attribute name="Date completed (NRAs participate in the UNDAF Evaluation Planning)" caption="Date completed (NRAs participate in the UNDAF Evaluation Planning)" keyColumn="HASUNDAFEVALUATION_DATE_COMPLETED"
                                hierarchyHasAll="true"
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
@@ -414,8 +414,8 @@
                     <FactLink dimension="Date of Signature" />
                     <FactLink dimension="Start Date" />
                     <FactLink dimension="End Date" />
-                    <FactLink dimension="Have you conducted an UNDAF Annual Review in the last 12 months - Date Completed" />
-                    <FactLink dimension="Have you conducted an UNDAF Evaluation within the past five years  - Date Completed" />
+                    <FactLink dimension="Date Completed (Annual Review)" />
+                    <FactLink dimension="Date completed (NRAs participate in the UNDAF Evaluation Planning)" />
                     <ForeignKeyLink dimension="AlternativeAnalysis"  foreignKeyColumn="OTHER_ANALYSIS_SOURCE_ID"/>
                     <ForeignKeyLink dimension="NRAUndafAnnualReview"  foreignKeyColumn="NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID"/>
                     <ForeignKeyLink dimension="Was there an extension of the UNDAF"  foreignKeyColumn="UNDAF_EXTENSION_PRESENT"/>
