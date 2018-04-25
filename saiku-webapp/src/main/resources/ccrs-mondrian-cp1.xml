@@ -224,11 +224,14 @@
                             COALESCE(cp1joint.GOVERNMENT_ROLE_ID, -1) AS GOVERNMENT_ROLE_ID,
                             COALESCE(cp1joint.PARTIAL_IMPLEMENTATION_DETAILS_ID, -1) AS SOP1_PARTIAL_IMPLEMENTATION_DETAILS_ID,
                             CASE cp1joint.HAS_ANNUAL_REVIEW WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_ANNUAL_REVIEW,
+                            CASE cp1joint.HAS_ANNUAL_REVIEW WHEN TRUE THEN 1 ELSE 0 END as HAS_ANNUAL_REVIEW_COUNT,
                             CASE cp1annual.REPORT_SUBMITTED_TO_GOV WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_SUBMITTED_TO_GOV,
+                            CASE cp1annual.REPORT_SUBMITTED_TO_GOV WHEN TRUE THEN 1 ELSE 0 END as REPORT_SUBMITTED_TO_GOV_COUNT,
                             COALESCE(cp1annual.PARTIAL_IMPLEMENTATION_DETAILS_ID, -1) AS SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID,
                             CASE cp1annual.REPORT_PUBLICLY_AVAILABLE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_PUBLICLY_AVAILABLE_DIM,
                             COALESCE(cp1annual.REPORT_PUBLISHING_MODALITY_ID, -1) AS REPORT_PUBLISHING_MODALITY_ID,
                             CASE cp1jointstrategy.BUDGETED_WORKPLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as BUDGETED_WORKPLAN,
+                            CASE cp1jointstrategy.BUDGETED_WORKPLAN WHEN TRUE THEN 1 ELSE 0 END as BUDGETED_WORKPLAN_COUNT,
                             CASE cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNDAF_BASED_OR_EQUIVALENT,
                             CASE cp1jointstrategy.UNDAF_BASED_OR_EQUIVALENT WHEN TRUE THEN 1 ELSE 0 END as UNDAF_BASED_OR_EQUIVALENT_COUNT,
                             CASE cp1jointstrategy.REPORT_INUNCOUNTRY_RESULTS_REPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_INUNCOUNTRY_RESULTS_REPORT,
@@ -593,14 +596,6 @@
             <Dimension source="CATEGORY" table="SOP6PartialImplementationDetails" caption="SOP6 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP7PartialImplementationDetails" caption="SOP7 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP8PartialImplementationDetails" caption="SOP8 Details on partial implementation." />
-            
-            <Dimension name="Total BOS annual savings" caption="What is the projected total BOS annual savings this year? (US Dollars)" table="CP1GeneralCube"
-                       visible="true">
-                <Attributes>
-                    <Attribute name="Total BOS annual savings" keyColumn="PROJECTED_TOTALBOSSAVINGS_THIS_YEAR" datatype="Numeric" />
-                </Attributes>
-            </Dimension>
-            
             <Dimension source="CATEGORY" table="SOP14PartialImplementationDetails" caption="SOP14 Details on partial implementation." />
         </Dimensions>
 
@@ -683,7 +678,6 @@
                     <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-					<FactLink dimension="Total BOS annual savings" />
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -770,7 +764,6 @@
                     <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-					<FactLink dimension="Total BOS annual savings" />
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -857,7 +850,6 @@
                     <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-					<FactLink dimension="Total BOS annual savings" />
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -874,13 +866,13 @@
                     <Measure name="countDaOVision" caption="Count DaO Vision, Concept Note, or Roadmap" column="DAO_VISION_NOTE_ROADMAP_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasAnnualReview" caption="Count 'Has the Joint National/UN Steering Committee conducted an annual review'" column="HAS_ANNUAL_REVIEW"
+                    <Measure name="hasAnnualReview" caption="Count 'Has the Joint National/UN Steering Committee conducted an annual review'" column="HAS_ANNUAL_REVIEW_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="reportSubmittedToGov" caption="Count 'Was the report submitted to the National Government'" column="REPORT_SUBMITTED_TO_GOV"
+                    <Measure name="reportSubmittedToGov" caption="Count 'Was the report submitted to the National Government'" column="REPORT_SUBMITTED_TO_GOV_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="budgetedWorkplan" caption="Count 'Does the UNCT have a budgeted workplan to implement the Joint Communication Strategy'" column="BUDGETED_WORKPLAN"
+                    <Measure name="budgetedWorkplan" caption="Count 'Does the UNCT have a budgeted workplan to implement the Joint Communication Strategy'" column="BUDGETED_WORKPLAN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#CoverMoreThanOneCountry" caption="Count 'Does your UNCT cover more than one country?'" column="COVER_MORE_THAN_ONE_COUNTRY_COUNT" datatype="Integer"
@@ -890,6 +882,9 @@
                              aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#ReportOnCommunicationResults" caption="Count 'Do you report on communication results in the UN Country Results Report?'" column="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT" datatype="Integer"
+                             aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="projectedTotalBOSSavingsThisYear" caption="What is the projected total BOS annual savings this year? (US Dollars)" column="PROJECTED_TOTALBOSSAVINGS_THIS_YEAR" datatype="Numeric"
                              aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
@@ -923,7 +918,6 @@
                     <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
                     <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
-					<FactLink dimension="Total BOS annual savings" />
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
