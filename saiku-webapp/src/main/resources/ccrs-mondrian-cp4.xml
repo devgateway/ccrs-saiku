@@ -14,7 +14,7 @@
 		<Query alias="ClientSatisfactionScore">
             <ExpressionView>
                 <SQL dialect="generic">
-                    <![CDATA[SELECT ID, LABEL || ' - Average client satisfaction score of the Integrated Service Center' FROM CATEGORY WHERE DTYPE='ClientSatisfactionScore']]>
+                    <![CDATA[SELECT ID, LABEL || ' - Average client satisfaction score of the Integrated Service Center' as LABEL FROM CATEGORY WHERE DTYPE='ClientSatisfactionScore']]>
                 </SQL>
             </ExpressionView>
         </Query>
