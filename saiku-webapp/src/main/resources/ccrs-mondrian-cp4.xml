@@ -10,6 +10,14 @@
         <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
+		
+		<Query alias="ClientSatisfactionScore">
+            <ExpressionView>
+                <SQL dialect="generic">
+                    <![CDATA[SELECT ID, LABEL || ' - Average client satisfaction score of the Integrated Service Center' FROM CATEGORY WHERE DTYPE='ClientSatisfactionScore']]>
+                </SQL>
+            </ExpressionView>
+        </Query>
 
         <Query alias="CP4GeneralCube">
             <ExpressionView>
@@ -65,7 +73,17 @@
             <Dimension table="YesNoTable" name="Is a HACT being implemented at the country level" caption="Is a HACT being implemented at the country level?" />
             <Dimension table="YesNoTable" name="Does the UNCT have an integrated service center" caption="Does the UNCT have an integrated service center?" />
             <Dimension source="CATEGORY" table="UNAgency" name="Which UN entity currently hosts the Integrated service center" caption="Which UN entity currently hosts the Integrated service center?" />
-            <Dimension source="CATEGORY" table="ClientSatisfactionScore" name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" />
+            <Dimension name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" table="ClientSatisfactionScore"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
+                               levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" keyColumn="LABEL"
+                               hierarchyAllMemberName="All " hierarchyCaption=""
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
             <Dimension table="YesNoTable" name="Are common service lines part of your Business Operation Strategy" caption="Are common service lines part of your Business Operation Strategy (BOS)?" />
         </Dimensions>
 
