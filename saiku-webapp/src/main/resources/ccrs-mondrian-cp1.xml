@@ -55,6 +55,8 @@
                           M.ID,
                           M.EMAIL,
                           M.NAME,
+						  M.POSITION_TITLE,
+						  M.PHONE_NUMBER,
                           AGENCY.LABEL AS AGENCY,
                           CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                           COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
@@ -347,6 +349,34 @@
             
             <!-- N.1.31 -->
             <Dimension source="UNAgency" />
+			
+            
+            <!-- N.1.41 -->
+            <Dimension name="UNCGMemberPositionTitle" caption="UNCG Member Position/Title" table="CP1UncgMember"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="PositionTitle" caption="Position/Title" keyColumn="POSITION_TITLE"
+                               hierarchyAllMemberName="All Positions/Titles" hierarchyCaption="All Positions/Titles"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
+			
+            
+            <!-- N.1.42 -->
+            <Dimension name="UNCGMemberPhoneNumber" caption="UNCG Member Phone number" table="CP1UncgMember"
+                       key="Dimension Id" visible="true">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+
+                    <Attribute name="PhoneNumber" caption="Phone number" keyColumn="PHONE_NUMBER"
+                               hierarchyAllMemberName="All Phone numbers" hierarchyCaption="All Phone numbers"
+                               levelType="Regular" datatype="String" />
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -359,6 +389,8 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="UNCGMemberName" />
                     <FactLink dimension="UNCGMemberEmail" />
+                    <FactLink dimension="UNCGMemberPositionTitle" />
+                    <FactLink dimension="UNCGMemberPhoneNumber" />
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY" />
                 </DimensionLinks>
             </MeasureGroup>
