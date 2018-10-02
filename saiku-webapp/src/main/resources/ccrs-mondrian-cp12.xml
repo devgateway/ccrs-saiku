@@ -125,7 +125,19 @@
                             CASE cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC,
                             CASE WHEN cp12.HASHRI = TRUE THEN 1 ELSE 0 END as HASHRI_COUNT,
                             CASE cp12.HASHRI WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASHRI,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN cp12.HAS_CCAUPR = TRUE THEN 1 ELSE 0 END as HAS_CCAUPR_COUNT,
+                            CASE cp12.HAS_CCAUPR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CCAUPR,
+                            CASE WHEN cp12.HAS_CCA_TREATY_BODIES = TRUE THEN 1 ELSE 0 END as HAS_CCA_TREATY_BODIES_COUNT,
+                            CASE cp12.HAS_CCA_TREATY_BODIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CCA_TREATY_BODIES,
+                            CASE WHEN cp12.HAS_CCA_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HAS_CCA_SPECIAL_PROCEDURES_COUNT,
+                            CASE cp12.HAS_CCA_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CCA_SPECIAL_PROCEDURES,
+                            CASE WHEN cp12.HAS_UNDAFUPR = TRUE THEN 1 ELSE 0 END as HAS_UNDAFUPR_COUNT,
+                            CASE cp12.HAS_UNDAFUPR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAFUPR,
+                            CASE WHEN cp12.HAS_UNDAF_TREATY_BODIES = TRUE THEN 1 ELSE 0 END as HAS_UNDAF_TREATY_BODIES_COUNT,
+                            CASE cp12.HAS_UNDAF_TREATY_BODIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAF_TREATY_BODIES,
+                            CASE WHEN cp12.HAS_UNDAF_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HAS_UNDAF_SPECIAL_PROCEDURES_COUNT,
+                            CASE cp12.HAS_UNDAF_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAF_SPECIAL_PROCEDURES
                         from
                             -- DERBY-PROPERTIES joinOrder = FIXED
                             CP12HUMAN_RIGHTS_PROFILE cp12, CP1GENERAL_PROFILE cp1, CP12TRAINING_ONHRAPPROACH cp12training,
@@ -429,6 +441,30 @@
                     <!--12.9-->
                     <Measure name="NHRI" caption="Count of National Human Rights Institution (NHRI)" column="HASHRI_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--N.12.5 -->
+                    <Measure name="CCAUPR" caption="Count of 'Does the current CCA include the recommendations from the UPR as a core component of its analysis?'" column="HAS_CCAUPR_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--N.12.6 -->
+                    <Measure name="CCATB" caption="Count of 'Does the current CCA include the recommendations from the treaty bodies as a core component of its analysis?'" column="HAS_CCA_TREATY_BODIES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--N.12.7 -->
+                    <Measure name="CCASP" caption="Count of 'Does the current CCA include the recommendations from the special procedures as a core component of its analysis?'" column="HAS_CCA_SPECIAL_PROCEDURES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--N.12.8-->
+                    <Measure name="UNDAFUPR" caption="Count of 'Does the current UNDAF link outcomes with specific recommendations from the UPR?'" column="HAS_UNDAFUPR_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--N.12.9-->
+                    <Measure name="UNDAFTB" caption="Count of 'Does the current UNDAF link outcomes with specific recommendations from the treaty bodies?'" column="HAS_UNDAF_TREATY_BODIES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <!--N.12.10-->
+                    <Measure name="UNDAFSP" caption="Count of 'Does the current UNDAF link outcomes with specific recommendations from the special procedures?'" column="HAS_UNDAF_SPECIAL_PROCEDURES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -467,6 +503,13 @@
 					<ForeignKeyLink dimension="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" 
 					foreignKeyColumn="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"/>            
                     <ForeignKeyLink dimension="HAS_STRATEGY_DEVELOPED_ADDRESSHR" foreignKeyColumn="HAS_STRATEGY_DEVELOPED_ADDRESSHR"/>
+                    <ForeignKeyLink dimension="CCAUPR" foreignKeyColumn="HAS_CCAUPR"/>
+					<ForeignKeyLink dimension="CCATB" foreignKeyColumn="HAS_CCA_TREATY_BODIES"/>
+					<ForeignKeyLink dimension="CCASP" foreignKeyColumn="HAS_CCA_SPECIAL_PROCEDURES"/>
+					<ForeignKeyLink dimension="UNDAFUPR" foreignKeyColumn="HAS_UNDAFUPR"/>
+					<ForeignKeyLink dimension="UNDAFTB" foreignKeyColumn="HAS_UNDAF_TREATY_BODIES"/>
+					<ForeignKeyLink dimension="UNDAFSP" foreignKeyColumn="HAS_UNDAF_SPECIAL_PROCEDURES"/>
+					
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
