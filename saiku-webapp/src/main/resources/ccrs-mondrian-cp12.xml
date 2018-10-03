@@ -301,6 +301,12 @@
             <Dimension table="YesNoTable" name="Has the UNCT provided inputs to the visit of the Special Procedures" caption="Has the UNCT provided inputs to the visit of the Special Procedures?" />
             <Dimension table="YesNoTable" name="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" caption="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?" />
             <Dimension table="YesNoTable" name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" />
+            <Dimension table="YesNoTable" name="CCAUPR" caption="Does the current CCA include the recommendations from the UPR  as a core component of its analysis?" />
+            <Dimension table="YesNoTable" name="CCATB" caption="Does the current CCA include the recommendations from the treaty bodies as a core component of its analysis?" />
+            <Dimension table="YesNoTable" name="CCASP" caption="Does the current CCA include the recommendations from the special procedures as a core component of its analysis?" />
+            <Dimension table="YesNoTable" name="UNDAFUPR" caption="Does the current UNDAF link outcomes with specific recommendations from the UPR?" />
+            <Dimension table="YesNoTable" name="UNDAFTB" caption="Does the current UNDAF link outcomes with specific recommendations from the treaty bodies?" />
+            <Dimension table="YesNoTable" name="UNDAFUSP" caption="Does the current UNDAF link outcomes with specific recommendations from the special procedures?" />
         </Dimensions>
 
         <MeasureGroups>
