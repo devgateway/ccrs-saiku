@@ -306,7 +306,7 @@
             <Dimension table="YesNoTable" name="CCASP" caption="Does the current CCA include the recommendations from the special procedures as a core component of its analysis?" />
             <Dimension table="YesNoTable" name="UNDAFUPR" caption="Does the current UNDAF link outcomes with specific recommendations from the UPR?" />
             <Dimension table="YesNoTable" name="UNDAFTB" caption="Does the current UNDAF link outcomes with specific recommendations from the treaty bodies?" />
-            <Dimension table="YesNoTable" name="UNDAFUSP" caption="Does the current UNDAF link outcomes with specific recommendations from the special procedures?" />
+            <Dimension table="YesNoTable" name="UNDAFSP" caption="Does the current UNDAF link outcomes with specific recommendations from the special procedures?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -510,12 +510,11 @@
 					foreignKeyColumn="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"/>            
                     <ForeignKeyLink dimension="HAS_STRATEGY_DEVELOPED_ADDRESSHR" foreignKeyColumn="HAS_STRATEGY_DEVELOPED_ADDRESSHR"/>
                     <ForeignKeyLink dimension="CCAUPR" foreignKeyColumn="HAS_CCAUPR"/>
-					<ForeignKeyLink dimension="CCATB" foreignKeyColumn="HAS_CCA_TREATY_BODIES"/>
-					<ForeignKeyLink dimension="CCASP" foreignKeyColumn="HAS_CCA_SPECIAL_PROCEDURES"/>
-					<ForeignKeyLink dimension="UNDAFUPR" foreignKeyColumn="HAS_UNDAFUPR"/>
-					<ForeignKeyLink dimension="UNDAFTB" foreignKeyColumn="HAS_UNDAF_TREATY_BODIES"/>
-					<ForeignKeyLink dimension="UNDAFSP" foreignKeyColumn="HAS_UNDAF_SPECIAL_PROCEDURES"/>
-					
+                    <ForeignKeyLink dimension="CCATB" foreignKeyColumn="HAS_CCA_TREATY_BODIES"/>
+                    <ForeignKeyLink dimension="CCASP" foreignKeyColumn="HAS_CCA_SPECIAL_PROCEDURES"/>
+                    <ForeignKeyLink dimension="UNDAFUPR" foreignKeyColumn="HAS_UNDAFUPR"/>
+                    <ForeignKeyLink dimension="UNDAFTB" foreignKeyColumn="HAS_UNDAF_TREATY_BODIES"/>
+                    <ForeignKeyLink dimension="UNDAFSP" foreignKeyColumn="HAS_UNDAF_SPECIAL_PROCEDURES"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
