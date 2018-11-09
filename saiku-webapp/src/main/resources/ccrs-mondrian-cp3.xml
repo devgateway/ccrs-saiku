@@ -91,7 +91,7 @@
                             date(cp3newundaf.NEWUNDAFROADMAP_DATE) as NEWUNDAFROADMAP_DATE,
                             date(cp3plan.NATIONAL_DEVELOPMENT_PLAN_START_DATE) as NATIONAL_DEVELOPMENT_PLAN_START_DATE,
                             date(cp3plan.NATIONAL_DEVELOPMENT_PLAN_END_DATE) as NATIONAL_DEVELOPMENT_PLAN_END_DATE,
-                            COALESCE(cp3plan.SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID, -1) AS SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID,
+                            CASE cp3plan.SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END AS SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN,
                             COALESCE(cp3plan.NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID, -1) AS NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID,
                             COALESCE(cp3undafevaluation.NRA_PARTICIPATED_ID, -1) AS NRA_PARTICIPATED_ID,
                             COALESCE(cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID, -1) AS NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID
@@ -332,7 +332,7 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" />
+            <Dimension table="YesNoTable" name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" />
             <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did NRAs participate in supporting development of the National Development Plan?" />
             <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAParticipated" caption="Did NRAs participate in the UNDAF Evaluation Planning?" />
             <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAContributeToEvaluationMgmtResponse" caption="Did NRA contribute to the evaluation management response?" />
@@ -430,7 +430,7 @@
                     <ForeignKeyLink dimension="UNDAFPeriodAlignedWithGov"  foreignKeyColumn="UNDAF_PERIOD_ALIGNED_WITH_GOV_ID"/>
                     <FactLink dimension="National Development Plan Start Date" />
                     <FactLink dimension="National Development Plan End Date" />
-                    <ForeignKeyLink dimension="SdgsAndAgenda2030"  foreignKeyColumn="SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN_ID"/>
+                    <ForeignKeyLink dimension="SdgsAndAgenda2030"  foreignKeyColumn="SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN"/>
                     <ForeignKeyLink dimension="NRAParticipatedInNationalDevelopmentPlan"  foreignKeyColumn="NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID"/>
                     <ForeignKeyLink dimension="NRAParticipated"  foreignKeyColumn="NRA_PARTICIPATED_ID"/>
                     <ForeignKeyLink dimension="NRAContributeToEvaluationMgmtResponse"  foreignKeyColumn="NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID"/>
