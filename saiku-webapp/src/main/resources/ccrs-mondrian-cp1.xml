@@ -55,7 +55,7 @@
                           M.ID,
                           M.EMAIL,
                           M.NAME,
-                          M.POSITION_TITLE,
+                          M.POSITION_TITLE_ID,
                           M.PHONE_NUMBER,
                           AGENCY.LABEL AS AGENCY,
                           CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
@@ -352,19 +352,8 @@
 			
             
             <!-- N.1.41 -->
-            <Dimension name="UNCGMemberPositionTitle" caption="UNCG Member Position/Title" table="CP1UncgMember"
-                       key="Dimension Id" visible="true">
-                <Attributes>
-                    <Attribute name="Dimension Id" keyColumn="ID"
-                               hasHierarchy="false" levelType="Regular" datatype="Integer" />
+            <Dimension source="CATEGORY" table="UNCGPositionTitle" caption="UNCG Member Position/Title" />
 
-                    <Attribute name="PositionTitle" caption="Position/Title" keyColumn="POSITION_TITLE"
-                               hierarchyAllMemberName="All Positions/Titles" hierarchyCaption="All Positions/Titles"
-                               levelType="Regular" datatype="String" />
-                </Attributes>
-            </Dimension>
-			
-            
             <!-- N.1.42 -->
             <Dimension name="UNCGMemberPhoneNumber" caption="UNCG Member Phone number" table="CP1UncgMember"
                        key="Dimension Id" visible="true">
@@ -389,7 +378,7 @@
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <FactLink dimension="UNCGMemberName" />
                     <FactLink dimension="UNCGMemberEmail" />
-                    <FactLink dimension="UNCGMemberPositionTitle" />
+                    <ForeignKeyLink dimension="UNCGPositionTitle" foreignKeyColumn="POSITION_TITLE_ID" />
                     <FactLink dimension="UNCGMemberPhoneNumber" />
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY" />
                 </DimensionLinks>
