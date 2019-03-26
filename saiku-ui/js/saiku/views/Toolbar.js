@@ -51,8 +51,8 @@ var Toolbar = Backbone.View.extend({
         var callback = target.attr('href').replace('#', '');
         if(this[callback]) {
             this[callback](e);
-        }
-        e.preventDefault();
+			e.preventDefault();
+		}
     },
 
     /**
