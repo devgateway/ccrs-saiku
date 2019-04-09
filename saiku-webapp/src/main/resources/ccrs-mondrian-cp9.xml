@@ -138,7 +138,6 @@
                         CASE WHEN cp9humanitarianjointwork.COORDINATION_MECHANISMS = TRUE THEN 1 ELSE 0 END as COORDINATION_MECHANISMS_COUNT,
                         CASE cp9humanitarianjointwork.COORDINATION_MECHANISMS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as COORDINATION_MECHANISMS
                     from
-                        -- DERBY-PROPERTIES joinOrder = FIXED
                         CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE cp1, CP9UNPEACE_KEEPING_MISSION cp9unpeace,
                         CP9INTEGRATED_STRATEGIC_FRAMEWORK cp9integrated, CP9UNUNCTCOLABORATION cp9ununctcolaboration,
                         CP9CONFLICT_ANALYSIS cp9conflict, CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy, CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements,

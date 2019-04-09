@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.derby.jdbc.ClientDriver;
 
 /**
  * @author Octavian Ciubotaru
@@ -17,15 +16,22 @@ public class DbConfigListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        String url = System.getenv("SPRING_DATASOURCE_URL");
+        String user = System.getenv("SPRING_DATASOURCE_USERNAME");
+        String pass = System.getenv("SPRING_DATASOURCE_PASSWORD");
+
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(ClientDriver.class.getName());
-        dataSource.setUrl("jdbc:derby://localhost//derby/ccrs");
-        dataSource.setUsername("app");
-        dataSource.setPassword("app");
+        dataSource.setUrl(url);
+        dataSource.setUsername(user);
+        dataSource.setPassword(pass);
+
+        // Enable useOldAliasMetadataBehavior to return column alias in all cases, otherwise mondrian will fail.
+        // Enable useMysqlMetadata to return MySQL product name, to help mondrian select the correct db dialect.
+        // MariaDB dialect was added in mondrian 7.2.x
+        dataSource.setConnectionProperties("useOldAliasMetadataBehavior=true;useMysqlMetadata=true");
 
         DataSource proxyDataSource = ProxyDataSourceBuilder
                 .create(dataSource)
-                .queryTransformer(new DerbyOptimizerHintQueryTransformer())
                 .build();
 
         try {
