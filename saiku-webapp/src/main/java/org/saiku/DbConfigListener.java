@@ -21,6 +21,7 @@ public class DbConfigListener implements ServletContextListener {
         String pass = System.getenv("SPRING_DATASOURCE_PASSWORD");
 
         BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
         dataSource.setUrl(url);
         dataSource.setUsername(user);
         dataSource.setPassword(pass);
