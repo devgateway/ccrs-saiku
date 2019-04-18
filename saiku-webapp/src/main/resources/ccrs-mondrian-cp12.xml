@@ -139,7 +139,6 @@
                             CASE WHEN cp12.HAS_UNDAF_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HAS_UNDAF_SPECIAL_PROCEDURES_COUNT,
                             CASE cp12.HAS_UNDAF_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAF_SPECIAL_PROCEDURES
                         from
-                            -- DERBY-PROPERTIES joinOrder = FIXED
                             CP12HUMAN_RIGHTS_PROFILE cp12, CP1GENERAL_PROFILE cp1, CP12TRAINING_ONHRAPPROACH cp12training,
                             CP12HRANALYSIS cp12hranalysis, CP12UPRPROCESS cp12uprprocess, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE

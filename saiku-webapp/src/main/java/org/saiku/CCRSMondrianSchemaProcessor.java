@@ -31,9 +31,9 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private static final String YES_NO_DIM_TEMPLATE =
             "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@' key='Dimension Id'>\n" +
                 "<Attributes>\n" +
-                    "<Attribute name='Dimension Id' keyColumn='id' hasHierarchy='false' \n" +
+                    "<Attribute name='Dimension Id' keyColumn='ID' hasHierarchy='false' \n" +
                                 "levelType='Regular' datatype='Integer'/>\n" +
-                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='answer' orderByColumn='answer_sort' \n" +
+                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='ANSWER' orderByColumn='ANSWER_SORT' \n" +
                                 "approxRowCount='3' hierarchyHasAll='true' levelType='Regular' datatype='Boolean'/>\n" +
                 "</Attributes>\n" +
             "</Dimension>";
@@ -44,40 +44,24 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
      * Therefore for now we'll be generating the same query with different aliases to avoid clashes. 
      */
     private static final String YESNO_QUERY_TEMPLATE =
-            "<InlineTable alias='@@table@@'>" +
-                    "<ColumnDefs>" +
-                        "<ColumnDef name='id' type='Numeric' />" +
-                        "<ColumnDef name='answer' type='String' />" +
-                        "<ColumnDef name='answer_sort' type='Numeric' />" +
-                    "</ColumnDefs>" +
-                    "<Key>" +
-                        "<Column name='id' />" +
-                    "</Key>" +
-                    "<Rows>" +
-                        "<Row>" +
-                            "<Value column='id'>1</Value>" +
-                            "<Value column='answer'>Yes</Value>" +
-                            "<Value column='answer_sort'>0</Value>" +
-                        "</Row>" +
-                        "<Row>" +
-                            "<Value column='id'>0</Value>" +
-                            "<Value column='answer'>No</Value>" +
-                            "<Value column='answer_sort'>1</Value>" +
-                        "</Row>" +
-                        "<Row>" +
-                            "<Value column='id'>-1</Value>" +
-                            "<Value column='answer'>No Data Available</Value>" +
-                            "<Value column='answer_sort'>2</Value>" +
-                        "</Row>" +
-                    "</Rows>" +
-             "</InlineTable>";
+            "<Query alias='@@table@@'>\n" +
+                "<ExpressionView>\n" +
+                    "<SQL dialect='mysql'>\n" +
+                        "<![CDATA[SELECT 1 AS ID, 'Yes' AS ANSWER, 0 AS ANSWER_SORT FROM DUAL\n"
+                        + "UNION\n"
+                        + "SELECT 0, 'No', 1 FROM DUAL\n"
+                        + "UNION\n"
+                        + "SELECT -1, 'No Data Available', 2 FROM DUAL]]>\n" +
+                    "</SQL>\n" +
+                "</ExpressionView>\n" +
+            "</Query>\n";
     private static final String CATEGORY_QUERY_TEMPLATE =
             "<Query alias='@@table@@'>\n" +
                 "<ExpressionView>\n" +
                     "<SQL dialect='generic'>\n" +
                         "<![CDATA[SELECT ID, LABEL, 0 AS PRE_SORT, LABEL_SORT FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
                         "UNION ALL\n" +
-                        "SELECT x.* FROM (VALUES (-1, 'No Data Available', 1, '')) as x(ID,LABEL,PRE_SORT,LABEL_SORT)]]>\n" +
+                        "SELECT -1, 'No Data Available', 1, '' FROM DUAL]]>\n" +
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
@@ -87,7 +71,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                     "<SQL dialect='generic'>\n" +
                         "<![CDATA[SELECT DISTINCT LABEL, 0 AS PRE_SORT, LABEL_SORT FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
                         "UNION ALL\n" +
-                        "SELECT x.* FROM (VALUES ('No Data Available', 1, '')) as x(LABEL,PRE_SORT,LABEL_SORT)]]>\n" +
+                        "SELECT 'No Data Available', 1, '' FROM DUAL]]>\n" +
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";

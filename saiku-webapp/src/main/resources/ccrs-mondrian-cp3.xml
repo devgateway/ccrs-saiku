@@ -96,7 +96,6 @@
                             COALESCE(cp3undafevaluation.NRA_PARTICIPATED_ID, -1) AS NRA_PARTICIPATED_ID,
                             COALESCE(cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID, -1) AS NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID
                         from
-                            -- DERBY-PROPERTIES joinOrder = FIXED
                             CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
                             CP3UNDAF cp3undaf, CP3COMMON_COUNTRY_ASSESSMENT cp3assessment, CP3NATIONAL_DEVELOPMENT_PLAN cp3plan,
                             CP3UNDAFEVALUATION cp3undafevaluation, CP3UNDAFANNUAL_REVIEW cp3undafannual,
