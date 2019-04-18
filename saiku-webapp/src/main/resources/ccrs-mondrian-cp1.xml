@@ -152,62 +152,62 @@
                             CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CP1.YEAR_OF_OFFICIAL_REQUEST,
-                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID,
+                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5_ID,
                             CP1.PROJECTED_TOTALBOSSAVINGS_THIS_YEAR,
                             COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID,
-                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID,
+                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEB8B_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEB8B_ID,
                             COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID,
-                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID,
+                            COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATIO507_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATIO507_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp1.DAO_VISION_NOTE_ROADMAP = TRUE THEN 1 ELSE 0 END as DAO_VISION_NOTE_ROADMAP_COUNT,
 							CASE cp1.DAO_VISION_NOTE_ROADMAP WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DAO_VISION_NOTE_ROADMAP_DIM,
                             CASE WHEN cp1.COVER_MORE_THAN_ONE_COUNTRY = TRUE THEN 1 ELSE 0 END as COVER_MORE_THAN_ONE_COUNTRY_COUNT,	
                             CASE cp1.COVER_MORE_THAN_ONE_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as COVER_MORE_THAN_ONE_COUNTRY_DIM,
-                            CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12561 THEN 1 ELSE 0 END as SOP1q_YES_FULLY,
-                            CASE WHEN HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID = 12561 THEN 1 ELSE 0 END as SOP2q_YES_FULLY,
-                            CASE WHEN HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID = 12561 THEN 1 ELSE 0 END as SOP3q_YES_FULLY,
-                            CASE WHEN HAS_JOINT_ANNUAL_WORK_PLANS_ID = 12561 THEN 1 ELSE 0 END as SOP4q_YES_FULLY,
-                            CASE WHEN HAS_RESULTS_GROUPS_ID = 12561 THEN 1 ELSE 0 END as SOP5q_YES_FULLY,
-                            CASE WHEN HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID = 12561 THEN 1 ELSE 0 END as SOP6q_YES_FULLY,
-                            CASE WHEN HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID = 12561 THEN 1 ELSE 0 END as SOP7q_YES_FULLY,
-                            CASE WHEN HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID = 12561 THEN 1 ELSE 0 END as SOP8q_YES_FULLY,
-                            CASE WHEN HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID = 12561 THEN 1 ELSE 0 END as SOP9q_YES_FULLY,
-                            CASE WHEN HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID = 12561 THEN 1 ELSE 0 END as SOP10q_YES_FULLY,
-                            CASE WHEN HASBOSSTRATEGY_ID = 12561 THEN 1 ELSE 0 END as SOP11q_YES_FULLY,
-                            CASE WHEN HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID = 12561 THEN 1 ELSE 0 END as SOP12q_YES_FULLY,
-                            CASE WHEN HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID = 12561 THEN 1 ELSE 0 END as SOP13q_YES_FULLY,
-                            CASE WHEN HAS_JOINT_COMM_STRATEGY_ID = 12561 THEN 1 ELSE 0 END as SOP14q_YES_FULLY,
-                            CASE WHEN HAS_COUNTRY_COMM_GROUP_ID = 12561 THEN 1 ELSE 0 END as SOP15q_YES_FULLY,
-                            CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12562 THEN 1 ELSE 0 END as SOP1q_YES_PARTIALLY,
-                            CASE WHEN HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID = 12562 THEN 1 ELSE 0 END as SOP2q_YES_PARTIALLY,
-                            CASE WHEN HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID = 12562 THEN 1 ELSE 0 END as SOP3q_YES_PARTIALLY,
-                            CASE WHEN HAS_JOINT_ANNUAL_WORK_PLANS_ID = 12562 THEN 1 ELSE 0 END as SOP4q_YES_PARTIALLY,
-                            CASE WHEN HAS_RESULTS_GROUPS_ID = 12562 THEN 1 ELSE 0 END as SOP5q_YES_PARTIALLY,
-                            CASE WHEN HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID = 12562 THEN 1 ELSE 0 END as SOP6q_YES_PARTIALLY,
-                            CASE WHEN HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID = 12562 THEN 1 ELSE 0 END as SOP7q_YES_PARTIALLY,
-                            CASE WHEN HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID = 12562 THEN 1 ELSE 0 END as SOP8q_YES_PARTIALLY,
-                            CASE WHEN HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID = 12562 THEN 1 ELSE 0 END as SOP9q_YES_PARTIALLY,
-                            CASE WHEN HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID = 12562 THEN 1 ELSE 0 END as SOP10q_YES_PARTIALLY,
-                            CASE WHEN HASBOSSTRATEGY_ID = 12562 THEN 1 ELSE 0 END as SOP11q_YES_PARTIALLY,
-                            CASE WHEN HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID = 12562 THEN 1 ELSE 0 END as SOP12q_YES_PARTIALLY,
-                            CASE WHEN HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID = 12562 THEN 1 ELSE 0 END as SOP13q_YES_PARTIALLY,
-                            CASE WHEN HAS_JOINT_COMM_STRATEGY_ID = 12562 THEN 1 ELSE 0 END as SOP14q_YES_PARTIALLY,
-                            CASE WHEN HAS_COUNTRY_COMM_GROUP_ID = 12562 THEN 1 ELSE 0 END as SOP15q_YES_PARTIALLY,
-                            CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12563 THEN 1 ELSE 0 END as SOP1q_NO,
-                            CASE WHEN HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID = 12563 THEN 1 ELSE 0 END as SOP2q_NO,
-                            CASE WHEN HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID = 12563 THEN 1 ELSE 0 END as SOP3q_NO,
-                            CASE WHEN HAS_JOINT_ANNUAL_WORK_PLANS_ID = 12563 THEN 1 ELSE 0 END as SOP4q_NO,
-                            CASE WHEN HAS_RESULTS_GROUPS_ID = 12563 THEN 1 ELSE 0 END as SOP5q_NO,
-                            CASE WHEN HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID = 12563 THEN 1 ELSE 0 END as SOP6q_NO,
-                            CASE WHEN HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID = 12563 THEN 1 ELSE 0 END as SOP7q_NO,
-                            CASE WHEN HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID = 12563 THEN 1 ELSE 0 END as SOP8q_NO,
-                            CASE WHEN HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID = 12563 THEN 1 ELSE 0 END as SOP9q_NO,
-                            CASE WHEN HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID = 12563 THEN 1 ELSE 0 END as SOP10q_NO,
-                            CASE WHEN HASBOSSTRATEGY_ID = 12563 THEN 1 ELSE 0 END as SOP11q_NO,
-                            CASE WHEN HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID = 12563 THEN 1 ELSE 0 END as SOP12q_NO,
-                            CASE WHEN HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID = 12563 THEN 1 ELSE 0 END as SOP13q_NO,
-                            CASE WHEN HAS_JOINT_COMM_STRATEGY_ID = 12563 THEN 1 ELSE 0 END as SOP14q_NO,
-                            CASE WHEN HAS_COUNTRY_COMM_GROUP_ID = 12563 THEN 1 ELSE 0 END as SOP15q_NO,
+                            CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12561 THEN 1 ELSE 0 END as SOP1Q_YES_FULLY,
+                            CASE WHEN HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID = 12561 THEN 1 ELSE 0 END as SOP2Q_YES_FULLY,
+                            CASE WHEN HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID = 12561 THEN 1 ELSE 0 END as SOP3Q_YES_FULLY,
+                            CASE WHEN HAS_JOINT_ANNUAL_WORK_PLANS_ID = 12561 THEN 1 ELSE 0 END as SOP4Q_YES_FULLY,
+                            CASE WHEN HAS_RESULTS_GROUPS_ID = 12561 THEN 1 ELSE 0 END as SOP5Q_YES_FULLY,
+                            CASE WHEN HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID = 12561 THEN 1 ELSE 0 END as SOP6Q_YES_FULLY,
+                            CASE WHEN HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID = 12561 THEN 1 ELSE 0 END as SOP7Q_YES_FULLY,
+                            CASE WHEN HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID = 12561 THEN 1 ELSE 0 END as SOP8Q_YES_FULLY,
+                            CASE WHEN HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID = 12561 THEN 1 ELSE 0 END as SOP9Q_YES_FULLY,
+                            CASE WHEN HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID = 12561 THEN 1 ELSE 0 END as SOP10Q_YES_FULLY,
+                            CASE WHEN HASBOSSTRATEGY_ID = 12561 THEN 1 ELSE 0 END as SOP11Q_YES_FULLY,
+                            CASE WHEN HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID = 12561 THEN 1 ELSE 0 END as SOP12Q_YES_FULLY,
+                            CASE WHEN HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID = 12561 THEN 1 ELSE 0 END as SOP13Q_YES_FULLY,
+                            CASE WHEN HAS_JOINT_COMM_STRATEGY_ID = 12561 THEN 1 ELSE 0 END as SOP14Q_YES_FULLY,
+                            CASE WHEN HAS_COUNTRY_COMM_GROUP_ID = 12561 THEN 1 ELSE 0 END as SOP15Q_YES_FULLY,
+                            CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12562 THEN 1 ELSE 0 END as SOP1Q_YES_PARTIALLY,
+                            CASE WHEN HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID = 12562 THEN 1 ELSE 0 END as SOP2Q_YES_PARTIALLY,
+                            CASE WHEN HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID = 12562 THEN 1 ELSE 0 END as SOP3Q_YES_PARTIALLY,
+                            CASE WHEN HAS_JOINT_ANNUAL_WORK_PLANS_ID = 12562 THEN 1 ELSE 0 END as SOP4Q_YES_PARTIALLY,
+                            CASE WHEN HAS_RESULTS_GROUPS_ID = 12562 THEN 1 ELSE 0 END as SOP5Q_YES_PARTIALLY,
+                            CASE WHEN HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID = 12562 THEN 1 ELSE 0 END as SOP6Q_YES_PARTIALLY,
+                            CASE WHEN HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID = 12562 THEN 1 ELSE 0 END as SOP7Q_YES_PARTIALLY,
+                            CASE WHEN HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID = 12562 THEN 1 ELSE 0 END as SOP8Q_YES_PARTIALLY,
+                            CASE WHEN HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID = 12562 THEN 1 ELSE 0 END as SOP9Q_YES_PARTIALLY,
+                            CASE WHEN HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID = 12562 THEN 1 ELSE 0 END as SOP10Q_YES_PARTIALLY,
+                            CASE WHEN HASBOSSTRATEGY_ID = 12562 THEN 1 ELSE 0 END as SOP11Q_YES_PARTIALLY,
+                            CASE WHEN HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID = 12562 THEN 1 ELSE 0 END as SOP12Q_YES_PARTIALLY,
+                            CASE WHEN HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID = 12562 THEN 1 ELSE 0 END as SOP13Q_YES_PARTIALLY,
+                            CASE WHEN HAS_JOINT_COMM_STRATEGY_ID = 12562 THEN 1 ELSE 0 END as SOP14Q_YES_PARTIALLY,
+                            CASE WHEN HAS_COUNTRY_COMM_GROUP_ID = 12562 THEN 1 ELSE 0 END as SOP15Q_YES_PARTIALLY,
+                            CASE WHEN HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID = 12563 THEN 1 ELSE 0 END as SOP1Q_NO,
+                            CASE WHEN HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID = 12563 THEN 1 ELSE 0 END as SOP2Q_NO,
+                            CASE WHEN HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID = 12563 THEN 1 ELSE 0 END as SOP3Q_NO,
+                            CASE WHEN HAS_JOINT_ANNUAL_WORK_PLANS_ID = 12563 THEN 1 ELSE 0 END as SOP4Q_NO,
+                            CASE WHEN HAS_RESULTS_GROUPS_ID = 12563 THEN 1 ELSE 0 END as SOP5Q_NO,
+                            CASE WHEN HAS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID = 12563 THEN 1 ELSE 0 END as SOP6Q_NO,
+                            CASE WHEN HAS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID = 12563 THEN 1 ELSE 0 END as SOP7Q_NO,
+                            CASE WHEN HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID = 12563 THEN 1 ELSE 0 END as SOP8Q_NO,
+                            CASE WHEN HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS_ID = 12563 THEN 1 ELSE 0 END as SOP9Q_NO,
+                            CASE WHEN HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES_ID = 12563 THEN 1 ELSE 0 END as SOP10Q_NO,
+                            CASE WHEN HASBOSSTRATEGY_ID = 12563 THEN 1 ELSE 0 END as SOP11Q_NO,
+                            CASE WHEN HAS_EMPOWERED_OPS_MANAGEMENT_TEAM_ID = 12563 THEN 1 ELSE 0 END as SOP12Q_NO,
+                            CASE WHEN HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED_ID = 12563 THEN 1 ELSE 0 END as SOP13Q_NO,
+                            CASE WHEN HAS_JOINT_COMM_STRATEGY_ID = 12563 THEN 1 ELSE 0 END as SOP14Q_NO,
+                            CASE WHEN HAS_COUNTRY_COMM_GROUP_ID = 12563 THEN 1 ELSE 0 END as SOP15Q_NO,
                             HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID,
                             HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID,
                             HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID,
@@ -694,11 +694,11 @@
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
 					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_DIM"/>
 					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
-                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5_ID"/>
                     <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
-                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEB8B_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATIO507_ID"/>
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -780,11 +780,11 @@
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
 					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_DIM"/>
 					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
-                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5_ID"/>
                     <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
-                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEB8B_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATIO507_ID"/>
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -866,11 +866,11 @@
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
 					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_DIM"/>
 					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
-                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5_ID"/>
                     <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
-                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEB8B_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATIO507_ID"/>
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
@@ -934,11 +934,11 @@
                     <ForeignKeyLink dimension="SOP2PartialImplementationDetails" foreignKeyColumn="SOP2_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
 					<ForeignKeyLink dimension="ReportPubliclyAvailable" foreignKeyColumn="REPORT_PUBLICLY_AVAILABLE_DIM"/>
 					<ForeignKeyLink dimension="ReportPublishingModality" foreignKeyColumn="REPORT_PUBLISHING_MODALITY_ID"/>
-                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID"/>
+                    <ForeignKeyLink dimension="SOP3PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5_ID"/>
                     <ForeignKeyLink dimension="SOP5PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS_ID"/>
-                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEWORK_ID"/>
+                    <ForeignKeyLink dimension="SOP6PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEB8B_ID"/>
                     <ForeignKeyLink dimension="SOP7PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK_ID"/>
-                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATION_STRATEGY_ID"/>
+                    <ForeignKeyLink dimension="SOP8PartialImplementationDetails" foreignKeyColumn="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATIO507_ID"/>
                     <ForeignKeyLink dimension="SOP14PartialImplementationDetails" foreignKeyColumn="SOP14_PARTIAL_IMPLEMENTATION_DETAILS_ID"/>
                     <ForeignKeyLink dimension="GovernmentRole" foreignKeyColumn="GOVERNMENT_ROLE_ID"/>
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>

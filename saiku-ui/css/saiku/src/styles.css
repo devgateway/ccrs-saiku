@@ -219,7 +219,7 @@ textarea, select {
 	display: block;
 	height: 26px;
 	padding: 4px;
-	width: 26px;
+	min-width: 26px;
 	opacity:1;
 }
 #toolbar ul li a:hover {
