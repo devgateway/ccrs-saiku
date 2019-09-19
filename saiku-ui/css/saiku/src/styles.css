@@ -53,7 +53,7 @@ html, body {
     position: relative;
     z-index: 1000;
 }
-  
+
 .thCountry:hover .tooltiptext {
     visibility: visible;
 }
@@ -194,7 +194,7 @@ textarea, select {
 #toolbar {
 	background: #00589e;
 	border-bottom: 1px solid #eeeeee;
-	height: 55px;
+	height: 75px;
 }
 #toolbar ul {
     list-style-type: none;
@@ -281,7 +281,7 @@ textarea, select {
 #logo_override img {
     float: right;
     width: 200px;
-    height: 37px;
+    height: 55px;
     margin: -20px 10px 0 0;
 }
 /** Tabs */
@@ -1838,7 +1838,7 @@ a.disabled_toolbar:hover {
 	opacity: 0.85;
   }
   #tooltip h3, #tooltip div { margin: 0; }
-  
+
 
 /* OOCSS - reusable classes */
 
