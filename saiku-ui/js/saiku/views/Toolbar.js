@@ -31,7 +31,7 @@ var Toolbar = Backbone.View.extend({
     initialize: function() {
         var self = this;
         self.logo = "<h1 id='logo_override'>"+
-            "<a href='/' title='United Nations Development Group' target='_blank'><img src='undg-logo.png' alt='United Nations Development Group'/></a>"+
+            "<a href='/' title='United Nations Development Group' target='_blank'><img src='undg-logo.svg' alt='United Nations Development Group'/></a>"+
             "</h1>";
         self.render();
     },
