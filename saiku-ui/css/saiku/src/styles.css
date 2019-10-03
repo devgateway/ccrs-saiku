@@ -233,7 +233,7 @@ textarea, select {
     background-position: -1628px 5px;
 }
 #toolbar ul li a.cp_rollback_msg {
-	background: url(../../../images/sprite2.png) no-repeat -2px 0;
+	background: url(../../../images/sprite2.png) no-repeat 6px 5px;
 }
 #toolbar ul li a.schema_designer {
     background: url(../../../images/src/main_toolbar_schema_designer.png) no-repeat center;
