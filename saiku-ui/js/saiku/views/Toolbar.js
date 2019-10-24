@@ -93,4 +93,9 @@ var Toolbar = Backbone.View.extend({
     logout: function() {
         Saiku.session.logout();
     },
+
+	cpRollbackAbbrShowMore: function() {
+		$('#cpRollbackAbbr').hide();
+		$('#cpRollbackFull').show();
+	}
 });
