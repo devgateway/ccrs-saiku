@@ -97,5 +97,10 @@ var Toolbar = Backbone.View.extend({
 	cpRollbackAbbrShowMore: function() {
 		$('#cpRollbackAbbr').hide();
 		$('#cpRollbackFull').show();
+	},
+
+	cpRollbackAbbrShowLess: function() {
+		$('#cpRollbackAbbr').show();
+		$('#cpRollbackFull').hide();
 	}
 });
