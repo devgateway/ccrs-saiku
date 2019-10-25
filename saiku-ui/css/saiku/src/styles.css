@@ -194,7 +194,7 @@ textarea, select {
 #toolbar {
 	background: #00589e;
 	border-bottom: 1px solid #eeeeee;
-	height: 75px;
+	/*height: 75px;*/
 }
 #toolbar ul {
     list-style-type: none;
