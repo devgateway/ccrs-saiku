@@ -35,7 +35,11 @@
                           COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                           CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                           CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
-                          CASE M.NON_RESIDENT_AGENCY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NON_RESIDENT_AGENCY_DIM
+                          CASE M.NON_RESIDENT_AGENCY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NON_RESIDENT_AGENCY_DIM,
+                          CASE WHEN M.has_physical_in_country_presence = TRUE THEN 1 ELSE 0 END as has_physical_in_country_presence_count,
+                          CASE M.has_physical_in_country_presence WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_physical_in_country_presence_dim,
+                          COALESCE(M.agency_non_physical_presence_id, -1) AS agency_non_physical_presence_id,
+                          COALESCE(M.agency_presence_id, -1) AS agency_presence_id
                         FROM CP1UNCTMEMBER M
                           JOIN CP1GENERAL_PROFILE CP1 ON M.PARENT_ID = CP1.ID
                           JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.ISO2
@@ -60,7 +64,9 @@
                           AGENCY.LABEL AS AGENCY,
                           CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                           COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                          CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                          CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                          CASE WHEN M.`lead` = TRUE THEN 1 ELSE 0 END as lead_count,
+                          CASE M.`lead` WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as lead_dim
                         FROM
                           CP1UNCGMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v, CATEGORY AGENCY
                         WHERE
@@ -151,6 +157,8 @@
                         select
                             CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(CP1.resident_coordinator_gender_id, -1) AS resident_coordinator_gender_id,
+                            COALESCE(CP1.resident_coordinator_nationality_id, -1) AS resident_coordinator_nationality_id,
                             CP1.YEAR_OF_OFFICIAL_REQUEST,
                             COALESCE(CP1.PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5_ID, -1) AS PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5_ID,
                             CP1.PROJECTED_TOTALBOSSAVINGS_THIS_YEAR,
@@ -281,6 +289,9 @@
             <Dimension source="CATEGORY" table="RepresentativePostLevel" caption="Representative Post Level" />
 
             <Dimension table="YesNoTable" name="Has Non-Resident Agency" caption="Has Non-Resident Agency?" />
+            <Dimension table="YesNoTable" name="Does the agency have a physical in-country presence?" caption="Does the agency have a physical in-country presence?" />
+            <Dimension source="CATEGORY" table="AgencyPresence" caption="What kind of physical in-country presence does your agency have?" />
+            <Dimension source="CATEGORY" table="AgencyNonPhysicalPresence" caption="What kind of non physical in-country presence does your agency have?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -289,6 +300,10 @@
                     <Measure name="Count" caption="Number of UNCT Members" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                     <Measure name="NRA" caption="Non-Resident Agency Count" column="NON_RESIDENT_AGENCY_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <Measure name="Count of 'Does the agency have a physical in-country presence?'"
+                             caption="Count of 'Does the agency have a physical in-country presence?'"
+                             column="has_physical_in_country_presence_count"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
@@ -299,6 +314,9 @@
                     <ForeignKeyLink dimension="UNAgencyRepresentativeTitle"
                                     foreignKeyColumn="AGENCY_REPRESENTATIVE_TITLE_ID" />
                     <ForeignKeyLink dimension="Has Non-Resident Agency"  foreignKeyColumn="NON_RESIDENT_AGENCY_DIM"/>
+                    <ForeignKeyLink dimension="Does the agency have a physical in-country presence?" foreignKeyColumn="has_physical_in_country_presence_dim"/>
+                    <ForeignKeyLink dimension="AgencyNonPhysicalPresence" foreignKeyColumn="agency_non_physical_presence_id" />
+                    <ForeignKeyLink dimension="AgencyPresence" foreignKeyColumn="agency_presence_id" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -366,6 +384,8 @@
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
+
+            <Dimension table="YesNoTable" name="UNCG lead?" caption="UNCG lead?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -373,6 +393,10 @@
                 <Measures>
                     <Measure name="Count" caption="Number of UNCG Members" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
+                    <Measure name="Count of 'UNCG lead?'"
+                             caption="Count of 'UNCG lead?'"
+                             column="lead_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -381,6 +405,7 @@
                     <ForeignKeyLink dimension="UNCGPositionTitle" foreignKeyColumn="POSITION_TITLE_ID" />
                     <FactLink dimension="UNCGMemberPhoneNumber" />
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY" />
+                    <ForeignKeyLink dimension="UNCG lead?" foreignKeyColumn="lead_dim"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -471,8 +496,8 @@
             </Dimension>
 
             <Dimension table="YesNoTable" name="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)" caption="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)?" />
-            <Dimension table="YesNoTable" name="Does the Results Group have a Joint Workplan" caption="Does the Results Group have a Joint Workplan?" />
-            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="resultsGroupAlignedToSectorGroups" caption="Is the results group aligned to nationally led sector working groups or theme groups?" />
+            <Dimension table="YesNoTable" name="Does the Interagency/Results Group have a Joint Workplan?" caption="Does the Interagency/Results Group have a Joint Workplan?" />
+            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="resultsGroupAlignedToSectorGroups" caption="Is the Interagency/Results Group aligned to nationally led sector working groups or theme groups?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -484,13 +509,13 @@
                     <Measure name="resultsGroupDefinedBySOP" caption="Count of 'Is this a Results Group as defined by the Standard Operating Procedures (SOPs)'" column="RESULTS_GROUP_DEFINED_BYSOP_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="jointWorkplan" caption="Count of 'Does the Results Group have a Joint Workplan'" column="JOINT_WORKPLAN_COUNT"
+                    <Measure name="jointWorkplan" caption="Count of 'Does the Interagency/Results Group have a Joint Workplan?'" column="JOINT_WORKPLAN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)"  foreignKeyColumn="RESULTS_GROUP_DEFINED_BYSOP_DIM"/>
-                    <ForeignKeyLink dimension="Does the Results Group have a Joint Workplan"  foreignKeyColumn="JOINT_WORKPLAN_DIM"/>
+                    <ForeignKeyLink dimension="Does the Interagency/Results Group have a Joint Workplan?"  foreignKeyColumn="JOINT_WORKPLAN_DIM"/>
                     <ForeignKeyLink dimension="resultsGroupAlignedToSectorGroups"  foreignKeyColumn="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID"/>
                     <FactLink dimension="Interagency Group Name" />
                 </DimensionLinks>
@@ -579,7 +604,7 @@
             
             <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP1question" caption="SOP1 Joint National/UN Steering Committee" />
             <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP2question" caption="SOP2 Annual Report on Joint Results" />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP3question" caption="SOP3 Signed UNDAF" />
+            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP3question" caption="SOP3 Signed UNDAF/Cooperation Framework" />
             <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP4question" caption="SOP4 Joint Workplans (for Results Groups)" />
             <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP5question" caption="SOP5 Results Groups Established." />
             <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="SoP6question" caption="SOP6 Medium-Term Common Budgetary Framework." />
@@ -598,7 +623,7 @@
             <Dimension table="YesNoTable" name="Was the report submitted to the National Government" caption="Was the report submitted to the National Government?" />
             <Dimension table="YesNoTable" name="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" />
             <Dimension table="YesNoTable" name="Cover More Than One Country" caption="Does your UNCT cover more than one country?" />
-            <Dimension table="YesNoTable" name="Joint communication strategy based on the UNDAF" caption="Is the joint communication strategy based on the UNDAF or equivalent?" />
+            <Dimension table="YesNoTable" name="Joint communication strategy based on the UNDAF" caption="Is the joint communication strategy based on the UNDAF/Cooperation Framework or equivalent?" />
             <Dimension table="YesNoTable" name="Report on communication results" caption="Do you report on communication results in the UN Country Results Report?" />
 
             <Dimension name="Year of Official Request" caption="Year of Official Request" table="CP1GeneralCube"
@@ -618,6 +643,16 @@
             <Dimension source="CATEGORY" table="SOP7PartialImplementationDetails" caption="SOP7 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP8PartialImplementationDetails" caption="SOP8 Details on partial implementation." />
             <Dimension source="CATEGORY" table="SOP14PartialImplementationDetails" caption="SOP14 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="Gender" caption="Resident Coordinator Gender" />
+            <Dimension name="RCNationality" caption="Resident Coordinator Nationality" table="BASE_COUNTRY_WITHOUT_REGION" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries" />
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -629,7 +664,7 @@
                     <Measure name="#YesFullySOP2" caption="# Yes, Fully SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="#YesFullySOP3" caption="# Yes, Fully SOP 3 - Signed UNDAF" column="SOP3Q_YES_FULLY" datatype="Integer"
+                    <Measure name="#YesFullySOP3" caption="# Yes, Fully SOP 3 - Signed UNDAF/Cooperation Framework" column="SOP3Q_YES_FULLY" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesFullySOP4" caption="# Yes, Fully SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_YES_FULLY" datatype="Integer"
@@ -704,6 +739,8 @@
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>
                     <ForeignKeyLink dimension="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" foreignKeyColumn="BUDGETED_WORKPLAN"/>
+                    <ForeignKeyLink dimension="Gender" foreignKeyColumn="resident_coordinator_gender_id"/>
+                    <ForeignKeyLink dimension="RCNationality" foreignKeyColumn="resident_coordinator_nationality_id"/>
                 </DimensionLinks>
             </MeasureGroup>
 
@@ -715,7 +752,7 @@
                     <Measure name="#YesPartiallySOP2" caption="# Yes, Partially SOP 2 - Annual Report on Joint Results" column="SOP2Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="#YesPartiallySOP3" caption="# Yes, Partially SOP 3 - Signed UNDAF" column="SOP3Q_YES_PARTIALLY" datatype="Integer"
+                    <Measure name="#YesPartiallySOP3" caption="# Yes, Partially SOP 3 - Signed UNDAF/Cooperation Framework" column="SOP3Q_YES_PARTIALLY" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#YesPartiallySOP4" caption="# Yes, Partially SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_YES_PARTIALLY" datatype="Integer"
@@ -790,6 +827,8 @@
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>
                     <ForeignKeyLink dimension="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" foreignKeyColumn="BUDGETED_WORKPLAN"/>
+                    <ForeignKeyLink dimension="Gender" foreignKeyColumn="resident_coordinator_gender_id"/>
+                    <ForeignKeyLink dimension="RCNationality" foreignKeyColumn="resident_coordinator_nationality_id"/>
                 </DimensionLinks>
             </MeasureGroup>
 
@@ -801,7 +840,7 @@
                     <Measure name="#NoSOP2" caption="# No SOP 2 - Annual Report on Joint Results" column="SOP2Q_NO" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="#NoSOP3" caption="# No SOP 3 - Signed UNDAF" column="SOP3Q_NO" datatype="Integer"
+                    <Measure name="#NoSOP3" caption="# No SOP 3 - Signed UNDAF/Cooperation Framework" column="SOP3Q_NO" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#NoSOP4" caption="# No SOP 4 - Joint Workplans (for Results Groups)" column="SOP4Q_NO" datatype="Integer"
@@ -876,6 +915,8 @@
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>
                     <ForeignKeyLink dimension="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" foreignKeyColumn="BUDGETED_WORKPLAN"/>
+                    <ForeignKeyLink dimension="Gender" foreignKeyColumn="resident_coordinator_gender_id"/>
+                    <ForeignKeyLink dimension="RCNationality" foreignKeyColumn="resident_coordinator_nationality_id"/>
                 </DimensionLinks>
             </MeasureGroup>
 
@@ -899,7 +940,7 @@
                     <Measure name="#CoverMoreThanOneCountry" caption="Count 'Does your UNCT cover more than one country?'" column="COVER_MORE_THAN_ONE_COUNTRY_COUNT" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="#UndafBasedOrEquivalent" caption="Count 'Is the joint communication strategy based on the UNDAF or equivalent?'" column="UNDAF_BASED_OR_EQUIVALENT_COUNT" datatype="Integer"
+                    <Measure name="#UndafBasedOrEquivalent" caption="Count 'Is the joint communication strategy based on the UNDAF/Cooperation Framework or equivalent?'" column="UNDAF_BASED_OR_EQUIVALENT_COUNT" datatype="Integer"
                              aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="#ReportOnCommunicationResults" caption="Count 'Do you report on communication results in the UN Country Results Report?'" column="REPORT_INUNCOUNTRY_RESULTS_REPORT_COUNT" datatype="Integer"
@@ -944,6 +985,8 @@
                     <ForeignKeyLink dimension="Has the Joint National/UN Steering Committee conducted an annual review" foreignKeyColumn="HAS_ANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="Was the report submitted to the National Government" foreignKeyColumn="REPORT_SUBMITTED_TO_GOV"/>
                     <ForeignKeyLink dimension="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy" foreignKeyColumn="BUDGETED_WORKPLAN"/>
+                    <ForeignKeyLink dimension="Gender" foreignKeyColumn="resident_coordinator_gender_id"/>
+                    <ForeignKeyLink dimension="RCNationality" foreignKeyColumn="resident_coordinator_nationality_id"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
