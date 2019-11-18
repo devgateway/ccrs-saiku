@@ -133,9 +133,9 @@
 
             <Dimension table="YesNoTable" name="South-South Cooperation" caption="Does the UNCT provide support on South-South Cooperation?" />
             <Dimension source="CATEGORY" table="YesNoNAQuestion" name="SWAPs" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" />
-            <Dimension table="YesNoTable" name="Direct budget support" caption="Does the UNCT provide direct budget support?" />
+            <Dimension table="YesNoTable" name="Direct budget support" caption="Does the UNCT provide direct budget support to the national authorities/government?" />
             <Dimension table="YesNoTable" name="Chair/co-chair aid effectiveness" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" />
-            <Dimension table="YesNoTable" name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and aid management?" />
+            <Dimension table="YesNoTable" name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and/or aid management?" />
             <Dimension table="YesNoTable" name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" />
             <Dimension table="YesNoTable" name="Is the system supported by the UNCT" caption="Is the system supported by the UNCT?" />
             <Dimension table="YesNoTable" name="Does the UNCT report to the AIMS" caption="Does the UNCT report to the AIMS?" />
@@ -154,13 +154,13 @@
                     <Measure name="SouthSouthCooperation" caption="Count of UNCT provide support on South-South Cooperation" column="HAS_SUPPORTSSCOOPERATION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="DirectBudgetSupport" caption="Count of UNCT provide direct budget support" column="HAS_DIRECT_BUDGET_SUPPORT_COUNT"
+                    <Measure name="DirectBudgetSupport" caption="Count of 'Does the UNCT provide direct budget support to the national authorities/government?'" column="HAS_DIRECT_BUDGET_SUPPORT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="ChairCochairAidEffectiveness" caption="Count of UNCT chair/co-chair aid effectiveness and coordination fora" column="IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="CapacityDevelopment for aid modalities" caption="Count of UNCT provide capacity development for use of aid modalities and aid management" column="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"
+                    <Measure name="CapacityDevelopment for aid modalities" caption="Count of 'Does the UNCT provide capacity development for use of aid modalities and/or aid management?'" column="HAS_CAPACITY_FOR_AID_MODALITIES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="AIMS" caption="Count of Aid Management Information System (AIMS)" column="HASAIMS_COUNT"
