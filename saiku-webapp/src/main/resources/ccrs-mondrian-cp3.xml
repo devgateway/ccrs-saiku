@@ -55,8 +55,6 @@
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_COUNTRY_ASSESSMENT_COUNT,
                             CASE cp3.HAS_COMMON_COUNTRY_ASSESSMENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMON_COUNTRY_ASSESSMENT,
                             cp3assessment.ASSESSMENT_YEAR,
-                            CASE WHEN cp3.HAS_DISAGGREGATED_DATA = TRUE THEN 1 ELSE 0 END as HAS_DISAGGREGATED_DATA_COUNT,
-                            CASE cp3.HAS_DISAGGREGATED_DATA WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_DISAGGREGATED_DATA,
                             COALESCE(cp3assessment.OTHER_ANALYSIS_SOURCE_ID, -1) AS OTHER_ANALYSIS_SOURCE_ID,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT,
                             CASE cp3.HAS_NATIONAL_DEVELOPMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_NATIONAL_DEVELOPMENT_PLAN,
@@ -94,7 +92,20 @@
                             CASE cp3plan.SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END AS SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN,
                             COALESCE(cp3plan.NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID, -1) AS NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID,
                             COALESCE(cp3undafevaluation.NRA_PARTICIPATED_ID, -1) AS NRA_PARTICIPATED_ID,
-                            COALESCE(cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID, -1) AS NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID
+                            COALESCE(cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID, -1) AS NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID,
+                            cp3undaf.funding_gap_at_start,
+                            CASE WHEN cp3assessment.NON_RESIDENT_AGENCIES_PARTICIPATED = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCIES_PARTICIPATED_COUNT,
+                            CASE cp3assessment.NON_RESIDENT_AGENCIES_PARTICIPATED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NON_RESIDENT_AGENCIES_PARTICIPATED_DIM,
+                            CASE WHEN cp3undafevaluation.evaluation_include_recommendations = TRUE THEN 1 ELSE 0 END as evaluation_include_recommendations_count,
+                            CASE cp3undafevaluation.evaluation_include_recommendations WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as evaluation_include_recommendations_dim,
+                            CASE WHEN cp3.has_configuration_review = TRUE THEN 1 ELSE 0 END as has_configuration_review_count,
+                            CASE cp3.has_configuration_review WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_configuration_review_dim,
+                            CASE WHEN cp3.gov_included_in_configuration = TRUE THEN 1 ELSE 0 END as gov_included_in_configuration_count,
+                            CASE cp3.gov_included_in_configuration WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as gov_included_in_configuration_dim,
+                            CASE WHEN cp3.unct_configuration_changed = TRUE THEN 1 ELSE 0 END as unct_configuration_changed_count,
+                            CASE cp3.unct_configuration_changed WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as unct_configuration_changed_dim,
+                            CASE WHEN cp3.participates_in_cross_border_initiatives = TRUE THEN 1 ELSE 0 END as participates_in_cross_border_initiatives_count,
+                            CASE cp3.participates_in_cross_border_initiatives WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as participates_in_cross_border_initiatives_dim
                         from
                             CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
                             CP3UNDAF cp3undaf, CP3COMMON_COUNTRY_ASSESSMENT cp3assessment, CP3NATIONAL_DEVELOPMENT_PLAN cp3plan,
@@ -185,7 +196,7 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
             
-            <Dimension table="YesNoTable" name="UN Development Assistance Framework" caption="Is there an UN Development Assistance Framework (UNDAF), or equivalent?" />
+            <Dimension table="YesNoTable" name="UN Development Assistance Framework" caption="Is there an UN Development Assistance Framework/Cooperation Framework (UNDAF/CF), or equivalent?" />
             
             <Dimension name="Date of Signature" caption="Date of Signature" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
@@ -199,32 +210,32 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension name="Start Date" caption="UNDAF Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+            <Dimension name="Start Date" caption="UNDAF/Cooperation Framework Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Start Date" caption="UNDAF Start Date" keyColumn="START_DATE"
+                    <Attribute name="Start Date" caption="UNDAF/Cooperation Framework Start Date" keyColumn="START_DATE"
                                hierarchyHasAll="true"
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension name="End Date" caption="UNDAF End Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+            <Dimension name="End Date" caption="UNDAF/Cooperation Framework End Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="End Date" caption="UNDAF End Date" keyColumn="END_DATE"
+                    <Attribute name="End Date" caption="UNDAF/Cooperation Framework End Date" keyColumn="END_DATE"
                                hierarchyHasAll="true"
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Is your UNCT in the process of developing a new UNDAF" caption="Is your UNCT in the process of developing a new UNDAF?" />
-            <Dimension table="YesNoTable" name="Common Country Assessment (CCA)" caption="Did the UNCT lead their own Common Country Assessment (CCA) conducted for the present UNDAF?" />
+            <Dimension table="YesNoTable" name="Is your UNCT in the process of developing a Cooperation Framework?" caption="Is your UNCT in the process of developing a Cooperation Framework?" />
+            <Dimension table="YesNoTable" name="Common Country Assessment (CCA)" caption="Has a Common Country Analysis (CCA) been conducted for the present UNDAF/Cooperation Framework?" />
             
             <Dimension name="Year CCA was conducted" caption="Year CCA was conducted" table='CP3GeneralCube' key="Dimension Id">
                 <Attributes>
@@ -239,11 +250,10 @@
             </Dimension>
             
             <Dimension source="CATEGORY" table="AlternativeAnalysis" caption="If the UNCT relied on other analysis, which alternative option did you use?" />
-            <Dimension table="YesNoTable" name="Does the UNCT have access to official government data?" caption="Does the UNCT have access to official government data?" />
             <Dimension table="YesNoTable" name="National Development Plan" caption="Is there a National Development Plan?" />
             <Dimension table="YesNoTable" name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" />
             <Dimension table="YesNoTable" name="Joint Programmes" caption="Do you have Joint Programmes?" />
-            <Dimension table="YesNoTable" name="UNDAF Annual Review" caption="Have you conducted an UNDAF Annual Review in the last 12 months?" />
+            <Dimension table="YesNoTable" name="UNDAF Annual Review" caption="Have you conducted an UNDAF/Cooperation Framework Annual Review in the last 12 months?" />
             
             <Dimension name="Date Completed (Annual Review)" caption="Date Completed (Annual Review)" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
@@ -257,7 +267,7 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension table="YesNoTable" name="UNDAF Evaluation" caption="Have you conducted an UNDAF evaluation for the last UNDAF cycle?" />
+            <Dimension table="YesNoTable" name="UNDAF Evaluation" caption="Have you conducted an UNDAF/Cooperation Framework evaluation for the last UNDAF/Cooperation Framework cycle?" />
             
             <Dimension name="Date completed (NRAs participate in the UNDAF Evaluation Planning)" caption="Date completed (NRAs participate in the UNDAF Evaluation Planning)" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
@@ -272,13 +282,13 @@
             </Dimension>
 
             <Dimension table="YesNoTable" name="Was a management response prepared" caption="Was a management response prepared?" />
-            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did NRAs participate in the UNDAF Annual Review?" />
-            <Dimension table="YesNoTable" name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF (approved by the Regional UNDG)?" />
-            <Dimension table="YesNoTable" name="Does the UNDAF include a theory of change" caption="Does the UNDAF include a theory of change?" />
-            <Dimension table="YesNoTable" name="Do you have a costed monitoring and evaluation plan for the UNDAF" caption="Do you have a costed monitoring and evaluation plan for the UNDAF?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did NRAs participate in the UNDAF/Cooperation Framework Annual Review?" />
+            <Dimension table="YesNoTable" name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF/Cooperation Framework (approved by the Regional UNDG)?" />
+            <Dimension table="YesNoTable" name="Does the UNDAF/Cooperation Framework include a theory of change?" caption="Does the UNDAF/Cooperation Framework include a theory of change?" />
+            <Dimension table="YesNoTable" name="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?" caption="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?" />
             <Dimension table="YesNoTable" name="Is there a UN Vision 2030 paper" caption="Is there a UN Vision 2030 paper?" />
             
-            <Dimension name="Year UNDAF completed" caption="Year UNDAF M&amp;E plan was completed" table='CP3GeneralCube' visible="true">
+            <Dimension name="Year UNDAF completed" caption="Year UNDAF/Cooperation Framework M&amp;E plan was completed" table='CP3GeneralCube' visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="YEAR_COMPLETED" datatype="Integer" />
                 </Attributes>
@@ -293,19 +303,19 @@
             <Dimension table="YesNoTable" name="Did NRA contribute to the UN Vision 2030 paper" caption="Did NRA contribute to the UN Vision 2030 paper?" />
             <Dimension table="YesNoTable" name="Has your UNCT prepared a roadmap for its new UNDAF" caption="Has your UNCT prepared a roadmap for its new UNDAF?" />
 
-            <Dimension name="Date UNDAF Roadmap was developed" caption="Date UNDAF Roadmap was developed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+            <Dimension name="Date UNDAF/Cooperation Framework Roadmap was developed" caption="Date UNDAF/Cooperation Framework Roadmap was developed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Date UNDAF Roadmap was developed" caption="Date UNDAF Roadmap was developed" keyColumn="NEWUNDAFROADMAP_DATE"
+                    <Attribute name="Date UNDAF/Cooperation Framework Roadmap was developed" caption="Date UNDAF/Cooperation Framework Roadmap was developed" keyColumn="NEWUNDAFROADMAP_DATE"
                                hierarchyHasAll="true"
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
             
-            <Dimension source="CATEGORY" table="UNDAFPeriodAlignedWithGov" caption="Is the period of the UN Development Assistance Framework (or equivalent instrument) aligned with the Government's planning and budgeting cycle?" />
+            <Dimension source="CATEGORY" table="UNDAFPeriodAlignedWithGov" caption="Is the period of the UN Development Assistance Framework/Cooperation Framework (or equivalent instrument) aligned with the Government's planning and budgeting cycle?" />
 
             <Dimension name="National Development Plan Start Date" caption="National Development Plan Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
@@ -333,8 +343,14 @@
             
             <Dimension table="YesNoTable" name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" />
             <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did NRAs participate in supporting development of the National Development Plan?" />
-            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAParticipated" caption="Did NRAs participate in the UNDAF Evaluation Planning?" />
-            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAContributeToEvaluationMgmtResponse" caption="Did NRA contribute to the evaluation management response?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAParticipated" caption="Did UN entities without in-country physical presence participate in the UNDAF/Cooperation Framework evaluation planning?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAContributeToEvaluationMgmtResponse" caption="Did UN entities without in-country physical presence contribute to the evaluation management response?" />
+            <Dimension table="YesNoTable" name="nonResidentAgenciesParticipated" caption="Did UN entities without in-country physical presence participate in preparing the CCA?" />
+            <Dimension table="YesNoTable" name="evaluationIncludeRecommendations" caption="Does the evaluation include actionable recommendations, with a clear target audience and time frame for implementation?" />
+            <Dimension table="YesNoTable" name="hasConfigurationReview" caption="Has a country configuration review taken place in the last year?" />
+            <Dimension table="YesNoTable" name="govIncludedInConfiguration" caption="Was the government involved?" />
+            <Dimension table="YesNoTable" name="unctConfigurationChanged" caption="Did this lead to a change in the UNCT configuration?" />
+            <Dimension table="YesNoTable" name="participatesInCrossBorderInitiatives" caption="Does your UNCT participate in cross-border initiatives?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -346,19 +362,16 @@
                     <Measure name="UNDevelopmentAssistanceFramework" caption="Count UNDAF" column="HASUNDAF_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="totalPlannedBudget" caption="Total Planned Budget of UNDAF" column="TOTAL_PLANNED_BUDGET"
+                    <Measure name="totalPlannedBudget" caption="Total Planned Budget of UNDAF/Cooperation Framework" column="TOTAL_PLANNED_BUDGET"
                              datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="preparationProcessMonths" caption="How long (in months) was the UNDAF preparation process" column="PREPARATION_PROCESS_MONTHS"
+                    <Measure name="preparationProcessMonths" caption="How long (in months) was the UNDAF/Cooperation Framework preparation process" column="PREPARATION_PROCESS_MONTHS"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="isDevelopingNewUNDAF" caption="Count of 'Is your UNCT in the process of developing a new UNDAF'" column="IS_DEVELOPING_NEWUNDAF_COUNT"
+                    <Measure name="isDevelopingNewUNDAF" caption="Count of 'Is your UNCT in the process of developing a Cooperation Framework?'" column="IS_DEVELOPING_NEWUNDAF_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="CommonCountryAssessment" caption="Count UNCT lead their own CCA" column="HAS_COMMON_COUNTRY_ASSESSMENT_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-
-                    <Measure name="hasDisaggregatedData" caption="Count of 'Does the UNCT have access to official government data?'" column="HAS_DISAGGREGATED_DATA_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="NationalDevelopmentPlan" caption="Count is there a National Development Plan" column="HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT"
@@ -379,13 +392,13 @@
                     <Measure name="managementResponsePrepared" caption="Count of 'Was a management response prepared'" column="MANAGEMENT_RESPONSE_PREPARED_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="undafExtensionPresent" caption="Count of 'Was there an extension of the UNDAF (approved by the Regional UNDG)'" column="UNDAF_EXTENSION_PRESENT_COUNT"
+                    <Measure name="undafExtensionPresent" caption="Count of 'Was there an extension of the UNDAF/Cooperation Framework (approved by the Regional UNDG)?'" column="UNDAF_EXTENSION_PRESENT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="theoryOfChangeIncluded" caption="Count of 'Does the UNDAF include a theory of change'" column="THEORY_OF_CHANGE_INCLUDED_COUNT"
+                    <Measure name="theoryOfChangeIncluded" caption="Count of 'Does the UNDAF/Cooperation Framework include a theory of change?'" column="THEORY_OF_CHANGE_INCLUDED_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="costedMePlanPresent" caption="Count of 'Do you have a costed monitoring and evaluation plan for the UNDAF'" column="COSTEDMEPLAN_PRESENT_COUNT"
+                    <Measure name="costedMePlanPresent" caption="Count of 'Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?'" column="COSTEDMEPLAN_PRESENT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="unVision2030Present" caption="Count of 'Is there a UN Vision 2030 paper'" column="UN_VISION2030PRESENT_COUNT"
@@ -396,6 +409,27 @@
 
                     <Measure name="newUndafRoadmapPrepared" caption="Count of 'Has your UNCT prepared a roadmap for its new UNDAF'" column="NEWUNDAFROADMAP_PREPARED_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="fundingGapAtStart" caption="Total funding gap at the start of the implementation" column="funding_gap_at_start"
+                             datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="nonResidentAgenciesParticipated" caption="Count of 'Did UN entities without in-country physical presence participate in preparing the CCA?'" column="NON_RESIDENT_AGENCIES_PARTICIPATED_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="evaluationIncludeRecommendations" caption="Count of 'Does the evaluation include actionable recommendations, with a clear target audience and time frame for implementation?'" column="evaluation_include_recommendations_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasConfigurationReview" caption="Count of 'Has a country configuration review taken place in the last year?'" column="has_configuration_review_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="govIncludedInConfiguration" caption="Count of 'Was the government involved?'" column="gov_included_in_configuration_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="unctConfigurationChanged" caption="Count of 'Did this lead to a change in the UNCT configuration?'" column="unct_configuration_changed_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="participatesInCrossBorderInitiatives" caption="Count of 'Does your UNCT participate in cross-border initiatives?'" column="participates_in_cross_border_initiatives_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -405,9 +439,8 @@
                     <ForeignKeyLink dimension="Joint Programmes" foreignKeyColumn="HAS_JOINT_PROGRAMMES"/>
                     <ForeignKeyLink dimension="UNDAF Annual Review" foreignKeyColumn="HASUNDAFANNUAL_REVIEW"/>
                     <ForeignKeyLink dimension="UNDAF Evaluation"  foreignKeyColumn="HASUNDAFEVALUATION"/>
-                    <ForeignKeyLink dimension="Is your UNCT in the process of developing a new UNDAF"  foreignKeyColumn="IS_DEVELOPING_NEWUNDAF"/>
+                    <ForeignKeyLink dimension="Is your UNCT in the process of developing a Cooperation Framework?"  foreignKeyColumn="IS_DEVELOPING_NEWUNDAF"/>
                     <FactLink dimension="Year CCA was conducted" />
-                    <ForeignKeyLink dimension="Does the UNCT have access to official government data?"  foreignKeyColumn="HAS_DISAGGREGATED_DATA"/>
                     <ForeignKeyLink dimension="Did the UN support the development of the National Plan"  foreignKeyColumn="HASUNSUPPORT"/>
                     <ForeignKeyLink dimension="Was a management response prepared"  foreignKeyColumn="MANAGEMENT_RESPONSE_PREPARED"/>
                     <FactLink dimension="Date of Signature" />
@@ -418,14 +451,14 @@
                     <ForeignKeyLink dimension="AlternativeAnalysis"  foreignKeyColumn="OTHER_ANALYSIS_SOURCE_ID"/>
                     <ForeignKeyLink dimension="NRAUndafAnnualReview"  foreignKeyColumn="NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID"/>
                     <ForeignKeyLink dimension="Was there an extension of the UNDAF"  foreignKeyColumn="UNDAF_EXTENSION_PRESENT"/>
-                    <ForeignKeyLink dimension="Does the UNDAF include a theory of change"  foreignKeyColumn="THEORY_OF_CHANGE_INCLUDED"/>
-                    <ForeignKeyLink dimension="Do you have a costed monitoring and evaluation plan for the UNDAF"  foreignKeyColumn="COSTEDMEPLAN_PRESENT"/>
+                    <ForeignKeyLink dimension="Does the UNDAF/Cooperation Framework include a theory of change?"  foreignKeyColumn="THEORY_OF_CHANGE_INCLUDED"/>
+                    <ForeignKeyLink dimension="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?"  foreignKeyColumn="COSTEDMEPLAN_PRESENT"/>
                     <ForeignKeyLink dimension="Is there a UN Vision 2030 paper"  foreignKeyColumn="UN_VISION2030PRESENT"/>
                     <FactLink dimension="Year UNDAF completed" />
                     <FactLink dimension="Year UN Vision 2030 was prepared" />
                     <ForeignKeyLink dimension="Did NRA contribute to the UN Vision 2030 paper"  foreignKeyColumn="NRA_CONTRIBUTOR"/>
                     <ForeignKeyLink dimension="Has your UNCT prepared a roadmap for its new UNDAF"  foreignKeyColumn="NEWUNDAFROADMAP_PREPARED"/>
-                    <FactLink dimension="Date UNDAF Roadmap was developed" />
+                    <FactLink dimension="Date UNDAF/Cooperation Framework Roadmap was developed" />
                     <ForeignKeyLink dimension="UNDAFPeriodAlignedWithGov"  foreignKeyColumn="UNDAF_PERIOD_ALIGNED_WITH_GOV_ID"/>
                     <FactLink dimension="National Development Plan Start Date" />
                     <FactLink dimension="National Development Plan End Date" />
@@ -433,6 +466,12 @@
                     <ForeignKeyLink dimension="NRAParticipatedInNationalDevelopmentPlan"  foreignKeyColumn="NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID"/>
                     <ForeignKeyLink dimension="NRAParticipated"  foreignKeyColumn="NRA_PARTICIPATED_ID"/>
                     <ForeignKeyLink dimension="NRAContributeToEvaluationMgmtResponse"  foreignKeyColumn="NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID"/>
+                    <ForeignKeyLink dimension="nonResidentAgenciesParticipated"  foreignKeyColumn="NON_RESIDENT_AGENCIES_PARTICIPATED_DIM"/>
+                    <ForeignKeyLink dimension="evaluationIncludeRecommendations"  foreignKeyColumn="evaluation_include_recommendations_dim"/>
+                    <ForeignKeyLink dimension="hasConfigurationReview"  foreignKeyColumn="has_configuration_review_dim"/>
+                    <ForeignKeyLink dimension="govIncludedInConfiguration"  foreignKeyColumn="gov_included_in_configuration_dim"/>
+                    <ForeignKeyLink dimension="unctConfigurationChanged"  foreignKeyColumn="unct_configuration_changed_dim"/>
+                    <ForeignKeyLink dimension="participatesInCrossBorderInitiatives"  foreignKeyColumn="participates_in_cross_border_initiatives_dim"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
