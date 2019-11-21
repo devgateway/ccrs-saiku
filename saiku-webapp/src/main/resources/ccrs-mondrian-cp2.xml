@@ -28,7 +28,6 @@
                             COALESCE(D.STAFF_MEMBER_TITLE_ID, -1) AS STAFF_MEMBER_TITLE_ID,
                             D.LEVEL_ID,
                             COALESCE(D.FUNDING_ORGANIZATION_ID, -1) AS FUNDING_ORGANIZATION_ID,
-                            D.FINANCING_SOURCE_ID,
                             COALESCE(D.WHICH_AGENCY_ID, -1) AS WHICH_AGENCY_ID,
                             D.HEADRCO,
                             CP2.DESIGNATION, CP2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
@@ -38,7 +37,9 @@
                             CASE D.HEADRCO WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HEAD_OF_RCO,
                             CASE WHEN D.COMMUNICATION_SPECIALIST = TRUE THEN 1 ELSE 0 END as COMMUNICATION_SPECIALIST_COUNT,
                             CASE D.COMMUNICATION_SPECIALIST WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as COMMUNICATION_SPECIALIST,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(D.gender_id, -1) AS gender_id,
+                            COALESCE(D.nationality_id, -1) AS nationality_id
                         FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
                             CP2.DESIGNATION = CP1.DESIGNATION AND CP2.ENTITY_YEAR = CP1.ENTITY_YEAR AND
@@ -61,7 +62,9 @@
                             CASE cp2.SUBNATIONAL_OFFICES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as SUBNATIONAL_OFFICES,
                             cp2.NUMBER_OF_OFFICES,
                             (select count(*) from CP2RCO_STAFF_MEMBER_DETAIL where PARENT_ID = cp2.id) STAFF_MEMEBER_COUNT,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN cp2.rco_covers_multiple_countries = TRUE THEN 1 ELSE 0 END as rco_covers_multiple_countries_count,
+                            CASE cp2.rco_covers_multiple_countries WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as rco_covers_multiple_countries_dim
                         from CP2COORDINATION_CAPACITY cp2, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
                             cp2.DESIGNATION = cp1.DESIGNATION AND cp2.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -100,8 +103,7 @@
             <Dimension source="CATEGORY" table="ContractModality" caption="Contract Modality" />
             <Dimension source="CATEGORY" table="FundingOrganization" caption="Funding Organization" />
             <Dimension source="CATEGORY" table="Level" caption="Post Level" />
-            <Dimension source="CATEGORY" table="FinancingSource" caption="Post Financing Source" />
-            <Dimension source="CATEGORY" table="UNAgency" caption="UN Agency" />            
+            <Dimension source="CATEGORY" table="UNAgency" caption="UN Agency" />
 
             <Dimension name="Start Date" caption="Contract Start Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
                 <Attributes>
@@ -128,6 +130,16 @@
             </Dimension>
             
             <Dimension table="YesNoTable" name="Are you the main focal point for communications" caption="Are you the main focal point for communications?" />
+            <Dimension source="CATEGORY" table="Gender" caption="Gender" />
+            <Dimension name="Nationality" caption="Nationality" table="BASE_COUNTRY_WITHOUT_REGION" key="Dimension Id">
+                <Attributes>
+                    <Attribute name="Dimension Id" keyColumn="ID"
+                               hasHierarchy="false" datatype="Integer" />
+
+                    <Attribute name="Country" caption="Country" keyColumn="NAME"
+                               hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries" />
+                </Attributes>
+            </Dimension>
         </Dimensions>
 
         <MeasureGroups>
@@ -153,11 +165,11 @@
                     <FactLink dimension="Start Date" />
                     <FactLink dimension="End Date" />
                     <ForeignKeyLink dimension="FundingOrganization" foreignKeyColumn="FUNDING_ORGANIZATION_ID" />
-                    <ForeignKeyLink dimension="FinancingSource" foreignKeyColumn="FINANCING_SOURCE_ID" />
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="WHICH_AGENCY_ID" />
                     <ForeignKeyLink dimension="Head of RCO or Main RCO Contact"  foreignKeyColumn="HEAD_OF_RCO"/>
 					<ForeignKeyLink dimension="Are you the main focal point for communications"  foreignKeyColumn="COMMUNICATION_SPECIALIST"/>
-					
+                    <ForeignKeyLink dimension="Gender" foreignKeyColumn="gender_id"/>
+                    <ForeignKeyLink dimension="Nationality" foreignKeyColumn="nationality_id"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -180,7 +192,8 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
             
-            <Dimension table="YesNoTable" name="Does the RCO have Subnational offices" caption="Does the RCO have Subnational offices?" />            
+            <Dimension table="YesNoTable" name="Does the RCO have Subnational offices" caption="Does the RCO have Subnational offices?" />
+            <Dimension table="YesNoTable" name="Does the RCO cover multiple countries?" caption="Does the RCO cover multiple countries?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -198,10 +211,14 @@
                     <Measure name="countRCOStaffMember" caption="Count of RCO Staff Member" column="STAFF_MEMEBER_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
+                    <Measure name="rcoCoversMultipleCountries" caption="Count of 'Does the RCO cover multiple countries?'" column="rco_covers_multiple_countries_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Does the RCO have Subnational offices"  foreignKeyColumn="SUBNATIONAL_OFFICES"/>
+                    <ForeignKeyLink dimension="Does the RCO cover multiple countries?"  foreignKeyColumn="rco_covers_multiple_countries_dim"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

@@ -14,6 +14,12 @@
             </SQL>
         </ExpressionView>
     </Query>
+
+    <Query alias="BASE_COUNTRY_WITHOUT_REGION">
+        <ExpressionView>
+            <SQL dialect="generic"><![CDATA[select * from BASE_COUNTRY]]></SQL>
+        </ExpressionView>
+    </Query>
     
     <Query alias="DUMMY_YEAR">
         <ExpressionView>
