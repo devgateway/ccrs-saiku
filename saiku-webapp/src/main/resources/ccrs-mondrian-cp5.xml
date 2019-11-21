@@ -46,13 +46,13 @@
                             CASE WHEN cp5.HAS_SHARED_SUB_NATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             COALESCE(cp5.shared_offices_id, -1) AS shared_offices_id
-                        from CP5COMMON_PREMISES_PROFILE CP5, CP1GENERAL_PROFILE CP1, CP5UNCOMMON_PREMISES cp5uncommon, CP5COMMON_PREMISES_FEASIBILITY_STUDY cp5study, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            CP5.DESIGNATION = CP1.DESIGNATION AND CP5.ENTITY_YEAR = CP1.ENTITY_YEAR AND
-                            cp5uncommon.PARENT_ID = cp5.id AND
-                            cp5study.PARENT_ID = cp5.id AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
-                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                        from CP5COMMON_PREMISES_PROFILE CP5
+                             join CP1GENERAL_PROFILE CP1 on CP5.DESIGNATION = CP1.DESIGNATION AND CP5.ENTITY_YEAR = CP1.ENTITY_YEAR
+                             left join CP5UNCOMMON_PREMISES cp5uncommon on cp5uncommon.PARENT_ID = cp5.id
+                             left join CP5COMMON_PREMISES_FEASIBILITY_STUDY cp5study on cp5study.PARENT_ID = cp5.id
+                             join BASE_COUNTRY bc on CP1.DESIGNATION = bc.iso2
+                             join v_cp_validated_designations v on CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                        WHERE CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
