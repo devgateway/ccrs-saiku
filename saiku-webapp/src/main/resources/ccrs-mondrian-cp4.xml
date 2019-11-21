@@ -35,8 +35,16 @@
                             CASE CP4.HASBOSCOMMON_SERVICE_LINES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASBOSCOMMON_SERVICE_LINES,
 							COALESCE(cp4integratedservicecenter.HOST_ID, -1) AS HOST_ID,
 							cp4integratedservicecenter.BUDGET,
-							COALESCE(cp4integratedservicecenter.CLIENT_SATISFACTION_SCORE_ID, -1) AS CLIENT_SATISFACTION_SCORE_ID
-                        from CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v, 
+							COALESCE(cp4integratedservicecenter.CLIENT_SATISFACTION_SCORE_ID, -1) AS CLIENT_SATISFACTION_SCORE_ID,
+							CASE WHEN CP4.jointhact = TRUE THEN 1 ELSE 0 END as jointhact_count,
+                            CASE CP4.jointhact WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as jointhact_dim,
+                            CASE WHEN CP4.joint_macro_assessment = TRUE THEN 1 ELSE 0 END as joint_macro_assessment_count,
+                            CASE CP4.joint_macro_assessment WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as joint_macro_assessment_dim,
+                            CASE WHEN CP4.joint_micro_assessment = TRUE THEN 1 ELSE 0 END as joint_micro_assessment_count,
+                            CASE CP4.joint_micro_assessment WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as joint_micro_assessment_dim,
+                            CASE WHEN CP4.joint_assurance_activities = TRUE THEN 1 ELSE 0 END as joint_assurance_activities_count,
+                            CASE CP4.joint_assurance_activities WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as joint_assurance_activities_dim
+                        from CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v,
                             CP4INTEGRATED_SERVICE_CENTER cp4integratedservicecenter
                         WHERE
                             cp4.DESIGNATION = cp1.DESIGNATION AND cp4.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -71,20 +79,24 @@
             <Dimension source="SecondaryCountryIncomeStatus" />
             
             <Dimension table="YesNoTable" name="Is a HACT being implemented at the country level" caption="Is a HACT being implemented at the country level?" />
-            <Dimension table="YesNoTable" name="Does the UNCT have an integrated service center" caption="Does the UNCT have an integrated service center?" />
-            <Dimension source="CATEGORY" table="UNAgency" name="Which UN entity currently hosts the Integrated service center" caption="Which UN entity currently hosts the Integrated service center?" />
-            <Dimension name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" table="ClientSatisfactionScore"
+            <Dimension table="YesNoTable" name="integratedServiceCenterAvailable" caption="Does the UNCT have a Common Back Office/Integrated Service Center in place to deliver some or all of the services under the BOS?" />
+            <Dimension source="CATEGORY" table="UNAgency" name="host" caption="Which UN entity currently hosts the Common Back Office/Integrated service center?" />
+            <Dimension name="clientSatisfactionScore" caption="What is the average client satisfaction score of the Common Back Office/Integrated Service Center?" table="ClientSatisfactionScore"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID" hasHierarchy="false"
                                levelType="Regular" datatype="Integer" />
 
-                    <Attribute name="What is the average client satisfaction score of the Integrated Service Center" caption="What is the average client satisfaction score of the Integrated Service Center?" keyColumn="LABEL"
+                    <Attribute name="clientSatisfactionScore" caption="What is the average client satisfaction score of the Common Back Office/Integrated Service Center?" keyColumn="LABEL"
                                hierarchyAllMemberName="All " hierarchyCaption=""
                                levelType="Regular" datatype="String" />
                 </Attributes>
             </Dimension>
-            <Dimension table="YesNoTable" name="Are common service lines part of your Business Operation Strategy" caption="Are common service lines part of your Business Operation Strategy (BOS)?" />
+            <Dimension table="YesNoTable" name="hasBOSCommonServiceLines" caption="Does the UNCT have a Business Operations Strategy (BOS)?" />
+            <Dimension table="YesNoTable" name="jointHACT" caption="Has the HACT being implemented jointly across the UNCT?" />
+            <Dimension table="YesNoTable" name="jointMacroAssessment" caption="Has the macro assessment being executed jointly?" />
+            <Dimension table="YesNoTable" name="jointMicroAssessment" caption="Is one or more of the micro assessment being executed jointly?" />
+            <Dimension table="YesNoTable" name="jointAssuranceActivities" caption="Are the assurance activities being executed jointly?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -96,22 +108,38 @@
                     <Measure name="countryLevelHACT" caption="Count of 'Is a HACT being implemented at the country level?'" column="COUNTRY_LEVELHACT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="UnctHaveIntegratedServiceCenter" caption="Count of 'Does the UNCT have an integrated service center?'" column="INTEGRATED_SERVICE_CENTER_AVAILABLE_COUNT"
+                    <Measure name="UnctHaveIntegratedServiceCenter" caption="Count of 'Does the UNCT have a Common Back Office/Integrated Service Center in place to deliver some or all of the services under the BOS?'" column="INTEGRATED_SERVICE_CENTER_AVAILABLE_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="Budget" caption="Annual budget of the integrated service center in US dollars" column="BUDGET"
+                    <Measure name="Budget" caption="Annual budget of the Common Back Office/Integrated Service Center in US dollars" column="BUDGET"
                              datatype="Numeric" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="CommonServiceLinesPartOfBos" caption="Count of 'Are common service lines part of your Business Operation Strategy (BOS)?'" column="HASBOSCOMMON_SERVICE_LINES_COUNT"
+                    <Measure name="CommonServiceLinesPartOfBos" caption="Count of 'Does the UNCT have a Business Operations Strategy (BOS)?'" column="HASBOSCOMMON_SERVICE_LINES_COUNT"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="jointHACT" caption="Count of 'Has the HACT being implemented jointly across the UNCT?'" column="jointhact_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="jointMacroAssessment" caption="Count of 'Has the macro assessment being executed jointly?'" column="joint_macro_assessment_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="jointMicroAssessment" caption="Count of 'Is one or more of the micro assessment being executed jointly?'" column="joint_micro_assessment_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="jointAssuranceActivities" caption="Count of 'Are the assurance activities being executed jointly?'" column="joint_assurance_activities_count"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
                     <ForeignKeyLink dimension="Is a HACT being implemented at the country level"  foreignKeyColumn="COUNTRY_LEVELHACT"/>
-                    <ForeignKeyLink dimension="Does the UNCT have an integrated service center"  foreignKeyColumn="INTEGRATED_SERVICE_CENTER_AVAILABLE"/>
-                    <ForeignKeyLink dimension="Which UN entity currently hosts the Integrated service center"  foreignKeyColumn="HOST_ID"/>
-                    <ForeignKeyLink dimension="What is the average client satisfaction score of the Integrated Service Center"  foreignKeyColumn="CLIENT_SATISFACTION_SCORE_ID"/>
-                    <ForeignKeyLink dimension="Are common service lines part of your Business Operation Strategy"  foreignKeyColumn="HASBOSCOMMON_SERVICE_LINES"/>				
+                    <ForeignKeyLink dimension="integratedServiceCenterAvailable"  foreignKeyColumn="INTEGRATED_SERVICE_CENTER_AVAILABLE"/>
+                    <ForeignKeyLink dimension="host"  foreignKeyColumn="HOST_ID"/>
+                    <ForeignKeyLink dimension="clientSatisfactionScore"  foreignKeyColumn="CLIENT_SATISFACTION_SCORE_ID"/>
+                    <ForeignKeyLink dimension="hasBOSCommonServiceLines"  foreignKeyColumn="HASBOSCOMMON_SERVICE_LINES"/>
+                    <ForeignKeyLink dimension="jointHACT"  foreignKeyColumn="jointhact_dim"/>
+                    <ForeignKeyLink dimension="jointMacroAssessment"  foreignKeyColumn="joint_macro_assessment_dim"/>
+                    <ForeignKeyLink dimension="jointMicroAssessment"  foreignKeyColumn="joint_micro_assessment_dim"/>
+                    <ForeignKeyLink dimension="jointAssuranceActivities"  foreignKeyColumn="joint_assurance_activities_dim"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
