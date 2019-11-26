@@ -1,0 +1,4 @@
+type=OLAP
+name=CP 5
+driver=mondrian.olap4j.MondrianOlap4jDriver
+location=jdbc:mondrian:Datasource=mondrianDataSource;Catalog=ccrs-mondrian-cp5.xml;DynamicSchemaProcessor=org.saiku.CCRSMondrianSchemaProcessor
