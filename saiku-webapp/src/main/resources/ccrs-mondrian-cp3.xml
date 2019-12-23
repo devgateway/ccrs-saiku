@@ -282,7 +282,7 @@
             </Dimension>
 
             <Dimension table="YesNoTable" name="Was a management response prepared" caption="Was a management response prepared?" />
-            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did NRAs participate in the UNDAF/Cooperation Framework Annual Review?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did UN entities without in-country presence participate in the UNDAF/Cooperation Framework Annual Review?" />
             <Dimension table="YesNoTable" name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF/Cooperation Framework (approved by the Regional UNDG)?" />
             <Dimension table="YesNoTable" name="Does the UNDAF/Cooperation Framework include a theory of change?" caption="Does the UNDAF/Cooperation Framework include a theory of change?" />
             <Dimension table="YesNoTable" name="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?" caption="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?" />
@@ -342,7 +342,7 @@
             </Dimension>
             
             <Dimension table="YesNoTable" name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" />
-            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did NRAs participate in supporting development of the National Development Plan?" />
+            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did UN entities without in-country presence participate in supporting development of the National Development Plan?" />
             <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAParticipated" caption="Did UN entities without in-country physical presence participate in the UNDAF/Cooperation Framework evaluation planning?" />
             <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAContributeToEvaluationMgmtResponse" caption="Did UN entities without in-country physical presence contribute to the evaluation management response?" />
             <Dimension table="YesNoTable" name="nonResidentAgenciesParticipated" caption="Did UN entities without in-country physical presence participate in preparing the CCA?" />
