@@ -269,20 +269,20 @@
             
             <Dimension table="YesNoTable" name="UNDAF Evaluation" caption="Have you conducted an UNDAF/Cooperation Framework evaluation for the last UNDAF/Cooperation Framework cycle?" />
             
-            <Dimension name="Date completed (NRAs participate in the UNDAF Evaluation Planning)" caption="Date completed (NRAs participate in the UNDAF Evaluation Planning)" table='CP3GeneralCube' key="Dimension Id" type="TIME">
+            <Dimension name="Date completed (NRAs participate in the UNDAF Evaluation Planning)" caption="Date completed (UN entities without in-country presence participate in the UNDAF Evaluation Planning)" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
                                hasHierarchy="false"
                                levelType="Regular" datatype="Integer"/>
 
-                    <Attribute name="Date completed (NRAs participate in the UNDAF Evaluation Planning)" caption="Date completed (NRAs participate in the UNDAF Evaluation Planning)" keyColumn="HASUNDAFEVALUATION_DATE_COMPLETED"
+                    <Attribute name="Date completed (NRAs participate in the UNDAF Evaluation Planning)" caption="Date completed (UN entities without in-country presence participate in the UNDAF Evaluation Planning)" keyColumn="HASUNDAFEVALUATION_DATE_COMPLETED"
                                hierarchyHasAll="true"
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
 
             <Dimension table="YesNoTable" name="Was a management response prepared" caption="Was a management response prepared?" />
-            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did NRAs participate in the UNDAF/Cooperation Framework Annual Review?" />
+            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did UN entities without in-country presence participate in the UNDAF/Cooperation Framework Annual Review?" />
             <Dimension table="YesNoTable" name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF/Cooperation Framework (approved by the Regional UNDG)?" />
             <Dimension table="YesNoTable" name="Does the UNDAF/Cooperation Framework include a theory of change?" caption="Does the UNDAF/Cooperation Framework include a theory of change?" />
             <Dimension table="YesNoTable" name="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?" caption="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?" />
@@ -300,7 +300,7 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension table="YesNoTable" name="Did NRA contribute to the UN Vision 2030 paper" caption="Did NRA contribute to the UN Vision 2030 paper?" />
+            <Dimension table="YesNoTable" name="Did NRA contribute to the UN Vision 2030 paper" caption="Did UN entities without in-country presence contribute to the UN Vision 2030 paper?" />
             <Dimension table="YesNoTable" name="Has your UNCT prepared a roadmap for its new UNDAF" caption="Has your UNCT prepared a roadmap for its new UNDAF?" />
 
             <Dimension name="Date UNDAF/Cooperation Framework Roadmap was developed" caption="Date UNDAF/Cooperation Framework Roadmap was developed" table='CP3GeneralCube' key="Dimension Id" type="TIME">
@@ -342,7 +342,7 @@
             </Dimension>
             
             <Dimension table="YesNoTable" name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" />
-            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did NRAs participate in supporting development of the National Development Plan?" />
+            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did UN entities without in-country presence participate in supporting development of the National Development Plan?" />
             <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAParticipated" caption="Did UN entities without in-country physical presence participate in the UNDAF/Cooperation Framework evaluation planning?" />
             <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAContributeToEvaluationMgmtResponse" caption="Did UN entities without in-country physical presence contribute to the evaluation management response?" />
             <Dimension table="YesNoTable" name="nonResidentAgenciesParticipated" caption="Did UN entities without in-country physical presence participate in preparing the CCA?" />
@@ -404,7 +404,7 @@
                     <Measure name="unVision2030Present" caption="Count of 'Is there a UN Vision 2030 paper'" column="UN_VISION2030PRESENT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="nraContributor" caption="Count of 'Did NRA contribute to the UN Vision 2030 paper'" column="NRA_CONTRIBUTOR_COUNT"
+                    <Measure name="nraContributor" caption="Count of 'Did UN entities without in-country presence contribute to the UN Vision 2030 paper'" column="NRA_CONTRIBUTOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="newUndafRoadmapPrepared" caption="Count of 'Has your UNCT prepared a roadmap for its new UNDAF'" column="NEWUNDAFROADMAP_PREPARED_COUNT"
