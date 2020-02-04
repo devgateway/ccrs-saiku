@@ -64,7 +64,7 @@
     <!--*************************************************************************
     ***** CP4 General Cube
     *************************************************************************-->
-    <Cube name="Common Services" caption="Common Services Harmonized Business Practices" visible="true"
+    <Cube name="Common Services" caption="Business Operations Strategy and Common Back Office Functions" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension source="Region" />

@@ -95,6 +95,7 @@
                         CASE cp9humanitarianstructures.development_planning_aligned WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as development_planning_aligned_dim,
                         CASE WHEN cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN = TRUE THEN 1 ELSE 0 END as HAS_ANALYSIS_BEEN_TAKEN_WITHUN_COUNT,
                         CASE cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_ANALYSIS_BEEN_TAKEN_WITHUN,
+                        COALESCE(cp9conflict.conflict_analysis_process_id, -1) AS conflict_analysis_process_id,
                         CASE WHEN cp9.has_country_mechanisms_coordinate_intl_support = TRUE THEN 1 ELSE 0 END as has_country_mechanisms_coordinate_intl_support_count,
                         CASE cp9.has_country_mechanisms_coordinate_intl_support WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_country_mechanisms_coordinate_intl_support_dim,
                         CASE WHEN cp9.HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY = TRUE THEN 1 ELSE 0 END as HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT,
@@ -152,7 +153,9 @@
                         CASE WHEN cp9.world_bank_took_part_in_analysis = TRUE THEN 1 ELSE 0 END as world_bank_took_part_in_analysis_count,
                         CASE cp9.world_bank_took_part_in_analysis WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as world_bank_took_part_in_analysis_dim,
                         CASE WHEN cp9.un_and_world_bank_articulated_priorities = TRUE THEN 1 ELSE 0 END as un_and_world_bank_articulated_priorities_count,
-                        CASE cp9.un_and_world_bank_articulated_priorities WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as un_and_world_bank_articulated_priorities_dim
+                        CASE cp9.un_and_world_bank_articulated_priorities WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as un_and_world_bank_articulated_priorities_dim,
+                        CASE WHEN cp9.GOVERNMENT_NATIONAL_DISASTER_RISK_STRATEGY = TRUE THEN 1 ELSE 0 END as government_national_disaster_risk_strategy_count,
+                        CASE cp9.GOVERNMENT_NATIONAL_DISASTER_RISK_STRATEGY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as government_national_disaster_risk_strategy_dim
                     from
                         CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE cp1, CP9UNPEACE_KEEPING_MISSION cp9unpeace,
                         CP9INTEGRATED_STRATEGIC_FRAMEWORK cp9integrated, CP9UNUNCTCOLABORATION cp9ununctcolaboration,
@@ -371,6 +374,7 @@
             <Dimension table="YesNoTable" name="UN Humanitarian Coordinator" caption="UN Humanitarian Coordinator (HC)" />
             <Dimension table="YesNoTable" name="Humanitarian Country Team" caption="Humanitarian Country Team (HCT)" />
             <Dimension table="YesNoTable" name="Humanitarian Response Plan" caption="Humanitarian Response Plan (HRP)" />
+            <Dimension source="CATEGORY" table="ConflictAnalysisProcess" name="conflictAnalysisProcess" caption="Is the conflict analysis part of the CCA or a stand alone process?" />
             
             <Dimension name="Other humanitarian structures or mechanisms" caption="Other humanitarian structures or mechanisms" table="CP9GeneralCube" key="Dimension Id" visible="true">
                 <Attributes>
@@ -398,6 +402,7 @@
             <Dimension table="YesNoTable" name="partOfSustainingPeaceStrategy" caption="Is the UNCT part of a regional prevention/sustaining peace strategy or plan?" />
             <Dimension table="YesNoTable" name="worldBankTookPartInAnalysis" caption="Has the World Bank taken part in development of joint analysis - like the CCA, the Recovery and Peacebuilding Assessment, or any strategic, or sectoral analysis - in relation to the current programming cycle?" />
             <Dimension table="YesNoTable" name="unAndWorldBankArticulatedPriorities" caption="Have the UN and World Bank articulated joint priorities - strategic, sectoral or operational - in the UNSDCF, or other planning documents or frameworks?" />
+            <Dimension table="YesNoTable" name="governmentNationalDisasterRiskStrategy" caption="Does the government have a national disaster risk reduction strategy?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -549,6 +554,9 @@
 
                     <Measure name="unAndWorldBankArticulatedPriorities" caption="Count of 'Have the UN and World Bank articulated joint priorities - strategic, sectoral or operational - in the UNSDCF, or other planning documents or frameworks?'" column="un_and_world_bank_articulated_priorities_count"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="governmentNationalDisasterRiskStrategy" caption="Count of 'Does the government have a national disaster risk reduction strategy?'" column="government_national_disaster_risk_strategy_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -601,6 +609,8 @@
                     <ForeignKeyLink dimension="partOfSustainingPeaceStrategy" foreignKeyColumn="part_of_sustaining_peace_strategy_dim"/>
                     <ForeignKeyLink dimension="worldBankTookPartInAnalysis" foreignKeyColumn="world_bank_took_part_in_analysis_dim"/>
                     <ForeignKeyLink dimension="unAndWorldBankArticulatedPriorities" foreignKeyColumn="un_and_world_bank_articulated_priorities_dim"/>
+                    <ForeignKeyLink dimension="governmentNationalDisasterRiskStrategy" foreignKeyColumn="government_national_disaster_risk_strategy_dim"/>
+                    <ForeignKeyLink dimension="conflictAnalysisProcess" foreignKeyColumn="conflict_analysis_process_id"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
