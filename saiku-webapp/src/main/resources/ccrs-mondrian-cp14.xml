@@ -1,7 +1,7 @@
-<Schema name="SDGs and Beyond" metamodelVersion="4.0"
+<Schema name="SDGs, data, and partnerships" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - SDGs and Beyond</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - SDGs, data, and partnerships</Annotation>
     </Annotations>
 
     <PhysicalSchema>
@@ -176,7 +176,7 @@
     <!--*************************************************************************
     ***** CP14 General Cube
     *************************************************************************-->
-    <Cube name="SDGs and Beyond" caption="SDGs and Beyond" visible="true"
+    <Cube name="SDGs, data, and partnerships" caption="SDGs, data, and partnerships" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension source="Region" />
