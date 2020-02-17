@@ -79,7 +79,13 @@
                             CASE cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as GENDER_MAINSTREAMING_STRATEGY_IN_PLACE,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp13.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
-                            CASE cp13.HASUNCTDEVELOPED_MANAGEMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM
+                            CASE cp13.HASUNCTDEVELOPED_MANAGEMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
+                            CASE WHEN cp13.was_management_response_used = TRUE THEN 1 ELSE 0 END as was_management_response_used_count,
+                            CASE cp13.was_management_response_used WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as was_management_response_used_dim,
+                            CASE WHEN cp13.has_gender_parity = TRUE THEN 1 ELSE 0 END as has_gender_parity_count,
+                            CASE cp13.has_gender_parity WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_gender_parity_dim,
+                            CASE WHEN cp13.has_working_environment_for_gender_parity = TRUE THEN 1 ELSE 0 END as has_working_environment_for_gender_parity_count,
+                            CASE cp13.has_working_environment_for_gender_parity WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_working_environment_for_gender_parity_dim
                         from CP13GENDER_PROFILE cp13, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp13.DESIGNATION = cp1.DESIGNATION AND cp13.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -124,7 +130,7 @@
                     <Measure name="Count" caption="Number of Gender Equality Scorecard" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of UNCT that addressed the scorecard recommendations" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
+                    <Measure name="hasUNCTDevelopedManagementPlan" caption="Count of 'Has the UNCT developed a management response to the Scorecard/action plan to address the proposed actions?'" column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
@@ -138,9 +144,9 @@
     </Cube>
     
     <!--*************************************************************************
-    ***** CP13 UNCT UN-SWAP Scorecard
+    ***** CP13 UNCT SWAP Scorecard
     *************************************************************************-->
-    <Cube name="UNCT UN-SWAP Scorecard" caption="UNCT UN-SWAP Scorecard" visible="true"
+    <Cube name="UNCT SWAP Scorecard" caption="UNCT SWAP Scorecard" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension source="Region" />
@@ -154,7 +160,7 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
             <!-- 13.4.C.2.1 -->
-            <Dimension source="CATEGORY" table="UNSwapScorecard" name="UNSwap Scorecard" caption="UNCT UN-SWAP Scorecard Performance Areas" />
+            <Dimension source="CATEGORY" table="UNSwapScorecard" name="UNSwap Scorecard" caption="UNCT SWAP Scorecard Performance Areas" />
             <!-- 13.4.C.2.2 -->
             <Dimension source="CATEGORY" table="UNSwapGenderEqualityRating" name="UNSwap Gender Equality Rating" caption="Rating" />
         </Dimensions>
@@ -162,7 +168,7 @@
         <MeasureGroups>
             <MeasureGroup name="CP Gender Equality Scorecard" table="CP13UNCTUNSWAPScorecard">
                 <Measures>
-                    <Measure name="Count" caption="Number of UNCT UN-SWAP Scorecard" column="ID" datatype="Integer"
+                    <Measure name="Count" caption="Number of UNCT SWAP Scorecard" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
@@ -192,8 +198,8 @@
             <Dimension source="SecondaryCountryIncomeStatus" />
 
             <Dimension table="YesNoTable" name="Does the UNCT have dedicated capacity to support the UNCTs work on gender equality and the empowerment of women" caption="Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?" />
-            <Dimension table="YesNoTable" name="UNDAF specific gender results" caption="If you have an UNDAF (or equivalent), does it have specific gender results at the outcome level?" />
-            <Dimension table="YesNoTable" name="Gender Equality Scorecard" caption="Has your UNCT implemented a Gender Equality Scorecard in the past FOUR years?" />
+            <Dimension table="YesNoTable" name="UNDAF specific gender results" caption="If you have an UNDAF/Cooperation Framework (or equivalent), does it have specific gender results at the outcome level?" />
+            <Dimension table="YesNoTable" name="Gender Equality Scorecard" caption="Has your UNCT implemented the UNCT SWAP Scorecard (New scorecard) in the past FOUR years?" />
             <Dimension table="YesNoTable" name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" />
 
             <!-- 13.A -->
@@ -212,7 +218,10 @@
             <!-- 13.6 -->
             <Dimension table="YesNoTable" name="Gender Mainstreaming Strategy In Place" caption="Does the UNCT have a gender mainstreaming strategy in place?" />
             <!-- N.13.2 -->
-            <Dimension table="YesNoTable" name="Has UNCT Developed Management Plan" caption="Has the UNCT developed a management response/action plan to address the recommendations for the scorecard?" />
+            <Dimension table="YesNoTable" name="Has UNCT Developed Management Plan" caption="Has the UNCT developed a management response to the Scorecard/action plan to address the proposed actions?" />
+            <Dimension table="YesNoTable" name="wasManagementResponseUsed" caption="Has the management response/action plan been used in the UNDAF/Cooperation Framework process as a resource document?" />
+            <Dimension table="YesNoTable" name="hasGenderParity" caption="Has the UNCT undertaken any UNCT-wide actions to enhance gender parity in the recruitment, retention, progression and talent management of staff in the UNCT in the past year?" />
+            <Dimension table="YesNoTable" name="hasWorkingEnvironmentForGenderParity" caption="Has the UNCT undertaken any UNCT-wide actions to build an enabling working environment for gender parity (an environment that prizes diversity and flexibility, provides equal opportunities, recognizes that staff are also family and community members, and ensures a safe environment) in the past year?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -224,10 +233,10 @@
                     <Measure name="UNCTGenderAdvisor" caption="Count of 'Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?'" column="HASUNCTGENDER_ADVISOR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="UNDAFSpecificGenderResults" caption="Count of UNDAF (or equivalent), does it have specific gender results at the outcome level?" column="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"
+                    <Measure name="UNDAFSpecificGenderResults" caption="Count of 'If you have an UNDAF/Cooperation Framework (or equivalent), does it have specific gender results at the outcome level?'" column="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="GenderEqualityScorecard" caption="Count of UNCT implemented a Gender Equality Scorecard in the past FOUR years" column="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"
+                    <Measure name="GenderEqualityScorecard" caption="Count of 'Has your UNCT implemented the UNCT SWAP Scorecard (New scorecard) in the past FOUR years?'" column="HASUNCTGENDER_EQUALITY_SCORECARD_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="CapacityBuildingUNStaff" caption="Count of capacity building for UN staff on the issue of gender mainstreaming in the past year" column="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT"
@@ -242,6 +251,15 @@
                     <Measure name="hasUNCTDevelopedManagementPlanCount" caption="Count of UNCT that developed a management response/action plan to address the recommendations"
                              column="HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="wasManagementResponseUsed" caption="Count of 'Has the management response/action plan been used in the UNDAF/Cooperation Framework process as a resource document?'" column="was_management_response_used_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasGenderParity" caption="Count of 'Has the UNCT undertaken any UNCT-wide actions to enhance gender parity in the recruitment, retention, progression and talent management of staff in the UNCT in the past year?'" column="has_gender_parity_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasWorkingEnvironmentForGenderParity" caption="Count of 'Has the UNCT undertaken any UNCT-wide actions to build an enabling working environment for gender parity (an environment that prizes diversity and flexibility, provides equal opportunities, recognizes that staff are also family and community members, and ensures a safe environment) in the past year?'" column="has_working_environment_for_gender_parity_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -254,6 +272,9 @@
                     <ForeignKeyLink dimension="ScorecardType" foreignKeyColumn="GENDER_SCORECARD_TYPES_ID" />
                     <ForeignKeyLink dimension="Gender Mainstreaming Strategy In Place" foreignKeyColumn="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE"/>
                     <ForeignKeyLink dimension="Has UNCT Developed Management Plan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
+                    <ForeignKeyLink dimension="wasManagementResponseUsed" foreignKeyColumn="was_management_response_used_dim" />
+                    <ForeignKeyLink dimension="hasGenderParity" foreignKeyColumn="has_gender_parity_dim" />
+                    <ForeignKeyLink dimension="hasWorkingEnvironmentForGenderParity" foreignKeyColumn="has_working_environment_for_gender_parity_dim" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

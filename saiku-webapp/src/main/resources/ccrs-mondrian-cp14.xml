@@ -1,7 +1,7 @@
-<Schema name="SDGs and Beyond" metamodelVersion="4.0"
+<Schema name="SDGs, data, and partnerships" metamodelVersion="4.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="mondrian.xsd">
     <Annotations>
-        <Annotation name="desc">Cube Schema for CCRS - SDGs and Beyond</Annotation>
+        <Annotation name="desc">Cube Schema for CCRS - SDGs, data, and partnerships</Annotation>
     </Annotations>
 
     <PhysicalSchema>
@@ -70,8 +70,6 @@
                             CASE cp14.HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG,
                             CASE WHEN cp14.HAS_OPEN_DATA_TRANSPARENCY_POLICIES = TRUE THEN 1 ELSE 0 END as HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT,
                             CASE cp14.HAS_OPEN_DATA_TRANSPARENCY_POLICIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_OPEN_DATA_TRANSPARENCY_POLICIES,
-                            CASE WHEN cp14.PARTICIPATES_IN_CROSS_BORDER_INITIATIVES = TRUE THEN 1 ELSE 0 END as PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT,
-                            CASE cp14.PARTICIPATES_IN_CROSS_BORDER_INITIATIVES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as PARTICIPATES_IN_CROSS_BORDER_INITIATIVES,
                             CASE WHEN cp14.JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT = TRUE THEN 1 ELSE 0 END as JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT_COUNT,
                             CASE cp14.JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT,
                             CASE WHEN cp14.GOVERNMENTSDGREPORT_PUBLISHED = TRUE THEN 1 ELSE 0 END as GOVERNMENTSDGREPORT_PUBLISHED_COUNT,
@@ -101,7 +99,9 @@
                             CASE WHEN r.INTERAGENCY_EFFORT = TRUE THEN 1 ELSE 0 END as REPORT_INTERAGENCY_EFFORT_COUNT,
                             CASE r.INTERAGENCY_EFFORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_INTERAGENCY_EFFORT,
                             COALESCE(r.USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID, -1) AS USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN cp14.has_disaggregated_data = TRUE THEN 1 ELSE 0 END as has_disaggregated_data_count,
+                            CASE cp14.has_disaggregated_data WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_disaggregated_data_dim
                         FROM
                             CP14EMERGING_ISSUES cp14, CP14COMMONUNDATA_STRATEGY c, CP14SDGSUPPORT s, CP14GOVERNMENTSDGREPORT r,
                             CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
@@ -176,7 +176,7 @@
     <!--*************************************************************************
     ***** CP14 General Cube
     *************************************************************************-->
-    <Cube name="SDGs and Beyond" caption="SDGs and Beyond" visible="true"
+    <Cube name="SDGs, data, and partnerships" caption="SDGs, data, and partnerships" visible="true"
           cache="true" enabled="true" defaultMeasure="Count">
         <Dimensions>
             <Dimension source="Region" />
@@ -204,7 +204,6 @@
             <Dimension table="YesNoTable" name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" />
             <Dimension table="YesNoTable" name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency portals?" />
             <Dimension table="YesNoTable" name="USEIATISTANDARDS" caption="Do you use IATI standards in the portal?" />
-            <Dimension table="YesNoTable" name="Cross-border initiatives" caption="Does your UNCT participate in cross-border initiatives?" />
             <!-- N.14.1 -->
             <Dimension table="YesNoTable" name="Does the UNCT have a joint UN initiative on data or statistics" caption="Does the UNCT have a joint UN initiative on data or statistics?" />
             <!-- N.14.3 -->
@@ -235,6 +234,8 @@
             <Dimension table="YesNoTable" name="Was the support provided as an interagency effort" caption="Was the support provided as an interagency effort?" />
             <!-- N.14.13 -->
             <Dimension source="CATEGORY" table="YesNoNAQuestion" name="usedForVoluntaryNationalReview" caption="Was the report used for a Voluntary National Review presentation at the High-level Political Forum in New York?" />
+
+            <Dimension table="YesNoTable" name="hasDisaggregatedData" caption="Does the UNCT have access to official government data?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -299,10 +300,6 @@
                     <Measure name="USEIATISTANDARDS" caption="Count of 'Do you use IATI standards in the portal?'" column="USEIATISTANDARDS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <!--14.6-->
-                    <Measure name="CrossBorderInitiatives" caption="Count of UNCT participate in cross-border initiatives" column="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES_COUNT"
-                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
-                    
                     <!--N.14.1-->
                     <Measure name="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT" caption="Count of UNCT that have a joint UN initiative on data or statistics"
                              column="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT_COUNT"
@@ -359,6 +356,9 @@
                     <Measure name="REPORT_INTERAGENCY_EFFORT" caption="Count of UN supported the Government in producing the report as an interagency effort"
                              column="REPORT_INTERAGENCY_EFFORT_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+                    <Measure name="hasDisaggregatedData" caption="Count of 'Does the UNCT have access to official government data?'"
+                             column="has_disaggregated_data_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -367,7 +367,6 @@
                     <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"/>
                     <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"/>
                     <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"/>
-                    <ForeignKeyLink dimension="Cross-border initiatives" foreignKeyColumn="PARTICIPATES_IN_CROSS_BORDER_INITIATIVES"/>
                     <ForeignKeyLink dimension="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" foreignKeyColumn="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"/>
                     <ForeignKeyLink dimension="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" foreignKeyColumn="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"/>
                     <ForeignKeyLink dimension="DOESUNCTPARTICIPATE" foreignKeyColumn="DOESUNCTPARTICIPATE"/>
@@ -392,6 +391,7 @@
 					<ForeignKeyLink dimension="Has the UN supported the Government in producing the report" foreignKeyColumn="HASUNSUPPORT"/>
 					<ForeignKeyLink dimension="Was the support provided as an interagency effort" foreignKeyColumn="REPORT_INTERAGENCY_EFFORT"/>
 					<ForeignKeyLink dimension="usedForVoluntaryNationalReview" foreignKeyColumn="USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID" />
+					<ForeignKeyLink dimension="hasDisaggregatedData" foreignKeyColumn="has_disaggregated_data_dim" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

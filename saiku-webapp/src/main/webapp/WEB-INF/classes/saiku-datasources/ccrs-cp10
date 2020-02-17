@@ -1,4 +1,0 @@
-type=OLAP
-name=CP 10
-driver=mondrian.olap4j.MondrianOlap4jDriver
-location=jdbc:mondrian:Datasource=mondrianDataSource;Catalog=ccrs-mondrian-cp10.xml;DynamicSchemaProcessor=org.saiku.CCRSMondrianSchemaProcessor

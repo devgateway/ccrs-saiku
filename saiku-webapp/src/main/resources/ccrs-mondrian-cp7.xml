@@ -29,7 +29,10 @@
                             CASE cp7.UNCT_HASSDGFINANCING_GAP_STRATEGY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNCT_HASSDGFINANCING_GAP_STRATEGY,
                             CASE WHEN cp7.UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION = TRUE THEN 1 ELSE 0 END as UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION_COUNT,
                             CASE cp7.UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            CASE WHEN cp7.has_global_pooled_fund_mechanism = TRUE THEN 1 ELSE 0 END as has_global_pooled_fund_mechanism_count,
+                            CASE cp7.has_global_pooled_fund_mechanism WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_global_pooled_fund_mechanism_dim,
+                            COALESCE(cp7.global_pooled_fund_mechanism_id, -1) AS global_pooled_fund_mechanism_id
                         from CP7JOINT_FUNDING_PROFILE cp7, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp7.DESIGNATION = cp1.DESIGNATION AND cp7.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -79,7 +82,11 @@
                                hierarchyCaption="All Other UNCT resource mobilization" levelType="Regular"
                                datatype="String" />
                 </Attributes>
-           </Dimension>
+            </Dimension>
+
+            <Dimension table="YesNoTable" name="hasGlobalPooledFundMechanism" caption="Has the UNCT accessed any global pooled-fund mechanism in the last year?" />
+
+            <Dimension source="CATEGORY" table="GlobalPooledFundMechanism" caption="Which pooled-fund mechanism?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -102,6 +109,9 @@
 
                     <Measure name="doesUnctManageResourceMobilization" caption="Count of 'Does the UNCT jointly manage resource mobilization?'" column="UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasGlobalPooledFundMechanism" caption="Count 'Has the UNCT accessed any global pooled-fund mechanism in the last year?'" column="has_global_pooled_fund_mechanism_count" datatype="Integer"
+                             aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -111,6 +121,8 @@
                     <ForeignKeyLink dimension="UNCT strategy to close financing gap"  foreignKeyColumn="UNCT_HASSDGFINANCING_GAP_STRATEGY"/>
                     <ForeignKeyLink dimension="Does the UNCT jointly manage resource mobilization"  foreignKeyColumn="UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION"/>
                     <ForeignKeyLink dimension="Other UNCT resource mobilization"  foreignKeyColumn="OTHERUNCTJOINTLY_MANAGE_RESOURCES"/>
+                    <ForeignKeyLink dimension="hasGlobalPooledFundMechanism" foreignKeyColumn="has_global_pooled_fund_mechanism_dim"/>
+                    <ForeignKeyLink dimension="GlobalPooledFundMechanism" foreignKeyColumn="global_pooled_fund_mechanism_id" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

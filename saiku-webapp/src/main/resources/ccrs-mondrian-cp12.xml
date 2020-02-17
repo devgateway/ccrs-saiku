@@ -137,15 +137,39 @@
                             CASE WHEN cp12.HAS_UNDAF_TREATY_BODIES = TRUE THEN 1 ELSE 0 END as HAS_UNDAF_TREATY_BODIES_COUNT,
                             CASE cp12.HAS_UNDAF_TREATY_BODIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAF_TREATY_BODIES,
                             CASE WHEN cp12.HAS_UNDAF_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HAS_UNDAF_SPECIAL_PROCEDURES_COUNT,
-                            CASE cp12.HAS_UNDAF_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAF_SPECIAL_PROCEDURES
+                            CASE cp12.HAS_UNDAF_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAF_SPECIAL_PROCEDURES,
+                            CASE WHEN cp12hrinst.nhri_partners = TRUE THEN 1 ELSE 0 END as nhri_partners_count,
+                            CASE cp12hrinst.nhri_partners WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as nhri_partners_dim,
+
+                            CASE WHEN cp12.has_disability_inclusion_activities = TRUE THEN 1 ELSE 0 END as has_disability_inclusion_activities_count,
+                            CASE cp12.has_disability_inclusion_activities WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_disability_inclusion_activities_dim,
+                            CASE WHEN cp12.has_culture_for_disability_inclusion = TRUE THEN 1 ELSE 0 END as has_culture_for_disability_inclusion_count,
+                            CASE cp12.has_culture_for_disability_inclusion WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_culture_for_disability_inclusion_dim,
+                            CASE WHEN cp12.cca_has_analysis_on_indigenous_people = TRUE THEN 1 ELSE 0 END as cca_has_analysis_on_indigenous_people_count,
+                            CASE cp12.cca_has_analysis_on_indigenous_people WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as cca_has_analysis_on_indigenous_people_dim,
+                            CASE WHEN cp12.realization_of_indigenous_rights2030 = TRUE THEN 1 ELSE 0 END as realization_of_indigenous_rights2030_count,
+                            CASE cp12.realization_of_indigenous_rights2030 WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as realization_of_indigenous_rights2030_dim,
+                            CASE WHEN cp12.unct_supported_indigenous_people = TRUE THEN 1 ELSE 0 END as unct_supported_indigenous_people_count,
+                            CASE cp12.unct_supported_indigenous_people WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as unct_supported_indigenous_people_dim,
+                            COALESCE(cp12.indigenous_people_indicator_presence_id, -1) AS indigenous_people_indicator_presence_id,
+                            CASE WHEN cp12.cca_has_analysis_on_youth = TRUE THEN 1 ELSE 0 END as cca_has_analysis_on_youth_count,
+                            CASE cp12.cca_has_analysis_on_youth WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as cca_has_analysis_on_youth_dim,
+                            CASE WHEN cp12.support_of_youth = TRUE THEN 1 ELSE 0 END as support_of_youth_count,
+                            CASE cp12.support_of_youth WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as support_of_youth_dim,
+                            COALESCE(cp12.youth_indicator_presence_id, -1) AS youth_indicator_presence_id,
+                            CASE WHEN cp12.has_youth_advisory_board = TRUE THEN 1 ELSE 0 END as has_youth_advisory_board_count,
+                            CASE cp12.has_youth_advisory_board WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_youth_advisory_board_dim,
+                            COALESCE(cp12.youth_advisory_board_id, -1) AS youth_advisory_board_id
                         from
                             CP12HUMAN_RIGHTS_PROFILE cp12, CP1GENERAL_PROFILE cp1, CP12TRAINING_ONHRAPPROACH cp12training,
-                            CP12HRANALYSIS cp12hranalysis, CP12UPRPROCESS cp12uprprocess, BASE_COUNTRY bc, v_cp_validated_designations v
+                            CP12HRANALYSIS cp12hranalysis, CP12UPRPROCESS cp12uprprocess, cp12hrinstitution_in_country cp12hrinst,
+                            BASE_COUNTRY bc, v_cp_validated_designations v
                         WHERE
                             cp12.DESIGNATION = cp1.DESIGNATION AND cp12.ENTITY_YEAR = cp1.ENTITY_YEAR AND
                             cp12training.PARENT_ID = cp12.id AND
                             cp12hranalysis.PARENT_ID = cp12.id AND
                             cp12uprprocess.PARENT_ID = cp12.id AND
+                            cp12hrinst.PARENT_ID = cp12.id AND
                             cp12.DESIGNATION != 'AQ' AND cp12.DESIGNATION != 'DOCO' AND cp12.DESIGNATION = bc.iso2 and
                             cp12.designation = v.designation and v.entity_year = cp12.ENTITY_YEAR
                     ]]>
@@ -270,8 +294,8 @@
             <Dimension source="SecondaryCountryIncomeStatus" />
 
             <Dimension table="YesNoTable" name="UNCT Human Rights Advisor" caption="Does the UNCT have a designated person or group to advise it on human rights matters?" />
-            <Dimension table="YesNoTable" name="Human Rights-Based Approach" caption="Has a training on Human Rights-Based Approach been conducted in the current programme cycle?" />
-            <Dimension table="YesNoTable" name="Was it undertaken as part of the UNDAF rollout process" caption="Was it undertaken as part of the UNDAF rollout process?" />
+            <Dimension table="YesNoTable" name="Human Rights-Based Approach" caption="Has a training on Human Rights-Based Approach been conducted over the past year?" />
+            <Dimension table="YesNoTable" name="Was it undertaken as part of the UNDAF rollout process" caption="Was it undertaken as part of the UNDAF/Cooperation Framework rollout process?" />
             <Dimension table="YesNoTable" name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" />
             <Dimension table="YesNoTable" name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" />
             <Dimension table="YesNoTable" name="Has action been taken to address the human rights issues identified in the human rights analysis" caption="Has action been taken to address the human rights issues identified in the human rights analysis?" />
@@ -280,9 +304,9 @@
             <Dimension table="YesNoTable" name="Has the UNCT submitted a UNCT report to the UPR" caption="Has the UNCT submitted a UNCT report to the UPR?" />
             <Dimension table="YesNoTable" name="Has the UNCT facilitated follow up of the UPR recommendations by the Government" caption="Has the UNCT facilitated follow up of the UPR recommendations by the Government?" />
             <Dimension table="YesNoTable" name="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies" caption="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported the government to develop a report for the UPR" caption="Has the UNCT supported the government to develop a report for the UPR?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society develop inputs or reports for the UPR?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?" />
+            <Dimension table="YesNoTable" name="Has the UNCT supported the government to develop a report for the UPR" caption="Has the UNCT supported the government in developing a report for the UPR in the past year?" />
+            <Dimension table="YesNoTable" name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society in developing inputs or reports for the UPR in the past year?" />
+            <Dimension table="YesNoTable" name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution in developing inputs or reports for the UPR in the past year?" />
             <Dimension table="YesNoTable" name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" />
             <Dimension table="YesNoTable" name="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government" caption="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?" />
             <Dimension table="YesNoTable" name="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies" caption="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?" />
@@ -306,6 +330,18 @@
             <Dimension table="YesNoTable" name="UNDAFUPR" caption="Does the current UNDAF link outcomes with specific recommendations from the UPR?" />
             <Dimension table="YesNoTable" name="UNDAFTB" caption="Does the current UNDAF link outcomes with specific recommendations from the treaty bodies?" />
             <Dimension table="YesNoTable" name="UNDAFSP" caption="Does the current UNDAF link outcomes with specific recommendations from the special procedures?" />
+            <Dimension table="YesNoTable" name="nhriPartners" caption="Has the UNCT engaged with the NHRI as a partner?" />
+            <Dimension table="YesNoTable" name="hasDisabilityInclusionActivities" caption="Has the UNCT implemented activities on disability inclusion in the past year (eg. advocacy, programming, UN analysis, engaging with Organisations of Persons with Disabilities)?" />
+            <Dimension table="YesNoTable" name="hasCultureForDisabilityInclusion" caption="Has the UNCT undertaken any steps to strengthen organizational culture in relation to disability inclusion in the past year (e.g. capacity development, awareness-raising, internal or external communication, employment of persons with disabilities)?" />
+            <Dimension table="YesNoTable" name="ccaHasAnalysisOnIndigenousPeople" caption="Does the CCA contain a situational analysis on indigenous people?" />
+            <Dimension table="YesNoTable" name="realizationOfIndigenousRights2030" caption="Does your current UNDAF/Cooperation Framework support/address the realization of indigenous peoples’ rights as part of the implementation of the 2030 Agenda?" />
+            <Dimension table="YesNoTable" name="unctSupportedIndigenousPeople" caption="In the past year, has your UNCT supported the participation of indigenous peoples in UN and national development processes?" />
+            <Dimension table="YesNoTable" name="ccaHasAnalysisOnYouth" caption="Does the CCA contains a youth situational analysis?" />
+            <Dimension table="YesNoTable" name="supportOfYouth" caption="Does the current UNDAF/Cooperation Framework support/address the needs, builds the agency, and advances the rights of the young people?" />
+            <Dimension table="YesNoTable" name="hasYouthAdvisoryBoard" caption="Does your UNCT have a youth advisory board(s) or equivalent to provide input on UN work?" />
+            <Dimension source="CATEGORY" table="IndicatorPresence" name="indigenousPeopleIndicatorPresence" caption="Does your UNDAF/Cooperation Framework has specific indicators on indigenous people?" />
+            <Dimension source="CATEGORY" table="IndicatorPresence" name="youthIndicatorPresence" caption="Does your UNDAF/Cooperation Framework have youth-specific indicators" />
+            <Dimension source="CATEGORY" table="YouthAdvisoryBoard" name="youthAdvisoryBoard" caption="Are the youth advisory boards agency-specific or joint boards across UN entities?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -319,11 +355,11 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.2-->
-                    <Measure name="HumanRightsBasedApproach" caption="Count of training on Human Rights-Based Approach been conducted in the current programme cycle" column="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"
+                    <Measure name="HumanRightsBasedApproach" caption="Count of 'Has a training on Human Rights-Based Approach been conducted over the past year?'" column="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.2.1-->
-                    <Measure name="partOfRolloutProcess" caption="Count of 'Was it undertaken as part of the UNDAF rollout process?'" column="PART_OF_ROLLOUT_PROCESS_COUNT"
+                    <Measure name="partOfRolloutProcess" caption="Count of 'Was it undertaken as part of the UNDAF/Cooperation Framework rollout process?'" column="PART_OF_ROLLOUT_PROCESS_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.3-->
@@ -355,15 +391,15 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6.A-->
-                    <Measure name="hasUNCTSupportedGovernmentUPR" caption="Count of 'Has the UNCT supported the government to develop a report for the UPR?'" column="HASUNCTSUPPORTED_GOVERNMENTUPR_COUNT"
+                    <Measure name="hasUNCTSupportedGovernmentUPR" caption="Count of 'Has the UNCT supported the government in developing a report for the UPR in the past year?'" column="HASUNCTSUPPORTED_GOVERNMENTUPR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6.B-->
-                    <Measure name="hasUNCTSupportedCivilSocietyUPR" caption="Count of 'Has the UNCT supported civil society develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR_COUNT"
+                    <Measure name="hasUNCTSupportedCivilSocietyUPR" caption="Count of 'Has the UNCT supported civil society in developing inputs or reports for the UPR in the past year?'" column="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.6.C-->
-                    <Measure name="hasUNCTSupportedNationalHumanRightsInstitutionUPR" caption="Count of 'Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR?'" column="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR_COUNT"
+                    <Measure name="hasUNCTSupportedNationalHumanRightsInstitutionUPR" caption="Count of 'Has the UNCT supported the National Human Rights Institution in developing inputs or reports for the UPR in the past year?'" column="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <!--12.7-->
@@ -470,6 +506,33 @@
                     <!--N.12.10-->
                     <Measure name="UNDAFSP" caption="Count of 'Does the current UNDAF link outcomes with specific recommendations from the special procedures?'" column="HAS_UNDAF_SPECIAL_PROCEDURES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="nhriPartners" caption="Count of 'Has the UNCT engaged with the NHRI as a partner?'" column="nhri_partners_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasDisabilityInclusionActivities" caption="Count of 'Has the UNCT implemented activities on disability inclusion in the past year (eg. advocacy, programming, UN analysis, engaging with Organisations of Persons with Disabilities)?'" column="has_disability_inclusion_activities_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasCultureForDisabilityInclusion" caption="Count of 'Has the UNCT undertaken any steps to strengthen organizational culture in relation to disability inclusion in the past year (e.g. capacity development, awareness-raising, internal or external communication, employment of persons with disabilities)?'" column="has_culture_for_disability_inclusion_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="ccaHasAnalysisOnIndigenousPeople" caption="Count of 'Does the CCA contain a situational analysis on indigenous people?'" column="cca_has_analysis_on_indigenous_people_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="realizationOfIndigenousRights2030" caption="Count of 'Does your current UNDAF/Cooperation Framework support/address the realization of indigenous peoples’ rights as part of the implementation of the 2030 Agenda?'" column="realization_of_indigenous_rights2030_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="unctSupportedIndigenousPeople" caption="Count of 'In the past year, has your UNCT supported the participation of indigenous peoples in UN and national development processes?'" column="unct_supported_indigenous_people_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="ccaHasAnalysisOnYouth" caption="Count of 'Does the CCA contains a youth situational analysis?'" column="cca_has_analysis_on_youth_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="supportOfYouth" caption="Count of 'Does the current UNDAF/Cooperation Framework support/address the needs, builds the agency, and advances the rights of the young people?'" column="support_of_youth_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
+
+                    <Measure name="hasYouthAdvisoryBoard" caption="Count of 'Does your UNCT have a youth advisory board(s) or equivalent to provide input on UN work?'" column="has_youth_advisory_board_count"
+                             datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
@@ -514,6 +577,18 @@
                     <ForeignKeyLink dimension="UNDAFUPR" foreignKeyColumn="HAS_UNDAFUPR"/>
                     <ForeignKeyLink dimension="UNDAFTB" foreignKeyColumn="HAS_UNDAF_TREATY_BODIES"/>
                     <ForeignKeyLink dimension="UNDAFSP" foreignKeyColumn="HAS_UNDAF_SPECIAL_PROCEDURES"/>
+                    <ForeignKeyLink dimension="nhriPartners" foreignKeyColumn="nhri_partners_dim"/>
+                    <ForeignKeyLink dimension="hasDisabilityInclusionActivities" foreignKeyColumn="has_disability_inclusion_activities_dim"/>
+                    <ForeignKeyLink dimension="hasCultureForDisabilityInclusion" foreignKeyColumn="has_culture_for_disability_inclusion_dim"/>
+                    <ForeignKeyLink dimension="ccaHasAnalysisOnIndigenousPeople" foreignKeyColumn="cca_has_analysis_on_indigenous_people_dim"/>
+                    <ForeignKeyLink dimension="realizationOfIndigenousRights2030" foreignKeyColumn="realization_of_indigenous_rights2030_dim"/>
+                    <ForeignKeyLink dimension="unctSupportedIndigenousPeople" foreignKeyColumn="unct_supported_indigenous_people_dim"/>
+                    <ForeignKeyLink dimension="ccaHasAnalysisOnYouth" foreignKeyColumn="cca_has_analysis_on_youth_dim"/>
+                    <ForeignKeyLink dimension="supportOfYouth" foreignKeyColumn="support_of_youth_dim"/>
+                    <ForeignKeyLink dimension="hasYouthAdvisoryBoard" foreignKeyColumn="has_youth_advisory_board_dim"/>
+                    <ForeignKeyLink dimension="indigenousPeopleIndicatorPresence" foreignKeyColumn="indigenous_people_indicator_presence_id"/>
+                    <ForeignKeyLink dimension="youthIndicatorPresence" foreignKeyColumn="youth_indicator_presence_id"/>
+                    <ForeignKeyLink dimension="youthAdvisoryBoard" foreignKeyColumn="youth_advisory_board_id"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
