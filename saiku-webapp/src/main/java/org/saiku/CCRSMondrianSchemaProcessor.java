@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.sun.jersey.core.impl.provider.entity.Inflector;
-
 import mondrian.olap.Util.PropertyList;
 import mondrian.spi.DynamicSchemaProcessor;
 
@@ -26,8 +25,37 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
      */
     
     private static final Inflector INFLECTOR = Inflector.getInstance();
+
+
+    private static final Pattern YES_NO_DIM_2_PATTERN = Pattern.compile(
+            "<Dimension source=\"YesNoTable\" table=\"([^=]+)\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
+
+    private static final String YES_NO_DIM_2_TEMPLATE =
+            "<Dimension table=\"@@table@@\" name=\"@@name@@\" caption=\"@@caption@@\" >\n"
+                    + " <Attributes>\n"
+                    + "  <Attribute name=\"@@name@@\" caption=\"@@caption@@\" keyColumn=\"@@name@@_DIM\" orderByColumn=\"@@name@@_DIM_ORD\" />\n"
+                    + " </Attributes>\n"
+                    + "</Dimension>";
+
+    private static final Pattern COALESCE_CATEGORY_PATTERN = Pattern.compile(
+            "(?i)COALESCE\\((.+), 'X-CATEGORY'\\) AS (\\w+)");
+
+    private static final String COALESCE_CATEGORY_TEMPLATE =
+            "COALESCE(@@col@@, 'No Data Available') as @@alias@@_DIM,\n"
+                    + "COALESCE(@@col@@_SORT, '~~~') as @@alias@@_DIM_ORD";
+
+    private static final Pattern COALESCE_BOOL_PATTERN = Pattern.compile(
+            "(?i)COALESCE\\((.+), 'X-BOOLEAN'\\) AS (\\w+)");
+
+    private static final String COALESCE_BOOL_TEMPLATE =
+            "CASE @@col@@ WHEN TRUE THEN 'Yes' WHEN FALSE THEN 'No' ELSE 'No Data Available' END AS @@alias@@_DIM,\n"
+            + "CASE @@col@@ WHEN TRUE THEN 0 WHEN FALSE THEN 1 ELSE 2 END AS @@alias@@_DIM_ORD";
+
+    // TODO remove
     private static final Pattern YES_NO_DIM_PATTERN = Pattern.compile(
             "<Dimension table=\"YesNoTable\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
+
+    // TODO remove
     private static final String YES_NO_DIM_TEMPLATE =
             "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@' key='Dimension Id'>\n" +
                 "<Attributes>\n" +
@@ -113,6 +141,16 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                 "</Attributes>\n" +
             "</Dimension>";
 
+    private static final Pattern CATEGORY_DIM_2_PATTERN = Pattern.compile(
+            "<Dimension *source=[\"|']CATEGORY2[\"|'] *table=[\"|']([^=]*)[\"|'] *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
+
+    private static final String CATEGORY_DIM_2_TEMPLATE =
+            "<Dimension table=\"@@table@@\" name=\"@@name@@\" caption=\"@@caption@@\">\n"
+                    + " <Attributes>\n"
+                    + "  <Attribute name=\"@@name@@\" caption=\"@@caption@@\" keyColumn=\"@@name@@_DIM\" orderByColumn=\"@@name@@_DIM_ORD\" />\n"
+                    + " </Attributes>\n"
+                    + "</Dimension>";
+
     /**
      * Mondrian loads / refreshes schema one by one under the same thread
      * (see {@link AbstractConnectionManager#getAllConnections} {@link AbstractConnectionManager#refreshAllConnections})
@@ -148,10 +186,66 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
         content = content.replace("<!-- ## _SHARED_DIMENSIONS_TAG_ ## -->", sharedDimensions.get());
         content = content.replace("<!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->", sharedDimensionsLinks.get());
         content = this.processYesNoTable(content);
+        content = this.processYesNoTable2(content);
         content = this.processCategories(content);
+        content = this.processCategories2(content);
         return content;
     }
-    
+
+    private String processYesNoTable2(String content) {
+        Matcher matcher = COALESCE_BOOL_PATTERN.matcher(content);
+        while (matcher.find()) {
+            String coalesceText = matcher.group();
+            String col = matcher.group(1);
+            String alias = matcher.group(2);
+            content = content.replace(coalesceText,
+                    COALESCE_BOOL_TEMPLATE
+                            .replace("@@col@@", col)
+                            .replace("@@alias@@", alias));
+        }
+
+        Matcher m = YES_NO_DIM_2_PATTERN.matcher(content);
+        while(m.find()) {
+            String origText = m.group();
+            String table = m.group(1);
+            String name = m.group(2);
+            String caption = m.group(3);
+            content = content.replace(origText,
+                    YES_NO_DIM_2_TEMPLATE
+                            .replace("@@name@@", name)
+                            .replace("@@caption@@", caption)
+                            .replace("@@table@@", table));
+        }
+        return content;
+    }
+
+    private String processCategories2(String content) {
+        Matcher matcher = COALESCE_CATEGORY_PATTERN.matcher(content);
+        while (matcher.find()) {
+            String coalesceText = matcher.group();
+            String col = matcher.group(1);
+            String alias = matcher.group(2);
+            content = content.replace(coalesceText,
+                    COALESCE_CATEGORY_TEMPLATE
+                            .replace("@@col@@", col)
+                            .replace("@@alias@@", alias));
+        }
+        Matcher m = CATEGORY_DIM_2_PATTERN.matcher(content);
+        while(m.find()) {
+            String origText = m.group();
+            String table = m.group(1);
+            String name = m.group(2);
+            String caption = m.group(3);
+            content = content.replace(origText,
+                    CATEGORY_DIM_2_TEMPLATE
+                            .replace("@@name@@", name)
+                            .replace("@@caption@@", caption)
+                            .replace("@@table@@", table));
+        }
+        return content;
+    }
+
+    // TODO remove
     private String processYesNoTable(String content) {
         Matcher m = YES_NO_DIM_PATTERN.matcher(content);
         StringBuilder yesNoSB = new StringBuilder();
@@ -172,6 +266,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
         return content;
     }
 
+    // TODO remove
     private String processCategories(String content) {
         content = processCategories(content, CATEGORY_DIM_PATTERN, CATEGORY_QUERY_TEMPLATE,
                 CATEGORY_DIM_TEMPLATE, "<!-- ## _CATEGORY_QUERIES_TAG_ ## -->");
