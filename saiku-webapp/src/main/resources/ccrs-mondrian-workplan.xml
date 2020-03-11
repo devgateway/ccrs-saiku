@@ -18,8 +18,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="WorkplanCube">
             <ExpressionView>
                 <SQL dialect="generic">

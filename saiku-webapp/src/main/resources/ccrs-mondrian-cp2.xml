@@ -15,8 +15,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-        
         <Query alias="CP2RcoStaffMemberDetail">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -38,7 +36,7 @@
                             COALESCE(D.HEADRCO, 'X-BOOLEAN') AS HEAD_OF_RCO,
                             CASE WHEN D.COMMUNICATION_SPECIALIST = TRUE THEN 1 ELSE 0 END as COMMUNICATION_SPECIALIST_COUNT,
                             COALESCE(D.COMMUNICATION_SPECIALIST, 'X-BOOLEAN') AS COMMUNICATION_SPECIALIST,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             COALESCE(gender_id.LABEL, 'X-CATEGORY') as gender_id,
                             COALESCE(D.nationality_id, -1) AS nationality_id
                         FROM CP2RCO_STAFF_MEMBER_DETAIL D
@@ -74,7 +72,7 @@
                             COALESCE(cp2.SUBNATIONAL_OFFICES, 'X-BOOLEAN') AS SUBNATIONAL_OFFICES,
                             cp2.NUMBER_OF_OFFICES,
                             (select count(*) from CP2RCO_STAFF_MEMBER_DETAIL where PARENT_ID = cp2.id) STAFF_MEMEBER_COUNT,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp2.rco_covers_multiple_countries = TRUE THEN 1 ELSE 0 END as rco_covers_multiple_countries_count,
                             COALESCE(cp2.rco_covers_multiple_countries, 'X-BOOLEAN') AS rco_covers_multiple_countries_dim
                         from CP2COORDINATION_CAPACITY cp2
@@ -103,7 +101,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP2RcoStaffMemberDetail" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP2RcoStaffMemberDetail" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -172,6 +170,7 @@
 
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="OFFICE_TYPE_ID" />
@@ -199,7 +198,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP2GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP2GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -233,6 +232,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SUBNATIONAL_OFFICES"/>

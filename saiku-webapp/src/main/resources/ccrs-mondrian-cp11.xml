@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-        
         <Query alias="CP11BudgetSupport">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -20,7 +18,7 @@
                             CP11.DESIGNATION, CP11.ENTITY_YEAR,
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
                         from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE CP11
                             JOIN CP11DIRECT_BUDGET_SUPPORT D ON CP11.ID = D.PARENT_ID
                             JOIN CP1GENERAL_PROFILE CP1 ON CP11.DESIGNATION = CP1.DESIGNATION AND CP11.ENTITY_YEAR = CP1.ENTITY_YEAR
@@ -46,23 +44,23 @@
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp11.HAS_SUPPORTSSCOOPERATION = TRUE THEN 1 ELSE 0 END as HAS_SUPPORTSSCOOPERATION_COUNT,
-                            CASE cp11.HAS_SUPPORTSSCOOPERATION WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_SUPPORTSSCOOPERATION,
+                            COALESCE(cp11.HAS_SUPPORTSSCOOPERATION, 'X-BOOLEAN') AS HAS_SUPPORTSSCOOPERATION,
                             COALESCE(HASSWAPS_ID.LABEL, 'X-CATEGORY') as HASSWAPS_ID,
                             CASE WHEN cp11.HAS_DIRECT_BUDGET_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_DIRECT_BUDGET_SUPPORT_COUNT,
-                            CASE cp11.HAS_DIRECT_BUDGET_SUPPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_DIRECT_BUDGET_SUPPORT,
+                            COALESCE(cp11.HAS_DIRECT_BUDGET_SUPPORT, 'X-BOOLEAN') AS HAS_DIRECT_BUDGET_SUPPORT,
                             CASE WHEN cp11.IS_CHAIR_AID_EFFECTIVENESS_FORA = TRUE THEN 1 ELSE 0 END as IS_CHAIR_AID_EFFECTIVENESS_FORA_COUNT,
-                            CASE cp11.IS_CHAIR_AID_EFFECTIVENESS_FORA WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as IS_CHAIR_AID_EFFECTIVENESS_FORA,
+                            COALESCE(cp11.IS_CHAIR_AID_EFFECTIVENESS_FORA, 'X-BOOLEAN') AS IS_CHAIR_AID_EFFECTIVENESS_FORA,
                             CASE WHEN cp11.HAS_CAPACITY_FOR_AID_MODALITIES = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_FOR_AID_MODALITIES_COUNT,
-                            CASE cp11.HAS_CAPACITY_FOR_AID_MODALITIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CAPACITY_FOR_AID_MODALITIES,
+                            COALESCE(cp11.HAS_CAPACITY_FOR_AID_MODALITIES, 'X-BOOLEAN') AS HAS_CAPACITY_FOR_AID_MODALITIES,
                             CASE WHEN cp11.HASAIMS = TRUE THEN 1 ELSE 0 END as HASAIMS_COUNT,
-                            CASE cp11.HASAIMS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASAIMS,
+                            COALESCE(cp11.HASAIMS, 'X-BOOLEAN') AS HASAIMS,
                             CASE WHEN cp11aims.SUPPORTED_BYUN = TRUE THEN 1 ELSE 0 END as SUPPORTED_BYUN_COUNT,
-                            CASE cp11aims.SUPPORTED_BYUN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as SUPPORTED_BYUN,
+                            COALESCE(cp11aims.SUPPORTED_BYUN, 'X-BOOLEAN') AS SUPPORTED_BYUN,
                             CASE WHEN cp11aims.UNCT_REPORT_TOAIMS = TRUE THEN 1 ELSE 0 END as UNCT_REPORT_TOAIMS_COUNT,
-                            CASE cp11aims.UNCT_REPORT_TOAIMS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNCT_REPORT_TOAIMS,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp11aims.UNCT_REPORT_TOAIMS, 'X-BOOLEAN') AS UNCT_REPORT_TOAIMS,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp11.HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT = TRUE THEN 1 ELSE 0 END as HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT_COUNT,
-                            CASE cp11.HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT,
+                            COALESCE(cp11.HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT, 'X-BOOLEAN') AS HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT,
                             COALESCE(ROLE_ID.LABEL, 'X-CATEGORY') as ROLE_ID,
                             COALESCE(COLLECTIVE_APPROACH_ID.LABEL, 'X-CATEGORY') as COLLECTIVE_APPROACH_ID
                         from CP11DEVELOPMENT_EFFECTIVENESS_PROFILE cp11
@@ -97,7 +95,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP11BudgetSupport" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP11BudgetSupport" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -120,6 +118,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECTOR_ID" />
@@ -136,7 +135,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP11GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -145,15 +144,15 @@
             <Dimension source="CATEGORY" table="CP11GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
             <Dimension source="CATEGORY" table="CP11GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension table="YesNoTable" name="South-South Cooperation" caption="Does the UNCT provide support on South-South Cooperation?" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="HAS_SUPPORTSSCOOPERATION" caption="Does the UNCT provide support on South-South Cooperation?" />
             <Dimension source="CATEGORY" table="CP11GeneralCube" name="HASSWAPS_ID" caption="Does the UNCT participate in sector-wide approaches (SWAPs)?" />
-            <Dimension table="YesNoTable" name="Direct budget support" caption="Does the UNCT provide direct budget support to the national authorities/government?" />
-            <Dimension table="YesNoTable" name="Chair/co-chair aid effectiveness" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" />
-            <Dimension table="YesNoTable" name="Capacity development for aid modalities" caption="Does the UNCT provide capacity development for use of aid modalities and/or aid management?" />
-            <Dimension table="YesNoTable" name="AIMS" caption="Is there an Aid Management Information System (AIMS) in place?" />
-            <Dimension table="YesNoTable" name="Is the system supported by the UNCT" caption="Is the system supported by the UNCT?" />
-            <Dimension table="YesNoTable" name="Does the UNCT report to the AIMS" caption="Does the UNCT report to the AIMS?" />
-            <Dimension table="YesNoTable" name="Did UN Requested Cooperation" caption="Has the government requested the UN system to support its cooperation with other developing countries?" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="HAS_DIRECT_BUDGET_SUPPORT" caption="Does the UNCT provide direct budget support to the national authorities/government?" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="IS_CHAIR_AID_EFFECTIVENESS_FORA" caption="Does the UNCT chair/co-chair aid effectiveness and coordination fora?" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="HAS_CAPACITY_FOR_AID_MODALITIES" caption="Does the UNCT provide capacity development for use of aid modalities and/or aid management?" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="HASAIMS" caption="Is there an Aid Management Information System (AIMS) in place?" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="SUPPORTED_BYUN" caption="Is the system supported by the UNCT?" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="UNCT_REPORT_TOAIMS" caption="Does the UNCT report to the AIMS?" />
+            <Dimension source="YesNoTable" table="CP11GeneralCube" name="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT" caption="Has the government requested the UN system to support its cooperation with other developing countries?" />
             <Dimension source="CATEGORY" table="CP11GeneralCube" name="ROLE_ID" caption="South-South Support Role" />
             <Dimension source="CATEGORY" table="CP11GeneralCube" name="COLLECTIVE_APPROACH_ID" caption="Is the UNCT taking a collective approach to South-South cooperation?" />
 
@@ -191,17 +190,18 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="South-South Cooperation" foreignKeyColumn="HAS_SUPPORTSSCOOPERATION"/>
+                    <FactLink dimension="HAS_SUPPORTSSCOOPERATION" />
                     <FactLink dimension="HASSWAPS_ID" />
-                    <ForeignKeyLink dimension="Direct budget support" foreignKeyColumn="HAS_DIRECT_BUDGET_SUPPORT"/>
-                    <ForeignKeyLink dimension="Chair/co-chair aid effectiveness" foreignKeyColumn="IS_CHAIR_AID_EFFECTIVENESS_FORA"/>
-                    <ForeignKeyLink dimension="Capacity development for aid modalities" foreignKeyColumn="HAS_CAPACITY_FOR_AID_MODALITIES"/>
-                    <ForeignKeyLink dimension="AIMS" foreignKeyColumn="HASAIMS"/>
-                    <ForeignKeyLink dimension="Is the system supported by the UNCT" foreignKeyColumn="SUPPORTED_BYUN"/>
-                    <ForeignKeyLink dimension="Does the UNCT report to the AIMS" foreignKeyColumn="UNCT_REPORT_TOAIMS"/>
-                    <ForeignKeyLink dimension="Did UN Requested Cooperation" foreignKeyColumn="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT"/>
+                    <FactLink dimension="HAS_DIRECT_BUDGET_SUPPORT" />
+                    <FactLink dimension="IS_CHAIR_AID_EFFECTIVENESS_FORA" />
+                    <FactLink dimension="HAS_CAPACITY_FOR_AID_MODALITIES" />
+                    <FactLink dimension="HASAIMS" />
+                    <FactLink dimension="SUPPORTED_BYUN" />
+                    <FactLink dimension="UNCT_REPORT_TOAIMS" />
+                    <FactLink dimension="HAS_GOV_REQUESTEDSSCOOPERATION_SUPPORT" />
                     <FactLink dimension="ROLE_ID" />
                     <FactLink dimension="COLLECTIVE_APPROACH_ID" />
                 </DimensionLinks>

@@ -3,5 +3,4 @@
 	<ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
 	<ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
 	<FactLink dimension="Year" />
-	<ForeignKeyLink dimension="Delivering as One" foreignKeyColumn="OFFICIAL_REQUEST_DAO_COUNTRY"/>
 </Root>

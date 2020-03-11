@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="CP12HumanRightsTreatyBodies">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -24,7 +22,7 @@
                             COALESCE(D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT, 'X-BOOLEAN') AS HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT,
                             CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
                             COALESCE(D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS, 'X-BOOLEAN') AS HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP12UNHRTREATY_BODY D
                             JOIN CP12HUMAN_RIGHTS_PROFILE CP12 ON CP12.ID = D.PARENT_ID
                             JOIN CP1GENERAL_PROFILE CP1 ON CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR
@@ -52,7 +50,7 @@
 							COALESCE(D.UNCT_SUPPORTED, 'X-BOOLEAN') AS UNCT_SUPPORTED,
                             CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
                             COALESCE(D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS, 'X-BOOLEAN') AS HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D
                             JOIN CP12HUMAN_RIGHTS_PROFILE CP12 ON CP12.ID = D.PARENT_ID
                             JOIN CP1GENERAL_PROFILE CP1 ON CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR
@@ -136,7 +134,7 @@
                             COALESCE(cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC, 'X-BOOLEAN') AS HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC,
                             CASE WHEN cp12.HASHRI = TRUE THEN 1 ELSE 0 END as HASHRI_COUNT,
                             COALESCE(cp12.HASHRI, 'X-BOOLEAN') AS HASHRI,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp12.HAS_CCAUPR = TRUE THEN 1 ELSE 0 END as HAS_CCAUPR_COUNT,
                             COALESCE(cp12.HAS_CCAUPR, 'X-BOOLEAN') AS HAS_CCAUPR,
                             CASE WHEN cp12.HAS_CCA_TREATY_BODIES = TRUE THEN 1 ELSE 0 END as HAS_CCA_TREATY_BODIES_COUNT,
@@ -205,7 +203,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP12HumanRightsTreatyBodies" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP12HumanRightsTreatyBodies" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -233,6 +231,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="UNHR_TREATY_BODY_TYPE"/>
@@ -251,7 +250,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP12SpecialProcedureHumanRightsCouncil" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP12SpecialProcedureHumanRightsCouncil" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -284,6 +283,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Name" />
@@ -302,7 +302,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP12GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -554,6 +554,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="HAS_HUMAN_RIGHTS_ADVISOR"/>

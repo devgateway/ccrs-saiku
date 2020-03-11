@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="CP8GeneralCube">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -18,24 +16,24 @@
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp8.HASUNDPDEPUTY_REPRESENTATIVE = TRUE THEN 1 ELSE 0 END as HASUNDPDEPUTY_REPRESENTATIVE_COUNT,
-                            CASE cp8.HASUNDPDEPUTY_REPRESENTATIVE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNDPDEPUTY_REPRESENTATIVE,
+                            COALESCE(cp8.HASUNDPDEPUTY_REPRESENTATIVE, 'X-BOOLEAN') AS HASUNDPDEPUTY_REPRESENTATIVE,
                             CASE WHEN cp8.HAS_CODE_OF_CONDUCT = TRUE THEN 1 ELSE 0 END as HAS_CODE_OF_CONDUCT_COUNT,
-                            CASE cp8.HAS_CODE_OF_CONDUCT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CODE_OF_CONDUCT,
+                            COALESCE(cp8.HAS_CODE_OF_CONDUCT, 'X-BOOLEAN') AS HAS_CODE_OF_CONDUCT,
                             date(cp8code.DATE_IMPLEMENTED) as DATE_IMPLEMENTED,
                             CASE WHEN cp8.HAS_COUNTRY_DIRECTOR = TRUE THEN 1 ELSE 0 END as HAS_COUNTRY_DIRECTOR_COUNT,                  
-                            CASE cp8.HAS_COUNTRY_DIRECTOR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COUNTRY_DIRECTOR,
+                            COALESCE(cp8.HAS_COUNTRY_DIRECTOR, 'X-BOOLEAN') AS HAS_COUNTRY_DIRECTOR,
                             CASE WHEN cp8.SIGNED_DELEGATION_OF_AUTHORITY_LETTER = TRUE THEN 1 ELSE 0 END as SIGNED_DELEGATION_OF_AUTHORITY_LETTER_COUNT,
-                            CASE cp8.SIGNED_DELEGATION_OF_AUTHORITY_LETTER WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as SIGNED_DELEGATION_OF_AUTHORITY_LETTER,
+                            COALESCE(cp8.SIGNED_DELEGATION_OF_AUTHORITY_LETTER, 'X-BOOLEAN') AS SIGNED_DELEGATION_OF_AUTHORITY_LETTER,
                             CASE WHEN cp8.SIGNED_DELEGATION_AUTHORITY = TRUE THEN 1 ELSE 0 END as SIGNED_DELEGATION_AUTHORITY_COUNT,
-                            CASE cp8.SIGNED_DELEGATION_AUTHORITY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as SIGNED_DELEGATION_AUTHORITY,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp8.SIGNED_DELEGATION_AUTHORITY, 'X-BOOLEAN') AS SIGNED_DELEGATION_AUTHORITY,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp8.has_sexual_exploitation_protection = TRUE THEN 1 ELSE 0 END as has_sexual_exploitation_protection_count,
-                            CASE cp8.has_sexual_exploitation_protection WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_sexual_exploitation_protection_dim,
+                            COALESCE(cp8.has_sexual_exploitation_protection, 'X-BOOLEAN') AS has_sexual_exploitation_protection_dim,
                             COALESCE(sexual_exploitation_protection_id.LABEL, 'X-CATEGORY') as sexual_exploitation_protection_id,
                             CASE WHEN cp8.has_agreeduncttor = TRUE THEN 1 ELSE 0 END as has_agreeduncttor_count,
-                            CASE cp8.has_agreeduncttor WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_agreeduncttor_dim,
+                            COALESCE(cp8.has_agreeduncttor, 'X-BOOLEAN') AS has_agreeduncttor_dim,
                             CASE WHEN cp8.has_agreed_conflict_resolution = TRUE THEN 1 ELSE 0 END as has_agreed_conflict_resolution_count,
-                            CASE cp8.has_agreed_conflict_resolution WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_agreed_conflict_resolution_dim
+                            COALESCE(cp8.has_agreed_conflict_resolution, 'X-BOOLEAN') AS has_agreed_conflict_resolution_dim
                         from CP8JOINT_LEADERSHIP_MANAGEMENT cp8
                             JOIN CP1GENERAL_PROFILE cp1 ON cp8.DESIGNATION = cp1.DESIGNATION AND cp8.ENTITY_YEAR = cp1.ENTITY_YEAR
                             JOIN CP8CODE_OF_CONDUCT cp8code ON cp8code.PARENT_ID = cp8.ID
@@ -65,7 +63,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP8GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -74,7 +72,7 @@
             <Dimension source="CATEGORY" table="CP8GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
             <Dimension source="CATEGORY" table="CP8GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
             
-            <Dimension table="YesNoTable" name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="HAS_CODE_OF_CONDUCT" caption="Does the UNCT have a code of conduct?" />
 
             <Dimension name="Date code of conduct was implemented" caption="Date code of conduct was implemented" table='CP8GeneralCube'
                        key="Dimension Id" type="TIME">
@@ -89,14 +87,14 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Does the UNDP have a Country Director" caption="Does the UNDP have a Country Director?" />
-            <Dimension table="YesNoTable" name="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" caption="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" />
-            <Dimension table="YesNoTable" name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" />
-            <Dimension table="YesNoTable" name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" />
-            <Dimension table="YesNoTable" name="hasSexualExploitationProtection" caption="Does the UNCT have an inter-agency taskforce, coordination mechanism or focal point on protection from sexual exploitation and abuse?" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="HAS_COUNTRY_DIRECTOR" caption="Does the UNDP have a Country Director?" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="SIGNED_DELEGATION_OF_AUTHORITY_LETTER" caption="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="HASUNDPDEPUTY_REPRESENTATIVE" caption="Does UNDP have a Deputy Representative?" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="SIGNED_DELEGATION_AUTHORITY" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="has_sexual_exploitation_protection_dim" caption="Does the UNCT have an inter-agency taskforce, coordination mechanism or focal point on protection from sexual exploitation and abuse?" />
             <Dimension source="CATEGORY" table="CP8GeneralCube" name="sexual_exploitation_protection_id" caption="What kind of protection from sexual exploitation and abuse?" />
-            <Dimension table="YesNoTable" name="hasAgreedUNCTTor" caption="Is there an agreed upon UNCT TOR?" />
-            <Dimension table="YesNoTable" name="hasAgreedConflictResolution" caption="Is there an agreed Conflict Resolution Mechanism?" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="has_agreeduncttor_dim" caption="Is there an agreed upon UNCT TOR?" />
+            <Dimension source="YesNoTable" table="CP8GeneralCube" name="has_agreed_conflict_resolution_dim" caption="Is there an agreed Conflict Resolution Mechanism?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -132,18 +130,19 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Date code of conduct was implemented" />
-                    <ForeignKeyLink dimension="Does the UNCT have a code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT"/>
-                    <ForeignKeyLink dimension="Does UNDP have a Deputy Representative"  foreignKeyColumn="HASUNDPDEPUTY_REPRESENTATIVE"/>
-                    <ForeignKeyLink dimension="Does the UNDP have a Country Director"  foreignKeyColumn="HAS_COUNTRY_DIRECTOR"/>
-                    <ForeignKeyLink dimension="Is there a signed delegation of authority letter"  foreignKeyColumn="SIGNED_DELEGATION_AUTHORITY"/>                   
-                    <ForeignKeyLink dimension="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?"  foreignKeyColumn="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"/>
-                    <ForeignKeyLink dimension="hasSexualExploitationProtection"  foreignKeyColumn="has_sexual_exploitation_protection_dim"/>
+                    <FactLink dimension="HAS_CODE_OF_CONDUCT" />
+                    <FactLink dimension="HASUNDPDEPUTY_REPRESENTATIVE" />
+                    <FactLink dimension="HAS_COUNTRY_DIRECTOR" />
+                    <FactLink dimension="SIGNED_DELEGATION_AUTHORITY" />                   
+                    <FactLink dimension="SIGNED_DELEGATION_OF_AUTHORITY_LETTER" />
+                    <FactLink dimension="has_sexual_exploitation_protection_dim" />
                     <FactLink dimension="sexual_exploitation_protection_id"/>
-                    <ForeignKeyLink dimension="hasAgreedUNCTTor"  foreignKeyColumn="has_agreeduncttor_dim"/>
-                    <ForeignKeyLink dimension="hasAgreedConflictResolution"  foreignKeyColumn="has_agreed_conflict_resolution_dim"/>
+                    <FactLink dimension="has_agreeduncttor_dim" />
+                    <FactLink dimension="has_agreed_conflict_resolution_dim" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

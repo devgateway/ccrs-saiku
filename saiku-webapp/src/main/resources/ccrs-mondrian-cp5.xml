@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="CP5UNCTMembersSharedOffices">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -19,7 +17,7 @@
                             CP1.DESIGNATION, CP1.ENTITY_YEAR,
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP5SHARED_SUB_NATIONAL_OFFICES M
                             JOIN CP1GENERAL_PROFILE CP1 ON M.PARENT_ID = CP1.ID
                             JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
@@ -42,17 +40,19 @@
                             CP5.ID, CP5.DESIGNATION, CP5.ENTITY_YEAR,
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN 1 ELSE 0 END as HASUNCOMMON_PREMISES,
+                            COALESCE(cp5.HASUNCOMMON_PREMISES, 'X-BOOLEAN') AS HASUNCOMMON_PREMISES,
+                            CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN 1 ELSE 0 END as HASUNCOMMON_PREMISES_COUNT,
                             COALESCE(COMMON_PREMISES_TYPE_ID.LABEL, 'X-CATEGORY') as COMMON_PREMISES_TYPE_ID,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.VALUE_OF_SAVINGS ELSE null END as VALUE_OF_SAVINGS,
-                            CASE WHEN cp5.HASUNCOMMON_PREMISES = FALSE THEN CASE WHEN cp5uncommon.HASUNCTSTRATEGY = TRUE THEN 1 ELSE 0 END ELSE -1 END as HASUNCTSTRATEGY_DIM,
+                            COALESCE(cp5uncommon.HASUNCTSTRATEGY, 'X-BOOLEAN') AS HASUNCTSTRATEGY_DIM,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = FALSE THEN CASE WHEN cp5uncommon.HASUNCTSTRATEGY = TRUE THEN 1 ELSE 0 END ELSE 0 END as HASUNCTSTRATEGY_COUNT,
-                            CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN 1 ELSE 0 END as HAS_FEASIBILITY_STUDY,
+                            COALESCE(cp5.HAS_FEASIBILITY_STUDY, 'X-BOOLEAN') AS HAS_FEASIBILITY_STUDY,
+                            CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN 1 ELSE 0 END as HAS_FEASIBILITY_STUDY_COUNT,
                             CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN CASE WHEN cp5study.TTCP_REVIEW_AND_FEEDBACK = TRUE THEN 1 ELSE 0 END ELSE 0 END as TTCP_REVIEW_AND_FEEDBACK_COUNT,
-                            CASE WHEN cp5.HAS_FEASIBILITY_STUDY = TRUE THEN CASE WHEN cp5study.TTCP_REVIEW_AND_FEEDBACK = TRUE THEN 1 ELSE 0 END ELSE -1 END as TTCP_REVIEW_AND_FEEDBACK_DIM,
-                            CASE cp5.HAS_SHARED_SUB_NATIONAL_OFFICES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_SHARED_SUB_NATIONAL_OFFICES_DIM,
+                            COALESCE(cp5study.TTCP_REVIEW_AND_FEEDBACK, 'X-BOOLEAN') AS TTCP_REVIEW_AND_FEEDBACK_DIM,
+                            COALESCE(cp5.HAS_SHARED_SUB_NATIONAL_OFFICES, 'X-BOOLEAN') AS HAS_SHARED_SUB_NATIONAL_OFFICES_DIM,
                             CASE WHEN cp5.HAS_SHARED_SUB_NATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT,
-                            CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             COALESCE(shared_offices_id.LABEL, 'X-CATEGORY') as shared_offices_id
                         from CP5COMMON_PREMISES_PROFILE CP5
                              join CP1GENERAL_PROFILE CP1 on CP5.DESIGNATION = CP1.DESIGNATION AND CP5.ENTITY_YEAR = CP1.ENTITY_YEAR
@@ -84,7 +84,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP5UNCTMembersSharedOffices" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP5UNCTMembersSharedOffices" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -116,6 +116,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Location" />
@@ -133,7 +134,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP5GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP5GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -142,12 +143,12 @@
             <Dimension source="CATEGORY" table="CP5GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
             <Dimension source="CATEGORY" table="CP5GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension table="YesNoTable" name="hasUNCommonPremises" caption="Does the UNCT have UN Common Premises or UN House?" />
+            <Dimension source="YesNoTable" table="CP5GeneralCube" name="HASUNCOMMON_PREMISES" caption="Does the UNCT have UN Common Premises or UN House?" />
             <Dimension source="CATEGORY" table="CP5GeneralCube" name="COMMON_PREMISES_TYPE_ID" caption="Are the premises government-provided, rented or owned?" />
-            <Dimension table="YesNoTable" name="hasUNCTStrategy" caption="Does the UNCT have a strategy to support the establishment of common premises?" />
-            <Dimension table="YesNoTable" name="Has the UNCT ever developed a feasibility study for the implementation of common premises" caption="Has the UNCT ever developed a feasibility study for the implementation of common premises?" />
-            <Dimension table="YesNoTable" name="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study" caption="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study?" />
-            <Dimension table="YesNoTable" name="hasSharedSubNationalOffices" caption="Do UNCT members have any offices at the sub-national level?" />
+            <Dimension source="YesNoTable" table="CP5GeneralCube" name="HASUNCTSTRATEGY_DIM" caption="Does the UNCT have a strategy to support the establishment of common premises?" />
+            <Dimension source="YesNoTable" table="CP5GeneralCube" name="HAS_FEASIBILITY_STUDY" caption="Has the UNCT ever developed a feasibility study for the implementation of common premises?" />
+            <Dimension source="YesNoTable" table="CP5GeneralCube" name="TTCP_REVIEW_AND_FEEDBACK_DIM" caption="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study?" />
+            <Dimension source="YesNoTable" table="CP5GeneralCube" name="HAS_SHARED_SUB_NATIONAL_OFFICES_DIM" caption="Do UNCT members have any offices at the sub-national level?" />
             <Dimension source="CATEGORY" table="CP5GeneralCube" name="shared_offices_id" caption="How many offices are in shared premises with other entities?" />
         </Dimensions>
 
@@ -157,7 +158,7 @@
                     <Measure name="Count" caption="Number of Country Records Submitted" column="ID" datatype="Integer"
                              aggregator="distinct-count" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasUNCommonPremises" caption="Count of 'Does the UNCT have UN Common Premises or UN House?'" column="HASUNCOMMON_PREMISES"
+                    <Measure name="hasUNCommonPremises" caption="Count of 'Does the UNCT have UN Common Premises or UN House?'" column="HASUNCOMMON_PREMISES_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="valueOfSavings" caption="What is the approximate USD value of the savings" column="VALUE_OF_SAVINGS"
@@ -166,7 +167,7 @@
                     <Measure name="hasUNCTStrategy" caption="Count of 'Does the UNCT have a strategy to support the establishment of common premises?'" column="HASUNCTSTRATEGY_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
-                    <Measure name="hasFeasibilityStudy" caption="Count of 'Has the UNCT ever developed a feasibility study for the implementation of common premises?'" column="HAS_FEASIBILITY_STUDY"
+                    <Measure name="hasFeasibilityStudy" caption="Count of 'Has the UNCT ever developed a feasibility study for the implementation of common premises?'" column="HAS_FEASIBILITY_STUDY_COUNT"
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
 
                     <Measure name="ttcpReviewAndFeedback" caption="Count of 'Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study?'" column="TTCP_REVIEW_AND_FEEDBACK_COUNT"
@@ -177,14 +178,15 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="COMMON_PREMISES_TYPE_ID" />
-                    <ForeignKeyLink dimension="hasUNCommonPremises" foreignKeyColumn="HASUNCOMMON_PREMISES"/>
-                    <ForeignKeyLink dimension="Has the UNCT ever developed a feasibility study for the implementation of common premises" foreignKeyColumn="HAS_FEASIBILITY_STUDY"/>
-                    <ForeignKeyLink dimension="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study" foreignKeyColumn="TTCP_REVIEW_AND_FEEDBACK_DIM"/>
-                    <ForeignKeyLink dimension="hasSharedSubNationalOffices" foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_DIM"/>
-                    <ForeignKeyLink dimension="hasUNCTStrategy" foreignKeyColumn="HASUNCTSTRATEGY_DIM"/>
+                    <FactLink dimension="HASUNCOMMON_PREMISES" />
+                    <FactLink dimension="HAS_FEASIBILITY_STUDY" />
+                    <FactLink dimension="TTCP_REVIEW_AND_FEEDBACK_DIM" />
+                    <FactLink dimension="HAS_SHARED_SUB_NATIONAL_OFFICES_DIM" />
+                    <FactLink dimension="HASUNCTSTRATEGY_DIM" />
                     <FactLink dimension="shared_offices_id" />
                 </DimensionLinks>
             </MeasureGroup>

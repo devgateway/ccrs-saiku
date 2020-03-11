@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="CP13GenderEqualityScorecard">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -21,8 +19,8 @@
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
-                            CASE D.HASUNCTDEVELOPED_MANAGEMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            COALESCE(D.HASUNCTDEVELOPED_MANAGEMENT_PLAN, 'X-BOOLEAN') AS HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP13SCORECARD_AREA_SCORE D
                             JOIN CP13GENDER_PROFILE CP13 ON CP13.ID = D.PARENT_ID
                             JOIN CP1GENERAL_PROFILE CP1 ON CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR
@@ -50,7 +48,7 @@
                             CP13.DESIGNATION, CP13.ENTITY_YEAR,
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP13UNSWAP_SCORECARD_AREA_SCORE S
                             JOIN CP13GENDER_PROFILE CP13 ON S.PARENT_ID = CP13.ID
                             JOIN CP1GENERAL_PROFILE CP1 ON CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR
@@ -77,26 +75,26 @@
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp13.HASUNCTGENDER_ADVISOR = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_ADVISOR_COUNT,
-                            CASE cp13.HASUNCTGENDER_ADVISOR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTGENDER_ADVISOR,
+                            COALESCE(cp13.HASUNCTGENDER_ADVISOR, 'X-BOOLEAN') AS HASUNCTGENDER_ADVISOR,
                             CASE WHEN cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL = TRUE THEN 1 ELSE 0 END as HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT,
-                            CASE cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL,
+                            COALESCE(cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL, 'X-BOOLEAN') AS HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL,
                             CASE WHEN cp13.HASUNCTGENDER_EQUALITY_SCORECARD = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_EQUALITY_SCORECARD_COUNT,
-                            CASE cp13.HASUNCTGENDER_EQUALITY_SCORECARD WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTGENDER_EQUALITY_SCORECARD,
+                            COALESCE(cp13.HASUNCTGENDER_EQUALITY_SCORECARD, 'X-BOOLEAN') AS HASUNCTGENDER_EQUALITY_SCORECARD,
                             CASE WHEN cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER = TRUE THEN 1 ELSE 0 END as HAS_CAPACITY_BUILDINGUNSTAFF_GENDER_COUNT,
-                            CASE cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CAPACITY_BUILDINGUNSTAFF_GENDER,
+                            COALESCE(cp13.HAS_CAPACITY_BUILDINGUNSTAFF_GENDER, 'X-BOOLEAN') AS HAS_CAPACITY_BUILDINGUNSTAFF_GENDER,
                             CASE WHEN cp13.UNCT_USES_GENDER_EQUALITY_MARKER = TRUE THEN 1 ELSE 0 END as UNCT_USES_GENDER_EQUALITY_MARKER_COUNT,
-                            CASE cp13.UNCT_USES_GENDER_EQUALITY_MARKER WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNCT_USES_GENDER_EQUALITY_MARKER,
+                            COALESCE(cp13.UNCT_USES_GENDER_EQUALITY_MARKER, 'X-BOOLEAN') AS UNCT_USES_GENDER_EQUALITY_MARKER,
                             CASE WHEN cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE = TRUE THEN 1 ELSE 0 END as GENDER_MAINSTREAMING_STRATEGY_IN_PLACE_COUNT,
-                            CASE cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as GENDER_MAINSTREAMING_STRATEGY_IN_PLACE,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp13.GENDER_MAINSTREAMING_STRATEGY_IN_PLACE, 'X-BOOLEAN') AS GENDER_MAINSTREAMING_STRATEGY_IN_PLACE,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp13.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
-                            CASE cp13.HASUNCTDEVELOPED_MANAGEMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
+                            COALESCE(cp13.HASUNCTDEVELOPED_MANAGEMENT_PLAN, 'X-BOOLEAN') AS HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
                             CASE WHEN cp13.was_management_response_used = TRUE THEN 1 ELSE 0 END as was_management_response_used_count,
-                            CASE cp13.was_management_response_used WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as was_management_response_used_dim,
+                            COALESCE(cp13.was_management_response_used, 'X-BOOLEAN') AS was_management_response_used_dim,
                             CASE WHEN cp13.has_gender_parity = TRUE THEN 1 ELSE 0 END as has_gender_parity_count,
-                            CASE cp13.has_gender_parity WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_gender_parity_dim,
+                            COALESCE(cp13.has_gender_parity, 'X-BOOLEAN') AS has_gender_parity_dim,
                             CASE WHEN cp13.has_working_environment_for_gender_parity = TRUE THEN 1 ELSE 0 END as has_working_environment_for_gender_parity_count,
-                            CASE cp13.has_working_environment_for_gender_parity WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_working_environment_for_gender_parity_dim
+                            COALESCE(cp13.has_working_environment_for_gender_parity, 'X-BOOLEAN') AS has_working_environment_for_gender_parity_dim
                         from CP13GENDER_PROFILE cp13
                             JOIN CP1GENERAL_PROFILE cp1 ON cp13.DESIGNATION = cp1.DESIGNATION AND cp13.ENTITY_YEAR = cp1.ENTITY_YEAR
                             JOIN BASE_COUNTRY bc ON cp13.DESIGNATION = bc.iso2
@@ -125,7 +123,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP13GenderEqualityScorecard" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP13GenderEqualityScorecard" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -136,7 +134,7 @@
 
             <Dimension source="CATEGORY" table="CP13GenderEqualityScorecard" name="SCORECARD_ID" caption="Gender Scorecard" />
             <Dimension source="CATEGORY" table="CP13GenderEqualityScorecard" name="GENDER_EQUALITY_RATING_ID" caption="Gender Equality Rating" />
-            <Dimension table="YesNoTable" name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the scorecard recommendations?" />
+            <Dimension source="YesNoTable" table="CP13GenderEqualityScorecard" name="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" caption="Has UNCT addressed the scorecard recommendations?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -150,11 +148,12 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SCORECARD_ID" />
                     <FactLink dimension="GENDER_EQUALITY_RATING_ID" />
-                    <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
+                    <FactLink dimension="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -168,7 +167,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP13UNCTUNSWAPScorecard" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP13UNCTUNSWAPScorecard" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -190,6 +189,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SCORECARD_ID" />
@@ -207,7 +207,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP13GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -216,13 +216,13 @@
             <Dimension source="CATEGORY" table="CP13GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
             <Dimension source="CATEGORY" table="CP13GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension table="YesNoTable" name="Does the UNCT have dedicated capacity to support the UNCTs work on gender equality and the empowerment of women" caption="Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?" />
-            <Dimension table="YesNoTable" name="UNDAF specific gender results" caption="If you have an UNDAF/Cooperation Framework (or equivalent), does it have specific gender results at the outcome level?" />
-            <Dimension table="YesNoTable" name="Gender Equality Scorecard" caption="Has your UNCT implemented the UNCT SWAP Scorecard (New scorecard) in the past FOUR years?" />
-            <Dimension table="YesNoTable" name="Capacity building for UN staff" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="HASUNCTGENDER_ADVISOR" caption="Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL" caption="If you have an UNDAF/Cooperation Framework (or equivalent), does it have specific gender results at the outcome level?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="HASUNCTGENDER_EQUALITY_SCORECARD" caption="Has your UNCT implemented the UNCT SWAP Scorecard (New scorecard) in the past FOUR years?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER" caption="Has there been any capacity building for UN staff on the issue of gender mainstreaming in the past year?" />
 
             <!-- 13.A -->
-            <Dimension table="YesNoTable" name="UNCT uses gender equality" caption="Does the UNCT use a gender equality marker?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="UNCT_USES_GENDER_EQUALITY_MARKER" caption="Does the UNCT use a gender equality marker?" />
             <!-- 13.4.A -->
             <Dimension name="Year when Gender Equality Scorecard was Conducted"
                        caption="Year when Gender Equality Scorecard was Conducted" table="CP13GeneralCube"
@@ -235,12 +235,12 @@
             <!-- 13.4.C -->
             <Dimension source="CATEGORY" table="CP13GeneralCube" name="GENDER_SCORECARD_TYPES_ID" caption="Which scorecard has been implemented?" />
             <!-- 13.6 -->
-            <Dimension table="YesNoTable" name="Gender Mainstreaming Strategy In Place" caption="Does the UNCT have a gender mainstreaming strategy in place?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE" caption="Does the UNCT have a gender mainstreaming strategy in place?" />
             <!-- N.13.2 -->
-            <Dimension table="YesNoTable" name="Has UNCT Developed Management Plan" caption="Has the UNCT developed a management response to the Scorecard/action plan to address the proposed actions?" />
-            <Dimension table="YesNoTable" name="wasManagementResponseUsed" caption="Has the management response/action plan been used in the UNDAF/Cooperation Framework process as a resource document?" />
-            <Dimension table="YesNoTable" name="hasGenderParity" caption="Has the UNCT undertaken any UNCT-wide actions to enhance gender parity in the recruitment, retention, progression and talent management of staff in the UNCT in the past year?" />
-            <Dimension table="YesNoTable" name="hasWorkingEnvironmentForGenderParity" caption="Has the UNCT undertaken any UNCT-wide actions to build an enabling working environment for gender parity (an environment that prizes diversity and flexibility, provides equal opportunities, recognizes that staff are also family and community members, and ensures a safe environment) in the past year?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" caption="Has the UNCT developed a management response to the Scorecard/action plan to address the proposed actions?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="was_management_response_used_dim" caption="Has the management response/action plan been used in the UNDAF/Cooperation Framework process as a resource document?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="has_gender_parity_dim" caption="Has the UNCT undertaken any UNCT-wide actions to enhance gender parity in the recruitment, retention, progression and talent management of staff in the UNCT in the past year?" />
+            <Dimension source="YesNoTable" table="CP13GeneralCube" name="has_working_environment_for_gender_parity_dim" caption="Has the UNCT undertaken any UNCT-wide actions to build an enabling working environment for gender parity (an environment that prizes diversity and flexibility, provides equal opportunities, recognizes that staff are also family and community members, and ensures a safe environment) in the past year?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -282,20 +282,21 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
-                    <ForeignKeyLink dimension="Does the UNCT have dedicated capacity to support the UNCTs work on gender equality and the empowerment of women" foreignKeyColumn="HASUNCTGENDER_ADVISOR"/>
-                    <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"/>
-                    <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD"/>
-                    <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER"/>
-                    <ForeignKeyLink dimension="UNCT uses gender equality" foreignKeyColumn="UNCT_USES_GENDER_EQUALITY_MARKER"/>
+                    <FactLink dimension="HASUNCTGENDER_ADVISOR" />
+                    <FactLink dimension="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL" />
+                    <FactLink dimension="HASUNCTGENDER_EQUALITY_SCORECARD" />
+                    <FactLink dimension="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER" />
+                    <FactLink dimension="UNCT_USES_GENDER_EQUALITY_MARKER" />
                     <FactLink dimension="Year when Gender Equality Scorecard was Conducted" />
                     <FactLink dimension="GENDER_SCORECARD_TYPES_ID" />
-                    <ForeignKeyLink dimension="Gender Mainstreaming Strategy In Place" foreignKeyColumn="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE"/>
-                    <ForeignKeyLink dimension="Has UNCT Developed Management Plan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
-                    <ForeignKeyLink dimension="wasManagementResponseUsed" foreignKeyColumn="was_management_response_used_dim" />
-                    <ForeignKeyLink dimension="hasGenderParity" foreignKeyColumn="has_gender_parity_dim" />
-                    <ForeignKeyLink dimension="hasWorkingEnvironmentForGenderParity" foreignKeyColumn="has_working_environment_for_gender_parity_dim" />
+                    <FactLink dimension="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE" />
+                    <FactLink dimension="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
+                    <FactLink dimension="was_management_response_used_dim" />
+                    <FactLink dimension="has_gender_parity_dim" />
+                    <FactLink dimension="has_working_environment_for_gender_parity_dim" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="CP6JointAdvocacyStrategies">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -19,7 +17,7 @@
                             CP1.DESIGNATION, CP1.ENTITY_YEAR,
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM CP6JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES M
                             JOIN CP6JOINT_COMMUNICATION_ADVOCACY CP6 ON M.PARENT_ID = CP6.ID
                             JOIN CP1GENERAL_PROFILE CP1 ON CP1.DESIGNATION = CP6.DESIGNATION AND CP1.ENTITY_YEAR = CP6.ENTITY_YEAR
@@ -45,7 +43,7 @@
                             CP1.DESIGNATION, CP1.ENTITY_YEAR,
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
                         FROM cp6joint_advocacy_strategies_onsdgs M
                             JOIN CP6JOINT_COMMUNICATION_ADVOCACY CP6 ON M.PARENT_ID = CP6.ID
                             JOIN CP1GENERAL_PROFILE CP1 ON CP1.DESIGNATION = CP6.DESIGNATION AND CP1.ENTITY_YEAR = CP6.ENTITY_YEAR
@@ -71,43 +69,43 @@
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE 0 END as HAS_COMMONUNCTWEBSITE_COUNT,
-                            CASE cp6.HAS_COMMONUNCTWEBSITE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMONUNCTWEBSITE,
+                            COALESCE(cp6.HAS_COMMONUNCTWEBSITE, 'X-BOOLEAN') AS HAS_COMMONUNCTWEBSITE,
                             cp6.COMMONUNCTURL,
                             CASE WHEN cp6.HAS_COMMON_FACEBOOK_PAGE = TRUE THEN 1 ELSE 0 END as HAS_COMMON_FACEBOOK_PAGE_COUNT,
-                            CASE cp6.HAS_COMMON_FACEBOOK_PAGE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMON_FACEBOOK_PAGE,
+                            COALESCE(cp6.HAS_COMMON_FACEBOOK_PAGE, 'X-BOOLEAN') AS HAS_COMMON_FACEBOOK_PAGE,
                             cp6.COMMON_FACEBOOKURL,
                             CASE WHEN cp6.HAS_COMMON_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_TWITTER_ACCOUNT_COUNT,
-                            CASE cp6.HAS_COMMON_TWITTER_ACCOUNT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMON_TWITTER_ACCOUNT,
+                            COALESCE(cp6.HAS_COMMON_TWITTER_ACCOUNT, 'X-BOOLEAN') AS HAS_COMMON_TWITTER_ACCOUNT,
                             cp6.TWITTER_HANDLE,
                             CASE WHEN cp6.HAS_COMMON_YOUTUBE_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_YOUTUBE_ACCOUNT_COUNT,
-                            CASE cp6.HAS_COMMON_YOUTUBE_ACCOUNT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMON_YOUTUBE_ACCOUNT,
+                            COALESCE(cp6.HAS_COMMON_YOUTUBE_ACCOUNT, 'X-BOOLEAN') AS HAS_COMMON_YOUTUBE_ACCOUNT,
                             cp6.COMMON_YOUTUBE_HANDLE,
                             CASE WHEN cp6.HAS_COMMON_INSTAGRAM_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_INSTAGRAM_ACCOUNT_COUNT,
-                            CASE cp6.HAS_COMMON_INSTAGRAM_ACCOUNT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMON_INSTAGRAM_ACCOUNT,
+                            COALESCE(cp6.HAS_COMMON_INSTAGRAM_ACCOUNT, 'X-BOOLEAN') AS HAS_COMMON_INSTAGRAM_ACCOUNT,
                             cp6.COMMON_INSTAGRAM_HANDLE,
                             CASE WHEN cp6.HAS_COMMON_FLICKR_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_FLICKR_ACCOUNT_COUNT,
-                            CASE cp6.HAS_COMMON_FLICKR_ACCOUNT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMON_FLICKR_ACCOUNT,
+                            COALESCE(cp6.HAS_COMMON_FLICKR_ACCOUNT, 'X-BOOLEAN') AS HAS_COMMON_FLICKR_ACCOUNT,
                             cp6.COMMON_FLICKR_HANDLE,
                             cp6.COORDINATOR_TWITTER_HANDLE,
                             CASE WHEN cp6.HAS_COORDINATOR_TWITTER_ACCOUNT = TRUE THEN 1 ELSE 0 END as HAS_COORDINATOR_TWITTER_ACCOUNT_COUNT,
-                            CASE cp6.HAS_COORDINATOR_TWITTER_ACCOUNT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COORDINATOR_TWITTER_ACCOUNT,
+                            COALESCE(cp6.HAS_COORDINATOR_TWITTER_ACCOUNT, 'X-BOOLEAN') AS HAS_COORDINATOR_TWITTER_ACCOUNT,
                             CASE WHEN cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING = TRUE THEN 1 ELSE 0 END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING_COUNT,
-                            CASE cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING,
+                            COALESCE(cp6.HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING, 'X-BOOLEAN') AS HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING,
                             CASE WHEN cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES = TRUE THEN 1 ELSE 0 END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES_COUNT,
-                            CASE cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES,
+                            COALESCE(cp6.HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES, 'X-BOOLEAN') AS HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES,
                             CASE WHEN cp6.IS_COMMUNICATIONS_PART_OFUNDAF = TRUE THEN 1 ELSE 0 END as IS_COMMUNICATIONS_PART_OFUNDAF_COUNT,
-                            CASE cp6.IS_COMMUNICATIONS_PART_OFUNDAF WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as IS_COMMUNICATIONS_PART_OFUNDAF,
+                            COALESCE(cp6.IS_COMMUNICATIONS_PART_OFUNDAF, 'X-BOOLEAN') AS IS_COMMUNICATIONS_PART_OFUNDAF,
                             CASE WHEN cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS = TRUE THEN 1 ELSE 0 END as HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS_COUNT,
-                            CASE cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS,
+                            COALESCE(cp6.HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS, 'X-BOOLEAN') AS HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS,
                             CASE WHEN cp6.HAS_VISUAL_IDENTITY_ESTABLISHED = TRUE THEN 1 ELSE 0 END as HAS_VISUAL_IDENTITY_ESTABLISHED_COUNT,
-                            CASE cp6.HAS_VISUAL_IDENTITY_ESTABLISHED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_VISUAL_IDENTITY_ESTABLISHED,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp6.HAS_VISUAL_IDENTITY_ESTABLISHED, 'X-BOOLEAN') AS HAS_VISUAL_IDENTITY_ESTABLISHED,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp6.hasunicintegration = TRUE THEN 1 ELSE 0 END as hasunicintegration_count,
-                            CASE cp6.hasunicintegration WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as hasunicintegration_dim,
+                            COALESCE(cp6.hasunicintegration, 'X-BOOLEAN') AS hasunicintegration_dim,
                             CASE WHEN cp6.colocated_withrco = TRUE THEN 1 ELSE 0 END as colocated_withrco_count,
-                            CASE cp6.colocated_withrco WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as colocated_withrco_dim,
+                            COALESCE(cp6.colocated_withrco, 'X-BOOLEAN') AS colocated_withrco_dim,
                             CASE WHEN cp6.has_joint_advocacy_strategies_onsdgs = TRUE THEN 1 ELSE 0 END as has_joint_advocacy_strategies_onsdgs_count,
-                            CASE cp6.has_joint_advocacy_strategies_onsdgs WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_joint_advocacy_strategies_onsdgs_dim
+                            COALESCE(cp6.has_joint_advocacy_strategies_onsdgs, 'X-BOOLEAN') AS has_joint_advocacy_strategies_onsdgs_dim
                         from CP6JOINT_COMMUNICATION_ADVOCACY cp6
                             JOIN CP1GENERAL_PROFILE cp1 ON cp6.DESIGNATION = cp1.DESIGNATION AND cp6.ENTITY_YEAR = cp1.ENTITY_YEAR
                             JOIN BASE_COUNTRY bc ON cp6.DESIGNATION = bc.iso2
@@ -136,7 +134,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP6JointAdvocacyStrategies" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP6JointAdvocacyStrategies" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -157,6 +155,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" />
@@ -173,7 +172,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP6JointAdvocacyInitiatives" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP6JointAdvocacyInitiatives" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -194,6 +193,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" />
@@ -210,7 +210,7 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP6GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
@@ -219,7 +219,7 @@
             <Dimension source="CATEGORY" table="CP6GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
             <Dimension source="CATEGORY" table="CP6GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
             
-            <Dimension table="YesNoTable" name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_COMMONUNCTWEBSITE" caption="Do you have a common website for the UNCT?" />
 
             <Dimension name="website URL" caption="website URL" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -233,7 +233,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Do you have a common Facebook page for the UNCT" caption="Do you have a common Facebook page for the UNCT?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_COMMON_FACEBOOK_PAGE" caption="Do you have a common Facebook page for the UNCT?" />
             
             <Dimension name="Facebook URL" caption="Facebook URL" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -247,7 +247,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Do you have a common Twitter account for the UNCT" caption="Do you have a common Twitter account for the UNCT?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_COMMON_TWITTER_ACCOUNT" caption="Do you have a common Twitter account for the UNCT?" />
             
             <Dimension name="Twitter account" caption="Twitter account" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -261,7 +261,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Do you have a common Youtube account for the UNCT" caption="Do you have a common Youtube account for the UNCT?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_COMMON_YOUTUBE_ACCOUNT" caption="Do you have a common Youtube account for the UNCT?" />
             
             <Dimension name="Youtube account" caption="Youtube account" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -275,7 +275,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Do you have a common Instagram account for the UNCT" caption="Do you have a common Instagram account for the UNCT?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_COMMON_INSTAGRAM_ACCOUNT" caption="Do you have a common Instagram account for the UNCT?" />
             
             <Dimension name="Instagram account" caption="Instagram account" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -289,7 +289,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Do you have a common Flickr account for the UNCT" caption="Do you have a common Flickr account for the UNCT?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_COMMON_FLICKR_ACCOUNT" caption="Do you have a common Flickr account for the UNCT?" />
             
             <Dimension name="Flickr account" caption="Flickr account" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -303,7 +303,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Does the Resident Coordinator have a Twitter account" caption="Does the Resident Coordinator have a Twitter account?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_COORDINATOR_TWITTER_ACCOUNT" caption="Does the Resident Coordinator have a Twitter account?" />
             
 			<Dimension name="Coordinator Twitter Account" caption="Resident Coordinator Twitter account" table="CP6GeneralCube"
                        key="Dimension Id" visible="true">
@@ -317,20 +317,20 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Has the UNCT agreed on common messaging on any topic" caption="Has the UNCT agreed on common messaging on any topic?" />
-            <Dimension table="YesNoTable" name="Has joint advocacy strategies to communicate on human rights" caption="Do you have a joint advocacy strategy to promote the implementation of the SDGs?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING" caption="Has the UNCT agreed on common messaging on any topic?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES" caption="Do you have a joint advocacy strategy to promote the implementation of the SDGs?" />
             <!-- N.6.1 -->
             <Dimension source="CATEGORY" table="CP6GeneralCube" name="UNCT_ADVOCACY_MODEL_ID" caption="The model that best describes the UNCT's work on advocacy" />
             <!-- N.6.3 -->
-            <Dimension table="YesNoTable" name="Is communications part of UNDAF" caption="Is communications and advocacy budget part of your UNDAF/Cooperation Framework/Common Budgetary Framework?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="IS_COMMUNICATIONS_PART_OFUNDAF" caption="Is communications and advocacy budget part of your UNDAF/Cooperation Framework/Common Budgetary Framework?" />
             <!-- N.6.4 -->
-            <Dimension table="YesNoTable" name="Has communicating together in time of crisis" caption="Is the country UNCG guided by the global UNCG SOP on communicating together in times of crisis?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" caption="Is the country UNCG guided by the global UNCG SOP on communicating together in times of crisis?" />
             <!-- N.6.5 -->
-            <Dimension table="YesNoTable" name="Has UNCT established visual identity" caption="Does the UNCT have an established visual identity for joint UN communications?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="HAS_VISUAL_IDENTITY_ESTABLISHED" caption="Does the UNCT have an established visual identity for joint UN communications?" />
 
-            <Dimension table="YesNoTable" name="hasUNICIntegration" caption="Is there a UNIC integrated with the RCO providing communications capacity?" />
-            <Dimension table="YesNoTable" name="colocatedWithRCO" caption="Is it co-located (or in the same building) with the RCO?" />
-            <Dimension table="YesNoTable" name="hasJointAdvocacyStrategiesOnSDGs" caption="Do you have any joint advocacy initiatives to promote the implementation of the SDGs or other key UN priorities?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="hasunicintegration_dim" caption="Is there a UNIC integrated with the RCO providing communications capacity?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="colocated_withrco_dim" caption="Is it co-located (or in the same building) with the RCO?" />
+            <Dimension source="YesNoTable" table="CP6GeneralCube" name="has_joint_advocacy_strategies_onsdgs_dim" caption="Do you have any joint advocacy initiatives to promote the implementation of the SDGs or other key UN priorities?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -389,6 +389,7 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
                     <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="website URL" />
@@ -398,22 +399,22 @@
                     <FactLink dimension="Youtube account" />
                     <FactLink dimension="Instagram account" />
                     <FactLink dimension="Flickr account" />
-                    <ForeignKeyLink dimension="Do you have a common website for the UNCT"  foreignKeyColumn="HAS_COMMONUNCTWEBSITE"/>
-                    <ForeignKeyLink dimension="Do you have a common Facebook page for the UNCT"  foreignKeyColumn="HAS_COMMON_FACEBOOK_PAGE"/>
-                    <ForeignKeyLink dimension="Do you have a common Twitter account for the UNCT"  foreignKeyColumn="HAS_COMMON_TWITTER_ACCOUNT"/>
-                    <ForeignKeyLink dimension="Has the UNCT agreed on common messaging on any topic"  foreignKeyColumn="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING"/>
-                    <ForeignKeyLink dimension="Has joint advocacy strategies to communicate on human rights"  foreignKeyColumn="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES"/>
-					<ForeignKeyLink dimension="Does the Resident Coordinator have a Twitter account"  foreignKeyColumn="HAS_COORDINATOR_TWITTER_ACCOUNT"/>
-                    <ForeignKeyLink dimension="Do you have a common Youtube account for the UNCT"  foreignKeyColumn="HAS_COMMON_YOUTUBE_ACCOUNT"/>
-                    <ForeignKeyLink dimension="Do you have a common Instagram account for the UNCT"  foreignKeyColumn="HAS_COMMON_INSTAGRAM_ACCOUNT"/>
-                    <ForeignKeyLink dimension="Do you have a common Flickr account for the UNCT"  foreignKeyColumn="HAS_COMMON_FLICKR_ACCOUNT"/>
+                    <FactLink dimension="HAS_COMMONUNCTWEBSITE" />
+                    <FactLink dimension="HAS_COMMON_FACEBOOK_PAGE" />
+                    <FactLink dimension="HAS_COMMON_TWITTER_ACCOUNT" />
+                    <FactLink dimension="HAS_GUIDING_PRINCIPLES_COMMON_MESSAGING" />
+                    <FactLink dimension="HAS_JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES" />
+					<FactLink dimension="HAS_COORDINATOR_TWITTER_ACCOUNT" />
+                    <FactLink dimension="HAS_COMMON_YOUTUBE_ACCOUNT" />
+                    <FactLink dimension="HAS_COMMON_INSTAGRAM_ACCOUNT" />
+                    <FactLink dimension="HAS_COMMON_FLICKR_ACCOUNT" />
 					<FactLink dimension="UNCT_ADVOCACY_MODEL_ID" />
-					<ForeignKeyLink dimension="Is communications part of UNDAF"  foreignKeyColumn="IS_COMMUNICATIONS_PART_OFUNDAF"/>
-					<ForeignKeyLink dimension="Has communicating together in time of crisis"  foreignKeyColumn="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"/>
-					<ForeignKeyLink dimension="Has UNCT established visual identity"  foreignKeyColumn="HAS_VISUAL_IDENTITY_ESTABLISHED"/>
-                    <ForeignKeyLink dimension="hasUNICIntegration"  foreignKeyColumn="hasunicintegration_dim"/>
-                    <ForeignKeyLink dimension="colocatedWithRCO"  foreignKeyColumn="colocated_withrco_dim"/>
-                    <ForeignKeyLink dimension="hasJointAdvocacyStrategiesOnSDGs"  foreignKeyColumn="has_joint_advocacy_strategies_onsdgs_dim"/>
+					<FactLink dimension="IS_COMMUNICATIONS_PART_OFUNDAF" />
+					<FactLink dimension="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS" />
+					<FactLink dimension="HAS_VISUAL_IDENTITY_ESTABLISHED" />
+                    <FactLink dimension="hasunicintegration_dim" />
+                    <FactLink dimension="colocated_withrco_dim" />
+                    <FactLink dimension="has_joint_advocacy_strategies_onsdgs_dim" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

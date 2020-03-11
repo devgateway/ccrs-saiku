@@ -27,10 +27,10 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private static final Inflector INFLECTOR = Inflector.getInstance();
 
 
-    private static final Pattern YES_NO_DIM_2_PATTERN = Pattern.compile(
+    private static final Pattern YES_NO_DIM_PATTERN = Pattern.compile(
             "<Dimension source=\"YesNoTable\" table=\"([^=]+)\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
 
-    private static final String YES_NO_DIM_2_TEMPLATE =
+    private static final String YES_NO_DIM_TEMPLATE =
             "<Dimension table=\"@@table@@\" name=\"@@name@@\" caption=\"@@caption@@\" >\n"
                     + " <Attributes>\n"
                     + "  <Attribute name=\"@@name@@\" caption=\"@@caption@@\" keyColumn=\"@@name@@_DIM\" orderByColumn=\"@@name@@_DIM_ORD\" />\n"
@@ -51,48 +51,6 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
             "CASE @@col@@ WHEN TRUE THEN 'Yes' WHEN FALSE THEN 'No' ELSE 'No Data Available' END AS @@alias@@_DIM,\n"
             + "CASE @@col@@ WHEN TRUE THEN 0 WHEN FALSE THEN 1 ELSE 2 END AS @@alias@@_DIM_ORD";
 
-    // TODO remove
-    private static final Pattern YES_NO_DIM_PATTERN = Pattern.compile(
-            "<Dimension table=\"YesNoTable\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
-
-    // TODO remove
-    private static final String YES_NO_DIM_TEMPLATE =
-            "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@' key='Dimension Id'>\n" +
-                "<Attributes>\n" +
-                    "<Attribute name='Dimension Id' keyColumn='ID' hasHierarchy='false' \n" +
-                                "levelType='Regular' datatype='Integer'/>\n" +
-                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='ANSWER' orderByColumn='ANSWER_SORT' \n" +
-                                "approxRowCount='3' hierarchyHasAll='true' levelType='Regular' datatype='Boolean'/>\n" +
-                "</Attributes>\n" +
-            "</Dimension>";
-    /**
-     * A better solution could be to define a single YesNoTable shared dimension and source it with a different name
-     * and caption, but Mondrian doesn't support level name and caption customization for referenced dimensions.
-     * There is an old Mondrian ticket neither prioritized, nor planned http://jira.pentaho.com/browse/MONDRIAN-2294.
-     * Therefore for now we'll be generating the same query with different aliases to avoid clashes. 
-     */
-    private static final String YESNO_QUERY_TEMPLATE =
-            "<Query alias='@@table@@'>\n" +
-                "<ExpressionView>\n" +
-                    "<SQL dialect='mysql'>\n" +
-                        "<![CDATA[SELECT 1 AS ID, 'Yes' AS ANSWER, 0 AS ANSWER_SORT FROM DUAL\n"
-                        + "UNION\n"
-                        + "SELECT 0, 'No', 1 FROM DUAL\n"
-                        + "UNION\n"
-                        + "SELECT -1, 'No Data Available', 2 FROM DUAL]]>\n" +
-                    "</SQL>\n" +
-                "</ExpressionView>\n" +
-            "</Query>\n";
-    private static final String CATEGORY_QUERY_TEMPLATE =
-            "<Query alias='@@table@@'>\n" +
-                "<ExpressionView>\n" +
-                    "<SQL dialect='generic'>\n" +
-                        "<![CDATA[SELECT ID, LABEL, 0 AS PRE_SORT, LABEL_SORT FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
-                        "UNION ALL\n" +
-                        "SELECT -1, 'No Data Available', 1, '' FROM DUAL]]>\n" +
-                    "</SQL>\n" +
-                "</ExpressionView>\n" +
-             "</Query>\n";
     private static final String CATEGORY_BY_LABEL_QUERY_TEMPLATE =
             "<Query alias='@@table@@'>\n" +
                 "<ExpressionView>\n" +
@@ -165,13 +123,12 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
         content = content.replace("<!-- ## _SHARED_DIMENSIONS_TAG_ ## -->", sharedDimensions.get());
         content = content.replace("<!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->", sharedDimensionsLinks.get());
         content = this.processYesNoTable(content);
-        content = this.processYesNoTable2(content);
         content = this.processCategories(content);
         content = this.processCategories2(content);
         return content;
     }
 
-    private String processYesNoTable2(String content) {
+    private String processYesNoTable(String content) {
         Matcher matcher = COALESCE_BOOL_PATTERN.matcher(content);
         while (matcher.find()) {
             String coalesceText = matcher.group();
@@ -183,14 +140,14 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                             .replace("@@alias@@", alias));
         }
 
-        Matcher m = YES_NO_DIM_2_PATTERN.matcher(content);
+        Matcher m = YES_NO_DIM_PATTERN.matcher(content);
         while(m.find()) {
             String origText = m.group();
             String table = m.group(1);
             String name = m.group(2);
             String caption = m.group(3);
             content = content.replace(origText,
-                    YES_NO_DIM_2_TEMPLATE
+                    YES_NO_DIM_TEMPLATE
                             .replace("@@name@@", name)
                             .replace("@@caption@@", caption)
                             .replace("@@table@@", table));
@@ -221,27 +178,6 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                             .replace("@@caption@@", caption)
                             .replace("@@table@@", table));
         }
-        return content;
-    }
-
-    // TODO remove
-    private String processYesNoTable(String content) {
-        Matcher m = YES_NO_DIM_PATTERN.matcher(content);
-        StringBuilder yesNoSB = new StringBuilder();
-        int count = 0;
-        while(m.find()) {
-            String yesNoDimension = m.group();
-            String name = m.group(1);
-            String caption = m.group(2);
-            String table = "YesNoTable" + count;
-            String result = YES_NO_DIM_TEMPLATE.replace("@@name@@", name);
-            result = result.replace("@@caption@@", caption);
-            result = result.replace("@@table@@", table);
-            content = content.replace(yesNoDimension, result);
-            yesNoSB.append(YESNO_QUERY_TEMPLATE.replace("@@table@@", table));
-            count++;
-        }
-        content = content.replace("<!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->", yesNoSB.toString());
         return content;
     }
 
