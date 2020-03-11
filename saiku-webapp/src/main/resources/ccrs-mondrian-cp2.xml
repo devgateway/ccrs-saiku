@@ -24,28 +24,38 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.ID, D.ANNUAL_SALARY_AMOUNT, D.OFFICE_TYPE_ID, D.CONTRACT_MODALITY_ID,
-                            COALESCE(D.STAFF_MEMBER_TITLE_ID, -1) AS STAFF_MEMBER_TITLE_ID,
-                            D.LEVEL_ID,
-                            COALESCE(D.FUNDING_ORGANIZATION_ID, -1) AS FUNDING_ORGANIZATION_ID,
-                            COALESCE(D.WHICH_AGENCY_ID, -1) AS WHICH_AGENCY_ID,
+                            D.ID, D.ANNUAL_SALARY_AMOUNT,
+                            COALESCE(OFFICE_TYPE_ID.LABEL, 'X-CATEGORY') as OFFICE_TYPE_ID,
+                            COALESCE(CONTRACT_MODALITY_ID.LABEL, 'X-CATEGORY') as CONTRACT_MODALITY_ID,
+                            COALESCE(STAFF_MEMBER_TITLE_ID.LABEL, 'X-CATEGORY') as STAFF_MEMBER_TITLE_ID,
+                            COALESCE(LEVEL_ID.LABEL, 'X-CATEGORY') as LEVEL_ID,
+                            COALESCE(FUNDING_ORGANIZATION_ID.LABEL, 'X-CATEGORY') as FUNDING_ORGANIZATION_ID,
+                            COALESCE(WHICH_AGENCY_ID.LABEL, 'X-CATEGORY') as WHICH_AGENCY_ID,
                             D.HEADRCO,
                             CP2.DESIGNATION, CP2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             date(d.start_date) as START_DATE_DATE,
                             date(d.end_date) as END_DATE_DATE,
-                            CASE D.HEADRCO WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HEAD_OF_RCO,
+                            COALESCE(D.HEADRCO, 'X-BOOLEAN') AS HEAD_OF_RCO,
                             CASE WHEN D.COMMUNICATION_SPECIALIST = TRUE THEN 1 ELSE 0 END as COMMUNICATION_SPECIALIST_COUNT,
-                            CASE D.COMMUNICATION_SPECIALIST WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as COMMUNICATION_SPECIALIST,
+                            COALESCE(D.COMMUNICATION_SPECIALIST, 'X-BOOLEAN') AS COMMUNICATION_SPECIALIST,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
-                            COALESCE(D.gender_id, -1) AS gender_id,
+                            COALESCE(gender_id.LABEL, 'X-CATEGORY') as gender_id,
                             COALESCE(D.nationality_id, -1) AS nationality_id
-                        FROM CP2RCO_STAFF_MEMBER_DETAIL D,  CP2COORDINATION_CAPACITY CP2, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
-                        WHERE
-                            CP2.DESIGNATION = CP1.DESIGNATION AND CP2.ENTITY_YEAR = CP1.ENTITY_YEAR AND
-                            CP2.ID = D.PARENT_ID AND
-                            CP2.DESIGNATION != 'AQ' AND CP2.DESIGNATION != 'DOCO' AND CP2.DESIGNATION = bc.ISO2 AND
-                            CP2.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP2.ENTITY_YEAR
+                        FROM CP2RCO_STAFF_MEMBER_DETAIL D
+                            JOIN CP2COORDINATION_CAPACITY CP2 ON CP2.ID = D.PARENT_ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON CP2.DESIGNATION = CP1.DESIGNATION AND CP2.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP2.DESIGNATION = bc.ISO2
+                            JOIN V_CP_VALIDATED_DESIGNATIONS v ON CP2.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP2.ENTITY_YEAR
+                            LEFT JOIN CATEGORY OFFICE_TYPE_ID ON D.OFFICE_TYPE_ID=OFFICE_TYPE_ID.ID
+                            LEFT JOIN CATEGORY CONTRACT_MODALITY_ID ON D.CONTRACT_MODALITY_ID=CONTRACT_MODALITY_ID.ID
+                            LEFT JOIN CATEGORY STAFF_MEMBER_TITLE_ID ON D.STAFF_MEMBER_TITLE_ID=STAFF_MEMBER_TITLE_ID.ID
+                            LEFT JOIN CATEGORY LEVEL_ID ON D.LEVEL_ID=LEVEL_ID.ID
+                            LEFT JOIN CATEGORY FUNDING_ORGANIZATION_ID ON D.FUNDING_ORGANIZATION_ID=FUNDING_ORGANIZATION_ID.ID
+                            LEFT JOIN CATEGORY WHICH_AGENCY_ID ON D.WHICH_AGENCY_ID=WHICH_AGENCY_ID.ID
+                            LEFT JOIN CATEGORY gender_id ON D.gender_id=gender_id.ID
+                        WHERE CP2.DESIGNATION != 'AQ'
+                          AND CP2.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -59,12 +69,12 @@
                             cp2.ID, cp2.DESIGNATION, cp2.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
                             COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp2.SUBNATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as SUBNATIONAL_OFFICES_COUNT,
-                            CASE cp2.SUBNATIONAL_OFFICES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as SUBNATIONAL_OFFICES,
+                            COALESCE(cp2.SUBNATIONAL_OFFICES, 'X-BOOLEAN') AS SUBNATIONAL_OFFICES,
                             cp2.NUMBER_OF_OFFICES,
                             (select count(*) from CP2RCO_STAFF_MEMBER_DETAIL where PARENT_ID = cp2.id) STAFF_MEMEBER_COUNT,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp2.rco_covers_multiple_countries = TRUE THEN 1 ELSE 0 END as rco_covers_multiple_countries_count,
-                            CASE cp2.rco_covers_multiple_countries WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as rco_covers_multiple_countries_dim
+                            COALESCE(cp2.rco_covers_multiple_countries, 'X-BOOLEAN') AS rco_covers_multiple_countries_dim
                         from CP2COORDINATION_CAPACITY cp2, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
                         WHERE
                             cp2.DESIGNATION = cp1.DESIGNATION AND cp2.ENTITY_YEAR = cp1.ENTITY_YEAR AND
@@ -97,13 +107,13 @@
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
 
-            <Dimension source="CATEGORY" table="StaffMemberTitle" caption="Staff Member Title" />
-            <Dimension table="YesNoTable" name="Head of RCO or Main RCO Contact" caption="Head of RCO or Main RCO Contact." />
-            <Dimension source="CATEGORY" table="OfficeType" caption="Office Type" />
-            <Dimension source="CATEGORY" table="ContractModality" caption="Contract Modality" />
-            <Dimension source="CATEGORY" table="FundingOrganization" caption="Funding Organization" />
-            <Dimension source="CATEGORY" table="Level" caption="Post Level" />
-            <Dimension source="CATEGORY" table="UNAgency" caption="UN Agency" />
+            <Dimension source="CATEGORY2" table="CP2RcoStaffMemberDetail" name="STAFF_MEMBER_TITLE_ID" caption="Staff Member Title" />
+            <Dimension source="YesNoTable" table="CP2RcoStaffMemberDetail" name="HEAD_OF_RCO" caption="Head of RCO or Main RCO Contact." />
+            <Dimension source="CATEGORY2" table="CP2RcoStaffMemberDetail" name="OFFICE_TYPE_ID" caption="Office Type" />
+            <Dimension source="CATEGORY2" table="CP2RcoStaffMemberDetail" name="CONTRACT_MODALITY_ID" caption="Contract Modality" />
+            <Dimension source="CATEGORY2" table="CP2RcoStaffMemberDetail" name="FUNDING_ORGANIZATION_ID" caption="Funding Organization" />
+            <Dimension source="CATEGORY2" table="CP2RcoStaffMemberDetail" name="LEVEL_ID" caption="Post Level" />
+            <Dimension source="CATEGORY2" table="CP2RcoStaffMemberDetail" name="WHICH_AGENCY_ID" caption="UN Agency" />
 
             <Dimension name="Start Date" caption="Contract Start Date" table="CP2RcoStaffMemberDetail" key="Dimension Id" type="TIME">
                 <Attributes>
@@ -128,9 +138,8 @@
                                levelType="TimeYears" datatype="Date"/>
                 </Attributes>
             </Dimension>
-            
-            <Dimension table="YesNoTable" name="Are you the main focal point for communications" caption="Are you the main focal point for communications?" />
-            <Dimension source="CATEGORY" table="Gender" caption="Gender" />
+            <Dimension source="YesNoTable" table="CP2RcoStaffMemberDetail" name="COMMUNICATION_SPECIALIST" caption="Are you the main focal point for communications?" />
+            <Dimension source="CATEGORY2" table="CP2RcoStaffMemberDetail" name="gender_id" caption="Gender" />
             <Dimension name="Nationality" caption="Nationality" table="BASE_COUNTRY_WITHOUT_REGION" key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -158,17 +167,17 @@
 
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="OfficeType" foreignKeyColumn="OFFICE_TYPE_ID"/>
-                    <ForeignKeyLink dimension="ContractModality" foreignKeyColumn="CONTRACT_MODALITY_ID"/>
-                    <ForeignKeyLink dimension="StaffMemberTitle" foreignKeyColumn="STAFF_MEMBER_TITLE_ID"/>
-                    <ForeignKeyLink dimension="Level" foreignKeyColumn="LEVEL_ID"/>
+                    <FactLink dimension="OFFICE_TYPE_ID" />
+                    <FactLink dimension="CONTRACT_MODALITY_ID" />
+                    <FactLink dimension="STAFF_MEMBER_TITLE_ID" />
+                    <FactLink dimension="LEVEL_ID" />
                     <FactLink dimension="Start Date" />
                     <FactLink dimension="End Date" />
-                    <ForeignKeyLink dimension="FundingOrganization" foreignKeyColumn="FUNDING_ORGANIZATION_ID" />
-                    <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="WHICH_AGENCY_ID" />
-                    <ForeignKeyLink dimension="Head of RCO or Main RCO Contact"  foreignKeyColumn="HEAD_OF_RCO"/>
-					<ForeignKeyLink dimension="Are you the main focal point for communications"  foreignKeyColumn="COMMUNICATION_SPECIALIST"/>
-                    <ForeignKeyLink dimension="Gender" foreignKeyColumn="gender_id"/>
+                    <FactLink dimension="FUNDING_ORGANIZATION_ID" />
+                    <FactLink dimension="WHICH_AGENCY_ID" />
+                    <FactLink dimension="HEAD_OF_RCO" />
+                    <FactLink dimension="COMMUNICATION_SPECIALIST" />
+                    <FactLink dimension="gender_id" />
                     <ForeignKeyLink dimension="Nationality" foreignKeyColumn="nationality_id"/>
                 </DimensionLinks>
             </MeasureGroup>
@@ -191,9 +200,9 @@
             </Dimension>
             <Dimension source="CountryIncomeStatus" />
             <Dimension source="SecondaryCountryIncomeStatus" />
-            
-            <Dimension table="YesNoTable" name="Does the RCO have Subnational offices" caption="Does the RCO have Subnational offices?" />
-            <Dimension table="YesNoTable" name="Does the RCO cover multiple countries?" caption="Does the RCO cover multiple countries?" />
+
+            <Dimension source="YesNoTable" table="CP2GeneralCube" name="SUBNATIONAL_OFFICES" caption="Does the RCO have Subnational offices?" />
+            <Dimension source="YesNoTable" table="CP2GeneralCube" name="rco_covers_multiple_countries_dim" caption="Does the RCO cover multiple countries?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -217,8 +226,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="Does the RCO have Subnational offices"  foreignKeyColumn="SUBNATIONAL_OFFICES"/>
-                    <ForeignKeyLink dimension="Does the RCO cover multiple countries?"  foreignKeyColumn="rco_covers_multiple_countries_dim"/>
+                    <FactLink dimension="SUBNATIONAL_OFFICES"/>
+                    <FactLink dimension="rco_covers_multiple_countries_dim"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
