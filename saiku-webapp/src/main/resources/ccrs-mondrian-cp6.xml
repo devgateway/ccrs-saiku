@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP6JointAdvocacyStrategies">
@@ -17,16 +15,21 @@
                     <![CDATA[
                         select
                             M.ID,
-                            COALESCE(M.FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID, -1) AS FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID,
-                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID.LABEL, 'X-CATEGORY') as FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP6JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES M, CP6JOINT_COMMUNICATION_ADVOCACY CP6, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            M.PARENT_ID = CP6.ID AND
-                            CP1.DESIGNATION = CP6.DESIGNATION AND CP1.ENTITY_YEAR = CP6.ENTITY_YEAR AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
-                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                        FROM CP6JOINT_ADVOCACY_STRATEGIES_ON_NORMATIVE_ISSUES M
+                            JOIN CP6JOINT_COMMUNICATION_ADVOCACY CP6 ON M.PARENT_ID = CP6.ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON CP1.DESIGNATION = CP6.DESIGNATION AND CP1.ENTITY_YEAR = CP6.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID ON M.FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID=FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -38,16 +41,21 @@
                     <![CDATA[
                         SELECT
                             M.ID,
-                            COALESCE(M.for_which_issues_addressed_strategy_id, -1) AS FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID,
-                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID.LABEL, 'X-CATEGORY') as FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM cp6joint_advocacy_strategies_onsdgs M, CP6JOINT_COMMUNICATION_ADVOCACY CP6, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                                M.PARENT_ID = CP6.ID AND
-                                CP1.DESIGNATION = CP6.DESIGNATION AND CP1.ENTITY_YEAR = CP6.ENTITY_YEAR AND
-                                CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
-                                CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                        FROM cp6joint_advocacy_strategies_onsdgs M
+                            JOIN CP6JOINT_COMMUNICATION_ADVOCACY CP6 ON M.PARENT_ID = CP6.ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON CP1.DESIGNATION = CP6.DESIGNATION AND CP1.ENTITY_YEAR = CP6.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID ON M.for_which_issues_addressed_strategy_id=FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -59,9 +67,9 @@
                     <![CDATA[
                         select
                             cp6.ID, cp6.DESIGNATION, cp6.ENTITY_YEAR,
-                            COALESCE(cp6.UNCT_ADVOCACY_MODEL_ID, -1) AS UNCT_ADVOCACY_MODEL_ID,
-                            CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(UNCT_ADVOCACY_MODEL_ID.LABEL, 'X-CATEGORY') as UNCT_ADVOCACY_MODEL_ID,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp6.HAS_COMMONUNCTWEBSITE = TRUE THEN 1 ELSE 0 END as HAS_COMMONUNCTWEBSITE_COUNT,
                             CASE cp6.HAS_COMMONUNCTWEBSITE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMONUNCTWEBSITE,
                             cp6.COMMONUNCTURL,
@@ -100,11 +108,15 @@
                             CASE cp6.colocated_withrco WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as colocated_withrco_dim,
                             CASE WHEN cp6.has_joint_advocacy_strategies_onsdgs = TRUE THEN 1 ELSE 0 END as has_joint_advocacy_strategies_onsdgs_count,
                             CASE cp6.has_joint_advocacy_strategies_onsdgs WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_joint_advocacy_strategies_onsdgs_dim
-                        from CP6JOINT_COMMUNICATION_ADVOCACY cp6, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            cp6.DESIGNATION = cp1.DESIGNATION AND cp6.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp6.DESIGNATION != 'AQ' AND cp6.DESIGNATION != 'DOCO' AND cp6.DESIGNATION = bc.iso2 and
-                            cp6.designation = v.designation and v.entity_year = cp6.ENTITY_YEAR
+                        from CP6JOINT_COMMUNICATION_ADVOCACY cp6
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp6.DESIGNATION = cp1.DESIGNATION AND cp6.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON cp6.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON cp6.designation = v.designation and v.entity_year = cp6.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY UNCT_ADVOCACY_MODEL_ID ON cp6.UNCT_ADVOCACY_MODEL_ID=UNCT_ADVOCACY_MODEL_ID.ID
+                        WHERE cp6.DESIGNATION != 'AQ'
+                          AND cp6.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -130,10 +142,10 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP6JointAdvocacyStrategies" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP6JointAdvocacyStrategies" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 			
-			<Dimension source="CATEGORY" table="IssuesAddressedStrategy" caption="Which issue does the strategy primarily address?" />
+			<Dimension source="CATEGORY" table="CP6JointAdvocacyStrategies" name="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" caption="Which issue does the strategy primarily address?" />
 
         </Dimensions>
 
@@ -145,8 +157,9 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="IssuesAddressedStrategy"
-                                    foreignKeyColumn="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -166,10 +179,10 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP6JointAdvocacyInitiatives" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP6JointAdvocacyInitiatives" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension source="CATEGORY" table="IssuesAddressed" caption="Which issue does the strategy primarily address?" />
+            <Dimension source="CATEGORY" table="CP6JointAdvocacyInitiatives" name="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" caption="Which issue does the strategy primarily address?" />
 
         </Dimensions>
 
@@ -181,8 +194,9 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="IssuesAddressed"
-                                    foreignKeyColumn="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="FOR_WHICH_ISSUES_ADDRESSED_STRATEGY_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -202,8 +216,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP6GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP6GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
             
             <Dimension table="YesNoTable" name="Do you have a common website for the UNCT" caption="Do you have a common website for the UNCT?" />
 
@@ -306,7 +320,7 @@
             <Dimension table="YesNoTable" name="Has the UNCT agreed on common messaging on any topic" caption="Has the UNCT agreed on common messaging on any topic?" />
             <Dimension table="YesNoTable" name="Has joint advocacy strategies to communicate on human rights" caption="Do you have a joint advocacy strategy to promote the implementation of the SDGs?" />
             <!-- N.6.1 -->
-            <Dimension source="CATEGORY" table="UNCTAdvocacyModel" caption="The model that best describes the UNCT's work on advocacy" />
+            <Dimension source="CATEGORY" table="CP6GeneralCube" name="UNCT_ADVOCACY_MODEL_ID" caption="The model that best describes the UNCT's work on advocacy" />
             <!-- N.6.3 -->
             <Dimension table="YesNoTable" name="Is communications part of UNDAF" caption="Is communications and advocacy budget part of your UNDAF/Cooperation Framework/Common Budgetary Framework?" />
             <!-- N.6.4 -->
@@ -375,6 +389,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="website URL" />
                     <FactLink dimension="Facebook URL" />
                     <FactLink dimension="Twitter account" />
@@ -391,7 +407,7 @@
                     <ForeignKeyLink dimension="Do you have a common Youtube account for the UNCT"  foreignKeyColumn="HAS_COMMON_YOUTUBE_ACCOUNT"/>
                     <ForeignKeyLink dimension="Do you have a common Instagram account for the UNCT"  foreignKeyColumn="HAS_COMMON_INSTAGRAM_ACCOUNT"/>
                     <ForeignKeyLink dimension="Do you have a common Flickr account for the UNCT"  foreignKeyColumn="HAS_COMMON_FLICKR_ACCOUNT"/>
-					<ForeignKeyLink dimension="UNCTAdvocacyModel" foreignKeyColumn="UNCT_ADVOCACY_MODEL_ID" />
+					<FactLink dimension="UNCT_ADVOCACY_MODEL_ID" />
 					<ForeignKeyLink dimension="Is communications part of UNDAF"  foreignKeyColumn="IS_COMMUNICATIONS_PART_OFUNDAF"/>
 					<ForeignKeyLink dimension="Has communicating together in time of crisis"  foreignKeyColumn="HAS_COMMUNICATION_TOGETHER_IN_TIME_CRISIS"/>
 					<ForeignKeyLink dimension="Has UNCT established visual identity"  foreignKeyColumn="HAS_VISUAL_IDENTITY_ESTABLISHED"/>

@@ -103,27 +103,6 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
-    /**
-     * Name is optional. Explicitly define it when reusing the same category within the same cube
-     * or simplifying an existing dimension that may be already referred in a saved query. Check readme.md for more.
-     */
-    private static final Pattern CATEGORY_DIM_PATTERN = Pattern.compile(
-            "<Dimension *source=[\"|']CATEGORY[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
-    private static final String CATEGORY_DIM_TEMPLATE =
-            "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@'\n" +
-                        "key='Dimension Id'>\n" +
-                "<Attributes>\n" +
-                    "<Attribute name='Dimension Id' keyColumn='ID'\n" +
-                                "hasHierarchy='false' levelType='Regular' datatype='Integer' />\n" +
-                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='ID' nameColumn='LABEL'\n" +
-                                "hierarchyAllMemberCaption=\"All @@captions@@\" hierarchyAllMemberName=\"All __@@captions@@__\" hierarchyCaption=\"All @@captions@@\">\n" +
-                        "<OrderBy>\n" +
-                            "<Column name='PRE_SORT' />\n" +
-                            "<Column name='LABEL_SORT' />\n" +
-                        "</OrderBy>\n" +
-                    "</Attribute>\n" +
-                "</Attributes>\n" +
-            "</Dimension>";
 
     private static final Pattern CATEGORY_BY_LABEL_DIM_PATTERN = Pattern.compile(
             "<Dimension *source=[\"|']CATEGORY_BY_LABEL[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
@@ -141,10 +120,10 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                 "</Attributes>\n" +
             "</Dimension>";
 
-    private static final Pattern CATEGORY_DIM_2_PATTERN = Pattern.compile(
-            "<Dimension *source=[\"|']CATEGORY2[\"|'] *table=[\"|']([^=]*)[\"|'] *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
+    private static final Pattern CATEGORY_DIM_PATTERN = Pattern.compile(
+            "<Dimension *source=[\"|']CATEGORY[\"|'] *table=[\"|']([^=]*)[\"|'] *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
 
-    private static final String CATEGORY_DIM_2_TEMPLATE =
+    private static final String CATEGORY_DIM_TEMPLATE =
             "<Dimension table=\"@@table@@\" name=\"@@name@@\" caption=\"@@caption@@\">\n"
                     + " <Attributes>\n"
                     + "  <Attribute name=\"@@name@@\" caption=\"@@caption@@\" keyColumn=\"@@name@@_DIM\" orderByColumn=\"@@name@@_DIM_ORD\" />\n"
@@ -230,14 +209,14 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                             .replace("@@col@@", col)
                             .replace("@@alias@@", alias));
         }
-        Matcher m = CATEGORY_DIM_2_PATTERN.matcher(content);
+        Matcher m = CATEGORY_DIM_PATTERN.matcher(content);
         while(m.find()) {
             String origText = m.group();
             String table = m.group(1);
             String name = m.group(2);
             String caption = m.group(3);
             content = content.replace(origText,
-                    CATEGORY_DIM_2_TEMPLATE
+                    CATEGORY_DIM_TEMPLATE
                             .replace("@@name@@", name)
                             .replace("@@caption@@", caption)
                             .replace("@@table@@", table));
@@ -266,10 +245,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
         return content;
     }
 
-    // TODO remove
     private String processCategories(String content) {
-        content = processCategories(content, CATEGORY_DIM_PATTERN, CATEGORY_QUERY_TEMPLATE,
-                CATEGORY_DIM_TEMPLATE, "<!-- ## _CATEGORY_QUERIES_TAG_ ## -->");
         content = processCategories(content, CATEGORY_BY_LABEL_DIM_PATTERN, CATEGORY_BY_LABEL_QUERY_TEMPLATE,
                 CATEGORY_BY_LABEL_DIM_TEMPLATE, "<!-- ## _CATEGORY_BY_LABEL_QUERIES_TAG_ ## -->");
         return content;

@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP5UNCTMembersSharedOffices">
@@ -16,13 +14,21 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.LOCATION, COALESCE(M.COMMON_PREMISES_TYPE_ID, -1) AS COMMON_PREMISES_TYPE_ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            M.ID, M.LOCATION,
+                            COALESCE(COMMON_PREMISES_TYPE_ID.LABEL, 'X-CATEGORY') as COMMON_PREMISES_TYPE_ID,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP5SHARED_SUB_NATIONAL_OFFICES M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            M.PARENT_ID = CP1.ID AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
-                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                        FROM CP5SHARED_SUB_NATIONAL_OFFICES M
+                            JOIN CP1GENERAL_PROFILE CP1 ON M.PARENT_ID = CP1.ID
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY COMMON_PREMISES_TYPE_ID ON M.COMMON_PREMISES_TYPE_ID=COMMON_PREMISES_TYPE_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -33,9 +39,11 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            CP5.ID, CP5.DESIGNATION, CP5.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID, CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CP5.ID, CP5.DESIGNATION, CP5.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN 1 ELSE 0 END as HASUNCOMMON_PREMISES,
-                            CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.COMMON_PREMISES_TYPE_ID ELSE -1 END as COMMON_PREMISES_TYPE_ID,
+                            COALESCE(COMMON_PREMISES_TYPE_ID.LABEL, 'X-CATEGORY') as COMMON_PREMISES_TYPE_ID,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = TRUE THEN cp5uncommon.VALUE_OF_SAVINGS ELSE null END as VALUE_OF_SAVINGS,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = FALSE THEN CASE WHEN cp5uncommon.HASUNCTSTRATEGY = TRUE THEN 1 ELSE 0 END ELSE -1 END as HASUNCTSTRATEGY_DIM,
                             CASE WHEN cp5.HASUNCOMMON_PREMISES = FALSE THEN CASE WHEN cp5uncommon.HASUNCTSTRATEGY = TRUE THEN 1 ELSE 0 END ELSE 0 END as HASUNCTSTRATEGY_COUNT,
@@ -45,13 +53,17 @@
                             CASE cp5.HAS_SHARED_SUB_NATIONAL_OFFICES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_SHARED_SUB_NATIONAL_OFFICES_DIM,
                             CASE WHEN cp5.HAS_SHARED_SUB_NATIONAL_OFFICES = TRUE THEN 1 ELSE 0 END as HAS_SHARED_SUB_NATIONAL_OFFICES_COUNT,
                             CASE WHEN cp1.OFFICIAL_REQUEST_DAO_COUNTRY = TRUE THEN 1 ELSE 0 END as OFFICIAL_REQUEST_DAO_COUNTRY,
-                            COALESCE(cp5.shared_offices_id, -1) AS shared_offices_id
+                            COALESCE(shared_offices_id.LABEL, 'X-CATEGORY') as shared_offices_id
                         from CP5COMMON_PREMISES_PROFILE CP5
                              join CP1GENERAL_PROFILE CP1 on CP5.DESIGNATION = CP1.DESIGNATION AND CP5.ENTITY_YEAR = CP1.ENTITY_YEAR
                              left join CP5UNCOMMON_PREMISES cp5uncommon on cp5uncommon.PARENT_ID = cp5.id
                              left join CP5COMMON_PREMISES_FEASIBILITY_STUDY cp5study on cp5study.PARENT_ID = cp5.id
                              join BASE_COUNTRY bc on CP1.DESIGNATION = bc.iso2
                              join v_cp_validated_designations v on CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                             JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                             LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                             LEFT JOIN CATEGORY COMMON_PREMISES_TYPE_ID ON cp5uncommon.COMMON_PREMISES_TYPE_ID=COMMON_PREMISES_TYPE_ID.ID
+                             LEFT JOIN CATEGORY shared_offices_id ON cp5.shared_offices_id=shared_offices_id.ID
                         WHERE CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
@@ -78,8 +90,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />            
+            <Dimension source="CATEGORY" table="CP5UNCTMembersSharedOffices" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP5UNCTMembersSharedOffices" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension name="Location" caption="Location" table="CP5UNCTMembersSharedOffices"
                        key="Dimension Id" visible="true">
@@ -93,7 +105,7 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension source="CATEGORY" table="CommonPremisesType" name="CommonPremisesType" caption="Type of the Office." />
+            <Dimension source="CATEGORY" table="CP5UNCTMembersSharedOffices" name="COMMON_PREMISES_TYPE_ID" caption="Type of the Office." />
         </Dimensions>
 
         <MeasureGroups>
@@ -104,8 +116,10 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Location" />
-                    <ForeignKeyLink dimension="CommonPremisesType" foreignKeyColumn="COMMON_PREMISES_TYPE_ID"/>
+                    <FactLink dimension="COMMON_PREMISES_TYPE_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -125,16 +139,16 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP5GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP5GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension table="YesNoTable" name="hasUNCommonPremises" caption="Does the UNCT have UN Common Premises or UN House?" />
-            <Dimension source="CATEGORY" table="CommonPremisesType" name="CommonPremisesType" caption="Are the premises government-provided, rented or owned?" />
+            <Dimension source="CATEGORY" table="CP5GeneralCube" name="COMMON_PREMISES_TYPE_ID" caption="Are the premises government-provided, rented or owned?" />
             <Dimension table="YesNoTable" name="hasUNCTStrategy" caption="Does the UNCT have a strategy to support the establishment of common premises?" />
             <Dimension table="YesNoTable" name="Has the UNCT ever developed a feasibility study for the implementation of common premises" caption="Has the UNCT ever developed a feasibility study for the implementation of common premises?" />
             <Dimension table="YesNoTable" name="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study" caption="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study?" />
             <Dimension table="YesNoTable" name="hasSharedSubNationalOffices" caption="Do UNCT members have any offices at the sub-national level?" />
-            <Dimension source="CATEGORY" table="SharedOffices" caption="How many offices are in shared premises with other entities?" />
+            <Dimension source="CATEGORY" table="CP5GeneralCube" name="shared_offices_id" caption="How many offices are in shared premises with other entities?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -163,13 +177,15 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="CommonPremisesType" foreignKeyColumn="COMMON_PREMISES_TYPE_ID"/>
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="COMMON_PREMISES_TYPE_ID" />
                     <ForeignKeyLink dimension="hasUNCommonPremises" foreignKeyColumn="HASUNCOMMON_PREMISES"/>
                     <ForeignKeyLink dimension="Has the UNCT ever developed a feasibility study for the implementation of common premises" foreignKeyColumn="HAS_FEASIBILITY_STUDY"/>
                     <ForeignKeyLink dimension="Did the UNDG Task Team on Common Premises (TTCP) review and provide feedback on the feasibility study" foreignKeyColumn="TTCP_REVIEW_AND_FEEDBACK_DIM"/>
                     <ForeignKeyLink dimension="hasSharedSubNationalOffices" foreignKeyColumn="HAS_SHARED_SUB_NATIONAL_OFFICES_DIM"/>
                     <ForeignKeyLink dimension="hasUNCTStrategy" foreignKeyColumn="HASUNCTSTRATEGY_DIM"/>
-                    <ForeignKeyLink dimension="SharedOffices" foreignKeyColumn="shared_offices_id"/>
+                    <FactLink dimension="shared_offices_id" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

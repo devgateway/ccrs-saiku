@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
         
         <Query alias="CP7GeneralCube">
@@ -16,8 +14,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp7.ID, cp7.DESIGNATION, cp7.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp7.ID, cp7.DESIGNATION, cp7.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             cp7.OTHERUNCTJOINTLY_MANAGE_RESOURCES,
                             CASE WHEN cp7.GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK = TRUE THEN 1 ELSE 0 END as GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK_COUNT, 
                             CASE cp7.GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK,
@@ -32,12 +31,16 @@
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp7.has_global_pooled_fund_mechanism = TRUE THEN 1 ELSE 0 END as has_global_pooled_fund_mechanism_count,
                             CASE cp7.has_global_pooled_fund_mechanism WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_global_pooled_fund_mechanism_dim,
-                            COALESCE(cp7.global_pooled_fund_mechanism_id, -1) AS global_pooled_fund_mechanism_id
-                        from CP7JOINT_FUNDING_PROFILE cp7, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            cp7.DESIGNATION = cp1.DESIGNATION AND cp7.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp7.DESIGNATION != 'AQ' AND cp7.DESIGNATION != 'DOCO' AND cp7.DESIGNATION = bc.iso2 and
-                            cp7.designation = v.designation and v.entity_year = cp7.ENTITY_YEAR
+                            COALESCE(global_pooled_fund_mechanism_id.LABEL, 'X-CATEGORY') as global_pooled_fund_mechanism_id
+                        from CP7JOINT_FUNDING_PROFILE cp7
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp7.DESIGNATION = cp1.DESIGNATION AND cp7.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON cp7.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON cp7.designation = v.designation and v.entity_year = cp7.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY global_pooled_fund_mechanism_id ON cp7.global_pooled_fund_mechanism_id=global_pooled_fund_mechanism_id.ID
+                        WHERE cp7.DESIGNATION != 'AQ'
+                          AND cp7.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -63,8 +66,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP7GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP7GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension table="YesNoTable" name="Partner government have an integrated national financing framework" caption="Does your partner government have an integrated national financing framework?" />
             <Dimension table="YesNoTable" name="Review of the full financing landscape" caption="Does it include a review of the full financing landscape?" />
@@ -86,7 +89,7 @@
 
             <Dimension table="YesNoTable" name="hasGlobalPooledFundMechanism" caption="Has the UNCT accessed any global pooled-fund mechanism in the last year?" />
 
-            <Dimension source="CATEGORY" table="GlobalPooledFundMechanism" caption="Which pooled-fund mechanism?" />
+            <Dimension source="CATEGORY" table="CP7GeneralCube" name="global_pooled_fund_mechanism_id" caption="Which pooled-fund mechanism?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -115,6 +118,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Partner government have an integrated national financing framework"  foreignKeyColumn="GOV_HAS_INTEGRATED_NATIONAL_FINANCING_FRAMEWORK"/>
                     <ForeignKeyLink dimension="Review of the full financing landscape"  foreignKeyColumn="HAS_REVIEW_OF_FINANCING_LANDSCAPE"/>
                     <ForeignKeyLink dimension="Partner government developed a strategy to close financing gap"  foreignKeyColumn="GOV_HASSDGFINANCING_GAP_STRATEGY"/>
@@ -122,7 +127,7 @@
                     <ForeignKeyLink dimension="Does the UNCT jointly manage resource mobilization"  foreignKeyColumn="UNCT_JOINTLY_MANAGE_RESOURCE_MOBILIZATION"/>
                     <ForeignKeyLink dimension="Other UNCT resource mobilization"  foreignKeyColumn="OTHERUNCTJOINTLY_MANAGE_RESOURCES"/>
                     <ForeignKeyLink dimension="hasGlobalPooledFundMechanism" foreignKeyColumn="has_global_pooled_fund_mechanism_dim"/>
-                    <ForeignKeyLink dimension="GlobalPooledFundMechanism" foreignKeyColumn="global_pooled_fund_mechanism_id" />
+                    <FactLink dimension="global_pooled_fund_mechanism_id"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

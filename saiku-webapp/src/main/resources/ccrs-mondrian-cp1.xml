@@ -8,8 +8,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-
         <!-- ## _CATEGORY_BY_LABEL_QUERIES_TAG_ ## -->
         
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
@@ -31,8 +29,9 @@
                           AGENCY.LABEL AS AGENCY,
                           COALESCE(REPRESENTATIVE_POST_LEVEL.LABEL, 'X-CATEGORY') as REPRESENTATIVE_POST_LEVEL,
                           COALESCE(AGENCY_REPRESENTATIVE_TITLE.LABEL, 'X-CATEGORY') as AGENCY_REPRESENTATIVE_TITLE,
-                          CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                          COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                          CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                          COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                          COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                           CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                           CASE WHEN M.NON_RESIDENT_AGENCY = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCY_COUNT,
                           COALESCE(M.NON_RESIDENT_AGENCY, 'X-BOOLEAN') AS NON_RESIDENT_AGENCY_DIM,
@@ -45,6 +44,8 @@
                           JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.ISO2
                           JOIN V_CP_VALIDATED_DESIGNATIONS v ON CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
                           JOIN CATEGORY AGENCY ON M.AGENCY_ID=AGENCY.ID
+                          JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                          LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
                           LEFT JOIN CATEGORY REPRESENTATIVE_POST_LEVEL ON M.REPRESENTATIVE_POST_LEVEL_ID=REPRESENTATIVE_POST_LEVEL.ID
                           LEFT JOIN CATEGORY AGENCY_REPRESENTATIVE_TITLE ON M.AGENCY_REPRESENTATIVE_TITLE_ID=AGENCY_REPRESENTATIVE_TITLE.ID
                           LEFT JOIN CATEGORY agency_non_physical_presence ON M.agency_non_physical_presence_id=agency_non_physical_presence.ID
@@ -66,8 +67,9 @@
                           COALESCE(POSITION_TITLE.LABEL, 'X-CATEGORY') as POSITION_TITLE,
                           M.PHONE_NUMBER,
                           AGENCY.LABEL AS AGENCY,
-                          CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                          COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                          CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                          COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                          COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                           CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                           CASE WHEN M.`lead` = TRUE THEN 1 ELSE 0 END as lead_count,
                           COALESCE(M.`lead`, 'X-BOOLEAN') AS lead_dim
@@ -76,6 +78,8 @@
                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.ISO2
                            JOIN V_CP_VALIDATED_DESIGNATIONS v ON CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
                            JOIN CATEGORY AGENCY ON M.AGENCY_ID=AGENCY.ID
+                           JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                           LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
                            LEFT JOIN CATEGORY POSITION_TITLE ON M.POSITION_TITLE_ID=POSITION_TITLE.ID
                         WHERE CP1.DESIGNATION != 'AQ'
                           AND CP1.DESIGNATION != 'DOCO'
@@ -93,15 +97,19 @@
                           AGENCY.LABEL AS AGENCY,
                           CASE WHEN M.NAME IS NULL THEN '' ELSE M.NAME END as NAME,
                           CASE WHEN M.EMAIL IS NULL THEN '' ELSE M.EMAIL END as EMAIL,
-                          CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                          COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                          CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                          COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                          COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                           CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from
-                          CP1OMTMEMBER M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v, CATEGORY AGENCY
-                        WHERE
-                          M.PARENT_ID = CP1.ID AND
-                          CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND M.AGENCY_ID=AGENCY.ID AND
-                          CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                        from CP1OMTMEMBER M
+                            JOIN CP1GENERAL_PROFILE CP1 ON M.PARENT_ID = CP1.ID
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.ISO2
+                            JOIN V_CP_VALIDATED_DESIGNATIONS v ON CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN CATEGORY AGENCY ON M.AGENCY_ID=AGENCY.ID
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -116,8 +124,9 @@
                             M.NAME,
                             COALESCE(RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS.LABEL, 'X-CATEGORY') as RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS,
                             M.OTHER_MEMBER_ORGANIZATIONS,
-                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             COALESCE(M.RESULTS_GROUP_DEFINED_BYSOP, 'X-BOOLEAN') AS RESULTS_GROUP_DEFINED_BYSOP_DIM,
                             CASE WHEN M.RESULTS_GROUP_DEFINED_BYSOP = TRUE THEN 1 ELSE 0 END as RESULTS_GROUP_DEFINED_BYSOP_COUNT,
                             COALESCE(M.JOINT_WORKPLAN, 'X-BOOLEAN') AS JOINT_WORKPLAN_DIM,
@@ -127,6 +136,8 @@
                             JOIN CP1GENERAL_PROFILE CP1 ON M.PARENT_ID = CP1.ID
                             JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.ISO2
                             JOIN V_CP_VALIDATED_DESIGNATIONS v ON CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
                             LEFT JOIN CATEGORY RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS ON M.RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS_ID=RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS.ID
                         WHERE CP1.DESIGNATION != 'AQ'
                           AND CP1.DESIGNATION != 'DOCO'
@@ -141,18 +152,23 @@
                     <![CDATA[
                         select
                             M.ID, M.COUNTRY_ID as CC_COUNTRY_ID,
-                            COALESCE(M.INCOME_STATUS_ID, -1) as CC_INCOME_STATUS_ID,
+                            COALESCE(CC_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as CC_INCOME_STATUS_ID,
                             M.YEAR_OF_BECOMINGDAO as CC_YEAR_OF_BECOMINGDAO,
-                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN M.DAO = TRUE THEN 1 ELSE 0 END as DAO_COUNT,
                             COALESCE(M.DAO, 'X-BOOLEAN') AS DAO_COUNT_DIM,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP1COUNTRY M, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
-                        WHERE
-                            M.PARENT_ID = CP1.ID AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.ISO2 AND
-                            CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                        FROM CP1COUNTRY M
+                            JOIN CP1GENERAL_PROFILE CP1 ON M.PARENT_ID = CP1.ID
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.ISO2
+                            JOIN V_CP_VALIDATED_DESIGNATIONS v ON CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY CC_INCOME_STATUS_ID on M.INCOME_STATUS_ID=CC_INCOME_STATUS_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -163,8 +179,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CP1.ID, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             COALESCE(resident_coordinator_gender.LABEL, 'X-CATEGORY') as resident_coordinator_gender,
                             COALESCE(CP1.resident_coordinator_nationality_id, -1) AS resident_coordinator_nationality_id,
                             CP1.YEAR_OF_OFFICIAL_REQUEST,
@@ -261,6 +278,8 @@
                             join CP1JOINT_COMM_STRATEGY cp1jointstrategy on cp1jointstrategy.PARENT_ID = cp1.ID
                             join BASE_COUNTRY bc on CP1.DESIGNATION = bc.ISO2
                             join V_CP_VALIDATED_DESIGNATIONS v on CP1.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            join CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            left join CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
                             left join CATEGORY HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN on cp1.HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN_ID=HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN.ID
                             left join CATEGORY HAS_ANNUAL_REPORTING_JOINTUNRESULTS on cp1.HAS_ANNUAL_REPORTING_JOINTUNRESULTS_ID=HAS_ANNUAL_REPORTING_JOINTUNRESULTS.ID
                             left join CATEGORY HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT on cp1.HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT_ID=HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT.ID
@@ -316,17 +335,17 @@
 		            <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
 		        </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP1UnctMember" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP1UnctMember" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
             <Dimension source="UNAgency" />
             
-            <Dimension source="CATEGORY2" table="CP1UnctMember" name="AGENCY_REPRESENTATIVE_TITLE" caption="Agency Representative Title" />
-            <Dimension source="CATEGORY2" table="CP1UnctMember" name="REPRESENTATIVE_POST_LEVEL" caption="Representative Post Level" />
+            <Dimension source="CATEGORY" table="CP1UnctMember" name="AGENCY_REPRESENTATIVE_TITLE" caption="Agency Representative Title" />
+            <Dimension source="CATEGORY" table="CP1UnctMember" name="REPRESENTATIVE_POST_LEVEL" caption="Representative Post Level" />
 
             <Dimension source="YesNoTable" table="CP1UnctMember" name="NON_RESIDENT_AGENCY_DIM" caption="Has Non-Resident Agency?" />
             <Dimension source="YesNoTable" table="CP1UnctMember" name="has_physical_in_country_presence_dim" caption="Does the agency have a physical in-country presence?" />
-            <Dimension source="CATEGORY2" table="CP1UnctMember" name="agency_presence" caption="What kind of physical in-country presence does your agency have?" />
-            <Dimension source="CATEGORY2" table="CP1UnctMember" name="agency_non_physical_presence" caption="What kind of non physical in-country presence does your agency have?" />
+            <Dimension source="CATEGORY" table="CP1UnctMember" name="agency_presence" caption="What kind of physical in-country presence does your agency have?" />
+            <Dimension source="CATEGORY" table="CP1UnctMember" name="agency_non_physical_presence" caption="What kind of non physical in-country presence does your agency have?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -342,7 +361,9 @@
                              datatype="Integer" aggregator="sum" visible="true" formatString="#,###"/>
                 </Measures>
                 <DimensionLinks>
-                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->                        
+                    <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY" />
                     <FactLink dimension="REPRESENTATIVE_POST_LEVEL"/>
                     <FactLink dimension="AGENCY_REPRESENTATIVE_TITLE"/>
@@ -369,8 +390,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />            
+            <Dimension source="CATEGORY" table="CP1UncgMember" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP1UncgMember" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <!-- N.1.29 -->
             <Dimension name="UNCGMemberName" caption="UNCG Member Name" table="CP1UncgMember"
@@ -403,7 +424,7 @@
 			
             
             <!-- N.1.41 -->
-            <Dimension source="CATEGORY2" table="CP1UncgMember" name="POSITION_TITLE" caption="UNCG Member Position/Title" />
+            <Dimension source="CATEGORY" table="CP1UncgMember" name="POSITION_TITLE" caption="UNCG Member Position/Title" />
 
             <!-- N.1.42 -->
             <Dimension name="UNCGMemberPhoneNumber" caption="UNCG Member Phone number" table="CP1UncgMember"
@@ -433,6 +454,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="UNCGMemberName" />
                     <FactLink dimension="UNCGMemberEmail" />
                     <FactLink dimension="POSITION_TITLE" />
@@ -459,8 +482,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP1OMTMember" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP1OMTMember" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <!-- N.1.36 -->
             <Dimension name="Name" caption="OMT Member Name" table="CP1OMTMember" visible="true">
@@ -491,6 +514,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Name" />
                     <FactLink dimension="Email" />
                     <ForeignKeyLink dimension="UNAgency" foreignKeyColumn="AGENCY" />
@@ -514,8 +539,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP1InteragencyGroups" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP1InteragencyGroups" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension name="Interagency Group Name" caption="Interagency Group Name" table="CP1InteragencyGroups"
                        key="Dimension Id" visible="true">
@@ -530,7 +555,7 @@
 
             <Dimension source="YesNoTable" table="CP1InteragencyGroups" name="RESULTS_GROUP_DEFINED_BYSOP_DIM" caption="Is this a Results Group as defined by the Standard Operating Procedures (SOPs)?" />
             <Dimension source="YesNoTable" table="CP1InteragencyGroups" name="JOINT_WORKPLAN_DIM" caption="Does the Interagency/Results Group have a Joint Workplan?" />
-            <Dimension source="CATEGORY2" table="CP1InteragencyGroups" name="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS" caption="Is the Interagency/Results Group aligned to nationally led sector working groups or theme groups?" />
+            <Dimension source="CATEGORY" table="CP1InteragencyGroups" name="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS" caption="Is the Interagency/Results Group aligned to nationally led sector working groups or theme groups?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -547,6 +572,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="RESULTS_GROUP_DEFINED_BYSOP_DIM" />
                     <FactLink dimension="JOINT_WORKPLAN_DIM" />
                     <FactLink dimension="RESULTS_GROUP_ALIGNED_TO_SECTOR_GROUPS" />
@@ -571,10 +598,10 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
-			
-			<Dimension name="Covered Country" caption="Covered Country" table="BASE_COUNTRY2"
+            <Dimension source="CATEGORY" table="CP1CoveredCountries" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP1CoveredCountries" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
+
+            <Dimension name="Covered Country" caption="Covered Country" table="BASE_COUNTRY2"
                        key="Dimension Id" visible="true">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="BASE_COUNTRY_ID"
@@ -584,9 +611,9 @@
                                hierarchyAllMemberName="All Countries" hierarchyCaption="All Countries"
                                levelType="Regular" datatype="String" />
                 </Attributes>
-            </Dimension>			
-			
-            <Dimension source="CountryIncomeStatus" name="CoveredCountryIncomeStatus" caption="Covered Country Income Status" />
+            </Dimension>
+
+            <Dimension source="CATEGORY" table="CP1CoveredCountries" name="CC_INCOME_STATUS_ID" caption="Covered Country Income Status" />
 
             <Dimension source="YesNoTable" table="CP1CoveredCountries" name="DAO_COUNT_DIM" caption="Is it a DAO Country?" />
 
@@ -609,8 +636,10 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
 					<ForeignKeyLink dimension="Covered Country" foreignKeyColumn="CC_COUNTRY_ID"/>
-                    <ForeignKeyLink dimension="CoveredCountryIncomeStatus" foreignKeyColumn="CC_INCOME_STATUS_ID" />
+					<FactLink dimension="CC_INCOME_STATUS_ID" />
 					<FactLink dimension="DAO_COUNT_DIM" />
 					<FactLink dimension="YearDAOCountry" />
                 </DimensionLinks>
@@ -632,26 +661,26 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN" caption="SOP1 Joint National/UN Steering Committee" />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_ANNUAL_REPORTING_JOINTUNRESULTS" caption="SOP2 Annual Report on Joint Results" />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT" caption="SOP3 Signed UNDAF/Cooperation Framework" />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_JOINT_ANNUAL_WORK_PLANS" caption="SOP4 Joint Workplans (for Results Groups)" />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_RESULTS_GROUPS" caption="SOP5 Results Groups Established." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK" caption="SOP6 Medium-Term Common Budgetary Framework." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK" caption="SOP7 Annual Common Budgetary Framework." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY" caption="SOP8 Joint Resource Mobilization Strategy." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS" caption="SOP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES" caption="SOP10 Joint Decision-Making by UNCT." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HASBOSSTRATEGY" caption="SOP11 Business Operations Strategy Endorsed by UNCT." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM" caption="SOP12 OMT Chaired by Head of Agency." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED" caption="SOP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_JOINT_COMM_STRATEGY" caption="SOP14 Joint Communication Strategy." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="HAS_COUNTRY_COMM_GROUP" caption="SOP15 Country Communications Group." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN" caption="SOP1 Joint National/UN Steering Committee" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_ANNUAL_REPORTING_JOINTUNRESULTS" caption="SOP2 Annual Report on Joint Results" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT" caption="SOP3 Signed UNDAF/Cooperation Framework" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_JOINT_ANNUAL_WORK_PLANS" caption="SOP4 Joint Workplans (for Results Groups)" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_RESULTS_GROUPS" caption="SOP5 Results Groups Established." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_MID_TERM_COMM_BUDGET_FRAMEWORK" caption="SOP6 Medium-Term Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_ANNUAL_COMM_BUDGET_FRAMEWORK" caption="SOP7 Annual Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_JOINT_RESOURCE_MOBILISATION_STRATEGY" caption="SOP8 Joint Resource Mobilization Strategy." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_COMMITMENT_AND_INCETIVES_TOWARDS_COMMON_RESULTS" caption="SOP9 Full implementation of the Management/Accountability Framework and UNCT Conduct and working arrangements" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_EMPOWEREDUNCTJOINT_DECISIONS_PROGR_ACTIVITIES" caption="SOP10 Joint Decision-Making by UNCT." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HASBOSSTRATEGY" caption="SOP11 Business Operations Strategy Endorsed by UNCT." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_EMPOWERED_OPS_MANAGEMENT_TEAM" caption="SOP12 OMT Chaired by Head of Agency." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_OPERATIONS_COSTS_BUDGETS_INTEGRATED" caption="SOP13 Operations Costs/ Budgets in Medium Term Common Budgetary Framework." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_JOINT_COMM_STRATEGY" caption="SOP14 Joint Communication Strategy." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="HAS_COUNTRY_COMM_GROUP" caption="SOP15 Country Communications Group." />
             <Dimension source="YesNoTable" table="CP1GeneralCube" name="DAO_VISION_NOTE_ROADMAP_DIM" caption="Do you have a DaO Vision, Concept Note, or Roadmap?" />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="GOVERNMENT_ROLE" caption="Government Role" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="GOVERNMENT_ROLE" caption="Government Role" />
             <Dimension source="YesNoTable" table="CP1GeneralCube" name="HAS_ANNUAL_REVIEW" caption="Has the Joint National/UN Steering Committee conducted an annual review?" />
             <Dimension source="YesNoTable" table="CP1GeneralCube" name="REPORT_SUBMITTED_TO_GOV" caption="Was the report submitted to the National Government?" />
             <Dimension source="YesNoTable" table="CP1GeneralCube" name="BUDGETED_WORKPLAN" caption="Does the UNCT have a  budgeted workplan to implement the Joint Communication Strategy?" />
@@ -666,17 +695,17 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="SOP1_PARTIAL_IMPLEMENTATION_DETAILS" caption="SOP1 Details on partial implementation." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="SOP2_PARTIAL_IMPLEMENTATION_DETAILS" caption="SOP2 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="SOP1_PARTIAL_IMPLEMENTATION_DETAILS" caption="SOP1 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="SOP2_PARTIAL_IMPLEMENTATION_DETAILS" caption="SOP2 Details on partial implementation." />
             <Dimension source="YesNoTable" table="CP1GeneralCube" name="REPORT_PUBLICLY_AVAILABLE_DIM" caption="Has the UN country team made their most recent annual results report publicly available?" />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="REPORT_PUBLISHING_MODALITY" caption="How UN country team made their most recent annual results report publicly available?" />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5" caption="SOP3 Details on partial implementation." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS" caption="SOP5 Details on partial implementation." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEB8B" caption="SOP6 Details on partial implementation." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK" caption="SOP7 Details on partial implementation." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATIO507" caption="SOP8 Details on partial implementation." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="SOP14_PARTIAL_IMPLEMENTATION_DETAILS" caption="SOP14 Details on partial implementation." />
-            <Dimension source="CATEGORY2" table="CP1GeneralCube" name="resident_coordinator_gender" caption="Resident Coordinator Gender" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="REPORT_PUBLISHING_MODALITY" caption="How UN country team made their most recent annual results report publicly available?" />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_SIGNEDUNDAFOUTCOME_LEVEL_LDE5" caption="SOP3 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_RESULTS_GROUPS" caption="SOP5 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_MID_TERM_COMM_BUDGET_FRAMEB8B" caption="SOP6 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_ANNUAL_COMM_BUDGET_FRAMEWORK" caption="SOP7 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="PARTIAL_IMPLEMENTATION_DETAILS_JOINT_RESOURCE_MOBILISATIO507" caption="SOP8 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="SOP14_PARTIAL_IMPLEMENTATION_DETAILS" caption="SOP14 Details on partial implementation." />
+            <Dimension source="CATEGORY" table="CP1GeneralCube" name="resident_coordinator_gender" caption="Resident Coordinator Gender" />
             <Dimension name="RCNationality" caption="Resident Coordinator Nationality" table="BASE_COUNTRY_WITHOUT_REGION" key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -738,6 +767,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN"/>
                     <FactLink dimension="HAS_ANNUAL_REPORTING_JOINTUNRESULTS"/>
                     <FactLink dimension="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT"/>
@@ -826,6 +857,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN"/>
                     <FactLink dimension="HAS_ANNUAL_REPORTING_JOINTUNRESULTS"/>
                     <FactLink dimension="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT"/>
@@ -914,6 +947,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN"/>
                     <FactLink dimension="HAS_ANNUAL_REPORTING_JOINTUNRESULTS"/>
                     <FactLink dimension="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT"/>
@@ -984,6 +1019,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="HAS_JOINT_OVERSIGHT_OWNERSHIP_GOVUN"/>
                     <FactLink dimension="HAS_ANNUAL_REPORTING_JOINTUNRESULTS"/>
                     <FactLink dimension="HAS_SIGNEDUNDAFOUTCOME_LEVEL_LEGAL_TEXT"/>

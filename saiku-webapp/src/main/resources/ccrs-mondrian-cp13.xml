@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP13GenderEqualityScorecard">
@@ -17,19 +15,25 @@
                     <![CDATA[
                         select
                             D.ID,
-                            COALESCE(D.GENDER_EQUALITY_RATING_ID, -1) AS GENDER_EQUALITY_RATING_ID,
-                            D.SCORECARD_ID,
-                            CP13.DESIGNATION, CP13.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(GENDER_EQUALITY_RATING_ID.LABEL, 'X-CATEGORY') as GENDER_EQUALITY_RATING_ID,
+                            COALESCE(SCORECARD_ID.LABEL, 'X-CATEGORY') as SCORECARD_ID,
+                            CP13.DESIGNATION, CP13.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.HASUNCTDEVELOPED_MANAGEMENT_PLAN = TRUE THEN 1 ELSE 0 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_COUNT,
                             CASE D.HASUNCTDEVELOPED_MANAGEMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM CP13SCORECARD_AREA_SCORE D, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR AND
-                            CP13.ID = D.PARENT_ID AND
-                            CP13.DESIGNATION != 'AQ' AND CP13.DESIGNATION != 'DOCO' AND CP13.DESIGNATION = bc.iso2 AND
-                            CP13.designation = v.designation and v.entity_year = CP13.ENTITY_YEAR
+                        FROM CP13SCORECARD_AREA_SCORE D
+                            JOIN CP13GENDER_PROFILE CP13 ON CP13.ID = D.PARENT_ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP13.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP13.designation = v.designation and v.entity_year = CP13.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY GENDER_EQUALITY_RATING_ID ON D.GENDER_EQUALITY_RATING_ID=GENDER_EQUALITY_RATING_ID.ID
+                            LEFT JOIN CATEGORY SCORECARD_ID ON D.SCORECARD_ID=SCORECARD_ID.ID
+                        WHERE CP13.DESIGNATION != 'AQ'
+                          AND CP13.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -40,17 +44,24 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         SELECT
-                            S.ID, S.PARENT_ID, S.SCORECARD_ID, S.GENDER_EQUALITY_RATING_ID,
-                            CP13.DESIGNATION, CP13.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            S.ID, S.PARENT_ID,
+                            COALESCE(SCORECARD_ID.LABEL, 'X-CATEGORY') as SCORECARD_ID,
+                            COALESCE(GENDER_EQUALITY_RATING_ID.LABEL, 'X-CATEGORY') as GENDER_EQUALITY_RATING_ID,
+                            CP13.DESIGNATION, CP13.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM
-                            CP13UNSWAP_SCORECARD_AREA_SCORE S, CP13GENDER_PROFILE CP13, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            S.PARENT_ID = CP13.ID AND
-                            CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR AND
-                            CP13.DESIGNATION != 'AQ' AND CP13.DESIGNATION != 'DOCO' AND CP13.DESIGNATION = bc.iso2 AND
-                            CP13.designation = v.designation and v.entity_year = CP13.ENTITY_YEAR
+                        FROM CP13UNSWAP_SCORECARD_AREA_SCORE S
+                            JOIN CP13GENDER_PROFILE CP13 ON S.PARENT_ID = CP13.ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON CP13.DESIGNATION = CP1.DESIGNATION AND CP13.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP13.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP13.designation = v.designation and v.entity_year = CP13.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SCORECARD_ID ON S.SCORECARD_ID=SCORECARD_ID.ID
+                            LEFT JOIN CATEGORY GENDER_EQUALITY_RATING_ID ON S.GENDER_EQUALITY_RATING_ID=GENDER_EQUALITY_RATING_ID.ID
+                        WHERE CP13.DESIGNATION != 'AQ'
+                          AND CP13.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -62,9 +73,9 @@
                     <![CDATA[
                         select
                             cp13.ID, cp13.DESIGNATION, cp13.ENTITY_YEAR, cp13.YEAR_CONDUCTED_GENDER_EQUALITY_SCORECARD,
-                            COALESCE(cp13.GENDER_SCORECARD_TYPES_ID, -1) AS GENDER_SCORECARD_TYPES_ID,
-                            CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(GENDER_SCORECARD_TYPES_ID.LABEL, 'X-CATEGORY') as GENDER_SCORECARD_TYPES_ID,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp13.HASUNCTGENDER_ADVISOR = TRUE THEN 1 ELSE 0 END as HASUNCTGENDER_ADVISOR_COUNT,
                             CASE cp13.HASUNCTGENDER_ADVISOR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTGENDER_ADVISOR,
                             CASE WHEN cp13.HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL = TRUE THEN 1 ELSE 0 END as HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL_COUNT,
@@ -86,11 +97,15 @@
                             CASE cp13.has_gender_parity WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_gender_parity_dim,
                             CASE WHEN cp13.has_working_environment_for_gender_parity = TRUE THEN 1 ELSE 0 END as has_working_environment_for_gender_parity_count,
                             CASE cp13.has_working_environment_for_gender_parity WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_working_environment_for_gender_parity_dim
-                        from CP13GENDER_PROFILE cp13, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            cp13.DESIGNATION = cp1.DESIGNATION AND cp13.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp13.DESIGNATION != 'AQ' AND cp13.DESIGNATION != 'DOCO' AND cp13.DESIGNATION = bc.iso2 and
-                            cp13.designation = v.designation and v.entity_year = cp13.ENTITY_YEAR
+                        from CP13GENDER_PROFILE cp13
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp13.DESIGNATION = cp1.DESIGNATION AND cp13.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON cp13.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON cp13.designation = v.designation and v.entity_year = cp13.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY GENDER_SCORECARD_TYPES_ID ON cp13.GENDER_SCORECARD_TYPES_ID=GENDER_SCORECARD_TYPES_ID.ID
+                        WHERE cp13.DESIGNATION != 'AQ'
+                          AND cp13.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -116,11 +131,11 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP13GenderEqualityScorecard" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP13GenderEqualityScorecard" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension source="CATEGORY" table="Scorecard" name="Gender Scorecard" caption="Gender Scorecard" />
-            <Dimension source="CATEGORY" table="GenderEqualityRating" name="Gender Equality Rating" caption="Gender Equality Rating" />
+            <Dimension source="CATEGORY" table="CP13GenderEqualityScorecard" name="SCORECARD_ID" caption="Gender Scorecard" />
+            <Dimension source="CATEGORY" table="CP13GenderEqualityScorecard" name="GENDER_EQUALITY_RATING_ID" caption="Gender Equality Rating" />
             <Dimension table="YesNoTable" name="Has UNCT addressed the recommendations" caption="Has UNCT addressed the scorecard recommendations?" />
         </Dimensions>
 
@@ -135,8 +150,10 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="Gender Scorecard" foreignKeyColumn="SCORECARD_ID" />
-                    <ForeignKeyLink dimension="Gender Equality Rating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SCORECARD_ID" />
+                    <FactLink dimension="GENDER_EQUALITY_RATING_ID" />
                     <ForeignKeyLink dimension="Has UNCT addressed the recommendations" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
                 </DimensionLinks>
             </MeasureGroup>
@@ -157,12 +174,12 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP13UNCTUNSWAPScorecard" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP13UNCTUNSWAPScorecard" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
             <!-- 13.4.C.2.1 -->
-            <Dimension source="CATEGORY" table="UNSwapScorecard" name="UNSwap Scorecard" caption="UNCT SWAP Scorecard Performance Areas" />
+            <Dimension source="CATEGORY" table="CP13UNCTUNSWAPScorecard" name="SCORECARD_ID" caption="UNCT SWAP Scorecard Performance Areas" />
             <!-- 13.4.C.2.2 -->
-            <Dimension source="CATEGORY" table="UNSwapGenderEqualityRating" name="UNSwap Gender Equality Rating" caption="Rating" />
+            <Dimension source="CATEGORY" table="CP13UNCTUNSWAPScorecard" name="GENDER_EQUALITY_RATING_ID" caption="Rating" />
         </Dimensions>
 
         <MeasureGroups>
@@ -173,8 +190,10 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="UNSwap Scorecard" foreignKeyColumn="SCORECARD_ID" />
-                    <ForeignKeyLink dimension="UNSwap Gender Equality Rating" foreignKeyColumn="GENDER_EQUALITY_RATING_ID" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SCORECARD_ID" />
+                    <FactLink dimension="GENDER_EQUALITY_RATING_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -194,8 +213,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP13GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP13GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension table="YesNoTable" name="Does the UNCT have dedicated capacity to support the UNCTs work on gender equality and the empowerment of women" caption="Does the UNCT have dedicated capacity to support the UNCT's work on gender equality and the empowerment of women?" />
             <Dimension table="YesNoTable" name="UNDAF specific gender results" caption="If you have an UNDAF/Cooperation Framework (or equivalent), does it have specific gender results at the outcome level?" />
@@ -214,7 +233,7 @@
                 </Attributes>
             </Dimension>
             <!-- 13.4.C -->
-            <Dimension source="CATEGORY" table="ScorecardType" caption="Which scorecard has been implemented?" />
+            <Dimension source="CATEGORY" table="CP13GeneralCube" name="GENDER_SCORECARD_TYPES_ID" caption="Which scorecard has been implemented?" />
             <!-- 13.6 -->
             <Dimension table="YesNoTable" name="Gender Mainstreaming Strategy In Place" caption="Does the UNCT have a gender mainstreaming strategy in place?" />
             <!-- N.13.2 -->
@@ -263,13 +282,15 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Does the UNCT have dedicated capacity to support the UNCTs work on gender equality and the empowerment of women" foreignKeyColumn="HASUNCTGENDER_ADVISOR"/>
                     <ForeignKeyLink dimension="UNDAF specific gender results" foreignKeyColumn="HASUNDAFSPECIFIC_GENDER_RESULTS_OUTCOME_LEVEL"/>
                     <ForeignKeyLink dimension="Gender Equality Scorecard" foreignKeyColumn="HASUNCTGENDER_EQUALITY_SCORECARD"/>
                     <ForeignKeyLink dimension="Capacity building for UN staff" foreignKeyColumn="HAS_CAPACITY_BUILDINGUNSTAFF_GENDER"/>
                     <ForeignKeyLink dimension="UNCT uses gender equality" foreignKeyColumn="UNCT_USES_GENDER_EQUALITY_MARKER"/>
                     <FactLink dimension="Year when Gender Equality Scorecard was Conducted" />
-                    <ForeignKeyLink dimension="ScorecardType" foreignKeyColumn="GENDER_SCORECARD_TYPES_ID" />
+                    <FactLink dimension="GENDER_SCORECARD_TYPES_ID" />
                     <ForeignKeyLink dimension="Gender Mainstreaming Strategy In Place" foreignKeyColumn="GENDER_MAINSTREAMING_STRATEGY_IN_PLACE"/>
                     <ForeignKeyLink dimension="Has UNCT Developed Management Plan" foreignKeyColumn="HASUNCTDEVELOPED_MANAGEMENT_PLAN_DIM" />
                     <ForeignKeyLink dimension="wasManagementResponseUsed" foreignKeyColumn="was_management_response_used_dim" />

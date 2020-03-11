@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP3JointProgrammes">
@@ -19,17 +17,22 @@
                             D.ID,
                             D.TITLE,
                             D.TOTAL_BUDGET,
-                            COALESCE(D.WHICH_MODALITY_ID, -1) AS WHICH_MODALITY_ID,
-                            CP3.DESIGNATION, CP3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(WHICH_MODALITY_ID.LABEL, 'X-CATEGORY') as WHICH_MODALITY_ID,
+                            CP3.DESIGNATION, CP3.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM CP3JOINT_PROGRAMMES D, CP3COMMON_COUNTRY_PROGRAMMING CP3, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, V_CP_VALIDATED_DESIGNATIONS v
-                        WHERE
-                            CP3.DESIGNATION = CP1.DESIGNATION AND CP3.ENTITY_YEAR = CP1.ENTITY_YEAR AND
-                            CP3.ID = D.PARENT_ID AND
-                            CP3.DESIGNATION != 'AQ' AND CP3.DESIGNATION != 'DOCO' AND CP3.DESIGNATION = bc.ISO2 AND
-                            CP3.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP3.ENTITY_YEAR
-                            and CP3.HAS_JOINT_PROGRAMMES=true
+                        FROM CP3JOINT_PROGRAMMES D
+                            JOIN CP3COMMON_COUNTRY_PROGRAMMING CP3 ON CP3.ID = D.PARENT_ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON CP3.DESIGNATION = CP1.DESIGNATION AND CP3.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP3.DESIGNATION = bc.ISO2
+                            JOIN V_CP_VALIDATED_DESIGNATIONS v ON CP3.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = CP3.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY WHICH_MODALITY_ID ON D.WHICH_MODALITY_ID=WHICH_MODALITY_ID.ID
+                        WHERE CP3.DESIGNATION != 'AQ'
+                          AND CP3.DESIGNATION != 'DOCO'
+                          AND CP3.HAS_JOINT_PROGRAMMES=true
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -40,9 +43,10 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(cp3.UNDAF_PERIOD_ALIGNED_WITH_GOV_ID, -1) AS UNDAF_PERIOD_ALIGNED_WITH_GOV_ID,
+                            cp3.ID, cp3.DESIGNATION, cp3.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(UNDAF_PERIOD_ALIGNED_WITH_GOV_ID.LABEL, 'X-CATEGORY') as UNDAF_PERIOD_ALIGNED_WITH_GOV_ID,
                             CASE WHEN cp3.HASUNDAF = TRUE THEN 1 ELSE 0 END as HASUNDAF_COUNT,
                             CASE cp3.HASUNDAF WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNDAF,
                             date(cp3undaf.DATE_OF_SIGNATURE) as DATE_OF_SIGNATURE,
@@ -55,7 +59,7 @@
                             CASE WHEN cp3.HAS_COMMON_COUNTRY_ASSESSMENT = TRUE THEN 1 ELSE 0 END as HAS_COMMON_COUNTRY_ASSESSMENT_COUNT,
                             CASE cp3.HAS_COMMON_COUNTRY_ASSESSMENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMON_COUNTRY_ASSESSMENT,
                             cp3assessment.ASSESSMENT_YEAR,
-                            COALESCE(cp3assessment.OTHER_ANALYSIS_SOURCE_ID, -1) AS OTHER_ANALYSIS_SOURCE_ID,
+                            COALESCE(OTHER_ANALYSIS_SOURCE_ID.LABEL, 'X-CATEGORY') as OTHER_ANALYSIS_SOURCE_ID,
                             CASE WHEN cp3.HAS_NATIONAL_DEVELOPMENT_PLAN = TRUE THEN 1 ELSE 0 END as HAS_NATIONAL_DEVELOPMENT_PLAN_COUNT,
                             CASE cp3.HAS_NATIONAL_DEVELOPMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_NATIONAL_DEVELOPMENT_PLAN,
                             CASE WHEN cp3plan.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END as HASUNSUPPORT_COUNT,
@@ -83,16 +87,16 @@
                             CASE cp3undafunvision2030.NRA_CONTRIBUTOR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NRA_CONTRIBUTOR,
                             cp3undafcostedmeplan.YEAR_COMPLETED,
                             cp3undafunvision2030.YEAR_PREPARED,
-                            COALESCE(cp3undafannual.NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID, -1) AS NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID,
+                            COALESCE(NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID.LABEL, 'X-CATEGORY') as NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID,
                             CASE WHEN cp3newundaf.NEWUNDAFROADMAP_PREPARED = TRUE THEN 1 ELSE 0 END as NEWUNDAFROADMAP_PREPARED_COUNT,
                             CASE cp3newundaf.NEWUNDAFROADMAP_PREPARED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NEWUNDAFROADMAP_PREPARED,
                             date(cp3newundaf.NEWUNDAFROADMAP_DATE) as NEWUNDAFROADMAP_DATE,
                             date(cp3plan.NATIONAL_DEVELOPMENT_PLAN_START_DATE) as NATIONAL_DEVELOPMENT_PLAN_START_DATE,
                             date(cp3plan.NATIONAL_DEVELOPMENT_PLAN_END_DATE) as NATIONAL_DEVELOPMENT_PLAN_END_DATE,
                             CASE cp3plan.SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END AS SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN,
-                            COALESCE(cp3plan.NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID, -1) AS NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID,
-                            COALESCE(cp3undafevaluation.NRA_PARTICIPATED_ID, -1) AS NRA_PARTICIPATED_ID,
-                            COALESCE(cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID, -1) AS NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID,
+                            COALESCE(NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID.LABEL, 'X-CATEGORY') as NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID,
+                            COALESCE(NRA_PARTICIPATED_ID.LABEL, 'X-CATEGORY') as NRA_PARTICIPATED_ID,
+                            COALESCE(NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID.LABEL, 'X-CATEGORY') as NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID,
                             cp3undaf.funding_gap_at_start,
                             CASE WHEN cp3assessment.NON_RESIDENT_AGENCIES_PARTICIPATED = TRUE THEN 1 ELSE 0 END as NON_RESIDENT_AGENCIES_PARTICIPATED_COUNT,
                             CASE cp3assessment.NON_RESIDENT_AGENCIES_PARTICIPATED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as NON_RESIDENT_AGENCIES_PARTICIPATED_DIM,
@@ -106,23 +110,28 @@
                             CASE cp3.unct_configuration_changed WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as unct_configuration_changed_dim,
                             CASE WHEN cp3.participates_in_cross_border_initiatives = TRUE THEN 1 ELSE 0 END as participates_in_cross_border_initiatives_count,
                             CASE cp3.participates_in_cross_border_initiatives WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as participates_in_cross_border_initiatives_dim
-                        from
-                            CP3COMMON_COUNTRY_PROGRAMMING cp3, CP1GENERAL_PROFILE cp1,
-                            CP3UNDAF cp3undaf, CP3COMMON_COUNTRY_ASSESSMENT cp3assessment, CP3NATIONAL_DEVELOPMENT_PLAN cp3plan,
-                            CP3UNDAFEVALUATION cp3undafevaluation, CP3UNDAFANNUAL_REVIEW cp3undafannual,
-                            CP3UNDAFUNVISION2030 cp3undafunvision2030, CP3NEWUNDAF cp3newundaf, CP3UNDAFCOSTEDMEPLAN cp3undafcostedmeplan
-                        WHERE
-                            cp3.DESIGNATION = cp1.DESIGNATION AND cp3.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp3undaf.PARENT_ID = cp3.id AND
-                            cp3undafunvision2030.PARENT_ID = cp3undaf.id AND
-                            cp3undafcostedmeplan.PARENT_ID = cp3undaf.id AND
-                            cp3newundaf.PARENT_ID = cp3.id AND
-                            cp3assessment.PARENT_ID = cp3.id AND
-                            cp3plan.PARENT_ID = cp3.id AND
-                            cp3undafevaluation.PARENT_ID = cp3.id AND
-                            cp3undafannual.PARENT_ID = cp3.id AND
-                            cp3.DESIGNATION != 'AQ' AND cp3.DESIGNATION != 'DOCO' AND cp3.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                            cp3.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp3.ENTITY_YEAR)
+                        FROM CP3COMMON_COUNTRY_PROGRAMMING cp3
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp3.DESIGNATION = cp1.DESIGNATION AND cp3.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN CP3UNDAF cp3undaf ON cp3undaf.PARENT_ID = cp3.id
+                            JOIN CP3COMMON_COUNTRY_ASSESSMENT cp3assessment ON cp3assessment.PARENT_ID = cp3.id
+                            JOIN CP3NATIONAL_DEVELOPMENT_PLAN cp3plan ON cp3plan.PARENT_ID = cp3.id
+                            JOIN CP3UNDAFEVALUATION cp3undafevaluation ON cp3undafevaluation.PARENT_ID = cp3.id
+                            JOIN CP3UNDAFANNUAL_REVIEW cp3undafannual ON cp3undafannual.PARENT_ID = cp3.id
+                            JOIN CP3UNDAFUNVISION2030 cp3undafunvision2030 ON cp3undafunvision2030.PARENT_ID = cp3undaf.id
+                            JOIN CP3NEWUNDAF cp3newundaf ON cp3newundaf.PARENT_ID = cp3.id
+                            JOIN CP3UNDAFCOSTEDMEPLAN cp3undafcostedmeplan ON cp3undafcostedmeplan.PARENT_ID = cp3undaf.id
+                            JOIN BASE_COUNTRY bc ON cp3.DESIGNATION = bc.ISO2
+                            JOIN v_cp_validated_designations v ON cp3.DESIGNATION = v.DESIGNATION AND v.ENTITY_YEAR = cp3.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY UNDAF_PERIOD_ALIGNED_WITH_GOV_ID ON cp3.UNDAF_PERIOD_ALIGNED_WITH_GOV_ID=UNDAF_PERIOD_ALIGNED_WITH_GOV_ID.ID
+                            LEFT JOIN CATEGORY OTHER_ANALYSIS_SOURCE_ID ON cp3assessment.OTHER_ANALYSIS_SOURCE_ID=OTHER_ANALYSIS_SOURCE_ID.ID
+                            LEFT JOIN CATEGORY NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID ON cp3undafannual.NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID=NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID.ID
+                            LEFT JOIN CATEGORY NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID ON cp3plan.NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID=NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID.ID
+                            LEFT JOIN CATEGORY NRA_PARTICIPATED_ID ON cp3undafevaluation.NRA_PARTICIPATED_ID=NRA_PARTICIPATED_ID.ID
+                            LEFT JOIN CATEGORY NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID ON cp3undafevaluation.NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID=NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID.ID
+                        WHERE cp3.DESIGNATION != 'AQ'
+                          AND cp3.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -148,8 +157,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP3JointProgrammes" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP3JointProgrammes" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension name="Title" caption="Title of Joint Programme" table="CP3JointProgrammes"
                        visible="true">
@@ -159,7 +168,7 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension source="CATEGORY" table="JointProgrammeModality" caption="Which Funding Modality?" />            
+            <Dimension source="CATEGORY" table="CP3JointProgrammes" name="WHICH_MODALITY_ID" caption="Which Funding Modality?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -172,8 +181,10 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Title"/>
-                    <ForeignKeyLink dimension="JointProgrammeModality" foreignKeyColumn="WHICH_MODALITY_ID" />
+                    <FactLink dimension="WHICH_MODALITY_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -193,11 +204,11 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
-            
+            <Dimension source="CATEGORY" table="CP3GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP3GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
+
             <Dimension table="YesNoTable" name="UN Development Assistance Framework" caption="Is there an UN Development Assistance Framework/Cooperation Framework (UNDAF/CF), or equivalent?" />
-            
+
             <Dimension name="Date of Signature" caption="Date of Signature" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -236,7 +247,7 @@
 
             <Dimension table="YesNoTable" name="Is your UNCT in the process of developing a Cooperation Framework?" caption="Is your UNCT in the process of developing a Cooperation Framework?" />
             <Dimension table="YesNoTable" name="Common Country Assessment (CCA)" caption="Has a Common Country Analysis (CCA) been conducted for the present UNDAF/Cooperation Framework?" />
-            
+
             <Dimension name="Year CCA was conducted" caption="Year CCA was conducted" table='CP3GeneralCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -248,13 +259,13 @@
                                levelType="Regular" datatype="Boolean"/>
                 </Attributes>
             </Dimension>
-            
-            <Dimension source="CATEGORY" table="AlternativeAnalysis" caption="If the UNCT relied on other analysis, which alternative option did you use?" />
+
+            <Dimension source="CATEGORY" table="CP3GeneralCube" name="OTHER_ANALYSIS_SOURCE_ID" caption="If the UNCT relied on other analysis, which alternative option did you use?" />
             <Dimension table="YesNoTable" name="National Development Plan" caption="Is there a National Development Plan?" />
             <Dimension table="YesNoTable" name="Did the UN support the development of the National Plan" caption="Did the UN support the development of the National Plan?" />
             <Dimension table="YesNoTable" name="Joint Programmes" caption="Do you have Joint Programmes?" />
             <Dimension table="YesNoTable" name="UNDAF Annual Review" caption="Have you conducted an UNDAF/Cooperation Framework Annual Review in the last 12 months?" />
-            
+
             <Dimension name="Date Completed (Annual Review)" caption="Date Completed (Annual Review)" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -266,9 +277,9 @@
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
-            
+
             <Dimension table="YesNoTable" name="UNDAF Evaluation" caption="Have you conducted an UNDAF/Cooperation Framework evaluation for the last UNDAF/Cooperation Framework cycle?" />
-            
+
             <Dimension name="Date completed (NRAs participate in the UNDAF Evaluation Planning)" caption="Date completed (UN entities without in-country presence participate in the UNDAF Evaluation Planning)" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ID"
@@ -282,12 +293,12 @@
             </Dimension>
 
             <Dimension table="YesNoTable" name="Was a management response prepared" caption="Was a management response prepared?" />
-            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAUndafAnnualReview" caption="Did UN entities without in-country presence participate in the UNDAF/Cooperation Framework Annual Review?" />
+            <Dimension source="CATEGORY" table="CP3GeneralCube" name="NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID" caption="Did UN entities without in-country presence participate in the UNDAF/Cooperation Framework Annual Review?" />
             <Dimension table="YesNoTable" name="Was there an extension of the UNDAF" caption="Was there an extension of the UNDAF/Cooperation Framework (approved by the Regional UNDG)?" />
             <Dimension table="YesNoTable" name="Does the UNDAF/Cooperation Framework include a theory of change?" caption="Does the UNDAF/Cooperation Framework include a theory of change?" />
             <Dimension table="YesNoTable" name="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?" caption="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?" />
             <Dimension table="YesNoTable" name="Is there a UN Vision 2030 paper" caption="Is there a UN Vision 2030 paper?" />
-            
+
             <Dimension name="Year UNDAF completed" caption="Year UNDAF/Cooperation Framework M&amp;E plan was completed" table='CP3GeneralCube' visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="YEAR_COMPLETED" datatype="Integer" />
@@ -299,7 +310,7 @@
                     <Attribute name="Year" keyColumn="YEAR_PREPARED" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            
+
             <Dimension table="YesNoTable" name="Did NRA contribute to the UN Vision 2030 paper" caption="Did UN entities without in-country presence contribute to the UN Vision 2030 paper?" />
             <Dimension table="YesNoTable" name="Has your UNCT prepared a roadmap for its new UNDAF" caption="Has your UNCT prepared a roadmap for its new UNDAF?" />
 
@@ -314,8 +325,8 @@
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
-            
-            <Dimension source="CATEGORY" table="UNDAFPeriodAlignedWithGov" caption="Is the period of the UN Development Assistance Framework/Cooperation Framework (or equivalent instrument) aligned with the Government's planning and budgeting cycle?" />
+
+            <Dimension source="CATEGORY" table="CP3GeneralCube" name="UNDAF_PERIOD_ALIGNED_WITH_GOV_ID" caption="Is the period of the UN Development Assistance Framework/Cooperation Framework (or equivalent instrument) aligned with the Government's planning and budgeting cycle?" />
 
             <Dimension name="National Development Plan Start Date" caption="National Development Plan Start Date" table='CP3GeneralCube' key="Dimension Id" type="TIME">
                 <Attributes>
@@ -340,11 +351,11 @@
                                levelType="TimeUndefined" datatype="Date"/>
                 </Attributes>
             </Dimension>
-            
+
             <Dimension table="YesNoTable" name="SdgsAndAgenda2030" caption="Are SDGs and Agenda 2030 mainstreamed in the National Development Plan?" />
-            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="NRAParticipatedInNationalDevelopmentPlan" caption="Did UN entities without in-country presence participate in supporting development of the National Development Plan?" />
-            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAParticipated" caption="Did UN entities without in-country physical presence participate in the UNDAF/Cooperation Framework evaluation planning?" />
-            <Dimension source="CATEGORY" table="YesPartiallyNoNAQuestion" name="NRAContributeToEvaluationMgmtResponse" caption="Did UN entities without in-country physical presence contribute to the evaluation management response?" />
+            <Dimension source="CATEGORY" table="CP3GeneralCube" name="NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID" caption="Did UN entities without in-country presence participate in supporting development of the National Development Plan?" />
+            <Dimension source="CATEGORY" table="CP3GeneralCube" name="NRA_PARTICIPATED_ID" caption="Did UN entities without in-country physical presence participate in the UNDAF/Cooperation Framework evaluation planning?" />
+            <Dimension source="CATEGORY" table="CP3GeneralCube" name="NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID" caption="Did UN entities without in-country physical presence contribute to the evaluation management response?" />
             <Dimension table="YesNoTable" name="nonResidentAgenciesParticipated" caption="Did UN entities without in-country physical presence participate in preparing the CCA?" />
             <Dimension table="YesNoTable" name="evaluationIncludeRecommendations" caption="Does the evaluation include actionable recommendations, with a clear target audience and time frame for implementation?" />
             <Dimension table="YesNoTable" name="hasConfigurationReview" caption="Has a country configuration review taken place in the last year?" />
@@ -433,6 +444,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="UN Development Assistance Framework" foreignKeyColumn="HASUNDAF"/>
                     <ForeignKeyLink dimension="Common Country Assessment (CCA)" foreignKeyColumn="HAS_COMMON_COUNTRY_ASSESSMENT"/>
                     <ForeignKeyLink dimension="National Development Plan" foreignKeyColumn="HAS_NATIONAL_DEVELOPMENT_PLAN"/>
@@ -448,8 +461,8 @@
                     <FactLink dimension="End Date" />
                     <FactLink dimension="Date Completed (Annual Review)" />
                     <FactLink dimension="Date completed (NRAs participate in the UNDAF Evaluation Planning)" />
-                    <ForeignKeyLink dimension="AlternativeAnalysis"  foreignKeyColumn="OTHER_ANALYSIS_SOURCE_ID"/>
-                    <ForeignKeyLink dimension="NRAUndafAnnualReview"  foreignKeyColumn="NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID"/>
+                    <FactLink dimension="OTHER_ANALYSIS_SOURCE_ID" />
+                    <FactLink dimension="NRAS_PARTICIPATED_INUNDAFANNUAL_REVIEW_ID" />
                     <ForeignKeyLink dimension="Was there an extension of the UNDAF"  foreignKeyColumn="UNDAF_EXTENSION_PRESENT"/>
                     <ForeignKeyLink dimension="Does the UNDAF/Cooperation Framework include a theory of change?"  foreignKeyColumn="THEORY_OF_CHANGE_INCLUDED"/>
                     <ForeignKeyLink dimension="Do you have a costed monitoring and evaluation plan for the UNDAF/Cooperation Framework?"  foreignKeyColumn="COSTEDMEPLAN_PRESENT"/>
@@ -459,13 +472,13 @@
                     <ForeignKeyLink dimension="Did NRA contribute to the UN Vision 2030 paper"  foreignKeyColumn="NRA_CONTRIBUTOR"/>
                     <ForeignKeyLink dimension="Has your UNCT prepared a roadmap for its new UNDAF"  foreignKeyColumn="NEWUNDAFROADMAP_PREPARED"/>
                     <FactLink dimension="Date UNDAF/Cooperation Framework Roadmap was developed" />
-                    <ForeignKeyLink dimension="UNDAFPeriodAlignedWithGov"  foreignKeyColumn="UNDAF_PERIOD_ALIGNED_WITH_GOV_ID"/>
+                    <FactLink dimension="UNDAF_PERIOD_ALIGNED_WITH_GOV_ID" />
                     <FactLink dimension="National Development Plan Start Date" />
                     <FactLink dimension="National Development Plan End Date" />
                     <ForeignKeyLink dimension="SdgsAndAgenda2030"  foreignKeyColumn="SDGS_AND_AGENDA2030IN_NATIONAL_DEVELOPMENT_PLAN"/>
-                    <ForeignKeyLink dimension="NRAParticipatedInNationalDevelopmentPlan"  foreignKeyColumn="NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID"/>
-                    <ForeignKeyLink dimension="NRAParticipated"  foreignKeyColumn="NRA_PARTICIPATED_ID"/>
-                    <ForeignKeyLink dimension="NRAContributeToEvaluationMgmtResponse"  foreignKeyColumn="NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID"/>
+                    <FactLink dimension="NRAS_PARTICIPATED_IN_NATIONAL_DEVELOPMENT_PLAN_ID" />
+                    <FactLink dimension="NRA_PARTICIPATED_ID" />
+                    <FactLink dimension="NRA_CONTRIBUTE_TO_EVALUATION_MANAGEMENT_RESPONSE_ID" />
                     <ForeignKeyLink dimension="nonResidentAgenciesParticipated"  foreignKeyColumn="NON_RESIDENT_AGENCIES_PARTICIPATED_DIM"/>
                     <ForeignKeyLink dimension="evaluationIncludeRecommendations"  foreignKeyColumn="evaluation_include_recommendations_dim"/>
                     <ForeignKeyLink dimension="hasConfigurationReview"  foreignKeyColumn="has_configuration_review_dim"/>

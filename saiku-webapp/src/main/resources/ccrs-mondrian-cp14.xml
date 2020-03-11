@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP14UNCTPartners">
@@ -17,19 +15,26 @@
                     <![CDATA[
                         select
                             M.ID,
-                            COALESCE(M.PARTNER_ID, -1) AS PARTNER_ID,
-                            COALESCE(M.PARTNERSHIP_TYPE_ID, -1) AS PARTNERSHIP_TYPE_ID,
-                            COALESCE(M.AGREEMENT_TYPE_ID, -1) AS AGREEMENT_TYPE_ID,
+                            COALESCE(PARTNER_ID.LABEL, 'X-CATEGORY') as PARTNER_ID,
+                            COALESCE(PARTNERSHIP_TYPE_ID.LABEL, 'X-CATEGORY') as PARTNERSHIP_TYPE_ID,
+                            COALESCE(AGREEMENT_TYPE_ID.LABEL, 'X-CATEGORY') as AGREEMENT_TYPE_ID,
                             CASE WHEN M.MULTINATIONAL_BUSINESS_NAME IS NULL THEN '' ELSE MULTINATIONAL_BUSINESS_NAME END as MULTINATIONAL_BUSINESS_NAME,
-                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP14EMERGING_ISSUES cp14, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            M.PARENT_ID = cp14.ID AND
-                            cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
-                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M
+                            JOIN CP14EMERGING_ISSUES cp14 ON M.PARENT_ID = cp14.ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY PARTNER_ID ON M.PARTNER_ID=PARTNER_ID.ID
+                            LEFT JOIN CATEGORY PARTNERSHIP_TYPE_ID ON M.PARTNERSHIP_TYPE_ID=PARTNERSHIP_TYPE_ID.ID
+                            LEFT JOIN CATEGORY AGREEMENT_TYPE_ID ON M.AGREEMENT_TYPE_ID=AGREEMENT_TYPE_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -56,8 +61,9 @@
                         	CASE WHEN cp14.COMMON_INTERAGENCY_WORKPLAN = TRUE THEN 1 ELSE 0 END as COMMON_INTERAGENCY_WORKPLAN_COUNT,
                         	CASE WHEN cp14.USEIATISTANDARDS = TRUE THEN 1 ELSE 0 END as USEIATISTANDARDS_COUNT,
                         	CASE cp14.USEIATISTANDARDS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as USEIATISTANDARDS,
-                            cp14.ID, cp14.DESIGNATION, cp14.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp14.ID, cp14.DESIGNATION, cp14.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp14.JOINTUNCTEFFORT = TRUE THEN 1 ELSE 0 END as JOINTUNCTEFFORT_COUNT,
                             CASE cp14.JOINTUNCTEFFORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as JOINTUNCTEFFORT,
                             CASE WHEN cp14.HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY = TRUE THEN 1 ELSE 0 END as HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT,
@@ -98,18 +104,22 @@
                             CASE r.HASUNSUPPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNSUPPORT,
                             CASE WHEN r.INTERAGENCY_EFFORT = TRUE THEN 1 ELSE 0 END as REPORT_INTERAGENCY_EFFORT_COUNT,
                             CASE r.INTERAGENCY_EFFORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_INTERAGENCY_EFFORT,
-                            COALESCE(r.USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID, -1) AS USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID,
+                            COALESCE(USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID.LABEL, 'X-CATEGORY') as USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp14.has_disaggregated_data = TRUE THEN 1 ELSE 0 END as has_disaggregated_data_count,
                             CASE cp14.has_disaggregated_data WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_disaggregated_data_dim
-                        FROM
-                            CP14EMERGING_ISSUES cp14, CP14COMMONUNDATA_STRATEGY c, CP14SDGSUPPORT s, CP14GOVERNMENTSDGREPORT r,
-                            CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            cp14.ID = c.PARENT_ID AND cp14.ID = s.PARENT_ID AND cp14.ID = r.PARENT_ID AND
-                            cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp14.DESIGNATION != 'AQ' AND cp14.DESIGNATION != 'DOCO' AND cp14.DESIGNATION = bc.iso2 and
-                            cp14.designation = v.designation and v.entity_year = cp14.ENTITY_YEAR
+                        FROM CP14EMERGING_ISSUES cp14
+                            JOIN CP14COMMONUNDATA_STRATEGY c ON cp14.ID = c.PARENT_ID
+                            JOIN CP14SDGSUPPORT s ON cp14.ID = s.PARENT_ID
+                            JOIN CP14GOVERNMENTSDGREPORT r ON cp14.ID = r.PARENT_ID
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON cp14.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON cp14.designation = v.designation and v.entity_year = cp14.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID ON r.USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID=USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID.ID
+                        WHERE cp14.DESIGNATION != 'AQ'
+                          AND cp14.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -135,10 +145,10 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension source="CATEGORY" table="LocalInstitution" name="Partner" caption="Partner" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="PARTNER_ID" caption="Partner" />
             
             <Dimension name="Multinational business name" caption="Name of the Multinational business"
                        table="CP14UNCTPartners" visible="true">
@@ -152,8 +162,8 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension source="CATEGORY" table="PartnershipType" name="Partnership Type" caption="Partnership Type" />
-            <Dimension source="CATEGORY" table="AgreementType" name="Agreement Type" caption="Agreement Type" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="PARTNERSHIP_TYPE_ID" caption="Partnership Type" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="AGREEMENT_TYPE_ID" caption="Agreement Type" />
         </Dimensions>
 
         <MeasureGroups>
@@ -164,10 +174,12 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="Partner"  foreignKeyColumn="PARTNER_ID"/>
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="PARTNER_ID" />
                     <FactLink dimension="Multinational business name" />
-                    <ForeignKeyLink dimension="Partnership Type"  foreignKeyColumn="PARTNERSHIP_TYPE_ID"/>
-                    <ForeignKeyLink dimension="Agreement Type"  foreignKeyColumn="AGREEMENT_TYPE_ID"/>
+                    <FactLink dimension="PARTNERSHIP_TYPE_ID" />
+                    <FactLink dimension="AGREEMENT_TYPE_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -187,8 +199,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP14GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP14GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension table="YesNoTable" name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" caption="Does the government have an updated and operational National Strategy for the Development of Statistics?" />
             <Dimension table="YesNoTable" name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?" />
@@ -233,7 +245,7 @@
             <!-- N.14.11 -->
             <Dimension table="YesNoTable" name="Was the support provided as an interagency effort" caption="Was the support provided as an interagency effort?" />
             <!-- N.14.13 -->
-            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="usedForVoluntaryNationalReview" caption="Was the report used for a Voluntary National Review presentation at the High-level Political Forum in New York?" />
+            <Dimension source="CATEGORY" table="CP14GeneralCube" name="USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID" caption="Was the report used for a Voluntary National Review presentation at the High-level Political Forum in New York?" />
 
             <Dimension table="YesNoTable" name="hasDisaggregatedData" caption="Does the UNCT have access to official government data?" />
         </Dimensions>
@@ -362,6 +374,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"/>
                     <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"/>
                     <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"/>
@@ -390,7 +404,7 @@
 					<ForeignKeyLink dimension="Has your partner government published a Country-led SDG Report this year" foreignKeyColumn="GOVERNMENTSDGREPORT_PUBLISHED"/>
 					<ForeignKeyLink dimension="Has the UN supported the Government in producing the report" foreignKeyColumn="HASUNSUPPORT"/>
 					<ForeignKeyLink dimension="Was the support provided as an interagency effort" foreignKeyColumn="REPORT_INTERAGENCY_EFFORT"/>
-					<ForeignKeyLink dimension="usedForVoluntaryNationalReview" foreignKeyColumn="USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID" />
+					<FactLink dimension="USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID" />
 					<ForeignKeyLink dimension="hasDisaggregatedData" foreignKeyColumn="has_disaggregated_data_dim" />
                 </DimensionLinks>
             </MeasureGroup>

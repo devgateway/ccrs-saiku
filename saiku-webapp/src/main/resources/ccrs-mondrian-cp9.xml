@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP9CountryMechanisms">
@@ -16,16 +14,20 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.LIST_MECHANISMS, M.PARTNERS_FOR_MECHANISMS, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            M.ID, M.LIST_MECHANISMS, M.PARTNERS_FOR_MECHANISMS, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP9COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT M, CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy, CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            M.PARENT_ID = cp9unstrategy.ID AND
-							cp9unstrategy.PARENT_ID = cp9.ID AND
-							cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
-                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                        from CP9COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT M
+                            JOIN CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy ON M.PARENT_ID = cp9unstrategy.ID
+                            JOIN CP9POST_CRISIS_PROFILE cp9 ON cp9unstrategy.PARENT_ID = cp9.ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -36,16 +38,20 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            M.ID, M.KEY_PARTNER, M.DESCRIBE_AGREEMENTS, CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            M.ID, M.KEY_PARTNER, M.DESCRIBE_AGREEMENTS, CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP9KEY_PARTNERS M, CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements, CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            M.PARENT_ID = cp9agreements.ID AND
-                            cp9agreements.PARENT_ID = cp9.ID AND
-							cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
-                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                        from CP9KEY_PARTNERS M
+                            JOIN CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements ON M.PARENT_ID = cp9agreements.ID
+                            JOIN CP9POST_CRISIS_PROFILE cp9 ON cp9agreements.PARENT_ID = cp9.ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -56,8 +62,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                        cp9.ID, cp9.DESIGNATION, cp9.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                        COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                        cp9.ID, cp9.DESIGNATION, cp9.ENTITY_YEAR,
+                        COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                        COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                         CASE WHEN cp9.HASUNPEACE_KEEPING_MISSION = TRUE THEN 1 ELSE 0 END as HASUNPEACE_KEEPING_MISSION_COUNT,     
                         CASE cp9.HASUNPEACE_KEEPING_MISSION WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNPEACE_KEEPING_MISSION,
                         CASE WHEN cp9.GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS = TRUE THEN 1 ELSE 0 END as GOVERNMENT_MECHANISM_COORDINATEDRREFFORTS_COUNT,
@@ -76,13 +83,13 @@
                         CASE cp9integrated.DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT,
                         CASE WHEN cp9integrated.HAS_MECHANISMS_FOR_MONITORING = TRUE THEN 1 ELSE 0 END as HAS_MECHANISMS_FOR_MONITORING_COUNT,
                         CASE cp9integrated.HAS_MECHANISMS_FOR_MONITORING WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_MECHANISMS_FOR_MONITORING,
-                        COALESCE(cp9integrated.IS_NEW_MONITORED_AND_REPORTED_ID, -1) AS IS_NEW_MONITORED_AND_REPORTED_ID,
+                        COALESCE(IS_NEW_MONITORED_AND_REPORTED_ID.LABEL, 'X-CATEGORY') as IS_NEW_MONITORED_AND_REPORTED_ID,
                         CASE WHEN cp9integrated.HAS_FRAMEWORK_LINK = TRUE THEN 1 ELSE 0 END as HAS_FRAMEWORK_LINK_COUNT,
                         CASE cp9integrated.HAS_FRAMEWORK_LINK WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_FRAMEWORK_LINK,
                         CASE WHEN cp9unpeace.HASUNUNCTCOLABORATION = TRUE THEN 1 ELSE 0 END as HASUNUNCTCOLABORATION_COUNT,
                         CASE cp9unpeace.HASUNUNCTCOLABORATION WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNUNCTCOLABORATION,
                         CASE WHEN cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID = 15988 THEN 1 ELSE 0 END as IS_JOINT_PROGRAMME,
-                        COALESCE(cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID, -1) AS TYPE_JOINT_COLLABORATION_ID,
+                        COALESCE(TYPE_JOINT_COLLABORATION_ID.LABEL, 'X-CATEGORY') as TYPE_JOINT_COLLABORATION_ID,
                         CASE WHEN cp9unpeace.HAS_COMMON_SERVICES_TOUNCTMEMBERS = TRUE THEN 1 ELSE 0 END as HAS_COMMON_SERVICES_TOUNCTMEMBERS_COUNT,
                         CASE cp9unpeace.HAS_COMMON_SERVICES_TOUNCTMEMBERS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_COMMON_SERVICES_TOUNCTMEMBERS,
                         CASE WHEN cp9unpeace.IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP = TRUE THEN 1 ELSE 0 END as IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP_COUNT,
@@ -95,7 +102,7 @@
                         CASE cp9humanitarianstructures.development_planning_aligned WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as development_planning_aligned_dim,
                         CASE WHEN cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN = TRUE THEN 1 ELSE 0 END as HAS_ANALYSIS_BEEN_TAKEN_WITHUN_COUNT,
                         CASE cp9conflict.HAS_ANALYSIS_BEEN_TAKEN_WITHUN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_ANALYSIS_BEEN_TAKEN_WITHUN,
-                        COALESCE(cp9conflict.conflict_analysis_process_id, -1) AS conflict_analysis_process_id,
+                        COALESCE(conflict_analysis_process_id.LABEL, 'X-CATEGORY') as conflict_analysis_process_id,
                         CASE WHEN cp9.has_country_mechanisms_coordinate_intl_support = TRUE THEN 1 ELSE 0 END as has_country_mechanisms_coordinate_intl_support_count,
                         CASE cp9.has_country_mechanisms_coordinate_intl_support WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_country_mechanisms_coordinate_intl_support_dim,
                         CASE WHEN cp9.HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY = TRUE THEN 1 ELSE 0 END as HAS_OPERATIONAL_DISASTER_RISK_REDUCTION_STRATEGY_COUNT,
@@ -156,25 +163,26 @@
                         CASE cp9.un_and_world_bank_articulated_priorities WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as un_and_world_bank_articulated_priorities_dim,
                         CASE WHEN cp9.GOVERNMENT_NATIONAL_DISASTER_RISK_STRATEGY = TRUE THEN 1 ELSE 0 END as government_national_disaster_risk_strategy_count,
                         CASE cp9.GOVERNMENT_NATIONAL_DISASTER_RISK_STRATEGY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as government_national_disaster_risk_strategy_dim
-                    from
-                        CP9POST_CRISIS_PROFILE cp9, CP1GENERAL_PROFILE cp1, CP9UNPEACE_KEEPING_MISSION cp9unpeace,
-                        CP9INTEGRATED_STRATEGIC_FRAMEWORK cp9integrated, CP9UNUNCTCOLABORATION cp9ununctcolaboration,
-                        CP9CONFLICT_ANALYSIS cp9conflict, CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy, CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements,
-                        CP9INTERACTIONWBDIRECTORUNLEADER cp9interactionwbdirectorunleader, CP9HUMANITARIAN_STRUCTURES cp9humanitarianstructures,
-                        CP9HUMANITARIAN_JOINT_WORK cp9humanitarianjointwork
-                    WHERE
-                        cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                        cp9unpeace.PARENT_ID = cp9.ID AND
-                        cp9integrated.PARENT_ID = cp9unpeace.ID AND
-                        cp9ununctcolaboration.PARENT_ID = cp9unpeace.ID AND
-                        cp9conflict.PARENT_ID = cp9.ID AND
-                        cp9unstrategy.PARENT_ID = cp9.ID AND
-                        cp9agreements.PARENT_ID = cp9.ID AND
-                        cp9humanitarianstructures.PARENT_ID = cp9.ID AND
-                        cp9humanitarianjointwork.PARENT_ID = cp9.ID AND
-                        cp9interactionwbdirectorunleader.PARENT_ID = cp9.ID AND
-                        cp9.DESIGNATION != 'AQ' AND cp9.DESIGNATION != 'DOCO' AND cp9.DESIGNATION in (select iso2 from BASE_COUNTRY) and
-                        cp9.designation in (select v.designation from v_cp_validated_designations v where v.entity_year = cp9.ENTITY_YEAR)
+                    from CP9POST_CRISIS_PROFILE cp9
+                        JOIN CP1GENERAL_PROFILE cp1 ON cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR
+                        JOIN CP9UNPEACE_KEEPING_MISSION cp9unpeace ON cp9unpeace.PARENT_ID = cp9.ID
+                        JOIN CP9INTEGRATED_STRATEGIC_FRAMEWORK cp9integrated ON cp9integrated.PARENT_ID = cp9unpeace.ID
+                        JOIN CP9UNUNCTCOLABORATION cp9ununctcolaboration ON cp9ununctcolaboration.PARENT_ID = cp9unpeace.ID
+                        JOIN CP9CONFLICT_ANALYSIS cp9conflict ON cp9conflict.PARENT_ID = cp9.ID
+                        JOIN CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy ON cp9unstrategy.PARENT_ID = cp9.ID
+                        JOIN CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements ON cp9agreements.PARENT_ID = cp9.ID
+                        JOIN CP9INTERACTIONWBDIRECTORUNLEADER cp9interactionwbdirectorunleader ON cp9interactionwbdirectorunleader.PARENT_ID = cp9.ID
+                        JOIN CP9HUMANITARIAN_STRUCTURES cp9humanitarianstructures ON cp9humanitarianstructures.PARENT_ID = cp9.ID
+                        JOIN CP9HUMANITARIAN_JOINT_WORK cp9humanitarianjointwork ON cp9humanitarianjointwork.PARENT_ID = cp9.ID
+                        JOIN BASE_COUNTRY bc ON cp9.DESIGNATION=bc.iso2
+                        JOIN v_cp_validated_designations v ON v.entity_year = cp9.ENTITY_YEAR AND v.designation = cp9.designation
+                        JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                        LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                        LEFT JOIN CATEGORY IS_NEW_MONITORED_AND_REPORTED_ID ON cp9integrated.IS_NEW_MONITORED_AND_REPORTED_ID=IS_NEW_MONITORED_AND_REPORTED_ID.ID
+                        LEFT JOIN CATEGORY TYPE_JOINT_COLLABORATION_ID ON cp9ununctcolaboration.TYPE_JOINT_COLLABORATION_ID=TYPE_JOINT_COLLABORATION_ID.ID
+                        LEFT JOIN CATEGORY conflict_analysis_process_id ON cp9conflict.conflict_analysis_process_id=conflict_analysis_process_id.ID
+                    WHERE cp9.DESIGNATION != 'AQ'
+                      AND cp9.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -200,8 +208,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP9CountryMechanisms" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP9CountryMechanisms" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension name="Mechanism" caption="Mechanism" table="CP9CountryMechanisms"
                        key="Dimension Id" visible="true">
@@ -236,6 +244,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Mechanism" />
                     <FactLink dimension="Partners that support this mechanism" />
                 </DimensionLinks>
@@ -257,8 +267,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP9KeyPartners" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP9KeyPartners" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension name="Describe the agreements/arrangements/initiatives for crisis" caption="Describe the agreements/arrangements/initiatives for crisis" table="CP9KeyPartners"
                        key="Dimension Id" visible="true">
@@ -293,6 +303,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Key Partner" />
                     <FactLink dimension="Describe the agreements/arrangements/initiatives for crisis" />
                 </DimensionLinks>
@@ -314,8 +326,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP9GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP9GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension table="YesNoTable" name="UN peacekeeping" caption="Is there a UN peacekeeping or special political mission?" />
             <Dimension table="YesNoTable" name="Is there an Integrated Strategic Framework (ISF)" caption="Is there a stand-alone Integrated Strategic Framework (ISF)?" />
@@ -347,9 +359,9 @@
             <Dimension table="YesNoTable" name="Are there joint structures in place between the UNCT and the UN Mission" caption="Are there joint structures in place between the UNCT and the UN Mission?" />
             <Dimension table="YesNoTable" name="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" caption="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team?" />
             <Dimension table="YesNoTable" name="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" caption="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF?" />
-            <Dimension source="CATEGORY" table="DaoSOPsImplementingLevel" name="Is the ISF regularly monitored and reported on" caption="Is the ISF regularly monitored and reported on?" />
+            <Dimension source="CATEGORY" table="CP9GeneralCube" name="IS_NEW_MONITORED_AND_REPORTED_ID" caption="Is the ISF regularly monitored and reported on?" />
             <Dimension table="YesNoTable" name="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" caption="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)?" />
-            <Dimension source="CATEGORY" table="TypeJointCollaboration" name="What type of programmatic collaboration" caption="What type of programmatic collaboration exists?" />
+            <Dimension source="CATEGORY" table="CP9GeneralCube" name="TYPE_JOINT_COLLABORATION_ID" caption="What type of programmatic collaboration exists?" />
             <Dimension table="YesNoTable" name="Does the UN Mission provide common services to UNCT members or vice versa" caption="Does the UN Mission provide common services to UNCT members or vice versa?" />
             <Dimension table="YesNoTable" name="Is the mission a member of the Joint UNCT Communications Group" caption="Is the mission a member of the Joint UNCT Communications Group?" />
             <Dimension table="YesNoTable" name="isDrawdownWithdrawalUNMission" caption="If there is a draw down and/or withdrawal planned of the UN Mission, has transition planning taken place jointly with the mission?" />
@@ -374,7 +386,7 @@
             <Dimension table="YesNoTable" name="UN Humanitarian Coordinator" caption="UN Humanitarian Coordinator (HC)" />
             <Dimension table="YesNoTable" name="Humanitarian Country Team" caption="Humanitarian Country Team (HCT)" />
             <Dimension table="YesNoTable" name="Humanitarian Response Plan" caption="Humanitarian Response Plan (HRP)" />
-            <Dimension source="CATEGORY" table="ConflictAnalysisProcess" name="conflictAnalysisProcess" caption="Is the conflict analysis part of the CCA or a stand alone process?" />
+            <Dimension source="CATEGORY" table="CP9GeneralCube" name="conflict_analysis_process_id" caption="Is the conflict analysis part of the CCA or a stand alone process?" />
             
             <Dimension name="Other humanitarian structures or mechanisms" caption="Other humanitarian structures or mechanisms" table="CP9GeneralCube" key="Dimension Id" visible="true">
                 <Attributes>
@@ -560,6 +572,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="UN peacekeeping"  foreignKeyColumn="HASUNPEACE_KEEPING_MISSION"/>
                     <ForeignKeyLink dimension="HasNewConflictAnalysis" foreignKeyColumn="has_new_conflict_analysis_dim"/>
                     <ForeignKeyLink dimension="DevelopmentPlanningAligned" foreignKeyColumn="development_planning_aligned_dim"/>
@@ -570,13 +584,13 @@
                     <ForeignKeyLink dimension="Joint initiatives to manage risks" foreignKeyColumn="HAS_JOINT_INITIATIVES_TO_MANAGE_RISKS"/>
                     <FactLink dimension="Start Date" />
                     <FactLink dimension="End Date" />
-                    <ForeignKeyLink dimension="Is the ISF regularly monitored and reported on" foreignKeyColumn="IS_NEW_MONITORED_AND_REPORTED_ID"/>
+                    <FactLink dimension="IS_NEW_MONITORED_AND_REPORTED_ID" />
                     <ForeignKeyLink dimension="Is there an Integrated Strategic Framework (ISF)" foreignKeyColumn="HAS_INTEGRATED_STRATEGIC_FRAMEWORK"/>
                     <ForeignKeyLink dimension="Are there joint structures in place between the UNCT and the UN Mission" foreignKeyColumn="HAS_JOINT_STRUCTURESUNCTUN"/>
                     <ForeignKeyLink dimension="Was the development and implementation of the ISF supported by a joint analytical planning unit including mission and country team" foreignKeyColumn="DEVELOPMENT_SUPPORTED_BY_PLANNING_UNIT"/>
                     <ForeignKeyLink dimension="Are there agreed upon mechanisms for the monitoring and evaluation of the ISF" foreignKeyColumn="HAS_MECHANISMS_FOR_MONITORING"/>
                     <ForeignKeyLink dimension="Is there programmatic collaboration between the UN Mission and UNCT (including Joint Programmes/Programming)" foreignKeyColumn="HASUNUNCTCOLABORATION"/>
-                    <ForeignKeyLink dimension="What type of programmatic collaboration" foreignKeyColumn="TYPE_JOINT_COLLABORATION_ID"/>
+                    <FactLink dimension="TYPE_JOINT_COLLABORATION_ID" />
                     <ForeignKeyLink dimension="Does the UN Mission provide common services to UNCT members or vice versa" foreignKeyColumn="HAS_COMMON_SERVICES_TOUNCTMEMBERS"/>
                     <ForeignKeyLink dimension="Is the mission a member of the Joint UNCT Communications Group" foreignKeyColumn="IS_MEMBER_OF_JOINTUNCTCOMMUNICATIONS_GROUP"/>
                     <ForeignKeyLink dimension="isDrawdownWithdrawalUNMission" foreignKeyColumn="IS_DRAWDOWN_WITHDRAWALUNMISSION"/>
@@ -610,7 +624,7 @@
                     <ForeignKeyLink dimension="worldBankTookPartInAnalysis" foreignKeyColumn="world_bank_took_part_in_analysis_dim"/>
                     <ForeignKeyLink dimension="unAndWorldBankArticulatedPriorities" foreignKeyColumn="un_and_world_bank_articulated_priorities_dim"/>
                     <ForeignKeyLink dimension="governmentNationalDisasterRiskStrategy" foreignKeyColumn="government_national_disaster_risk_strategy_dim"/>
-                    <ForeignKeyLink dimension="conflictAnalysisProcess" foreignKeyColumn="conflict_analysis_process_id"/>
+                    <FactLink dimension="conflict_analysis_process_id" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

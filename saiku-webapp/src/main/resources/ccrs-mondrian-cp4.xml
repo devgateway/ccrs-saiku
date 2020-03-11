@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 		
 		<Query alias="ClientSatisfactionScore">
@@ -24,8 +22,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp4.ID, cp4.DESIGNATION, cp4.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp4.ID, cp4.DESIGNATION, cp4.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp4.COUNTRY_LEVELHACT = TRUE THEN 1 ELSE 0 END as COUNTRY_LEVELHACT_COUNT,
                             CASE cp4.COUNTRY_LEVELHACT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as COUNTRY_LEVELHACT,
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
@@ -33,7 +32,7 @@
                             CASE CP4.INTEGRATED_SERVICE_CENTER_AVAILABLE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as INTEGRATED_SERVICE_CENTER_AVAILABLE,
                             CASE WHEN CP4.HASBOSCOMMON_SERVICE_LINES = TRUE THEN 1 ELSE 0 END as HASBOSCOMMON_SERVICE_LINES_COUNT,
                             CASE CP4.HASBOSCOMMON_SERVICE_LINES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASBOSCOMMON_SERVICE_LINES,
-							COALESCE(cp4integratedservicecenter.HOST_ID, -1) AS HOST_ID,
+                            COALESCE(HOST_ID.LABEL, 'X-CATEGORY') as HOST_ID,
 							cp4integratedservicecenter.BUDGET,
 							COALESCE(cp4integratedservicecenter.CLIENT_SATISFACTION_SCORE_ID, -1) AS CLIENT_SATISFACTION_SCORE_ID,
 							CASE WHEN CP4.jointhact = TRUE THEN 1 ELSE 0 END as jointhact_count,
@@ -44,13 +43,16 @@
                             CASE CP4.joint_micro_assessment WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as joint_micro_assessment_dim,
                             CASE WHEN CP4.joint_assurance_activities = TRUE THEN 1 ELSE 0 END as joint_assurance_activities_count,
                             CASE CP4.joint_assurance_activities WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as joint_assurance_activities_dim
-                        from CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4, CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v,
-                            CP4INTEGRATED_SERVICE_CENTER cp4integratedservicecenter
-                        WHERE
-                            cp4.DESIGNATION = cp1.DESIGNATION AND cp4.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp4integratedservicecenter.PARENT_ID = CP4.ID AND
-                            cp4.DESIGNATION != 'AQ' AND cp4.DESIGNATION != 'DOCO' AND cp4.DESIGNATION = bc.iso2 and
-                            cp4.designation = v.designation and v.entity_year = cp4.ENTITY_YEAR
+                        FROM CP4COMMON_SERVICES_HARMONIZED_BUSINES_PRACTICES cp4
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp4.DESIGNATION = cp1.DESIGNATION AND cp4.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON cp4.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON cp4.designation = v.designation and v.entity_year = cp4.ENTITY_YEAR
+                            JOIN CP4INTEGRATED_SERVICE_CENTER cp4integratedservicecenter ON cp4integratedservicecenter.PARENT_ID = CP4.ID
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY HOST_ID ON cp4integratedservicecenter.HOST_ID=HOST_ID.ID
+                        WHERE cp4.DESIGNATION != 'AQ'
+                          AND cp4.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -75,12 +77,12 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP4GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP4GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
             
             <Dimension table="YesNoTable" name="Is a HACT being implemented at the country level" caption="Is a HACT being implemented at the country level?" />
             <Dimension table="YesNoTable" name="integratedServiceCenterAvailable" caption="Does the UNCT have a Common Back Office/Integrated Service Center in place to deliver some or all of the services under the BOS?" />
-            <Dimension source="CATEGORY" table="UNAgency" name="host" caption="Which UN entity currently hosts the Common Back Office/Integrated service center?" />
+            <Dimension source="CATEGORY" table="CP4GeneralCube" name="HOST_ID" caption="Which UN entity currently hosts the Common Back Office/Integrated service center?" />
             <Dimension name="clientSatisfactionScore" caption="What is the average client satisfaction score of the Common Back Office/Integrated Service Center?" table="ClientSatisfactionScore"
                        key="Dimension Id" visible="true">
                 <Attributes>
@@ -131,9 +133,11 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <ForeignKeyLink dimension="Is a HACT being implemented at the country level"  foreignKeyColumn="COUNTRY_LEVELHACT"/>
                     <ForeignKeyLink dimension="integratedServiceCenterAvailable"  foreignKeyColumn="INTEGRATED_SERVICE_CENTER_AVAILABLE"/>
-                    <ForeignKeyLink dimension="host"  foreignKeyColumn="HOST_ID"/>
+                    <FactLink dimension="HOST_ID"/>
                     <ForeignKeyLink dimension="clientSatisfactionScore"  foreignKeyColumn="CLIENT_SATISFACTION_SCORE_ID"/>
                     <ForeignKeyLink dimension="hasBOSCommonServiceLines"  foreignKeyColumn="HASBOSCOMMON_SERVICE_LINES"/>
                     <ForeignKeyLink dimension="jointHACT"  foreignKeyColumn="jointhact_dim"/>

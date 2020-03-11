@@ -7,8 +7,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
         <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
 
         <Query alias="CP8GeneralCube">
@@ -16,8 +14,9 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp8.ID, cp8.DESIGNATION, cp8.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp8.ID, cp8.DESIGNATION, cp8.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp8.HASUNDPDEPUTY_REPRESENTATIVE = TRUE THEN 1 ELSE 0 END as HASUNDPDEPUTY_REPRESENTATIVE_COUNT,
                             CASE cp8.HASUNDPDEPUTY_REPRESENTATIVE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNDPDEPUTY_REPRESENTATIVE,
                             CASE WHEN cp8.HAS_CODE_OF_CONDUCT = TRUE THEN 1 ELSE 0 END as HAS_CODE_OF_CONDUCT_COUNT,
@@ -32,17 +31,21 @@
                             CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp8.has_sexual_exploitation_protection = TRUE THEN 1 ELSE 0 END as has_sexual_exploitation_protection_count,
                             CASE cp8.has_sexual_exploitation_protection WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_sexual_exploitation_protection_dim,
-                            COALESCE(cp8.sexual_exploitation_protection_id, -1) AS sexual_exploitation_protection_id,
+                            COALESCE(sexual_exploitation_protection_id.LABEL, 'X-CATEGORY') as sexual_exploitation_protection_id,
                             CASE WHEN cp8.has_agreeduncttor = TRUE THEN 1 ELSE 0 END as has_agreeduncttor_count,
                             CASE cp8.has_agreeduncttor WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_agreeduncttor_dim,
                             CASE WHEN cp8.has_agreed_conflict_resolution = TRUE THEN 1 ELSE 0 END as has_agreed_conflict_resolution_count,
                             CASE cp8.has_agreed_conflict_resolution WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_agreed_conflict_resolution_dim
-                        from CP8JOINT_LEADERSHIP_MANAGEMENT cp8, CP1GENERAL_PROFILE cp1, CP8CODE_OF_CONDUCT cp8code, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            cp8.DESIGNATION = cp1.DESIGNATION AND cp8.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp8code.PARENT_ID = cp8.ID AND
-                            cp8.DESIGNATION != 'AQ' AND cp8.DESIGNATION != 'DOCO' AND cp8.DESIGNATION = bc.iso2 and
-                            cp8.designation = v.designation and v.entity_year = cp8.ENTITY_YEAR
+                        from CP8JOINT_LEADERSHIP_MANAGEMENT cp8
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp8.DESIGNATION = cp1.DESIGNATION AND cp8.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN CP8CODE_OF_CONDUCT cp8code ON cp8code.PARENT_ID = cp8.ID
+                            JOIN BASE_COUNTRY bc ON cp8.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON cp8.designation = v.designation and v.entity_year = cp8.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY sexual_exploitation_protection_id ON cp8.sexual_exploitation_protection_id=sexual_exploitation_protection_id.ID
+                        WHERE cp8.DESIGNATION != 'AQ'
+                          AND cp8.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -68,8 +71,8 @@
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP8GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP8GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
             
             <Dimension table="YesNoTable" name="Does the UNCT have a code of conduct" caption="Does the UNCT have a code of conduct?" />
 
@@ -91,7 +94,7 @@
             <Dimension table="YesNoTable" name="Does UNDP have a Deputy Representative" caption="Does UNDP have a Deputy Representative?" />
             <Dimension table="YesNoTable" name="Is there a signed delegation of authority letter" caption="Is there a signed delegation of authority letter between the UNDP Deputy Resident Representative (DR) and UNDP Country Director including for resource mobilization?" />
             <Dimension table="YesNoTable" name="hasSexualExploitationProtection" caption="Does the UNCT have an inter-agency taskforce, coordination mechanism or focal point on protection from sexual exploitation and abuse?" />
-            <Dimension source="CATEGORY" table="SexualExploitationProtection" caption="What kind of protection from sexual exploitation and abuse?" />
+            <Dimension source="CATEGORY" table="CP8GeneralCube" name="sexual_exploitation_protection_id" caption="What kind of protection from sexual exploitation and abuse?" />
             <Dimension table="YesNoTable" name="hasAgreedUNCTTor" caption="Is there an agreed upon UNCT TOR?" />
             <Dimension table="YesNoTable" name="hasAgreedConflictResolution" caption="Is there an agreed Conflict Resolution Mechanism?" />
         </Dimensions>
@@ -129,6 +132,8 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Date code of conduct was implemented" />
                     <ForeignKeyLink dimension="Does the UNCT have a code of conduct"  foreignKeyColumn="HAS_CODE_OF_CONDUCT"/>
                     <ForeignKeyLink dimension="Does UNDP have a Deputy Representative"  foreignKeyColumn="HASUNDPDEPUTY_REPRESENTATIVE"/>
@@ -136,7 +141,7 @@
                     <ForeignKeyLink dimension="Is there a signed delegation of authority letter"  foreignKeyColumn="SIGNED_DELEGATION_AUTHORITY"/>                   
                     <ForeignKeyLink dimension="Is there a signed delegation of authority between the UNDP Resident Representative and the UNDP Country Director and/or UNDP Deputy Country Director?"  foreignKeyColumn="SIGNED_DELEGATION_OF_AUTHORITY_LETTER"/>
                     <ForeignKeyLink dimension="hasSexualExploitationProtection"  foreignKeyColumn="has_sexual_exploitation_protection_dim"/>
-                    <ForeignKeyLink dimension="SexualExploitationProtection"  foreignKeyColumn="sexual_exploitation_protection_id"/>
+                    <FactLink dimension="sexual_exploitation_protection_id"/>
                     <ForeignKeyLink dimension="hasAgreedUNCTTor"  foreignKeyColumn="has_agreeduncttor_dim"/>
                     <ForeignKeyLink dimension="hasAgreedConflictResolution"  foreignKeyColumn="has_agreed_conflict_resolution_dim"/>
                 </DimensionLinks>
