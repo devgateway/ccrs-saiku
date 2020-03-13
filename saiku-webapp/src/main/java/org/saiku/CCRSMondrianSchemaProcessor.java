@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.sun.jersey.core.impl.provider.entity.Inflector;
-
 import mondrian.olap.Util.PropertyList;
 import mondrian.spi.DynamicSchemaProcessor;
 
@@ -26,45 +25,32 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
      */
     
     private static final Inflector INFLECTOR = Inflector.getInstance();
+
+
     private static final Pattern YES_NO_DIM_PATTERN = Pattern.compile(
-            "<Dimension table=\"YesNoTable\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
+            "<Dimension source=\"YesNoTable\" table=\"([^=]+)\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
+
     private static final String YES_NO_DIM_TEMPLATE =
-            "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@' key='Dimension Id'>\n" +
-                "<Attributes>\n" +
-                    "<Attribute name='Dimension Id' keyColumn='ID' hasHierarchy='false' \n" +
-                                "levelType='Regular' datatype='Integer'/>\n" +
-                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='ANSWER' orderByColumn='ANSWER_SORT' \n" +
-                                "approxRowCount='3' hierarchyHasAll='true' levelType='Regular' datatype='Boolean'/>\n" +
-                "</Attributes>\n" +
-            "</Dimension>";
-    /**
-     * A better solution could be to define a single YesNoTable shared dimension and source it with a different name
-     * and caption, but Mondrian doesn't support level name and caption customization for referenced dimensions.
-     * There is an old Mondrian ticket neither prioritized, nor planned http://jira.pentaho.com/browse/MONDRIAN-2294.
-     * Therefore for now we'll be generating the same query with different aliases to avoid clashes. 
-     */
-    private static final String YESNO_QUERY_TEMPLATE =
-            "<Query alias='@@table@@'>\n" +
-                "<ExpressionView>\n" +
-                    "<SQL dialect='mysql'>\n" +
-                        "<![CDATA[SELECT 1 AS ID, 'Yes' AS ANSWER, 0 AS ANSWER_SORT FROM DUAL\n"
-                        + "UNION\n"
-                        + "SELECT 0, 'No', 1 FROM DUAL\n"
-                        + "UNION\n"
-                        + "SELECT -1, 'No Data Available', 2 FROM DUAL]]>\n" +
-                    "</SQL>\n" +
-                "</ExpressionView>\n" +
-            "</Query>\n";
-    private static final String CATEGORY_QUERY_TEMPLATE =
-            "<Query alias='@@table@@'>\n" +
-                "<ExpressionView>\n" +
-                    "<SQL dialect='generic'>\n" +
-                        "<![CDATA[SELECT ID, LABEL, 0 AS PRE_SORT, LABEL_SORT FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
-                        "UNION ALL\n" +
-                        "SELECT -1, 'No Data Available', 1, '' FROM DUAL]]>\n" +
-                    "</SQL>\n" +
-                "</ExpressionView>\n" +
-             "</Query>\n";
+            "<Dimension table=\"@@table@@\" name=\"@@name@@\" caption=\"@@caption@@\" >\n"
+                    + " <Attributes>\n"
+                    + "  <Attribute name=\"@@name@@\" caption=\"@@caption@@\" keyColumn=\"@@name@@_DIM\" orderByColumn=\"@@name@@_DIM_ORD\" />\n"
+                    + " </Attributes>\n"
+                    + "</Dimension>";
+
+    private static final Pattern COALESCE_CATEGORY_PATTERN = Pattern.compile(
+            "(?i)COALESCE\\((.+), 'X-CATEGORY'\\) AS (\\w+)");
+
+    private static final String COALESCE_CATEGORY_TEMPLATE =
+            "COALESCE(@@col@@, 'No Data Available') as @@alias@@_DIM,\n"
+                    + "COALESCE(@@col@@_SORT, '~~~') as @@alias@@_DIM_ORD";
+
+    private static final Pattern COALESCE_BOOL_PATTERN = Pattern.compile(
+            "(?i)COALESCE\\((.+), 'X-BOOLEAN'\\) AS (\\w+)");
+
+    private static final String COALESCE_BOOL_TEMPLATE =
+            "CASE @@col@@ WHEN TRUE THEN 'Yes' WHEN FALSE THEN 'No' ELSE 'No Data Available' END AS @@alias@@_DIM,\n"
+            + "CASE @@col@@ WHEN TRUE THEN 0 WHEN FALSE THEN 1 ELSE 2 END AS @@alias@@_DIM_ORD";
+
     private static final String CATEGORY_BY_LABEL_QUERY_TEMPLATE =
             "<Query alias='@@table@@'>\n" +
                 "<ExpressionView>\n" +
@@ -75,27 +61,6 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                     "</SQL>\n" +
                 "</ExpressionView>\n" +
              "</Query>\n";
-    /**
-     * Name is optional. Explicitly define it when reusing the same category within the same cube
-     * or simplifying an existing dimension that may be already referred in a saved query. Check readme.md for more.
-     */
-    private static final Pattern CATEGORY_DIM_PATTERN = Pattern.compile(
-            "<Dimension *source=[\"|']CATEGORY[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
-    private static final String CATEGORY_DIM_TEMPLATE =
-            "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@'\n" +
-                        "key='Dimension Id'>\n" +
-                "<Attributes>\n" +
-                    "<Attribute name='Dimension Id' keyColumn='ID'\n" +
-                                "hasHierarchy='false' levelType='Regular' datatype='Integer' />\n" +
-                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='ID' nameColumn='LABEL'\n" +
-                                "hierarchyAllMemberCaption=\"All @@captions@@\" hierarchyAllMemberName=\"All __@@captions@@__\" hierarchyCaption=\"All @@captions@@\">\n" +
-                        "<OrderBy>\n" +
-                            "<Column name='PRE_SORT' />\n" +
-                            "<Column name='LABEL_SORT' />\n" +
-                        "</OrderBy>\n" +
-                    "</Attribute>\n" +
-                "</Attributes>\n" +
-            "</Dimension>";
 
     private static final Pattern CATEGORY_BY_LABEL_DIM_PATTERN = Pattern.compile(
             "<Dimension *source=[\"|']CATEGORY_BY_LABEL[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
@@ -112,6 +77,16 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
                     "</Attribute>\n" +
                 "</Attributes>\n" +
             "</Dimension>";
+
+    private static final Pattern CATEGORY_DIM_PATTERN = Pattern.compile(
+            "<Dimension *source=[\"|']CATEGORY[\"|'] *table=[\"|']([^=]*)[\"|'] *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
+
+    private static final String CATEGORY_DIM_TEMPLATE =
+            "<Dimension table=\"@@table@@\" name=\"@@name@@\" caption=\"@@caption@@\">\n"
+                    + " <Attributes>\n"
+                    + "  <Attribute name=\"@@name@@\" caption=\"@@caption@@\" keyColumn=\"@@name@@_DIM\" orderByColumn=\"@@name@@_DIM_ORD\" />\n"
+                    + " </Attributes>\n"
+                    + "</Dimension>";
 
     /**
      * Mondrian loads / refreshes schema one by one under the same thread
@@ -149,32 +124,64 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
         content = content.replace("<!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->", sharedDimensionsLinks.get());
         content = this.processYesNoTable(content);
         content = this.processCategories(content);
+        content = this.processCategories2(content);
         return content;
     }
-    
+
     private String processYesNoTable(String content) {
-        Matcher m = YES_NO_DIM_PATTERN.matcher(content);
-        StringBuilder yesNoSB = new StringBuilder();
-        int count = 0;
-        while(m.find()) {
-            String yesNoDimension = m.group();
-            String name = m.group(1);
-            String caption = m.group(2);
-            String table = "YesNoTable" + count;
-            String result = YES_NO_DIM_TEMPLATE.replace("@@name@@", name);
-            result = result.replace("@@caption@@", caption);
-            result = result.replace("@@table@@", table);
-            content = content.replace(yesNoDimension, result);
-            yesNoSB.append(YESNO_QUERY_TEMPLATE.replace("@@table@@", table));
-            count++;
+        Matcher matcher = COALESCE_BOOL_PATTERN.matcher(content);
+        while (matcher.find()) {
+            String coalesceText = matcher.group();
+            String col = matcher.group(1);
+            String alias = matcher.group(2);
+            content = content.replace(coalesceText,
+                    COALESCE_BOOL_TEMPLATE
+                            .replace("@@col@@", col)
+                            .replace("@@alias@@", alias));
         }
-        content = content.replace("<!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->", yesNoSB.toString());
+
+        Matcher m = YES_NO_DIM_PATTERN.matcher(content);
+        while(m.find()) {
+            String origText = m.group();
+            String table = m.group(1);
+            String name = m.group(2);
+            String caption = m.group(3);
+            content = content.replace(origText,
+                    YES_NO_DIM_TEMPLATE
+                            .replace("@@name@@", name)
+                            .replace("@@caption@@", caption)
+                            .replace("@@table@@", table));
+        }
+        return content;
+    }
+
+    private String processCategories2(String content) {
+        Matcher matcher = COALESCE_CATEGORY_PATTERN.matcher(content);
+        while (matcher.find()) {
+            String coalesceText = matcher.group();
+            String col = matcher.group(1);
+            String alias = matcher.group(2);
+            content = content.replace(coalesceText,
+                    COALESCE_CATEGORY_TEMPLATE
+                            .replace("@@col@@", col)
+                            .replace("@@alias@@", alias));
+        }
+        Matcher m = CATEGORY_DIM_PATTERN.matcher(content);
+        while(m.find()) {
+            String origText = m.group();
+            String table = m.group(1);
+            String name = m.group(2);
+            String caption = m.group(3);
+            content = content.replace(origText,
+                    CATEGORY_DIM_TEMPLATE
+                            .replace("@@name@@", name)
+                            .replace("@@caption@@", caption)
+                            .replace("@@table@@", table));
+        }
         return content;
     }
 
     private String processCategories(String content) {
-        content = processCategories(content, CATEGORY_DIM_PATTERN, CATEGORY_QUERY_TEMPLATE,
-                CATEGORY_DIM_TEMPLATE, "<!-- ## _CATEGORY_QUERIES_TAG_ ## -->");
         content = processCategories(content, CATEGORY_BY_LABEL_DIM_PATTERN, CATEGORY_BY_LABEL_QUERY_TEMPLATE,
                 CATEGORY_BY_LABEL_DIM_TEMPLATE, "<!-- ## _CATEGORY_BY_LABEL_QUERIES_TAG_ ## -->");
         return content;

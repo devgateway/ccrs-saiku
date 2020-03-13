@@ -7,29 +7,32 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="CP14UNCTPartners">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
                             M.ID,
-                            COALESCE(M.PARTNER_ID, -1) AS PARTNER_ID,
-                            COALESCE(M.PARTNERSHIP_TYPE_ID, -1) AS PARTNERSHIP_TYPE_ID,
-                            COALESCE(M.AGREEMENT_TYPE_ID, -1) AS AGREEMENT_TYPE_ID,
+                            COALESCE(PARTNER_ID.LABEL, 'X-CATEGORY') as PARTNER_ID,
+                            COALESCE(PARTNERSHIP_TYPE_ID.LABEL, 'X-CATEGORY') as PARTNERSHIP_TYPE_ID,
+                            COALESCE(AGREEMENT_TYPE_ID.LABEL, 'X-CATEGORY') as AGREEMENT_TYPE_ID,
                             CASE WHEN M.MULTINATIONAL_BUSINESS_NAME IS NULL THEN '' ELSE MULTINATIONAL_BUSINESS_NAME END as MULTINATIONAL_BUSINESS_NAME,
-                            CP1.DESIGNATION, CP1.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M, CP14EMERGING_ISSUES cp14, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            M.PARENT_ID = cp14.ID AND
-                            cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            CP1.DESIGNATION != 'AQ' AND CP1.DESIGNATION != 'DOCO' AND CP1.DESIGNATION = bc.iso2 and
-                            CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                            CP1.DESIGNATION, CP1.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
+                        from CP14NONUNPARTNER_SPECIFIC_ACTIVITIES M
+                            JOIN CP14EMERGING_ISSUES cp14 ON M.PARENT_ID = cp14.ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY PARTNER_ID ON M.PARTNER_ID=PARTNER_ID.ID
+                            LEFT JOIN CATEGORY PARTNERSHIP_TYPE_ID ON M.PARTNERSHIP_TYPE_ID=PARTNERSHIP_TYPE_ID.ID
+                            LEFT JOIN CATEGORY AGREEMENT_TYPE_ID ON M.AGREEMENT_TYPE_ID=AGREEMENT_TYPE_ID.ID
+                        WHERE CP1.DESIGNATION != 'AQ'
+                          AND CP1.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -41,75 +44,80 @@
                     <![CDATA[
                         select                        
                         	CASE WHEN cp14.DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY = TRUE THEN 1 ELSE 0 END as DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY_COUNT,                        
-                        	CASE cp14.DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY,
+                        	COALESCE(cp14.DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY, 'X-BOOLEAN') AS DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY,
                         	CASE WHEN cp14.DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS = TRUE THEN 1 ELSE 0 END as DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS_COUNT,
-                        	CASE cp14.DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS,
+                        	COALESCE(cp14.DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS, 'X-BOOLEAN') AS DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS,
                         	CASE WHEN cp14.DOESUNCTPARTICIPATE = TRUE THEN 1 ELSE 0 END as DOESUNCTPARTICIPATE_COUNT,
-                        	CASE cp14.DOESUNCTPARTICIPATE WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DOESUNCTPARTICIPATE,
+                        	COALESCE(cp14.DOESUNCTPARTICIPATE, 'X-BOOLEAN') AS DOESUNCTPARTICIPATE,
                         	CASE WHEN cp14.INTERAGENCY_EFFORT = TRUE THEN 1 ELSE 0 END as INTERAGENCY_EFFORT_COUNT,
-                        	CASE cp14.INTERAGENCY_EFFORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as INTERAGENCY_EFFORT,
+                        	COALESCE(cp14.INTERAGENCY_EFFORT, 'X-BOOLEAN') AS INTERAGENCY_EFFORT,
                         	CASE WHEN cp14.INTERAGENCY_GROUP = TRUE THEN 1 ELSE 0 END as INTERAGENCY_GROUP_COUNT,
-                        	CASE cp14.INTERAGENCY_GROUP WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as INTERAGENCY_GROUP,
+                        	COALESCE(cp14.INTERAGENCY_GROUP, 'X-BOOLEAN') AS INTERAGENCY_GROUP,
                         	CASE WHEN cp14.BUDGET_ACTIVITY = TRUE THEN 1 ELSE 0 END as BUDGET_ACTIVITY_COUNT,
-                        	CASE cp14.BUDGET_ACTIVITY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as BUDGET_ACTIVITY,
-                        	CASE cp14.COMMON_INTERAGENCY_WORKPLAN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as COMMON_INTERAGENCY_WORKPLAN,
+                        	COALESCE(cp14.BUDGET_ACTIVITY, 'X-BOOLEAN') AS BUDGET_ACTIVITY,
+                        	COALESCE(cp14.COMMON_INTERAGENCY_WORKPLAN, 'X-BOOLEAN') AS COMMON_INTERAGENCY_WORKPLAN,
                         	CASE WHEN cp14.COMMON_INTERAGENCY_WORKPLAN = TRUE THEN 1 ELSE 0 END as COMMON_INTERAGENCY_WORKPLAN_COUNT,
                         	CASE WHEN cp14.USEIATISTANDARDS = TRUE THEN 1 ELSE 0 END as USEIATISTANDARDS_COUNT,
-                        	CASE cp14.USEIATISTANDARDS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as USEIATISTANDARDS,
-                            cp14.ID, cp14.DESIGNATION, cp14.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                        	COALESCE(cp14.USEIATISTANDARDS, 'X-BOOLEAN') AS USEIATISTANDARDS,
+                            cp14.ID, cp14.DESIGNATION, cp14.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp14.JOINTUNCTEFFORT = TRUE THEN 1 ELSE 0 END as JOINTUNCTEFFORT_COUNT,
-                            CASE cp14.JOINTUNCTEFFORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as JOINTUNCTEFFORT,
+                            COALESCE(cp14.JOINTUNCTEFFORT, 'X-BOOLEAN') AS JOINTUNCTEFFORT,
                             CASE WHEN cp14.HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY = TRUE THEN 1 ELSE 0 END as HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY_COUNT,
-                            CASE cp14.HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY,
+                            COALESCE(cp14.HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY, 'X-BOOLEAN') AS HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY,
                             CASE WHEN cp14.HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING = TRUE THEN 1 ELSE 0 END as HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING_COUNT,
-                            CASE cp14.HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING,
+                            COALESCE(cp14.HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING, 'X-BOOLEAN') AS HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING,
                             CASE WHEN cp14.HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES = TRUE THEN 1 ELSE 0 END as HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES_COUNT,
-                            CASE cp14.HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES,
+                            COALESCE(cp14.HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES, 'X-BOOLEAN') AS HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES,
                             CASE WHEN cp14.HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG = TRUE THEN 1 ELSE 0 END as HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG_COUNT,
-                            CASE cp14.HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG,
+                            COALESCE(cp14.HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG, 'X-BOOLEAN') AS HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG,
                             CASE WHEN cp14.HAS_OPEN_DATA_TRANSPARENCY_POLICIES = TRUE THEN 1 ELSE 0 END as HAS_OPEN_DATA_TRANSPARENCY_POLICIES_COUNT,
-                            CASE cp14.HAS_OPEN_DATA_TRANSPARENCY_POLICIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_OPEN_DATA_TRANSPARENCY_POLICIES,
+                            COALESCE(cp14.HAS_OPEN_DATA_TRANSPARENCY_POLICIES, 'X-BOOLEAN') AS HAS_OPEN_DATA_TRANSPARENCY_POLICIES,
                             CASE WHEN cp14.JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT = TRUE THEN 1 ELSE 0 END as JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT_COUNT,
-                            CASE cp14.JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT,
+                            COALESCE(cp14.JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT, 'X-BOOLEAN') AS JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT,
                             CASE WHEN cp14.GOVERNMENTSDGREPORT_PUBLISHED = TRUE THEN 1 ELSE 0 END as GOVERNMENTSDGREPORT_PUBLISHED_COUNT,
-                            CASE cp14.GOVERNMENTSDGREPORT_PUBLISHED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as GOVERNMENTSDGREPORT_PUBLISHED,
+                            COALESCE(cp14.GOVERNMENTSDGREPORT_PUBLISHED, 'X-BOOLEAN') AS GOVERNMENTSDGREPORT_PUBLISHED,
                             CASE WHEN c.DATA_ACTIVITY_WITH_PRIVATE_SECTOR = TRUE THEN 1 ELSE 0 END as DATA_ACTIVITY_WITH_PRIVATE_SECTOR_COUNT,
-                            CASE c.DATA_ACTIVITY_WITH_PRIVATE_SECTOR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DATA_ACTIVITY_WITH_PRIVATE_SECTOR,
+                            COALESCE(c.DATA_ACTIVITY_WITH_PRIVATE_SECTOR, 'X-BOOLEAN') AS DATA_ACTIVITY_WITH_PRIVATE_SECTOR,
                             CASE WHEN c.DATA_ACTIVITY_WITH_CIVIL_SOCIETY = TRUE THEN 1 ELSE 0 END as DATA_ACTIVITY_WITH_CIVIL_SOCIETY_COUNT,
-                            CASE c.DATA_ACTIVITY_WITH_CIVIL_SOCIETY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as DATA_ACTIVITY_WITH_CIVIL_SOCIETY,
+                            COALESCE(c.DATA_ACTIVITY_WITH_CIVIL_SOCIETY, 'X-BOOLEAN') AS DATA_ACTIVITY_WITH_CIVIL_SOCIETY,
                             CASE WHEN s.MEASUREMENT_AND_REPORTING = TRUE THEN 1 ELSE 0 END as MEASUREMENT_AND_REPORTING_COUNT,
-                            CASE s.MEASUREMENT_AND_REPORTING WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as MEASUREMENT_AND_REPORTING,
+                            COALESCE(s.MEASUREMENT_AND_REPORTING, 'X-BOOLEAN') AS MEASUREMENT_AND_REPORTING,
                             CASE WHEN s.UN_PROVIDED_MEASUREMENT_AND_REPORTING = TRUE THEN 1 ELSE 0 END as UN_PROVIDED_MEASUREMENT_AND_REPORTING_COUNT,
-                            CASE s.UN_PROVIDED_MEASUREMENT_AND_REPORTING WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UN_PROVIDED_MEASUREMENT_AND_REPORTING,
+                            COALESCE(s.UN_PROVIDED_MEASUREMENT_AND_REPORTING, 'X-BOOLEAN') AS UN_PROVIDED_MEASUREMENT_AND_REPORTING,
                             CASE WHEN s.MAINSTREAMING = TRUE THEN 1 ELSE 0 END as MAINSTREAMING_COUNT,
-                            CASE s.MAINSTREAMING WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as MAINSTREAMING,
+                            COALESCE(s.MAINSTREAMING, 'X-BOOLEAN') AS MAINSTREAMING,
                             CASE WHEN s.UN_PROVIDED_MAINSTREAMING = TRUE THEN 1 ELSE 0 END as UN_PROVIDED_MAINSTREAMING_COUNT,
-                            CASE s.UN_PROVIDED_MAINSTREAMING WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UN_PROVIDED_MAINSTREAMING,
+                            COALESCE(s.UN_PROVIDED_MAINSTREAMING, 'X-BOOLEAN') AS UN_PROVIDED_MAINSTREAMING,
                             CASE WHEN s.GENERAL_ORIENTATION = TRUE THEN 1 ELSE 0 END as GENERAL_ORIENTATION_COUNT,
-                            CASE s.GENERAL_ORIENTATION WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as GENERAL_ORIENTATION,
+                            COALESCE(s.GENERAL_ORIENTATION, 'X-BOOLEAN') AS GENERAL_ORIENTATION,
                             CASE WHEN s.UN_PROVIDED_GENERAL_ORIENTATION = TRUE THEN 1 ELSE 0 END as UN_PROVIDED_GENERAL_ORIENTATION_COUNT,
-                            CASE s.UN_PROVIDED_GENERAL_ORIENTATION WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UN_PROVIDED_GENERAL_ORIENTATION,
+                            COALESCE(s.UN_PROVIDED_GENERAL_ORIENTATION, 'X-BOOLEAN') AS UN_PROVIDED_GENERAL_ORIENTATION,
                             CASE WHEN s.REQUESTS_ON_SPECIFICSDGS = TRUE THEN 1 ELSE 0 END as REQUESTS_ON_SPECIFICSDGS_COUNT,
-                            CASE s.REQUESTS_ON_SPECIFICSDGS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REQUESTS_ON_SPECIFICSDGS,
+                            COALESCE(s.REQUESTS_ON_SPECIFICSDGS, 'X-BOOLEAN') AS REQUESTS_ON_SPECIFICSDGS,
                             CASE WHEN s.UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS = TRUE THEN 1 ELSE 0 END as UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS_COUNT,
-                            CASE s.UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS,
+                            COALESCE(s.UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS, 'X-BOOLEAN') AS UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS,
                             CASE WHEN r.HASUNSUPPORT = TRUE THEN 1 ELSE 0 END as HASUNSUPPORT_COUNT,
-                            CASE r.HASUNSUPPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNSUPPORT,
+                            COALESCE(r.HASUNSUPPORT, 'X-BOOLEAN') AS HASUNSUPPORT,
                             CASE WHEN r.INTERAGENCY_EFFORT = TRUE THEN 1 ELSE 0 END as REPORT_INTERAGENCY_EFFORT_COUNT,
-                            CASE r.INTERAGENCY_EFFORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as REPORT_INTERAGENCY_EFFORT,
-                            COALESCE(r.USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID, -1) AS USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(r.INTERAGENCY_EFFORT, 'X-BOOLEAN') AS REPORT_INTERAGENCY_EFFORT,
+                            COALESCE(USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID.LABEL, 'X-CATEGORY') as USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp14.has_disaggregated_data = TRUE THEN 1 ELSE 0 END as has_disaggregated_data_count,
-                            CASE cp14.has_disaggregated_data WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_disaggregated_data_dim
-                        FROM
-                            CP14EMERGING_ISSUES cp14, CP14COMMONUNDATA_STRATEGY c, CP14SDGSUPPORT s, CP14GOVERNMENTSDGREPORT r,
-                            CP1GENERAL_PROFILE cp1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            cp14.ID = c.PARENT_ID AND cp14.ID = s.PARENT_ID AND cp14.ID = r.PARENT_ID AND
-                            cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp14.DESIGNATION != 'AQ' AND cp14.DESIGNATION != 'DOCO' AND cp14.DESIGNATION = bc.iso2 and
-                            cp14.designation = v.designation and v.entity_year = cp14.ENTITY_YEAR
+                            COALESCE(cp14.has_disaggregated_data, 'X-BOOLEAN') AS has_disaggregated_data_dim
+                        FROM CP14EMERGING_ISSUES cp14
+                            JOIN CP14COMMONUNDATA_STRATEGY c ON cp14.ID = c.PARENT_ID
+                            JOIN CP14SDGSUPPORT s ON cp14.ID = s.PARENT_ID
+                            JOIN CP14GOVERNMENTSDGREPORT r ON cp14.ID = r.PARENT_ID
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp14.DESIGNATION = cp1.DESIGNATION AND cp14.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON cp14.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON cp14.designation = v.designation and v.entity_year = cp14.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID ON r.USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID=USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID.ID
+                        WHERE cp14.DESIGNATION != 'AQ'
+                          AND cp14.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -129,16 +137,16 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP14UNCTPartners" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP14UNCTPartners" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension source="CATEGORY" table="LocalInstitution" name="Partner" caption="Partner" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="PARTNER_ID" caption="Partner" />
             
             <Dimension name="Multinational business name" caption="Name of the Multinational business"
                        table="CP14UNCTPartners" visible="true">
@@ -152,8 +160,8 @@
                 </Attributes>
             </Dimension>
             
-            <Dimension source="CATEGORY" table="PartnershipType" name="Partnership Type" caption="Partnership Type" />
-            <Dimension source="CATEGORY" table="AgreementType" name="Agreement Type" caption="Agreement Type" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="PARTNERSHIP_TYPE_ID" caption="Partnership Type" />
+            <Dimension source="CATEGORY" table="CP14UNCTPartners" name="AGREEMENT_TYPE_ID" caption="Agreement Type" />
         </Dimensions>
 
         <MeasureGroups>
@@ -164,10 +172,13 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="Partner"  foreignKeyColumn="PARTNER_ID"/>
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="PARTNER_ID" />
                     <FactLink dimension="Multinational business name" />
-                    <ForeignKeyLink dimension="Partnership Type"  foreignKeyColumn="PARTNERSHIP_TYPE_ID"/>
-                    <ForeignKeyLink dimension="Agreement Type"  foreignKeyColumn="AGREEMENT_TYPE_ID"/>
+                    <FactLink dimension="PARTNERSHIP_TYPE_ID" />
+                    <FactLink dimension="AGREEMENT_TYPE_ID" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -181,61 +192,61 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP14GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP14GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP14GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension table="YesNoTable" name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" caption="Does the government have an updated and operational National Strategy for the Development of Statistics?" />
-            <Dimension table="YesNoTable" name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?" />
-            <Dimension table="YesNoTable" name="DOESUNCTPARTICIPATE" caption="Does the UNCT participate in this mechanism?" />
-            <Dimension table="YesNoTable" name="Support to national statistical capacity" caption="Does the UNCT provide support to national statistical capacity?" />
-            <Dimension table="YesNoTable" name="INTERAGENCY_EFFORT" caption="Is this an interagency effort?" />
-            <Dimension table="YesNoTable" name="INTERAGENCY_GROUP" caption="Is there an interagency group on data and statistics?" />
-            <Dimension table="YesNoTable" name="BUDGET_ACTIVITY" caption="Is there a budget for this activity?" />
-            <Dimension table="YesNoTable" name="COMMON_INTERAGENCY_WORKPLAN" caption="Is there a common interagency workplan for this activity?" />
-            <Dimension table="YesNoTable" name="Citizen engagement or other crowd-sourcing" caption="Does the UNCT apply innovation during UN country programming?" />
-            <Dimension table="YesNoTable" name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort? (applying innovation)" />
-            <Dimension table="YesNoTable" name="UNCT convene partners beyond the UN" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" />
-            <Dimension table="YesNoTable" name="Sustainable Development Goals" caption="Has your government requested support on their national response to Sustainable Development Goals?" />
-            <Dimension table="YesNoTable" name="Data/transparency policies or portals" caption="Does the UNCT have open data/transparency portals?" />
-            <Dimension table="YesNoTable" name="USEIATISTANDARDS" caption="Do you use IATI standards in the portal?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" caption="Does the government have an updated and operational National Strategy for the Development of Statistics?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" caption="Does the government have formal mechanisms to coordinate statistical development efforts with development partners, including the United Nations?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="DOESUNCTPARTICIPATE" caption="Does the UNCT participate in this mechanism?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY" caption="Does the UNCT provide support to national statistical capacity?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="INTERAGENCY_EFFORT" caption="Is this an interagency effort?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="INTERAGENCY_GROUP" caption="Is there an interagency group on data and statistics?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="BUDGET_ACTIVITY" caption="Is there a budget for this activity?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="COMMON_INTERAGENCY_WORKPLAN" caption="Is there a common interagency workplan for this activity?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING" caption="Does the UNCT apply innovation during UN country programming?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="JOINTUNCTEFFORT" caption="Is it a joint UNCT effort? (applying innovation)" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES" caption="Does your UNCT convene partners beyond the UN for specific policy activities?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG" caption="Has your government requested support on their national response to Sustainable Development Goals?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="HAS_OPEN_DATA_TRANSPARENCY_POLICIES" caption="Does the UNCT have open data/transparency portals?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="USEIATISTANDARDS" caption="Do you use IATI standards in the portal?" />
             <!-- N.14.1 -->
-            <Dimension table="YesNoTable" name="Does the UNCT have a joint UN initiative on data or statistics" caption="Does the UNCT have a joint UN initiative on data or statistics?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT" caption="Does the UNCT have a joint UN initiative on data or statistics?" />
             <!-- N.14.3 -->
-            <Dimension table="YesNoTable" name="Does this include data activity with private sector" caption="Does this include data activity with private sector?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="DATA_ACTIVITY_WITH_PRIVATE_SECTOR" caption="Does this include data activity with private sector?" />
             <!-- N.14.5 -->
-            <Dimension table="YesNoTable" name="Does this include data activity with civil society" caption="Does this include data activity with civil society?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="DATA_ACTIVITY_WITH_CIVIL_SOCIETY" caption="Does this include data activity with civil society?" />
             <!-- N.14.21.q1 -->
-            <Dimension table="YesNoTable" name="Did the government request support for SDG Measurement and Reporting" caption="Did the government request support for SDG Measurement and Reporting?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="MEASUREMENT_AND_REPORTING" caption="Did the government request support for SDG Measurement and Reporting?" />
             <!-- N.14.20.q1 -->
-            <Dimension table="YesNoTable" name="Did the UN provide support for SDG Measurement and Reporting" caption="Did the UN provide support for SDG Measurement and Reporting?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="UN_PROVIDED_MEASUREMENT_AND_REPORTING" caption="Did the UN provide support for SDG Measurement and Reporting?" />
             <!-- N.14.21.q2 -->
-            <Dimension table="YesNoTable" name="Did the government request support for Mainstreaming SDG in National Development Plans" caption="Did the government request support for Mainstreaming SDG in National Development Plans?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="MAINSTREAMING" caption="Did the government request support for Mainstreaming SDG in National Development Plans?" />
             <!-- N.14.20.q2 -->
-            <Dimension table="YesNoTable" name="Did the UN provide support for Mainstreaming SDG in National Development Plans?" caption="Did the UN provide support for Mainstreaming SDG in National Development Plans?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="UN_PROVIDED_MAINSTREAMING" caption="Did the UN provide support for Mainstreaming SDG in National Development Plans?" />
             <!-- N.14.21.q3 -->
-            <Dimension table="YesNoTable" name="Did the government request support for General Orientation on SDGs" caption="Did the government request support for General Orientation on SDGs?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="GENERAL_ORIENTATION" caption="Did the government request support for General Orientation on SDGs?" />
             <!-- N.14.20.q3 -->
-            <Dimension table="YesNoTable" name="Did the UN provide support for General Orientation on SDGs?" caption="Did the UN provide support for General Orientation on SDGs?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="UN_PROVIDED_GENERAL_ORIENTATION" caption="Did the UN provide support for General Orientation on SDGs?" />
             <!-- N.14.21.q4 -->
-            <Dimension table="YesNoTable" name="Did the government request support on specific SDGs" caption="Did the government request support on specific SDGs?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="REQUESTS_ON_SPECIFICSDGS" caption="Did the government request support on specific SDGs?" />
             <!-- N.14.20.q4 -->
-            <Dimension table="YesNoTable" name="Did the UN provide support on specific SDGs" caption="Did the UN provide support on specific SDGs?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS" caption="Did the UN provide support on specific SDGs?" />
             <!-- N.14.8 -->
-            <Dimension table="YesNoTable" name="Has your partner government published a Country-led SDG Report this year" caption="Has your partner government published a Country-led SDG Report this year?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="GOVERNMENTSDGREPORT_PUBLISHED" caption="Has your partner government published a Country-led SDG Report this year?" />
             <!-- N.14.9 -->
-            <Dimension table="YesNoTable" name="Has the UN supported the Government in producing the report" caption="Has the UN supported the Government in producing the report?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="HASUNSUPPORT" caption="Has the UN supported the Government in producing the report?" />
             <!-- N.14.11 -->
-            <Dimension table="YesNoTable" name="Was the support provided as an interagency effort" caption="Was the support provided as an interagency effort?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="REPORT_INTERAGENCY_EFFORT" caption="Was the support provided as an interagency effort?" />
             <!-- N.14.13 -->
-            <Dimension source="CATEGORY" table="YesNoNAQuestion" name="usedForVoluntaryNationalReview" caption="Was the report used for a Voluntary National Review presentation at the High-level Political Forum in New York?" />
+            <Dimension source="CATEGORY" table="CP14GeneralCube" name="USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID" caption="Was the report used for a Voluntary National Review presentation at the High-level Political Forum in New York?" />
 
-            <Dimension table="YesNoTable" name="hasDisaggregatedData" caption="Does the UNCT have access to official government data?" />
+            <Dimension source="YesNoTable" table="CP14GeneralCube" name="has_disaggregated_data_dim" caption="Does the UNCT have access to official government data?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -362,36 +373,39 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="Support to national statistical capacity" foreignKeyColumn="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY"/>
-                    <ForeignKeyLink dimension="Citizen engagement or other crowd-sourcing" foreignKeyColumn="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING"/>
-                    <ForeignKeyLink dimension="UNCT convene partners beyond the UN" foreignKeyColumn="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES"/>
-                    <ForeignKeyLink dimension="Sustainable Development Goals" foreignKeyColumn="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG"/>
-                    <ForeignKeyLink dimension="Data/transparency policies or portals" foreignKeyColumn="HAS_OPEN_DATA_TRANSPARENCY_POLICIES"/>
-                    <ForeignKeyLink dimension="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" foreignKeyColumn="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY"/>
-                    <ForeignKeyLink dimension="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" foreignKeyColumn="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS"/>
-                    <ForeignKeyLink dimension="DOESUNCTPARTICIPATE" foreignKeyColumn="DOESUNCTPARTICIPATE"/>
-                    <ForeignKeyLink dimension="INTERAGENCY_EFFORT" foreignKeyColumn="INTERAGENCY_EFFORT"/>
-                    <ForeignKeyLink dimension="INTERAGENCY_GROUP" foreignKeyColumn="INTERAGENCY_GROUP"/>
-                    <ForeignKeyLink dimension="BUDGET_ACTIVITY" foreignKeyColumn="BUDGET_ACTIVITY"/>
-                    <ForeignKeyLink dimension="COMMON_INTERAGENCY_WORKPLAN" foreignKeyColumn="COMMON_INTERAGENCY_WORKPLAN"/>	
-                    <ForeignKeyLink dimension="USEIATISTANDARDS" foreignKeyColumn="USEIATISTANDARDS"/>
-					<ForeignKeyLink dimension="JOINTUNCTEFFORT" foreignKeyColumn="JOINTUNCTEFFORT"/>
-					<ForeignKeyLink dimension="Does the UNCT have a joint UN initiative on data or statistics" foreignKeyColumn="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT"/>
-					<ForeignKeyLink dimension="Does this include data activity with private sector" foreignKeyColumn="DATA_ACTIVITY_WITH_PRIVATE_SECTOR"/>
-					<ForeignKeyLink dimension="Does this include data activity with civil society" foreignKeyColumn="DATA_ACTIVITY_WITH_CIVIL_SOCIETY"/>
-					<ForeignKeyLink dimension="Did the government request support for SDG Measurement and Reporting" foreignKeyColumn="MEASUREMENT_AND_REPORTING"/>
-					<ForeignKeyLink dimension="Did the UN provide support for SDG Measurement and Reporting" foreignKeyColumn="UN_PROVIDED_MEASUREMENT_AND_REPORTING"/>
-					<ForeignKeyLink dimension="Did the government request support for Mainstreaming SDG in National Development Plans" foreignKeyColumn="MAINSTREAMING"/>
-					<ForeignKeyLink dimension="Did the UN provide support for Mainstreaming SDG in National Development Plans?" foreignKeyColumn="UN_PROVIDED_MAINSTREAMING"/>
-					<ForeignKeyLink dimension="Did the government request support for General Orientation on SDGs" foreignKeyColumn="GENERAL_ORIENTATION"/>
-					<ForeignKeyLink dimension="Did the UN provide support for General Orientation on SDGs?" foreignKeyColumn="UN_PROVIDED_GENERAL_ORIENTATION"/>
-					<ForeignKeyLink dimension="Did the government request support on specific SDGs" foreignKeyColumn="REQUESTS_ON_SPECIFICSDGS"/>
-					<ForeignKeyLink dimension="Did the UN provide support on specific SDGs" foreignKeyColumn="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS"/>
-					<ForeignKeyLink dimension="Has your partner government published a Country-led SDG Report this year" foreignKeyColumn="GOVERNMENTSDGREPORT_PUBLISHED"/>
-					<ForeignKeyLink dimension="Has the UN supported the Government in producing the report" foreignKeyColumn="HASUNSUPPORT"/>
-					<ForeignKeyLink dimension="Was the support provided as an interagency effort" foreignKeyColumn="REPORT_INTERAGENCY_EFFORT"/>
-					<ForeignKeyLink dimension="usedForVoluntaryNationalReview" foreignKeyColumn="USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID" />
-					<ForeignKeyLink dimension="hasDisaggregatedData" foreignKeyColumn="has_disaggregated_data_dim" />
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="HAS_SUPPORT_TO_NATIONAL_STATS_CAPACITY" />
+                    <FactLink dimension="HAS_INNOVATION_CITIZEN_ENGAGEMENT_CROWDSOURCING" />
+                    <FactLink dimension="HAS_NONUNPARTNERS_SPECIFIC_ACTIVITIES" />
+                    <FactLink dimension="HAS_GOVERNMENT_REQUESTED_SUPPORT_ON_NATL_RESPONSESDG" />
+                    <FactLink dimension="HAS_OPEN_DATA_TRANSPARENCY_POLICIES" />
+                    <FactLink dimension="DOES_GOVERNMENT_HAVE_NATIONAL_STRATEGY" />
+                    <FactLink dimension="DOES_GOVERNMENT_HAVE_FORMAL_MECHANISMS" />
+                    <FactLink dimension="DOESUNCTPARTICIPATE" />
+                    <FactLink dimension="INTERAGENCY_EFFORT" />
+                    <FactLink dimension="INTERAGENCY_GROUP" />
+                    <FactLink dimension="BUDGET_ACTIVITY" />
+                    <FactLink dimension="COMMON_INTERAGENCY_WORKPLAN" />	
+                    <FactLink dimension="USEIATISTANDARDS" />
+					<FactLink dimension="JOINTUNCTEFFORT" />
+					<FactLink dimension="JOINTUNINITIATIVE_ON_DATA_OR_STATISTICS_PRESENT" />
+					<FactLink dimension="DATA_ACTIVITY_WITH_PRIVATE_SECTOR" />
+					<FactLink dimension="DATA_ACTIVITY_WITH_CIVIL_SOCIETY" />
+					<FactLink dimension="MEASUREMENT_AND_REPORTING" />
+					<FactLink dimension="UN_PROVIDED_MEASUREMENT_AND_REPORTING" />
+					<FactLink dimension="MAINSTREAMING" />
+					<FactLink dimension="UN_PROVIDED_MAINSTREAMING" />
+					<FactLink dimension="GENERAL_ORIENTATION" />
+					<FactLink dimension="UN_PROVIDED_GENERAL_ORIENTATION" />
+					<FactLink dimension="REQUESTS_ON_SPECIFICSDGS" />
+					<FactLink dimension="UN_PROVIDED_REQUESTS_ON_SPECIFICSDGS" />
+					<FactLink dimension="GOVERNMENTSDGREPORT_PUBLISHED" />
+					<FactLink dimension="HASUNSUPPORT" />
+					<FactLink dimension="REPORT_INTERAGENCY_EFFORT" />
+					<FactLink dimension="USED_FOR_VOLUNTARY_NATIONAL_REVIEW_ID" />
+					<FactLink dimension="has_disaggregated_data_dim" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
