@@ -7,28 +7,32 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="CP12HumanRightsTreatyBodies">
             <ExpressionView>
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            D.ID,
+                            COALESCE(UNHR_TREATY_BODY_TYPE.LABEL, 'X-CATEGORY') as UNHR_TREATY_BODY_TYPE,
+                            D.UNHR_TREATY_BODY_TYPE_ID,
+                            CP12.DESIGNATION, CP12.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT = TRUE THEN 1 ELSE 0 END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_COUNT,
-                            CASE D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_DIM,
+                            COALESCE(D.HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT, 'X-BOOLEAN') AS HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT,
                             CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
-                            CASE D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_DIM,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM CP12UNHRTREATY_BODY D, CP12HUMAN_RIGHTS_PROFILE CP12, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR AND
-                            CP12.ID = D.PARENT_ID AND
-                            CP12.DESIGNATION != 'AQ' AND CP12.DESIGNATION != 'DOCO' AND CP12.DESIGNATION = bc.iso2 AND
-                            CP12.designation = v.designation and v.entity_year = CP12.ENTITY_YEAR
+                            COALESCE(D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS, 'X-BOOLEAN') AS HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP12UNHRTREATY_BODY D
+                            JOIN CP12HUMAN_RIGHTS_PROFILE CP12 ON CP12.ID = D.PARENT_ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP12.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP12.designation = v.designation and v.entity_year = CP12.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY UNHR_TREATY_BODY_TYPE ON D.UNHR_TREATY_BODY_TYPE_ID=UNHR_TREATY_BODY_TYPE.ID
+                        WHERE CP12.DESIGNATION != 'AQ'
+                          AND CP12.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -39,19 +43,23 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            D.*, CP12.DESIGNATION, CP12.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN D.UNCT_SUPPORTED = TRUE THEN 1 ELSE 0 END as UNCT_SUPPORTED_COUNT,
-							CASE D.UNCT_SUPPORTED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as UNCT_SUPPORTED,
+							COALESCE(D.UNCT_SUPPORTED, 'X-BOOLEAN') AS UNCT_SUPPORTED,
                             CASE WHEN D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_COUNT,
-                            CASE D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_DIM,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY
-                        FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D, CP12HUMAN_RIGHTS_PROFILE CP12, CP1GENERAL_PROFILE CP1, BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR AND
-                            CP12.ID = D.PARENT_ID AND
-                            CP12.DESIGNATION != 'AQ' AND CP12.DESIGNATION != 'DOCO' AND CP12.DESIGNATION = bc.iso2 AND
-                            CP12.designation = v.designation and v.entity_year = CP12.ENTITY_YEAR
+                            COALESCE(D.HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS, 'X-BOOLEAN') AS HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
+                        FROM CP12VISIT_OF_SPECIAL_PROCEDUREHRC D
+                            JOIN CP12HUMAN_RIGHTS_PROFILE CP12 ON CP12.ID = D.PARENT_ID
+                            JOIN CP1GENERAL_PROFILE CP1 ON CP12.DESIGNATION = CP1.DESIGNATION AND CP12.ENTITY_YEAR = CP1.ENTITY_YEAR
+                            JOIN BASE_COUNTRY bc ON CP12.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON CP12.designation = v.designation and v.entity_year = CP12.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                        WHERE CP12.DESIGNATION != 'AQ'
+                          AND CP12.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -62,116 +70,120 @@
                 <SQL dialect="generic">
                     <![CDATA[
                         select
-                            cp12.ID, cp12.DESIGNATION, cp12.ENTITY_YEAR, CP1.COUNTRY_INCOME_STATUS_ID,
-                            COALESCE(CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID, -1) AS SECONDARY_COUNTRY_INCOME_STATUS_ID,
+                            cp12.ID, cp12.DESIGNATION, cp12.ENTITY_YEAR,
+                            COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
+                            COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ADVISOR = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ADVISOR_COUNT,
-                            CASE cp12.HAS_HUMAN_RIGHTS_ADVISOR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_HUMAN_RIGHTS_ADVISOR,
+                            COALESCE(cp12.HAS_HUMAN_RIGHTS_ADVISOR, 'X-BOOLEAN') AS HAS_HUMAN_RIGHTS_ADVISOR,
                             CASE WHEN cp12hranalysis.HAS_STRATEGY_DEVELOPED_ADDRESSHR = TRUE THEN 1 ELSE 0 END as HAS_STRATEGY_DEVELOPED_ADDRESSHR_COUNT,
-                            CASE cp12hranalysis.HAS_STRATEGY_DEVELOPED_ADDRESSHR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_STRATEGY_DEVELOPED_ADDRESSHR,
+                            COALESCE(cp12hranalysis.HAS_STRATEGY_DEVELOPED_ADDRESSHR, 'X-BOOLEAN') AS HAS_STRATEGY_DEVELOPED_ADDRESSHR,
                             CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS_COUNT,
-                            CASE cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS,
+                            COALESCE(cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS, 'X-BOOLEAN') AS HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS,
                             CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETYUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETYUPR_COUNT,
-                            CASE cp12.HASUNCTSUPPORTED_CIVIL_SOCIETYUPR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSUPPORTED_CIVIL_SOCIETYUPR,
+                            COALESCE(cp12.HASUNCTSUPPORTED_CIVIL_SOCIETYUPR, 'X-BOOLEAN') AS HASUNCTSUPPORTED_CIVIL_SOCIETYUPR,
                             CASE WHEN cp12.HASUNCTRECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTRECOMMENDATIONS_COUNT,
-                            CASE cp12.HASUNCTRECOMMENDATIONS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTRECOMMENDATIONS,
+                            COALESCE(cp12.HASUNCTRECOMMENDATIONS, 'X-BOOLEAN') AS HASUNCTRECOMMENDATIONS,
                             CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES_COUNT,
-                            CASE cp12.HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES,
+                            COALESCE(cp12.HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES, 'X-BOOLEAN') AS HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES,
                             CASE WHEN cp12.HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT = TRUE THEN 1 ELSE 0 END as HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT_COUNT,
-                            CASE cp12.HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT,
-                            CASE cp12.HASUNCTDRAWN_ON_RECOMMENDATIONS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTDRAWN_ON_RECOMMENDATIONS,
+                            COALESCE(cp12.HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT, 'X-BOOLEAN') AS HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT,
+                            COALESCE(cp12.HASUNCTDRAWN_ON_RECOMMENDATIONS, 'X-BOOLEAN') AS HASUNCTDRAWN_ON_RECOMMENDATIONS,
                             CASE WHEN cp12.HASUNCTSDRAWN_ON_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTSDRAWN_ON_RECOMMENDATIONS_COUNT,
-                            CASE cp12.HASUNCTSDRAWN_ON_RECOMMENDATIONS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSDRAWN_ON_RECOMMENDATIONS,
+                            COALESCE(cp12.HASUNCTSDRAWN_ON_RECOMMENDATIONS, 'X-BOOLEAN') AS HASUNCTSDRAWN_ON_RECOMMENDATIONS,
                             CASE WHEN cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES_COUNT,
-                            CASE cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES,
+                            COALESCE(cp12.HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES, 'X-BOOLEAN') AS HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES,
                             CASE WHEN cp12.HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION = TRUE THEN 1 ELSE 0 END as HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION_COUNT,
-                            CASE cp12.HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION,
+                            COALESCE(cp12.HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION, 'X-BOOLEAN') AS HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION,
                             CASE WHEN cp12.HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES_COUNT,
-                            CASE cp12.HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES,
+                            COALESCE(cp12.HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES, 'X-BOOLEAN') AS HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES,
                             CASE WHEN cp12.HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES_COUNT,
-                            CASE cp12.HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES,
+                            COALESCE(cp12.HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES, 'X-BOOLEAN') AS HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES,
                             CASE WHEN cp12.WAS_COUNTRY_REVIEWED_BY_TREATY_BODY = TRUE THEN 1 ELSE 0 END as WAS_COUNTRY_REVIEWED_BY_TREATY_BODY_COUNT,
-                            CASE cp12.WAS_COUNTRY_REVIEWED_BY_TREATY_BODY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as WAS_COUNTRY_REVIEWED_BY_TREATY_BODY,
+                            COALESCE(cp12.WAS_COUNTRY_REVIEWED_BY_TREATY_BODY, 'X-BOOLEAN') AS WAS_COUNTRY_REVIEWED_BY_TREATY_BODY,
                             CASE WHEN cp12.HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS_COUNT,
-                            CASE cp12.HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS,
+                            COALESCE(cp12.HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS, 'X-BOOLEAN') AS HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS,
                             CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION_COUNT,
-                            CASE cp12.HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION,
+                            COALESCE(cp12.HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION, 'X-BOOLEAN') AS HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION,
                             CASE WHEN cp12.HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR_COUNT,
-                            CASE cp12.HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR,
+                            COALESCE(cp12.HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR, 'X-BOOLEAN') AS HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR,
                             CASE WHEN cp12.HASUNCTSUBMITTED_INPUTS_REPORTS = TRUE THEN 1 ELSE 0 END as HASUNCTSUBMITTED_INPUTS_REPORTS_COUNT,
-                            CASE cp12.HASUNCTSUBMITTED_INPUTS_REPORTS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSUBMITTED_INPUTS_REPORTS,
+                            COALESCE(cp12.HASUNCTSUBMITTED_INPUTS_REPORTS, 'X-BOOLEAN') AS HASUNCTSUBMITTED_INPUTS_REPORTS,
                             CASE WHEN cp12.HASUNCTSUPPORTED_GOVERNMENTUPR = TRUE THEN 1 ELSE 0 END as HASUNCTSUPPORTED_GOVERNMENTUPR_COUNT,
-                            CASE cp12.HASUNCTSUPPORTED_GOVERNMENTUPR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTSUPPORTED_GOVERNMENTUPR,
+                            COALESCE(cp12.HASUNCTSUPPORTED_GOVERNMENTUPR, 'X-BOOLEAN') AS HASUNCTSUPPORTED_GOVERNMENTUPR,
                             CASE WHEN cp12.HASUNCTENGAGE_WITH_GOVERNMEN = TRUE THEN 1 ELSE 0 END as HASUNCTENGAGE_WITH_GOVERNMEN_COUNT,
-                            CASE cp12.HASUNCTENGAGE_WITH_GOVERNMEN WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTENGAGE_WITH_GOVERNMEN,
+                            COALESCE(cp12.HASUNCTENGAGE_WITH_GOVERNMEN, 'X-BOOLEAN') AS HASUNCTENGAGE_WITH_GOVERNMEN,
                             CASE WHEN cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH = TRUE THEN 1 ELSE 0 END as HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH_COUNT,
-                            CASE cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH,
+                            COALESCE(cp12.HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH, 'X-BOOLEAN') AS HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH,
                             CASE WHEN cp12training.PART_OF_ROLLOUT_PROCESS = TRUE THEN 1 ELSE 0 END as PART_OF_ROLLOUT_PROCESS_COUNT,
-                            CASE cp12training.PART_OF_ROLLOUT_PROCESS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as PART_OF_ROLLOUT_PROCESS,
+                            COALESCE(cp12training.PART_OF_ROLLOUT_PROCESS, 'X-BOOLEAN') AS PART_OF_ROLLOUT_PROCESS,
                             CASE WHEN cp12.HAS_HUMAN_RIGHTS_ANALYSIS = TRUE THEN 1 ELSE 0 END as HAS_HUMAN_RIGHTS_ANALYSIS_COUNT,
-                            CASE cp12.HAS_HUMAN_RIGHTS_ANALYSIS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_HUMAN_RIGHTS_ANALYSIS,
+                            COALESCE(cp12.HAS_HUMAN_RIGHTS_ANALYSIS, 'X-BOOLEAN') AS HAS_HUMAN_RIGHTS_ANALYSIS,
                             CASE WHEN cp12hranalysis.HAS_ADDRESSEDHRISSUES = TRUE THEN 1 ELSE 0 END as HAS_ADDRESSEDHRISSUES_COUNT,
-                            CASE cp12hranalysis.HAS_ADDRESSEDHRISSUES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_ADDRESSEDHRISSUES,
+                            COALESCE(cp12hranalysis.HAS_ADDRESSEDHRISSUES, 'X-BOOLEAN') AS HAS_ADDRESSEDHRISSUES,
                             CASE WHEN cp12.HAS_SUPPORTEDHRNATIONAL_PROGRAMMES = TRUE THEN 1 ELSE 0 END as HAS_SUPPORTEDHRNATIONAL_PROGRAMMES_COUNT,
-                            CASE cp12.HAS_SUPPORTEDHRNATIONAL_PROGRAMMES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_SUPPORTEDHRNATIONAL_PROGRAMMES,
+                            COALESCE(cp12.HAS_SUPPORTEDHRNATIONAL_PROGRAMMES, 'X-BOOLEAN') AS HAS_SUPPORTEDHRNATIONAL_PROGRAMMES,
                             CASE WHEN cp12.HASUPRPROCESS = TRUE THEN 1 ELSE 0 END as HASUPRPROCESS_COUNT,
-                            CASE cp12.HASUPRPROCESS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUPRPROCESS,
+                            COALESCE(cp12.HASUPRPROCESS, 'X-BOOLEAN') AS HASUPRPROCESS,
                             CASE WHEN cp12uprprocess.HASUNCTREPORTUPRSUBMITTED = TRUE THEN 1 ELSE 0 END as HASUNCTREPORTUPRSUBMITTED_COUNT,
-                            CASE cp12uprprocess.HASUNCTREPORTUPRSUBMITTED WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNCTREPORTUPRSUBMITTED,
+                            COALESCE(cp12uprprocess.HASUNCTREPORTUPRSUBMITTED, 'X-BOOLEAN') AS HASUNCTREPORTUPRSUBMITTED,
                             CASE WHEN cp12uprprocess.HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS = TRUE THEN 1 ELSE 0 END as HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS_COUNT,
-                            CASE cp12uprprocess.HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS,
+                            COALESCE(cp12uprprocess.HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS, 'X-BOOLEAN') AS HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS,
                             CASE WHEN cp12.HASUNHRTREATY_BODIES = TRUE THEN 1 ELSE 0 END as HASUNHRTREATY_BODIES_COUNT,
-                            CASE cp12.HASUNHRTREATY_BODIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASUNHRTREATY_BODIES,
+                            COALESCE(cp12.HASUNHRTREATY_BODIES, 'X-BOOLEAN') AS HASUNHRTREATY_BODIES,
                             CASE WHEN cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC = TRUE THEN 1 ELSE 0 END as HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC_COUNT,
-                            CASE cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC,
+                            COALESCE(cp12.HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC, 'X-BOOLEAN') AS HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC,
                             CASE WHEN cp12.HASHRI = TRUE THEN 1 ELSE 0 END as HASHRI_COUNT,
-                            CASE cp12.HASHRI WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HASHRI,
-                            CASE cp1.OFFICIAL_REQUEST_DAO_COUNTRY WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as OFFICIAL_REQUEST_DAO_COUNTRY,
+                            COALESCE(cp12.HASHRI, 'X-BOOLEAN') AS HASHRI,
+                            COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY,
                             CASE WHEN cp12.HAS_CCAUPR = TRUE THEN 1 ELSE 0 END as HAS_CCAUPR_COUNT,
-                            CASE cp12.HAS_CCAUPR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CCAUPR,
+                            COALESCE(cp12.HAS_CCAUPR, 'X-BOOLEAN') AS HAS_CCAUPR,
                             CASE WHEN cp12.HAS_CCA_TREATY_BODIES = TRUE THEN 1 ELSE 0 END as HAS_CCA_TREATY_BODIES_COUNT,
-                            CASE cp12.HAS_CCA_TREATY_BODIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CCA_TREATY_BODIES,
+                            COALESCE(cp12.HAS_CCA_TREATY_BODIES, 'X-BOOLEAN') AS HAS_CCA_TREATY_BODIES,
                             CASE WHEN cp12.HAS_CCA_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HAS_CCA_SPECIAL_PROCEDURES_COUNT,
-                            CASE cp12.HAS_CCA_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_CCA_SPECIAL_PROCEDURES,
+                            COALESCE(cp12.HAS_CCA_SPECIAL_PROCEDURES, 'X-BOOLEAN') AS HAS_CCA_SPECIAL_PROCEDURES,
                             CASE WHEN cp12.HAS_UNDAFUPR = TRUE THEN 1 ELSE 0 END as HAS_UNDAFUPR_COUNT,
-                            CASE cp12.HAS_UNDAFUPR WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAFUPR,
+                            COALESCE(cp12.HAS_UNDAFUPR, 'X-BOOLEAN') AS HAS_UNDAFUPR,
                             CASE WHEN cp12.HAS_UNDAF_TREATY_BODIES = TRUE THEN 1 ELSE 0 END as HAS_UNDAF_TREATY_BODIES_COUNT,
-                            CASE cp12.HAS_UNDAF_TREATY_BODIES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAF_TREATY_BODIES,
+                            COALESCE(cp12.HAS_UNDAF_TREATY_BODIES, 'X-BOOLEAN') AS HAS_UNDAF_TREATY_BODIES,
                             CASE WHEN cp12.HAS_UNDAF_SPECIAL_PROCEDURES = TRUE THEN 1 ELSE 0 END as HAS_UNDAF_SPECIAL_PROCEDURES_COUNT,
-                            CASE cp12.HAS_UNDAF_SPECIAL_PROCEDURES WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as HAS_UNDAF_SPECIAL_PROCEDURES,
+                            COALESCE(cp12.HAS_UNDAF_SPECIAL_PROCEDURES, 'X-BOOLEAN') AS HAS_UNDAF_SPECIAL_PROCEDURES,
                             CASE WHEN cp12hrinst.nhri_partners = TRUE THEN 1 ELSE 0 END as nhri_partners_count,
-                            CASE cp12hrinst.nhri_partners WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as nhri_partners_dim,
+                            COALESCE(cp12hrinst.nhri_partners, 'X-BOOLEAN') AS nhri_partners,
 
                             CASE WHEN cp12.has_disability_inclusion_activities = TRUE THEN 1 ELSE 0 END as has_disability_inclusion_activities_count,
-                            CASE cp12.has_disability_inclusion_activities WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_disability_inclusion_activities_dim,
+                            COALESCE(cp12.has_disability_inclusion_activities, 'X-BOOLEAN') AS has_disability_inclusion_activities,
                             CASE WHEN cp12.has_culture_for_disability_inclusion = TRUE THEN 1 ELSE 0 END as has_culture_for_disability_inclusion_count,
-                            CASE cp12.has_culture_for_disability_inclusion WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_culture_for_disability_inclusion_dim,
+                            COALESCE(cp12.has_culture_for_disability_inclusion, 'X-BOOLEAN') AS has_culture_for_disability_inclusion,
                             CASE WHEN cp12.cca_has_analysis_on_indigenous_people = TRUE THEN 1 ELSE 0 END as cca_has_analysis_on_indigenous_people_count,
-                            CASE cp12.cca_has_analysis_on_indigenous_people WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as cca_has_analysis_on_indigenous_people_dim,
+                            COALESCE(cp12.cca_has_analysis_on_indigenous_people, 'X-BOOLEAN') AS cca_has_analysis_on_indigenous_people,
                             CASE WHEN cp12.realization_of_indigenous_rights2030 = TRUE THEN 1 ELSE 0 END as realization_of_indigenous_rights2030_count,
-                            CASE cp12.realization_of_indigenous_rights2030 WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as realization_of_indigenous_rights2030_dim,
+                            COALESCE(cp12.realization_of_indigenous_rights2030, 'X-BOOLEAN') AS realization_of_indigenous_rights2030,
                             CASE WHEN cp12.unct_supported_indigenous_people = TRUE THEN 1 ELSE 0 END as unct_supported_indigenous_people_count,
-                            CASE cp12.unct_supported_indigenous_people WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as unct_supported_indigenous_people_dim,
-                            COALESCE(cp12.indigenous_people_indicator_presence_id, -1) AS indigenous_people_indicator_presence_id,
+                            COALESCE(cp12.unct_supported_indigenous_people, 'X-BOOLEAN') AS unct_supported_indigenous_people,
+                            COALESCE(indigenous_people_indicator_presence.LABEL, 'X-CATEGORY') as indigenous_people_indicator_presence,
                             CASE WHEN cp12.cca_has_analysis_on_youth = TRUE THEN 1 ELSE 0 END as cca_has_analysis_on_youth_count,
-                            CASE cp12.cca_has_analysis_on_youth WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as cca_has_analysis_on_youth_dim,
+                            COALESCE(cp12.cca_has_analysis_on_youth, 'X-BOOLEAN') AS cca_has_analysis_on_youth,
                             CASE WHEN cp12.support_of_youth = TRUE THEN 1 ELSE 0 END as support_of_youth_count,
-                            CASE cp12.support_of_youth WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as support_of_youth_dim,
-                            COALESCE(cp12.youth_indicator_presence_id, -1) AS youth_indicator_presence_id,
+                            COALESCE(cp12.support_of_youth, 'X-BOOLEAN') AS support_of_youth,
+                            COALESCE(youth_indicator_presence.LABEL, 'X-CATEGORY') as youth_indicator_presence,
                             CASE WHEN cp12.has_youth_advisory_board = TRUE THEN 1 ELSE 0 END as has_youth_advisory_board_count,
-                            CASE cp12.has_youth_advisory_board WHEN TRUE THEN 1 WHEN FALSE THEN 0 ELSE -1 END as has_youth_advisory_board_dim,
-                            COALESCE(cp12.youth_advisory_board_id, -1) AS youth_advisory_board_id
-                        from
-                            CP12HUMAN_RIGHTS_PROFILE cp12, CP1GENERAL_PROFILE cp1, CP12TRAINING_ONHRAPPROACH cp12training,
-                            CP12HRANALYSIS cp12hranalysis, CP12UPRPROCESS cp12uprprocess, cp12hrinstitution_in_country cp12hrinst,
-                            BASE_COUNTRY bc, v_cp_validated_designations v
-                        WHERE
-                            cp12.DESIGNATION = cp1.DESIGNATION AND cp12.ENTITY_YEAR = cp1.ENTITY_YEAR AND
-                            cp12training.PARENT_ID = cp12.id AND
-                            cp12hranalysis.PARENT_ID = cp12.id AND
-                            cp12uprprocess.PARENT_ID = cp12.id AND
-                            cp12hrinst.PARENT_ID = cp12.id AND
-                            cp12.DESIGNATION != 'AQ' AND cp12.DESIGNATION != 'DOCO' AND cp12.DESIGNATION = bc.iso2 and
-                            cp12.designation = v.designation and v.entity_year = cp12.ENTITY_YEAR
+                            COALESCE(cp12.has_youth_advisory_board, 'X-BOOLEAN') AS has_youth_advisory_board,
+                            COALESCE(youth_advisory_board.LABEL, 'X-CATEGORY') AS youth_advisory_board
+                        from CP12HUMAN_RIGHTS_PROFILE cp12
+                            JOIN CP1GENERAL_PROFILE cp1 ON cp12.DESIGNATION = cp1.DESIGNATION AND cp12.ENTITY_YEAR = cp1.ENTITY_YEAR
+                            JOIN CP12TRAINING_ONHRAPPROACH cp12training ON cp12training.PARENT_ID = cp12.id
+                            JOIN CP12HRANALYSIS cp12hranalysis ON cp12hranalysis.PARENT_ID = cp12.id
+                            JOIN CP12UPRPROCESS cp12uprprocess ON cp12uprprocess.PARENT_ID = cp12.id
+                            JOIN cp12hrinstitution_in_country cp12hrinst ON cp12hrinst.PARENT_ID = cp12.id
+                            JOIN BASE_COUNTRY bc ON cp12.DESIGNATION = bc.iso2
+                            JOIN v_cp_validated_designations v ON cp12.designation = v.designation and v.entity_year = cp12.ENTITY_YEAR
+                            JOIN CATEGORY COUNTRY_INCOME_STATUS_ID on CP1.COUNTRY_INCOME_STATUS_ID=COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY SECONDARY_COUNTRY_INCOME_STATUS_ID on CP1.SECONDARY_COUNTRY_INCOME_STATUS_ID=SECONDARY_COUNTRY_INCOME_STATUS_ID.ID
+                            LEFT JOIN CATEGORY indigenous_people_indicator_presence ON cp12.indigenous_people_indicator_presence_id=indigenous_people_indicator_presence.ID
+                            LEFT JOIN CATEGORY youth_indicator_presence ON cp12.youth_indicator_presence_id=youth_indicator_presence.ID
+                            LEFT JOIN CATEGORY youth_advisory_board ON cp12.youth_advisory_board_id=youth_advisory_board.ID
+                        WHERE cp12.DESIGNATION != 'AQ'
+                          AND cp12.DESIGNATION != 'DOCO'
                     ]]>
                 </SQL>
             </ExpressionView>
@@ -191,18 +203,18 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP12HumanRightsTreatyBodies" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP12HumanRightsTreatyBodies" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP12HumanRightsTreatyBodies" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP12HumanRightsTreatyBodies" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension table="YesNoTable" name="Has UNCT engaged in developing national capacity" caption="Has UNCT engaged in developing national capacity?" />
-            <Dimension table="YesNoTable" name="Has UNCT facilitated recommendations by the Gov" caption="Has UNCT facilitated recommendations by the Gov?" />
-            <Dimension source="CATEGORY" table="UNHRTreatyBody" name="UNHRTreatyBody" caption="UN HR Treaty Body" />
+            <Dimension source="YesNoTable" table="CP12HumanRightsTreatyBodies" name="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT" caption="Has UNCT engaged in developing national capacity?" />
+            <Dimension source="YesNoTable" table="CP12HumanRightsTreatyBodies" name="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS" caption="Has UNCT facilitated recommendations by the Gov?" />
+            <Dimension source="CATEGORY" table="CP12HumanRightsTreatyBodies" name="UNHR_TREATY_BODY_TYPE" caption="UN HR Treaty Body" />
         </Dimensions>
 
         <MeasureGroups>
@@ -219,9 +231,12 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="UNHRTreatyBody" foreignKeyColumn="UNHR_TREATY_BODY_TYPE_ID" />
-                    <ForeignKeyLink dimension="Has UNCT engaged in developing national capacity" foreignKeyColumn="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT_DIM"/>
-                    <ForeignKeyLink dimension="Has UNCT facilitated recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_DIM"/>
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="UNHR_TREATY_BODY_TYPE"/>
+                    <FactLink dimension="HAS_ENGAGED_DEVELOP_NATL_CAPACITY_TO_REPORT"/>
+                    <FactLink dimension="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -235,14 +250,14 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP12SpecialProcedureHumanRightsCouncil" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP12SpecialProcedureHumanRightsCouncil" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP12SpecialProcedureHumanRightsCouncil" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP12SpecialProcedureHumanRightsCouncil" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
             <Dimension name="Name" caption="Name of special procedure" table="CP12SpecialProcedureHumanRightsCouncil"
                        visible="true">
@@ -252,8 +267,8 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension table="YesNoTable" name="Has UNCT support this visit" caption="Has UNCT support this visit?" />
-            <Dimension table="YesNoTable" name="Has UNCT facilitate recommendations by the Gov" caption="Has UNCT facilitate recommendations by the Gov?" />
+            <Dimension source="YesNoTable" table="CP12SpecialProcedureHumanRightsCouncil" name="UNCT_SUPPORTED" caption="Has UNCT support this visit?" />
+            <Dimension source="YesNoTable" table="CP12SpecialProcedureHumanRightsCouncil" name="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS" caption="Has UNCT facilitate recommendations by the Gov?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -268,9 +283,12 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
                     <FactLink dimension="Name" />
-                    <ForeignKeyLink dimension="Has UNCT support this visit" foreignKeyColumn="UNCT_SUPPORTED_COUNT"/>
-                    <ForeignKeyLink dimension="Has UNCT facilitate recommendations by the Gov" foreignKeyColumn="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS_DIM"/>
+                    <FactLink dimension="UNCT_SUPPORTED" />
+                    <FactLink dimension="HAS_FACILITATED_FOLLOWUP_RECOMMENDATIONS" />
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -284,64 +302,64 @@
         <Dimensions>
             <Dimension source="Region" />
             <Dimension source="Country" />
-            <Dimension source="Delivering as One" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="OFFICIAL_REQUEST_DAO_COUNTRY" caption="Delivering as One" />
             <Dimension name="Year" caption="Year" table="CP12GeneralCube" visible="true">
                 <Attributes>
                     <Attribute name="Year" keyColumn="ENTITY_YEAR" datatype="Integer" />
                 </Attributes>
             </Dimension>
-            <Dimension source="CountryIncomeStatus" />
-            <Dimension source="SecondaryCountryIncomeStatus" />
+            <Dimension source="CATEGORY" table="CP12GeneralCube" name="COUNTRY_INCOME_STATUS_ID" caption="Country Income Status" />
+            <Dimension source="CATEGORY" table="CP12GeneralCube" name="SECONDARY_COUNTRY_INCOME_STATUS_ID" caption="Secondary Country Income Status" />
 
-            <Dimension table="YesNoTable" name="UNCT Human Rights Advisor" caption="Does the UNCT have a designated person or group to advise it on human rights matters?" />
-            <Dimension table="YesNoTable" name="Human Rights-Based Approach" caption="Has a training on Human Rights-Based Approach been conducted over the past year?" />
-            <Dimension table="YesNoTable" name="Was it undertaken as part of the UNDAF rollout process" caption="Was it undertaken as part of the UNDAF/Cooperation Framework rollout process?" />
-            <Dimension table="YesNoTable" name="Human rights analysis" caption="Has a human rights analysis taken place over the past year?" />
-            <Dimension table="YesNoTable" name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" />
-            <Dimension table="YesNoTable" name="Has action been taken to address the human rights issues identified in the human rights analysis" caption="Has action been taken to address the human rights issues identified in the human rights analysis?" />
-            <Dimension table="YesNoTable" name="UNCT supported" caption="Has the UNCT supported the government in mainstreaming human rights into national development policies and programmes?" />
-            <Dimension table="YesNoTable" name="UPR" caption="Has the UNCT engaged in the preparation, reporting or follow-up of the Universal Periodic Review (UPR) this year?" />
-            <Dimension table="YesNoTable" name="Has the UNCT submitted a UNCT report to the UPR" caption="Has the UNCT submitted a UNCT report to the UPR?" />
-            <Dimension table="YesNoTable" name="Has the UNCT facilitated follow up of the UPR recommendations by the Government" caption="Has the UNCT facilitated follow up of the UPR recommendations by the Government?" />
-            <Dimension table="YesNoTable" name="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies" caption="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported the government to develop a report for the UPR" caption="Has the UNCT supported the government in developing a report for the UPR in the past year?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported civil society develop inputs or reports for the UPR" caption="Has the UNCT supported civil society in developing inputs or reports for the UPR in the past year?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" caption="Has the UNCT supported the National Human Rights Institution in developing inputs or reports for the UPR in the past year?" />
-            <Dimension table="YesNoTable" name="UN human rights treaty bodies" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" />
-            <Dimension table="YesNoTable" name="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government" caption="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?" />
-            <Dimension table="YesNoTable" name="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies" caption="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" caption="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies" caption="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?" />
-            <Dimension table="YesNoTable" name="Has the UNCT submitted inputs/reports to human rights treaty bodies" caption="Has the UNCT submitted inputs/reports to human rights treaty bodies?" />
-            <Dimension table="YesNoTable" name="Was the country reviewed by a treaty body this year" caption="Was the country reviewed by a treaty body this year?" />
-            <Dimension table="YesNoTable" name="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies" caption="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?" />
-            <Dimension table="YesNoTable" name="Receive a visit of a Special Procedure" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" />
-            <Dimension table="YesNoTable" name="Did the UNCT facilitate follow up of the recommendations by the Government" caption="Did the UNCT facilitate follow up of the recommendations by the Government?" />
-            <Dimension table="YesNoTable" name="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)" caption="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported the government in preparing for the visits of Special Procedures" caption="Has the UNCT supported the government in preparing for the visits of Special Procedures?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported civil society interact with the Special Procedure" caption="Has the UNCT supported civil society interact with the Special Procedure?" />
-            <Dimension table="YesNoTable" name="Has the UNCT supported National Human Rights Institution interact with the Special Procedures" caption="Has the UNCT supported National Human Rights Institution interact with the Special Procedures?" />
-            <Dimension table="YesNoTable" name="Has the UNCT provided inputs to the visit of the Special Procedures" caption="Has the UNCT provided inputs to the visit of the Special Procedures?" />
-            <Dimension table="YesNoTable" name="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" caption="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?" />
-            <Dimension table="YesNoTable" name="NHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" />
-            <Dimension table="YesNoTable" name="CCAUPR" caption="Does the current CCA include the recommendations from the UPR  as a core component of its analysis?" />
-            <Dimension table="YesNoTable" name="CCATB" caption="Does the current CCA include the recommendations from the treaty bodies as a core component of its analysis?" />
-            <Dimension table="YesNoTable" name="CCASP" caption="Does the current CCA include the recommendations from the special procedures as a core component of its analysis?" />
-            <Dimension table="YesNoTable" name="UNDAFUPR" caption="Does the current UNDAF link outcomes with specific recommendations from the UPR?" />
-            <Dimension table="YesNoTable" name="UNDAFTB" caption="Does the current UNDAF link outcomes with specific recommendations from the treaty bodies?" />
-            <Dimension table="YesNoTable" name="UNDAFSP" caption="Does the current UNDAF link outcomes with specific recommendations from the special procedures?" />
-            <Dimension table="YesNoTable" name="nhriPartners" caption="Has the UNCT engaged with the NHRI as a partner?" />
-            <Dimension table="YesNoTable" name="hasDisabilityInclusionActivities" caption="Has the UNCT implemented activities on disability inclusion in the past year (eg. advocacy, programming, UN analysis, engaging with Organisations of Persons with Disabilities)?" />
-            <Dimension table="YesNoTable" name="hasCultureForDisabilityInclusion" caption="Has the UNCT undertaken any steps to strengthen organizational culture in relation to disability inclusion in the past year (e.g. capacity development, awareness-raising, internal or external communication, employment of persons with disabilities)?" />
-            <Dimension table="YesNoTable" name="ccaHasAnalysisOnIndigenousPeople" caption="Does the CCA contain a situational analysis on indigenous people?" />
-            <Dimension table="YesNoTable" name="realizationOfIndigenousRights2030" caption="Does your current UNDAF/Cooperation Framework support/address the realization of indigenous peoples’ rights as part of the implementation of the 2030 Agenda?" />
-            <Dimension table="YesNoTable" name="unctSupportedIndigenousPeople" caption="In the past year, has your UNCT supported the participation of indigenous peoples in UN and national development processes?" />
-            <Dimension table="YesNoTable" name="ccaHasAnalysisOnYouth" caption="Does the CCA contains a youth situational analysis?" />
-            <Dimension table="YesNoTable" name="supportOfYouth" caption="Does the current UNDAF/Cooperation Framework support/address the needs, builds the agency, and advances the rights of the young people?" />
-            <Dimension table="YesNoTable" name="hasYouthAdvisoryBoard" caption="Does your UNCT have a youth advisory board(s) or equivalent to provide input on UN work?" />
-            <Dimension source="CATEGORY" table="IndicatorPresence" name="indigenousPeopleIndicatorPresence" caption="Does your UNDAF/Cooperation Framework has specific indicators on indigenous people?" />
-            <Dimension source="CATEGORY" table="IndicatorPresence" name="youthIndicatorPresence" caption="Does your UNDAF/Cooperation Framework have youth-specific indicators" />
-            <Dimension source="CATEGORY" table="YouthAdvisoryBoard" name="youthAdvisoryBoard" caption="Are the youth advisory boards agency-specific or joint boards across UN entities?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_HUMAN_RIGHTS_ADVISOR" caption="Does the UNCT have a designated person or group to advise it on human rights matters?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH" caption="Has a training on Human Rights-Based Approach been conducted over the past year?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="PART_OF_ROLLOUT_PROCESS" caption="Was it undertaken as part of the UNDAF/Cooperation Framework rollout process?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_HUMAN_RIGHTS_ANALYSIS" caption="Has a human rights analysis taken place over the past year?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_STRATEGY_DEVELOPED_ADDRESSHR" caption="Has a strategy been developed to address the human rights issues identified in the analysis?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_ADDRESSEDHRISSUES" caption="Has action been taken to address the human rights issues identified in the human rights analysis?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES" caption="Has the UNCT supported the government in mainstreaming human rights into national development policies and programmes?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUPRPROCESS" caption="Has the UNCT engaged in the preparation, reporting or follow-up of the Universal Periodic Review (UPR) this year?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTREPORTUPRSUBMITTED" caption="Has the UNCT submitted a UNCT report to the UPR?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS" caption="Has the UNCT facilitated follow up of the UPR recommendations by the Government?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTDRAWN_ON_RECOMMENDATIONS" caption="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSUPPORTED_GOVERNMENTUPR" caption="Has the UNCT supported the government in developing a report for the UPR in the past year?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR" caption="Has the UNCT supported civil society in developing inputs or reports for the UPR in the past year?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR" caption="Has the UNCT supported the National Human Rights Institution in developing inputs or reports for the UPR in the past year?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNHRTREATY_BODIES" caption="Has the UNCT engaged with one or more UN human rights treaty bodies in the past year (preparation, review, or follow-up)?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS" caption="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSDRAWN_ON_RECOMMENDATIONS" caption="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS" caption="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION" caption="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSUBMITTED_INPUTS_REPORTS" caption="Has the UNCT submitted inputs/reports to human rights treaty bodies?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY" caption="Was the country reviewed by a treaty body this year?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTRECOMMENDATIONS" caption="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC" caption="Did the country receive a visit of a Special Procedure (Special Rapporteur, Independent Expert or Working Group) of the Human Rights Council in the last year?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT" caption="Did the UNCT facilitate follow up of the recommendations by the Government?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTENGAGE_WITH_GOVERNMEN" caption="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES" caption="Has the UNCT supported the government in preparing for the visits of Special Procedures?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES" caption="Has the UNCT supported civil society interact with the Special Procedure?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION" caption="Has the UNCT supported National Human Rights Institution interact with the Special Procedures?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES" caption="Has the UNCT provided inputs to the visit of the Special Procedures?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES" caption="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HASHRI" caption="Is there a National Human Rights Institution (NHRI) in the country?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_CCAUPR" caption="Does the current CCA include the recommendations from the UPR  as a core component of its analysis?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_CCA_TREATY_BODIES" caption="Does the current CCA include the recommendations from the treaty bodies as a core component of its analysis?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_CCA_SPECIAL_PROCEDURES" caption="Does the current CCA include the recommendations from the special procedures as a core component of its analysis?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_UNDAFUPR" caption="Does the current UNDAF link outcomes with specific recommendations from the UPR?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_UNDAF_TREATY_BODIES" caption="Does the current UNDAF link outcomes with specific recommendations from the treaty bodies?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="HAS_UNDAF_SPECIAL_PROCEDURES" caption="Does the current UNDAF link outcomes with specific recommendations from the special procedures?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="nhri_partners" caption="Has the UNCT engaged with the NHRI as a partner?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="has_disability_inclusion_activities" caption="Has the UNCT implemented activities on disability inclusion in the past year (eg. advocacy, programming, UN analysis, engaging with Organisations of Persons with Disabilities)?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="has_culture_for_disability_inclusion" caption="Has the UNCT undertaken any steps to strengthen organizational culture in relation to disability inclusion in the past year (e.g. capacity development, awareness-raising, internal or external communication, employment of persons with disabilities)?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="cca_has_analysis_on_indigenous_people" caption="Does the CCA contain a situational analysis on indigenous people?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="realization_of_indigenous_rights2030" caption="Does your current UNDAF/Cooperation Framework support/address the realization of indigenous peoples’ rights as part of the implementation of the 2030 Agenda?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="unct_supported_indigenous_people" caption="In the past year, has your UNCT supported the participation of indigenous peoples in UN and national development processes?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="cca_has_analysis_on_youth" caption="Does the CCA contains a youth situational analysis?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="support_of_youth" caption="Does the current UNDAF/Cooperation Framework support/address the needs, builds the agency, and advances the rights of the young people?" />
+            <Dimension source="YesNoTable" table="CP12GeneralCube" name="has_youth_advisory_board" caption="Does your UNCT have a youth advisory board(s) or equivalent to provide input on UN work?" />
+            <Dimension source="CATEGORY" table="CP12GeneralCube" name="indigenous_people_indicator_presence" caption="Does your UNDAF/Cooperation Framework has specific indicators on indigenous people?" />
+            <Dimension source="CATEGORY" table="CP12GeneralCube" name="youth_indicator_presence" caption="Does your UNDAF/Cooperation Framework have youth-specific indicators" />
+            <Dimension source="CATEGORY" table="CP12GeneralCube" name="youth_advisory_board" caption="Are the youth advisory boards agency-specific or joint boards across UN entities?" />
         </Dimensions>
 
         <MeasureGroups>
@@ -536,59 +554,58 @@
                 </Measures>
                 <DimensionLinks>
                     <!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->
-                    <ForeignKeyLink dimension="UNCT Human Rights Advisor" foreignKeyColumn="HAS_HUMAN_RIGHTS_ADVISOR"/>
-                    <ForeignKeyLink dimension="Human Rights-Based Approach" foreignKeyColumn="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH"/>
-                    <ForeignKeyLink dimension="Human rights analysis" foreignKeyColumn="HAS_HUMAN_RIGHTS_ANALYSIS"/>
-                    <ForeignKeyLink dimension="UNCT supported" foreignKeyColumn="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES"/>
-                    <ForeignKeyLink dimension="UPR" foreignKeyColumn="HASUPRPROCESS"/>
-                    <ForeignKeyLink dimension="UN human rights treaty bodies" foreignKeyColumn="HASUNHRTREATY_BODIES"/>
-                    <ForeignKeyLink dimension="Receive a visit of a Special Procedure" foreignKeyColumn="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC"/>
-                    <ForeignKeyLink dimension="NHRI" foreignKeyColumn="HASHRI"/>
-                    <ForeignKeyLink dimension="Was it undertaken as part of the UNDAF rollout process" foreignKeyColumn="PART_OF_ROLLOUT_PROCESS"/>
-                    <ForeignKeyLink dimension="Has action been taken to address the human rights issues identified in the human rights analysis" foreignKeyColumn="HAS_ADDRESSEDHRISSUES"/>                    
-                    <ForeignKeyLink dimension="Has the UNCT submitted a UNCT report to the UPR" foreignKeyColumn="HASUNCTREPORTUPRSUBMITTED"/>
-                    <ForeignKeyLink dimension="Has the UNCT facilitated follow up of the UPR recommendations by the Government" foreignKeyColumn="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"/>                    
-                    <ForeignKeyLink dimension="Has the UNCT supported the government to develop a report for the UPR" foreignKeyColumn="HASUNCTSUPPORTED_GOVERNMENTUPR"/>
-            		<ForeignKeyLink dimension="Has the UNCT supported civil society develop inputs or reports for the UPR" foreignKeyColumn="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR"/>                                   
-                    <ForeignKeyLink dimension="Has the UNCT supported the National Human Rights Institution develop inputs or reports for the UPR" foreignKeyColumn="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR"/>
-                    <ForeignKeyLink dimension="Has the UNCT supported civil society develop inputs or reports for human rights treaty bodies" foreignKeyColumn="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS"/>           
-					<ForeignKeyLink dimension="Has the UNCT supported National Human Rights Institution develop inputs or reports for human rights treaty bodies" foreignKeyColumn="HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION"/>            	
-	            	<ForeignKeyLink dimension="Has the UNCT submitted inputs/reports to human rights treaty bodies" foreignKeyColumn="HASUNCTSUBMITTED_INPUTS_REPORTS"/>            	       
-        			<ForeignKeyLink dimension="Has the UNCT facilitated follow up of the human rights treaty body recommendations by the Government" foreignKeyColumn="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS"/>
-			        <ForeignKeyLink dimension="Has the UNCT drawn on the human rights treaty body recommendations to inform UN analysis, programming and advocacy strategies" foreignKeyColumn="HASUNCTSDRAWN_ON_RECOMMENDATIONS"/>
-					<ForeignKeyLink dimension="Was the country reviewed by a treaty body this year" foreignKeyColumn="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY"/>
-					<ForeignKeyLink dimension="Has the UNCT drawn on the recommendations of the Special Procedures to inform UN analysis, programming and advocacy strategies" foreignKeyColumn="HASUNCTRECOMMENDATIONS"/>                           
-					<ForeignKeyLink dimension="Did the UNCT facilitate follow up of the recommendations by the Government" foreignKeyColumn="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT"/>                                                
-					<ForeignKeyLink dimension="Has the UNCT drawn on the recommendations to inform UN analysis, programming and/or advocacy strategies" foreignKeyColumn="HASUNCTDRAWN_ON_RECOMMENDATIONS"/>                                      	
-					<ForeignKeyLink dimension="Did the UNCT engage with the government on facilitating visits by Special Procedures (Special Rapporteur, Independent Expert or Working Group) this year (preparation, visit, follow-up)" foreignKeyColumn="HASUNCTENGAGE_WITH_GOVERNMEN"/>
-					<ForeignKeyLink dimension="Has the UNCT supported the government in preparing for the visits of Special Procedures" foreignKeyColumn="HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES"/>
-					<ForeignKeyLink dimension="Has the UNCT supported civil society interact with the Special Procedure" 
-					foreignKeyColumn="HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES"/>
-					<ForeignKeyLink dimension="Has the UNCT supported National Human Rights Institution interact with the Special Procedures" 
-					foreignKeyColumn="HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION"/>            
-					<ForeignKeyLink dimension="Has the UNCT provided inputs to the visit of the Special Procedures" 
-					foreignKeyColumn="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES"/>            
-					<ForeignKeyLink dimension="Has the UNCT facilitated follow up of the Special Procedures recommendations by the Government" 
-					foreignKeyColumn="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"/>            
-                    <ForeignKeyLink dimension="HAS_STRATEGY_DEVELOPED_ADDRESSHR" foreignKeyColumn="HAS_STRATEGY_DEVELOPED_ADDRESSHR"/>
-                    <ForeignKeyLink dimension="CCAUPR" foreignKeyColumn="HAS_CCAUPR"/>
-                    <ForeignKeyLink dimension="CCATB" foreignKeyColumn="HAS_CCA_TREATY_BODIES"/>
-                    <ForeignKeyLink dimension="CCASP" foreignKeyColumn="HAS_CCA_SPECIAL_PROCEDURES"/>
-                    <ForeignKeyLink dimension="UNDAFUPR" foreignKeyColumn="HAS_UNDAFUPR"/>
-                    <ForeignKeyLink dimension="UNDAFTB" foreignKeyColumn="HAS_UNDAF_TREATY_BODIES"/>
-                    <ForeignKeyLink dimension="UNDAFSP" foreignKeyColumn="HAS_UNDAF_SPECIAL_PROCEDURES"/>
-                    <ForeignKeyLink dimension="nhriPartners" foreignKeyColumn="nhri_partners_dim"/>
-                    <ForeignKeyLink dimension="hasDisabilityInclusionActivities" foreignKeyColumn="has_disability_inclusion_activities_dim"/>
-                    <ForeignKeyLink dimension="hasCultureForDisabilityInclusion" foreignKeyColumn="has_culture_for_disability_inclusion_dim"/>
-                    <ForeignKeyLink dimension="ccaHasAnalysisOnIndigenousPeople" foreignKeyColumn="cca_has_analysis_on_indigenous_people_dim"/>
-                    <ForeignKeyLink dimension="realizationOfIndigenousRights2030" foreignKeyColumn="realization_of_indigenous_rights2030_dim"/>
-                    <ForeignKeyLink dimension="unctSupportedIndigenousPeople" foreignKeyColumn="unct_supported_indigenous_people_dim"/>
-                    <ForeignKeyLink dimension="ccaHasAnalysisOnYouth" foreignKeyColumn="cca_has_analysis_on_youth_dim"/>
-                    <ForeignKeyLink dimension="supportOfYouth" foreignKeyColumn="support_of_youth_dim"/>
-                    <ForeignKeyLink dimension="hasYouthAdvisoryBoard" foreignKeyColumn="has_youth_advisory_board_dim"/>
-                    <ForeignKeyLink dimension="indigenousPeopleIndicatorPresence" foreignKeyColumn="indigenous_people_indicator_presence_id"/>
-                    <ForeignKeyLink dimension="youthIndicatorPresence" foreignKeyColumn="youth_indicator_presence_id"/>
-                    <ForeignKeyLink dimension="youthAdvisoryBoard" foreignKeyColumn="youth_advisory_board_id"/>
+                    <FactLink dimension="OFFICIAL_REQUEST_DAO_COUNTRY" />
+                    <FactLink dimension="COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="SECONDARY_COUNTRY_INCOME_STATUS_ID" />
+                    <FactLink dimension="HAS_HUMAN_RIGHTS_ADVISOR"/>
+                    <FactLink dimension="HAS_TRAINING_ON_HUMAN_RIGHTS_APPROACH"/>
+                    <FactLink dimension="HAS_HUMAN_RIGHTS_ANALYSIS"/>
+                    <FactLink dimension="HAS_SUPPORTEDHRNATIONAL_PROGRAMMES"/>
+                    <FactLink dimension="HASUPRPROCESS"/>
+                    <FactLink dimension="HASUNHRTREATY_BODIES"/>
+                    <FactLink dimension="HAS_RECEIVED_VISIT_OF_SPECIAL_PROCEDUREHRC"/>
+                    <FactLink dimension="HASHRI"/>
+                    <FactLink dimension="PART_OF_ROLLOUT_PROCESS"/>
+                    <FactLink dimension="HAS_ADDRESSEDHRISSUES"/>
+                    <FactLink dimension="HASUNCTREPORTUPRSUBMITTED"/>
+                    <FactLink dimension="HAS_FACILITATED_FOLLOUP_GOV_RECOMMENDATIONS"/>
+                    <FactLink dimension="HASUNCTSUPPORTED_GOVERNMENTUPR"/>
+                    <FactLink dimension="HASUNCTSUPPORTED_CIVIL_SOCIETYUPR"/>
+                    <FactLink dimension="HASUNCTSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTIONUPR"/>
+                    <FactLink dimension="HASUNCTSUPPORTED_CIVIL_SOCIETY_DEVELOP_INPUTS"/>
+                    <FactLink dimension="HASUNCTSUPPORTED_NATIONAL_HUMA_RIGHTS_INSTITUTION"/>
+                    <FactLink dimension="HASUNCTSUBMITTED_INPUTS_REPORTS"/>
+                    <FactLink dimension="HASUNCTFACILITATED_FOLLOW_UP_RECOMMENDATIONS"/>
+                    <FactLink dimension="HASUNCTSDRAWN_ON_RECOMMENDATIONS"/>
+                    <FactLink dimension="WAS_COUNTRY_REVIEWED_BY_TREATY_BODY"/>
+                    <FactLink dimension="HASUNCTRECOMMENDATIONS"/>
+                    <FactLink dimension="HASUNCTFACILITATE_FOLLOW_UP_GOVERNMENT"/>
+                    <FactLink dimension="HASUNCTDRAWN_ON_RECOMMENDATIONS"/>
+                    <FactLink dimension="HASUNCTENGAGE_WITH_GOVERNMEN"/>
+                    <FactLink dimension="HASUNCTSUPPORTED_GOVERNMENT_SPECIAL_PROCEDURES"/>
+                    <FactLink dimension="HASUNCTSUPPORTED_CIVIL_SOCIETY_SPECIAL_PROCEDURES"/>
+                    <FactLink dimension="HASUNCTDSUPPORTED_NATIONAL_HUMAN_RIGHTS_INSTITUTION"/>
+                    <FactLink dimension="HASUNCTPROVIDED_INPUTS_SPECIAL_PROCEDURES"/>
+                    <FactLink dimension="HASUNCTFACILITATED_GOLLOW_UP_SPECIAL_PROCEDURES"/>
+                    <FactLink dimension="HAS_STRATEGY_DEVELOPED_ADDRESSHR"/>
+                    <FactLink dimension="HAS_CCAUPR"/>
+                    <FactLink dimension="HAS_CCA_TREATY_BODIES"/>
+                    <FactLink dimension="HAS_CCA_SPECIAL_PROCEDURES"/>
+                    <FactLink dimension="HAS_UNDAFUPR"/>
+                    <FactLink dimension="HAS_UNDAF_TREATY_BODIES"/>
+                    <FactLink dimension="HAS_UNDAF_SPECIAL_PROCEDURES"/>
+                    <FactLink dimension="nhri_partners"/>
+                    <FactLink dimension="has_disability_inclusion_activities"/>
+                    <FactLink dimension="has_culture_for_disability_inclusion"/>
+                    <FactLink dimension="cca_has_analysis_on_indigenous_people"/>
+                    <FactLink dimension="realization_of_indigenous_rights2030"/>
+                    <FactLink dimension="unct_supported_indigenous_people"/>
+                    <FactLink dimension="cca_has_analysis_on_youth"/>
+                    <FactLink dimension="support_of_youth"/>
+                    <FactLink dimension="has_youth_advisory_board"/>
+                    <FactLink dimension="indigenous_people_indicator_presence"/>
+                    <FactLink dimension="youth_indicator_presence"/>
+                    <FactLink dimension="youth_advisory_board"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>

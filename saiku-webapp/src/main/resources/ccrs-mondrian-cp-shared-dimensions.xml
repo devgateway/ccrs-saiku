@@ -22,10 +22,6 @@
 	    </Attributes>
 	</Dimension>
 	
-	<Dimension source="CATEGORY" table="CountryIncomeStatus" caption="Country Income Status" />
-    <Dimension source="CATEGORY" table="SecondaryCountryIncomeStatus" caption="Secondary Country Income Status" />
-    <Dimension table="YesNoTable" name="Delivering as One" caption="Delivering as One" />
-     
      <!-- Table should be customized with cube table. Using some existing table to allow shared import. -->
      <Dimension name="Year" caption="Year" table="DUMMY_YEAR" visible="true">
 	    <Attributes>

@@ -18,10 +18,6 @@
     <PhysicalSchema>
         <!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->
         
-        <!-- ## _CATEGORY_QUERIES_TAG_ ## -->
-        
-        <!-- ## _YESNOTABLE_QUERIES_TAG_ ## -->
-
         <Query alias="WorkplanCube">
             <ExpressionView>
                 <SQL dialect="generic">
@@ -32,7 +28,7 @@
                         WORKPLAN.ENTITY_YEAR as WORKPLAN_ENTITY_YEAR,
                         WORKPLAN.WORKFLOW as WORKPLAN_WORKFLOW,
                         WORKSTREAM.ID as WORKSTREAM_ID,
-                        WORKSTREAM.SECTION_ID WORKSTREAM_SECTION_ID,
+                        COALESCE(WORKSTREAM_SECTION_ID.LABEL, 'X-CATEGORY') as WORKSTREAM_SECTION_ID,
                         OUTPUTS.ID as OUTPUTS_ID,
                         OUTPUTS.LEAD_UNIT_ID as OUTPUTS_LEAD_UNIT_ID,
                         AGENCY_ROLES.ID as AGENCY_ROLES_ID,
@@ -40,8 +36,8 @@
                         ACTIVITY.LEAD_UNIT_ID as ACTIVITY_LEAD_UNIT_ID,
                         CASE WHEN ACTIVITY.SELECT_AS_GOOD_PRACTICE IS NULL THEN 'No' ELSE CASE WHEN ACTIVITY.SELECT_AS_GOOD_PRACTICE = FALSE THEN 'No' ELSE 'Yes' END END as ACTIVITY_SELECT_AS_GOOD_PRACTICE,
                         BUDGET.ID as BUDGET_ID,
-                        BUDGET.SOURCE_ID as BUDGET_SOURCE_ID,
-                        COALESCE(BUDGET.TYPE_ID, -1) AS BUDGET_TYPE_ID,
+                        COALESCE(BUDGET_SOURCE_ID.LABEL, 'X-CATEGORY') as BUDGET_SOURCE_ID,
+                        COALESCE(BUDGET_TYPE_ID.LABEL, 'X-CATEGORY') as BUDGET_TYPE_ID,
                         BUDGET.REQUIRED_AMOUNT as BUDGET_EXPECTED,
                         BUDGET.SPENT_AMOUNT as BUDGET_ACTUAL
                     FROM WORKPLAN workplan
@@ -50,6 +46,9 @@
                         LEFT OUTER JOIN AGENCY_ROLES agency_roles ON agency_roles.OUTPUT_ID = outputs.ID
                         LEFT OUTER JOIN ACTIVITY activity ON activity.OUTPUT_ID = outputs.ID
                         LEFT OUTER JOIN BUDGET budget ON budget.ACTIVITY_ID = activity.ID
+                        LEFT JOIN CATEGORY WORKSTREAM_SECTION_ID on WORKSTREAM.SECTION_ID=WORKSTREAM_SECTION_ID.ID
+                        LEFT JOIN CATEGORY BUDGET_SOURCE_ID on BUDGET.SOURCE_ID=BUDGET_SOURCE_ID.ID
+                        LEFT JOIN CATEGORY BUDGET_TYPE_ID on BUDGET.TYPE_ID=BUDGET_TYPE_ID.ID
                     WHERE
                         workplan.WORKFLOW = 'VALIDATED' AND
                         workplan.DESIGNATION in (select c.COUNTRY from CATEGORY c where c.DTYPE='CountryRegion' and c.REGION<>'Uncategorized')
@@ -68,7 +67,7 @@
                         WORKPLAN.ENTITY_YEAR as WORKPLAN_ENTITY_YEAR,
                         WORKPLAN.WORKFLOW as WORKPLAN_WORKFLOW,
                         WORKSTREAM.ID as WORKSTREAM_ID,
-                        WORKSTREAM.SECTION_ID WORKSTREAM_SECTION_ID,
+                        COALESCE(WORKSTREAM_SECTION_ID.LABEL, 'X-CATEGORY') as WORKSTREAM_SECTION_ID,
                         OUTPUTS.ID as OUTPUTS_ID,
                         OUTPUTS.LEAD_UNIT_ID as OUTPUTS_LEAD_UNIT_ID,
                         CASE WHEN OUTPUTS.OUTPUT_ACHIEVED_ID=(SELECT ID FROM CATEGORY WHERE DTYPE='OutputAchieved' AND LABEL='Yes') THEN 1 ELSE 0 END AS OUTPUT_ACHIEVED_YES,
@@ -77,6 +76,7 @@
                     FROM WORKPLAN workplan
                         LEFT OUTER JOIN WORKSTREAM workstream ON workstream.WORKPLAN_ID = workplan.ID
                         LEFT OUTER JOIN OUTPUTS outputs ON outputs.WORKSTREAM_ID = workstream.ID
+                        LEFT JOIN CATEGORY WORKSTREAM_SECTION_ID on WORKSTREAM.SECTION_ID=WORKSTREAM_SECTION_ID.ID
                     WHERE
                         workplan.WORKFLOW = 'VALIDATED' AND
                         workplan.DESIGNATION in (select c.COUNTRY from CATEGORY c where c.DTYPE='CountryRegion' and c.REGION<>'Uncategorized')
@@ -105,8 +105,8 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension source="CATEGORY" table="WorkstreamSection" name="WorkstreamSection" caption="Workstream/Normative Area." />
-            
+            <Dimension source="CATEGORY" table="WorkplanCube" name="WORKSTREAM_SECTION_ID" caption="Workstream/Normative Area." />
+
             <Dimension name="Is good practice?" caption="Is activity good practice?" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
@@ -119,8 +119,8 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension source="CATEGORY" table="BudgetSource" name="Budget Source" caption="Budget Source" />
-            <Dimension source="CATEGORY" table="BudgetType" name="Budget Type" caption="Budget Type" />
+            <Dimension source="CATEGORY" table="WorkplanCube" name="BUDGET_SOURCE_ID" caption="Budget Source" />
+            <Dimension source="CATEGORY" table="WorkplanCube" name="BUDGET_TYPE_ID" caption="Budget Type" />
         </Dimensions>
 
         <MeasureGroups>
@@ -134,9 +134,9 @@
                     <FactLink dimension="Is good practice?" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
-                    <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
-                    <ForeignKeyLink dimension="Budget Source" foreignKeyColumn="BUDGET_SOURCE_ID"/>
-                    <ForeignKeyLink dimension="Budget Type" foreignKeyColumn="BUDGET_TYPE_ID"/>
+                    <FactLink dimension="WORKSTREAM_SECTION_ID"/>
+                    <FactLink dimension="BUDGET_SOURCE_ID"/>
+                    <FactLink dimension="BUDGET_TYPE_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -157,8 +157,8 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension source="CATEGORY" table="WorkstreamSection" name="WorkstreamSection" caption="Workstream/Normative Area." />
-            
+            <Dimension source="CATEGORY" table="WorkplanCube" name="WORKSTREAM_SECTION_ID" caption="Workstream/Normative Area." />
+
             <Dimension name="Is good practice?" caption="Is activity good practice?" table='WorkplanCube' key="Dimension Id">
                 <Attributes>
                     <Attribute name="Dimension Id" keyColumn="ACTIVITY_ID"
@@ -184,7 +184,7 @@
                     <FactLink dimension="Is good practice?" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
-                    <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
+                    <FactLink dimension="WORKSTREAM_SECTION_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
@@ -204,7 +204,7 @@
                 </Attributes>
             </Dimension>
 
-            <Dimension source="CATEGORY" table="WorkstreamSection" name="WorkstreamSection" caption="Workstream/Normative Area." />
+            <Dimension source="CATEGORY" table="WorkplanOutputsCube" name="WORKSTREAM_SECTION_ID" caption="Workstream/Normative Area." />
         </Dimensions>
 
         <MeasureGroups>
@@ -219,7 +219,7 @@
                     <FactLink dimension="Year" />
                     <ForeignKeyLink dimension="Country" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
                     <ForeignKeyLink dimension="Region" foreignKeyColumn="WORKPLAN_DESIGNATION"/>
-                    <ForeignKeyLink dimension="WorkstreamSection" foreignKeyColumn="WORKSTREAM_SECTION_ID"/>
+                    <FactLink dimension="WORKSTREAM_SECTION_ID"/>
                 </DimensionLinks>
             </MeasureGroup>
         </MeasureGroups>
