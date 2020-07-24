@@ -16,9 +16,8 @@
                             COALESCE(COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as COUNTRY_INCOME_STATUS_ID,
                             COALESCE(SECONDARY_COUNTRY_INCOME_STATUS_ID.LABEL, 'X-CATEGORY') as SECONDARY_COUNTRY_INCOME_STATUS_ID,
                             COALESCE(cp1.OFFICIAL_REQUEST_DAO_COUNTRY, 'X-BOOLEAN') AS OFFICIAL_REQUEST_DAO_COUNTRY
-                        from CP9COUNTRY_MECHANISMS_COORDINATE_INTL_SUPPORT M
-                            JOIN CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy ON M.PARENT_ID = cp9unstrategy.ID
-                            JOIN CP9POST_CRISIS_PROFILE cp9 ON cp9unstrategy.PARENT_ID = cp9.ID
+                        from CP9COUNTRY_MECHANISMS_COORDINATE_INT_SUPPORT M
+                            JOIN CP9POST_CRISIS_PROFILE cp9 ON M.PARENT_ID = cp9.ID
                             JOIN CP1GENERAL_PROFILE CP1 ON cp9.DESIGNATION = cp1.DESIGNATION AND cp9.ENTITY_YEAR = cp1.ENTITY_YEAR
                             JOIN BASE_COUNTRY bc ON CP1.DESIGNATION = bc.iso2
                             JOIN v_cp_validated_designations v ON CP1.designation = v.designation and v.entity_year = CP1.ENTITY_YEAR
@@ -167,7 +166,6 @@
                         JOIN CP9INTEGRATED_STRATEGIC_FRAMEWORK cp9integrated ON cp9integrated.PARENT_ID = cp9unpeace.ID
                         JOIN CP9UNUNCTCOLABORATION cp9ununctcolaboration ON cp9ununctcolaboration.PARENT_ID = cp9unpeace.ID
                         JOIN CP9CONFLICT_ANALYSIS cp9conflict ON cp9conflict.PARENT_ID = cp9.ID
-                        JOIN CP9UNSTRATEGY_HUMANITARIAM_TO_LONG_TERM cp9unstrategy ON cp9unstrategy.PARENT_ID = cp9.ID
                         JOIN CP9AGREEMENTS_WITH_KEY_PARTNERS cp9agreements ON cp9agreements.PARENT_ID = cp9.ID
                         JOIN CP9INTERACTIONWBDIRECTORUNLEADER cp9interactionwbdirectorunleader ON cp9interactionwbdirectorunleader.PARENT_ID = cp9.ID
                         JOIN CP9HUMANITARIAN_STRUCTURES cp9humanitarianstructures ON cp9humanitarianstructures.PARENT_ID = cp9.ID
