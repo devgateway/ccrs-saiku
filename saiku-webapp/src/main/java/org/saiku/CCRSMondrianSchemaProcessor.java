@@ -3,10 +3,7 @@ package org.saiku;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.sun.jersey.core.impl.provider.entity.Inflector;
 import mondrian.olap.Util.PropertyList;
 import mondrian.spi.DynamicSchemaProcessor;
 
@@ -19,74 +16,6 @@ import mondrian.spi.DynamicSchemaProcessor;
  * @author Nadejda Mandrescu
  */
 public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
-    /*
-     * TODO
-     *  - schema caching in non-dev mode / check for changes?
-     */
-    
-    private static final Inflector INFLECTOR = Inflector.getInstance();
-
-
-    private static final Pattern YES_NO_DIM_PATTERN = Pattern.compile(
-            "<Dimension source=\"YesNoTable\" table=\"([^=]+)\" *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
-
-    private static final String YES_NO_DIM_TEMPLATE =
-            "<Dimension table=\"@@table@@\" name=\"@@name@@\" caption=\"@@caption@@\" >\n"
-                    + " <Attributes>\n"
-                    + "  <Attribute name=\"@@name@@\" caption=\"@@caption@@\" keyColumn=\"@@name@@_DIM\" orderByColumn=\"@@name@@_DIM_ORD\" />\n"
-                    + " </Attributes>\n"
-                    + "</Dimension>";
-
-    private static final Pattern COALESCE_CATEGORY_PATTERN = Pattern.compile(
-            "(?i)COALESCE\\((.+), 'X-CATEGORY'\\) AS (\\w+)");
-
-    private static final String COALESCE_CATEGORY_TEMPLATE =
-            "COALESCE(@@col@@, 'No Data Available') as @@alias@@_DIM,\n"
-                    + "COALESCE(@@col@@_SORT, '~~~') as @@alias@@_DIM_ORD";
-
-    private static final Pattern COALESCE_BOOL_PATTERN = Pattern.compile(
-            "(?i)COALESCE\\((.+), 'X-BOOLEAN'\\) AS (\\w+)");
-
-    private static final String COALESCE_BOOL_TEMPLATE =
-            "CASE @@col@@ WHEN TRUE THEN 'Yes' WHEN FALSE THEN 'No' ELSE 'No Data Available' END AS @@alias@@_DIM,\n"
-            + "CASE @@col@@ WHEN TRUE THEN 0 WHEN FALSE THEN 1 ELSE 2 END AS @@alias@@_DIM_ORD";
-
-    private static final String CATEGORY_BY_LABEL_QUERY_TEMPLATE =
-            "<Query alias='@@table@@'>\n" +
-                "<ExpressionView>\n" +
-                    "<SQL dialect='generic'>\n" +
-                        "<![CDATA[SELECT DISTINCT LABEL, 0 AS PRE_SORT, LABEL_SORT FROM CATEGORY WHERE DTYPE='@@dtype@@'\n" +
-                        "UNION ALL\n" +
-                        "SELECT 'No Data Available', 1, '' FROM DUAL]]>\n" +
-                    "</SQL>\n" +
-                "</ExpressionView>\n" +
-             "</Query>\n";
-
-    private static final Pattern CATEGORY_BY_LABEL_DIM_PATTERN = Pattern.compile(
-            "<Dimension *source=[\"|']CATEGORY_BY_LABEL[\"|'] *table=[\"|']([^=]*)[\"|'] *(name=[\"|']([^=]*)[\"|'])? *caption=[\"|']([^=]*)[\"|'] */>");
-    private static final String CATEGORY_BY_LABEL_DIM_TEMPLATE =
-            "<Dimension name='@@name@@' caption=\"@@caption@@\" table='@@table@@'\n" +
-                    "key='@@name@@'>\n" +
-                "<Attributes>\n" +
-                    "<Attribute name='@@name@@' caption=\"@@caption@@\" keyColumn='LABEL'\n" +
-                                "hierarchyAllMemberCaption=\"All @@captions@@\" hierarchyAllMemberName=\"All __@@captions@@__\" hierarchyCaption=\"All @@captions@@\">\n" +
-                        "<OrderBy>\n" +
-                            "<Column name='PRE_SORT' />\n" +
-                            "<Column name='LABEL_SORT' />\n" +
-                        "</OrderBy>\n" +
-                    "</Attribute>\n" +
-                "</Attributes>\n" +
-            "</Dimension>";
-
-    private static final Pattern CATEGORY_DIM_PATTERN = Pattern.compile(
-            "<Dimension *source=[\"|']CATEGORY[\"|'] *table=[\"|']([^=]*)[\"|'] *name=[\"|']([^=]*)[\"|'] *caption=[\"|']([^=]*)[\"|'] */>");
-
-    private static final String CATEGORY_DIM_TEMPLATE =
-            "<Dimension table=\"@@table@@\" name=\"@@name@@\" caption=\"@@caption@@\">\n"
-                    + " <Attributes>\n"
-                    + "  <Attribute name=\"@@name@@\" caption=\"@@caption@@\" keyColumn=\"@@name@@_DIM\" orderByColumn=\"@@name@@_DIM_ORD\" />\n"
-                    + " </Attributes>\n"
-                    + "</Dimension>";
 
     /**
      * Mondrian loads / refreshes schema one by one under the same thread
@@ -95,8 +24,7 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
      */
     private static ThreadLocal<String> sharedPhysicalSchema = new ThreadLocal<String>();
     private static ThreadLocal<String> sharedDimensions = new ThreadLocal<String>();
-    private static ThreadLocal<String> sharedDimensionsLinks = new ThreadLocal<String>();
-    
+
 
     @Override
     public String processSchema(String schemaURL, PropertyList connectInfo) throws Exception {
@@ -109,7 +37,6 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private void prepareData() throws Exception {
         this.setIfNull(sharedPhysicalSchema, "ccrs-mondrian-cp-shared-physical-schema.xml");
         this.setIfNull(sharedDimensions, "ccrs-mondrian-cp-shared-dimensions.xml");
-        this.setIfNull(sharedDimensionsLinks, "ccrs-mondrian-cp-shared-dimensions-links.xml");
     }
     
     private void setIfNull(ThreadLocal<String> var, String resourceName) throws Exception {
@@ -121,122 +48,9 @@ public class CCRSMondrianSchemaProcessor implements DynamicSchemaProcessor {
     private String processContents(String content) {
         content = content.replace("<!-- ## _SHARED_PHYSICAL_SCHEMA_TAG_ ## -->", sharedPhysicalSchema.get());
         content = content.replace("<!-- ## _SHARED_DIMENSIONS_TAG_ ## -->", sharedDimensions.get());
-        content = content.replace("<!-- ## _SHARED_DIMENSIONS_LINKS_TAG_ ## -->", sharedDimensionsLinks.get());
-        content = this.processYesNoTable(content);
-        content = this.processCategories(content);
-        content = this.processCategories2(content);
         return content;
     }
 
-    private String processYesNoTable(String content) {
-        Matcher matcher = COALESCE_BOOL_PATTERN.matcher(content);
-        while (matcher.find()) {
-            String coalesceText = matcher.group();
-            String col = matcher.group(1);
-            String alias = matcher.group(2);
-            content = content.replace(coalesceText,
-                    COALESCE_BOOL_TEMPLATE
-                            .replace("@@col@@", col)
-                            .replace("@@alias@@", alias));
-        }
-
-        Matcher m = YES_NO_DIM_PATTERN.matcher(content);
-        while(m.find()) {
-            String origText = m.group();
-            String table = m.group(1);
-            String name = m.group(2);
-            String caption = m.group(3);
-            content = content.replace(origText,
-                    YES_NO_DIM_TEMPLATE
-                            .replace("@@name@@", name)
-                            .replace("@@caption@@", caption)
-                            .replace("@@table@@", table));
-        }
-        return content;
-    }
-
-    private String processCategories2(String content) {
-        Matcher matcher = COALESCE_CATEGORY_PATTERN.matcher(content);
-        while (matcher.find()) {
-            String coalesceText = matcher.group();
-            String col = matcher.group(1);
-            String alias = matcher.group(2);
-            content = content.replace(coalesceText,
-                    COALESCE_CATEGORY_TEMPLATE
-                            .replace("@@col@@", col)
-                            .replace("@@alias@@", alias));
-        }
-        Matcher m = CATEGORY_DIM_PATTERN.matcher(content);
-        while(m.find()) {
-            String origText = m.group();
-            String table = m.group(1);
-            String name = m.group(2);
-            String caption = m.group(3);
-            content = content.replace(origText,
-                    CATEGORY_DIM_TEMPLATE
-                            .replace("@@name@@", name)
-                            .replace("@@caption@@", caption)
-                            .replace("@@table@@", table));
-        }
-        return content;
-    }
-
-    private String processCategories(String content) {
-        content = processCategories(content, CATEGORY_BY_LABEL_DIM_PATTERN, CATEGORY_BY_LABEL_QUERY_TEMPLATE,
-                CATEGORY_BY_LABEL_DIM_TEMPLATE, "<!-- ## _CATEGORY_BY_LABEL_QUERIES_TAG_ ## -->");
-        return content;
-    }
-    
-    private String processCategories(String content, Pattern pattern, String queryTemplate, String dimensionTemplate,
-            String queryTag) {
-        Matcher m = pattern.matcher(content);
-        StringBuilder categorySB = new StringBuilder();
-        int count = 0;
-        while(m.find()) {
-            String categoryDimension = m.group();
-            String dtype = m.group(1).trim();
-            String table = dtype + count;
-            String name = m.group(3);
-            String caption = m.group(4).trim();
-            String captions = this.getPluralCaption(caption);
-            String query = queryTemplate.replace("@@table@@", table);
-            query = query.replace("@@dtype@@", dtype);
-            String result = dimensionTemplate.replace("@@table@@", table);
-            result = result.replace("@@caption@@", this.getActualCaption(caption));
-            result = result.replace("@@captions@@", captions);
-            if (name == null) {
-                name = dtype;
-            }
-            result = result.replace("@@name@@", name);
-            content = content.replace(categoryDimension, result);
-            categorySB.append(query);
-            count++;
-        }
-        content = content.replace(queryTag, categorySB.toString());
-        return content;
-    }
-    
-    private String getPluralCaption(String caption) {
-        char last = caption.charAt(caption.length() - 1); 
-        if (!Character.isLetter(last)) {
-            if (last == '.') {
-                caption = caption.substring(0, caption.length() - 1);
-            }
-            return "'" + caption + "'";
-        }
-        if (caption.endsWith("s")) {
-            return caption;
-        }
-        return INFLECTOR.pluralize(caption);
-    }
-    
-    private String getActualCaption(String caption) {
-        if (caption.charAt(caption.length() - 1) == '.') {
-            return caption.substring(0, caption.length() - 1);
-        }
-        return caption;
-    }
-    
     private String readRootElements(String resourceName) throws Exception {
         String contents = readContent(resourceName);
         contents = contents.replaceAll("(<(\\077xml.*\\077|/?Root)>)", "");
