@@ -87,13 +87,6 @@ var Toolbar = Backbone.View.extend({
 		(new ValidatedCountriesModal()).render().open();
 	},
 
-	/**
-     * Clear the current session and show the login window
-     */
-    logout: function() {
-        Saiku.session.logout();
-    },
-
 	cpRollbackAbbrShowMore: function() {
 		$('#cpRollbackAbbr').hide();
 		$('#cpRollbackFull').show();
