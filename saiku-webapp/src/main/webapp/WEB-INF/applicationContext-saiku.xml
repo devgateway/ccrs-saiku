@@ -47,14 +47,15 @@
         <security:authentication-provider ref="preAuthProvider" />
     </security:authentication-manager>
 
-    <security:http create-session="never" auto-config="true" use-expressions="false">
+    <bean id="entryPoint" class="org.springframework.security.web.authentication.HttpStatusEntryPoint">
+        <constructor-arg value="UNAUTHORIZED" />
+    </bean>
+
+    <security:http create-session="never" auto-config="true" use-expressions="false" entry-point-ref="entryPoint">
         <security:csrf disabled="true"/>
 
         <!-- Pre authentication filter that looks up for principal and authorities by reading from a shared servlet context. -->
         <security:custom-filter ref="imsPreAuthFilter" position="PRE_AUTH_FILTER" />
-
-        <security:form-login login-page="/login" default-target-url="/" />
-        <security:access-denied-handler error-page="/login" />
 
         <!-- Notice we use ROLE_VIEWER, same as in IMS, the roles will be fetched remotely with the authenticated token -->
         <security:intercept-url pattern="/serverdocs/**" access="ROLE_VIEWER" />
@@ -63,8 +64,6 @@
         <security:intercept-url pattern="/rest/**" access="ROLE_VIEWER" />
         <security:intercept-url pattern="/json/**" access="ROLE_VIEWER" />
         <security:intercept-url pattern="/WEB-INF/classes/legacy-schema" access="ROLE_VIEWER" />
-        <security:logout logout-url="/logout"/>
-        <security:http-basic/>
     </security:http>
 
 </beans>
