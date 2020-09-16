@@ -23,7 +23,6 @@ import org.saiku.datasources.connection.AbstractConnectionManager;
 import org.saiku.datasources.connection.ISaikuConnection;
 import org.saiku.datasources.connection.SaikuConnectionFactory;
 import org.saiku.datasources.datasource.SaikuDatasource;
-import org.saiku.olap.util.exception.SaikuOlapException;
 import org.saiku.service.ISessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,13 +60,8 @@ public class SecurityAwareConnectionManager extends AbstractConnectionManager im
 
 	@Override
 	public void init() {
-        try {
-            this.connections = getAllConnections();
-        } catch (SaikuOlapException e) {
-            log.error("Error getting connections", e);
-        }
-    }
-	
+	}
+
 	@Override
 	public void destroy() {
 		if (connections != null && !connections.isEmpty()) {
