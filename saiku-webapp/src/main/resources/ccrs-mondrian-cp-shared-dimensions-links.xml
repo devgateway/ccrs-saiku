@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<Root>
+	<ForeignKeyLink dimension="Country" foreignKeyColumn="DESIGNATION"/>
+	<ForeignKeyLink dimension="Region" foreignKeyColumn="DESIGNATION"/>
+	<FactLink dimension="Year" />
+</Root>
