@@ -21,19 +21,14 @@ import org.saiku.service.ISessionService;
 import org.saiku.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import java.util.List;
 import java.util.Map;
 
 
@@ -164,9 +159,6 @@ public class SessionResource  {
     @DELETE
     public Response logout(@Context HttpServletRequest req) {
         sessionService.logout(req);
-
-        NewCookie terminate = new NewCookie(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY, null);
-
-        return Response.ok().cookie(terminate).build();
+        return Response.ok().build();
     }
 }

@@ -25,8 +25,6 @@
     If you modify these files in anyway it would be very useful if you sent us patches for any useful changes you make.
      -->
 
-    <import resource="applicationContext-spring-security.xml"/>
-
     <!-- BASIC AUTHENTICATION -->
     <security:http pattern="/rest/saiku/info" security="none">
     </security:http>
@@ -35,14 +33,29 @@
     <security:http pattern="/repository/**" security="none">
     </security:http>
 
-    <security:http create-session="never" auto-config="true" use-expressions="false">
+    <bean id="imsPreAuthFilter" class="org.saiku.IMSSharedContextPreAuthenticatedProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+
+    <bean id="preAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+        <property name="preAuthenticatedUserDetailsService">
+            <bean class="org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService" />
+        </property>
+    </bean>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="preAuthProvider" />
+    </security:authentication-manager>
+
+    <bean id="entryPoint" class="org.springframework.security.web.authentication.HttpStatusEntryPoint">
+        <constructor-arg value="UNAUTHORIZED" />
+    </bean>
+
+    <security:http create-session="never" auto-config="true" use-expressions="false" entry-point-ref="entryPoint">
         <security:csrf disabled="true"/>
 
-        <!-- This key is secret and unique, same key between the two applications, IMS and Saiku, it is probably used as a salt to cookie hashing -->
-        <security:remember-me key="#{systemProperties['rememberme.key']}" user-service-ref="remoteUserDetailsService"/>
-
-        <security:form-login login-page="/login" default-target-url="/" />
-        <security:access-denied-handler error-page="/login" />
+        <!-- Pre authentication filter that looks up for principal and authorities by reading from a shared servlet context. -->
+        <security:custom-filter ref="imsPreAuthFilter" position="PRE_AUTH_FILTER" />
 
         <!-- Notice we use ROLE_VIEWER, same as in IMS, the roles will be fetched remotely with the authenticated token -->
         <security:intercept-url pattern="/serverdocs/**" access="ROLE_VIEWER" />
@@ -51,8 +64,6 @@
         <security:intercept-url pattern="/rest/**" access="ROLE_VIEWER" />
         <security:intercept-url pattern="/json/**" access="ROLE_VIEWER" />
         <security:intercept-url pattern="/WEB-INF/classes/legacy-schema" access="ROLE_VIEWER" />
-        <security:logout logout-url="/logout"/>
-        <security:http-basic/>
     </security:http>
 
 </beans>
